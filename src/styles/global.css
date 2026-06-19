@@ -1,0 +1,125 @@
+/* src/styles/global.css */
+@import "tailwindcss";
+
+/* Tell Tailwind to scan integration components for class usage */
+@source "../integrations";
+
+@import "../integrations/preferences/language/styles/language-switcher.css";
+@import "../integrations/preferences/shared/styles/preferences.css";
+@import "../integrations/preferences/accessibility/styles/accessibility.css";
+@import "@/styles/legal.css";
+@import "@/styles/system.css";
+@import "@/styles/menu.css";
+
+@theme {
+  /* ───── PRIMARY – change ONLY this one line for the brand ───── */
+  --color-primary: var(--color-blue-500);   /* your main brand color */
+  /* ───── ACCENT – secondary / interactive ───── */
+  --color-accent: var(--color-purple-700);  /* complementary accent color */
+
+  /* ───── Neutrals ───── */
+  --color-text:         oklch(18% 0.03 260);   /* almost black */
+  --color-heading:      oklch(14% 0.03 260);   /* slightly darker */
+  --color-bg:           oklch(99.5% 0.004 260); /* off-white */
+  --color-surface:      oklch(97.5% 0.006 260); /* cards, nav, modals */
+
+  /* color helpers */
+  --color-primary-50:   oklch(from var(--color-primary) calc(l + 0.40) c h);
+  --color-primary-100:  oklch(from var(--color-primary) calc(l + 0.35) c h);
+  --color-primary-200:  oklch(from var(--color-primary) calc(l + 0.25) c h);
+  --color-primary-300:  oklch(from var(--color-primary) calc(l + 0.15) c h);
+  --color-primary-400:  oklch(from var(--color-primary) calc(l + 0.08) c h);
+  --color-primary-500:  var(--color-primary);
+  --color-primary-600:  oklch(from var(--color-primary) calc(l - 0.08) c h);
+  --color-primary-700:  oklch(from var(--color-primary) calc(l - 0.15) c h);
+  --color-primary-800:  oklch(from var(--color-primary) calc(l - 0.25) c h);
+  --color-primary-900:  oklch(from var(--color-primary) calc(l - 0.35) c h);
+  --color-primary-950:  oklch(from var(--color-primary) calc(l - 0.45) c h);
+
+  --color-accent-50:   oklch(from var(--color-accent) calc(l + 0.40) c h);
+  --color-accent-100:  oklch(from var(--color-accent) calc(l + 0.35) c h);
+  --color-accent-200:  oklch(from var(--color-accent) calc(l + 0.25) c h);
+  --color-accent-300:  oklch(from var(--color-accent) calc(l + 0.15) c h);
+  --color-accent-400:  oklch(from var(--color-accent) calc(l + 0.08) c h);
+  --color-accent-500:  var(--color-accent);
+  --color-accent-600:  oklch(from var(--color-accent) calc(l - 0.08) c h);
+  --color-accent-700:  oklch(from var(--color-accent) calc(l - 0.15) c h);
+  --color-accent-800:  oklch(from var(--color-accent) calc(l - 0.25) c h);
+  --color-accent-900:  oklch(from var(--color-accent) calc(l - 0.35) c h);
+  --color-accent-950:  oklch(from var(--color-accent) calc(l - 0.45) c h);
+}
+
+body {
+  @apply overflow-x-hidden;
+}
+
+@layer components {
+  button, a {
+    @apply cursor-pointer;
+  }
+
+  /* Base button styles */
+  .btn-base {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply font-semibold rounded-lg transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Size variants */
+  .btn-none {
+    @apply p-0 text-sm;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  .btn-md {
+    @apply px-4 py-2 text-base;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-lg;
+  }
+
+  /* Link base styles */
+  .link-base {
+    @apply inline-flex items-center gap-1;
+    @apply text-primary hover:text-primary-700 hover:underline;
+    @apply bg-transparent font-normal;
+    @apply transition-colors duration-200;
+    @apply focus:outline-none focus:ring-0 focus:ring-offset-0;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Link sizes (no padding) */
+  .link-sm {
+    @apply text-sm;
+  }
+
+  .link-md {
+    @apply text-base;
+  }
+
+  .link-lg {
+    @apply text-lg;
+  }
+}
+
+@layer utilities {
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
+}

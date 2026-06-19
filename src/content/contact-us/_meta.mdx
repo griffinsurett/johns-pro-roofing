@@ -1,0 +1,21 @@
+---
+title: "Contact Us"
+description: "Get in touch with Us"
+hasPage: true
+itemsHasPage: false
+redirectFrom: ["/contact", "/contactus"]
+addToMenu:
+  - menu: "footer-menu"
+itemsLinkBehavior:
+  mode: prefixed
+  linkPrefix: linkPrefix
+  valueFormatter: phone
+---
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query } from "@/utils/query";
+
+<ContentRenderer
+  query={query("contact-us")}
+  variant="ContactVariant"
+  columns={2}
+/>

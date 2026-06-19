@@ -1,0 +1,399 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import "../styles/johns-pro-roofing.css";
+
+import heroWorker from "../assets/images/hero_worker.png";
+import logoWhiteout from "../assets/images/logo-whiteout.png";
+import serviceGutter from "../assets/images/service_gutter.png";
+import serviceRoofInstall from "../assets/images/service_roof_install.png";
+import serviceRoofRepair from "../assets/images/service_roof_repair.png";
+import serviceRoofReplace from "../assets/images/service_roof_replace.png";
+import serviceSiding from "../assets/images/service_siding.png";
+import serviceSolar from "../assets/images/service_solar.png";
+import avatarRita from "../assets/images/avatar_rita.png";
+import avatarRyan from "../assets/images/avatar_ryan.png";
+---
+
+<BaseLayout
+  title="Professional Roofing Services"
+  description="Professional roofing services in Somerset, New Jersey. Free estimates, 0% financing available, roof repairs, replacements, and commercial roofing."
+>
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </Fragment>
+
+  <main class="flex-1">
+    <section class="hero" id="hero">
+      <div class="hero-overlay"></div>
+      <div class="container hero-container">
+        <div class="hero-text-content">
+          <img
+            src={logoWhiteout.src}
+            alt="John's Pro Roofing Logo"
+            class="hero-logo"
+          />
+          <h1 class="hero-title">
+            Professional Roofing <span class="highlight-text">Services</span>
+          </h1>
+          <p class="hero-subtitle">
+            Free estimates, 0% financing available, and dependable roofing work from a local team you can count on.
+          </p>
+          <div class="hero-actions">
+            <a href="tel:7323513518" class="btn btn-accent btn-large">
+              Call Now - 732-351-3518 <i class="fa-solid fa-phone"></i>
+            </a>
+            <a href="#quote-form" class="btn btn-outline-light btn-large">
+              Request an Estimate
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-section" id="services">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pretitle">Professional Roofing Services</span>
+          <h2 class="section-title">Free Estimate Financing Available</h2>
+          <p class="section-description">
+            We provide residential roofing, commercial roofing, and decking services with premium materials and a straightforward process. Call now for a free estimate.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="card-image-container">
+              <img
+                src={serviceRoofInstall.src}
+                alt="Residential Roofing Service"
+                class="card-image"
+              />
+              <div class="card-badge">Premium</div>
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Residential Roofing</h3>
+              <p class="card-text">
+                Full residential roofing services built for lasting protection and clean, dependable results.
+              </p>
+              <a href="#quote-form" class="card-link">
+                Learn More <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="card-image-container">
+              <img
+                src={serviceRoofReplace.src}
+                alt="Commercial Roofing Service"
+                class="card-image"
+              />
+              <div class="card-badge">Certified</div>
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Commercial Roofing</h3>
+              <p class="card-text">
+                Commercial roof replacement and repair work completed with quality materials and careful attention to detail.
+              </p>
+              <a href="#quote-form" class="card-link">
+                Learn More <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="card-image-container">
+              <img
+                src={serviceRoofRepair.src}
+                alt="Roof Repair Service"
+                class="card-image"
+              />
+              <div class="card-badge">24/7 Support</div>
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Roof Repair</h3>
+              <p class="card-text">
+                Fast repair service for leaks, storm damage, missing shingles, and flashing issues.
+              </p>
+              <a href="#quote-form" class="card-link">
+                Learn More <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="card-image-container">
+              <img
+                src={serviceSiding.src}
+                alt="Deck Installation Service"
+                class="card-image"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Deck Installation</h3>
+              <p class="card-text">
+                Custom deck builds that create durable outdoor living space.
+              </p>
+              <a href="#quote-form" class="card-link">
+                Learn More <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="card-image-container">
+              <img
+                src={serviceGutter.src}
+                alt="Deck Repair Service"
+                class="card-image"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Deck Repair</h3>
+              <p class="card-text">
+                Repair loose boards, weather damage, and structural wear on existing decks.
+              </p>
+              <a href="#quote-form" class="card-link">
+                Learn More <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div class="card-image-container">
+              <img
+                src={serviceSolar.src}
+                alt="Deck Replacement Service"
+                class="card-image"
+              />
+              <div class="card-badge">Popular</div>
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Deck Replacement</h3>
+              <p class="card-text">
+                Full deck replacement with safer materials and a clean finished look.
+              </p>
+              <a href="#quote-form" class="card-link">
+                Learn More <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section" id="about">
+      <div class="container">
+        <div class="about-header">
+          <h2 class="about-title">John's Pro Roofing LLC</h2>
+          <p class="about-description">
+            No job is too big or too small. Let us help with residential roofing, commercial roofing, and deck work. John's Pro Roofing LLC serves Somerset, New Jersey with straightforward service, honest communication, and dependable results.
+          </p>
+        </div>
+        <div class="about-gallery">
+          <div class="about-gallery-item">
+            <img src={heroWorker.src} alt="John's Pro Roofing crew on site" />
+          </div>
+          <div class="about-gallery-item">
+            <img
+              src={serviceRoofReplace.src}
+              alt="Roofing and decking work"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials-section" id="testimonials">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pretitle">Reviews</span>
+          <h2 class="section-title">4.7 From 20 Reviews</h2>
+          <p class="section-description">
+            John's Pro Roofing LLC is trusted for responsive service, clean workmanship, and roofing projects completed the right way.
+          </p>
+        </div>
+
+        <div class="reviews-summary">
+          <div class="reviews-score">4.7</div>
+          <div class="reviews-meta">
+            <div class="reviews-brand">John's Pro Roofing LLC</div>
+            <div class="reviews-count">20 Reviews</div>
+          </div>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <img
+                src={avatarRita.src}
+                alt="Orlando Silva"
+                class="testimonial-avatar"
+              />
+              <div class="testimonial-meta">
+                <span class="testimonial-name">Orlando Silva</span>
+                <span class="testimonial-role">Customer</span>
+              </div>
+            </div>
+            <h3 class="testimonial-heading">Did great job</h3>
+            <p class="testimonial-text">Did great job 👏</p>
+            <svg
+              class="testimonial-watermark"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.06)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M25 90 L50 60 L75 90" stroke="rgba(255,255,255,0.04)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none" />
+              <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+              <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+            </svg>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <img
+                src={avatarRyan.src}
+                alt="Timothy Park"
+                class="testimonial-avatar"
+              />
+              <div class="testimonial-meta">
+                <span class="testimonial-name">Timothy Park</span>
+                <span class="testimonial-role">Customer</span>
+              </div>
+            </div>
+            <h3 class="testimonial-heading">Great job Charlie!</h3>
+            <p class="testimonial-text">
+              Great job Charlie! Very happy with the work. Looking forward...
+            </p>
+            <svg
+              class="testimonial-watermark"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.06)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M25 90 L50 60 L75 90" stroke="rgba(255,255,255,0.04)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none" />
+              <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+              <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+            </svg>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <img
+                src={avatarRita.src}
+                alt="Johnny O'Neill"
+                class="testimonial-avatar"
+              />
+              <div class="testimonial-meta">
+                <span class="testimonial-name">Johnny O'Neill</span>
+                <span class="testimonial-role">Customer</span>
+              </div>
+            </div>
+            <h3 class="testimonial-heading">Roof repair done right</h3>
+            <p class="testimonial-text">
+              Charlie and his crew did an amazing job on my roof repair j...
+            </p>
+            <svg
+              class="testimonial-watermark"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.06)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M25 90 L50 60 L75 90" stroke="rgba(255,255,255,0.04)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none" />
+              <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+              <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects-section" id="projects">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pretitle">Recent Projects</span>
+          <h2 class="section-title">Choose A Contractor With Confidence</h2>
+        </div>
+        <div class="projects-gallery">
+          <div class="project-item">
+            <img src={serviceRoofInstall.src} alt="Roofer measuring tiles" />
+          </div>
+          <div class="project-item">
+            <img src={serviceRoofReplace.src} alt="Scaffolding roof replacement" />
+          </div>
+          <div class="project-item">
+            <img src={serviceRoofRepair.src} alt="Applying roof caulk sealant" />
+          </div>
+          <div class="project-item">
+            <img src={serviceSolar.src} alt="Completed roof with solar panels" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section" id="quote-form">
+      <svg
+        class="contact-watermark contact-watermark-left"
+        viewBox="0 0 100 100"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.04)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.04)" stroke-width="3" fill="none" />
+        <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.04)" stroke-width="2" />
+        <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.04)" stroke-width="2" />
+      </svg>
+      <svg
+        class="contact-watermark contact-watermark-right"
+        viewBox="0 0 100 100"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.04)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.04)" stroke-width="3" fill="none" />
+        <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.04)" stroke-width="2" />
+        <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.04)" stroke-width="2" />
+      </svg>
+
+      <div class="container contact-container">
+        <h2 class="contact-title">Request an estimate</h2>
+        <form class="contact-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <input type="text" placeholder="Name" required class="form-input" />
+              <input type="email" placeholder="Email*" required class="form-input" />
+            </div>
+            <div class="form-group">
+              <textarea placeholder="Message" required class="form-input form-textarea"></textarea>
+            </div>
+          </div>
+
+          <div class="consent-container">
+            <label class="consent-checkbox-label">
+              <input type="checkbox" required class="consent-checkbox" />
+              <span class="consent-text">
+                This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+              </span>
+            </label>
+          </div>
+
+          <div class="form-submit-container">
+            <button type="submit" class="btn btn-accent btn-large">Submit</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+</BaseLayout>

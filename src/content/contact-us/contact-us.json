@@ -1,0 +1,18 @@
+[
+  {
+    "id": "phone",
+    "title": "Call Us",
+    "description": "7329391309",
+    "icon": "lu:phone",
+    "tags": ["phone"],
+    "linkPrefix": "tel:"
+  },
+  {
+    "id": "email",
+    "title": "Email Us",
+    "description": "griffinswebservices@gmail.com",
+    "icon": "lu:mail",
+    "tags": ["email"],
+    "linkPrefix": "mailto:"
+  }
+]

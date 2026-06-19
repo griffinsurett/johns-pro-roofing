@@ -1,0 +1,22 @@
+---
+title: "Roofing"
+description: "Residential and commercial roofing services"
+hasPage: true
+itemsHasPage: true
+itemsRootPath: false
+itemsAddToMenu:
+  - menu: "main-menu"
+addToMenu:
+  - menu: "main-menu"
+    order: 1
+  - menu: "footer-menu"
+---
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder } from "@/utils/query";
+
+<ContentRenderer
+  query={query("roofing").orderBy(sortByOrder())}
+  variant="GridVariant"
+  columns={2}
+  gap="lg"
+/>

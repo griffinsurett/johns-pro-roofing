@@ -1,0 +1,11 @@
+[
+  {
+    "id": "home",
+    "title": "Home",
+    "description": "Homepage link",
+    "url": "/",
+    "order": 0,
+    "openInNewTab": false,
+    "menu": ["main-menu", "links-menu", "footer-menu"]
+  }
+]
