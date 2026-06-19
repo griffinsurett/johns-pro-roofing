@@ -10,19 +10,6 @@ import { siteData } from "@/content/siteData";
 ---
 
 <header class="site-header">
-  <div class="top-bar">
-    <div class="header-width top-bar-content">
-      <div class="top-bar-left">
-        <i class="fa-solid fa-shield-halved"></i>
-        <span>Free Estimate Financing Available</span>
-      </div>
-      <a href="tel:7323513518" class="top-bar-right">
-        <i class="fa-solid fa-phone"></i>
-        <span>732-351-3518</span>
-      </a>
-    </div>
-  </div>
-
   <div class="header-shell">
     <div class="header-width header-container">
       <a href="/" class="logo-link" aria-label={siteData.title}>
@@ -57,37 +44,6 @@ import { siteData } from "@/content/siteData";
     max-width: 1140px;
     margin: 0 auto;
     padding: 0 48px;
-  }
-
-  .top-bar {
-    background-color: #0b2545;
-    color: #fff;
-    padding: 8px 0;
-    font-size: 13px;
-    font-weight: 500;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .top-bar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .top-bar-left,
-  .top-bar-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .top-bar-left i,
-  .top-bar-right i {
-    color: #c8102e;
-  }
-
-  .top-bar-right {
-    font-weight: 600;
   }
 
   .header-shell {
