@@ -193,16 +193,16 @@ export const useTouchInteraction = ({
       resetState();
     };
 
-    host.addEventListener("touchstart", handleTouchStart, { passive: !preventDefaultOnTouch });
-    host.addEventListener("touchmove", handleTouchMove, { passive: !preventDefaultOnTouch });
-    host.addEventListener("touchend", handleTouchEnd, { passive: !preventDefaultOnTouch });
-    host.addEventListener("touchcancel", handleTouchCancel, { passive: true });
+    host.addEventListener("touchstart", handleTouchStart as EventListener, { passive: !preventDefaultOnTouch });
+    host.addEventListener("touchmove", handleTouchMove as EventListener, { passive: !preventDefaultOnTouch });
+    host.addEventListener("touchend", handleTouchEnd as EventListener, { passive: !preventDefaultOnTouch });
+    host.addEventListener("touchcancel", handleTouchCancel as EventListener, { passive: true });
 
     return () => {
-      host.removeEventListener("touchstart", handleTouchStart);
-      host.removeEventListener("touchmove", handleTouchMove);
-      host.removeEventListener("touchend", handleTouchEnd);
-      host.removeEventListener("touchcancel", handleTouchCancel);
+      host.removeEventListener("touchstart", handleTouchStart as EventListener);
+      host.removeEventListener("touchmove", handleTouchMove as EventListener);
+      host.removeEventListener("touchend", handleTouchEnd as EventListener);
+      host.removeEventListener("touchcancel", handleTouchCancel as EventListener);
       clearLongPressTimer();
     };
   }, [

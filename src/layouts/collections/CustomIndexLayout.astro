@@ -1,0 +1,34 @@
+---
+// src/layouts/collections/CustomIndexLayout.astro
+/**
+ * Custom Collection Index Layout
+ *
+ * A minimal layout for collection index pages that want to provide their own hero section.
+ * - Does NOT render the default SecondaryHero.
+ * - Simply renders the custom MDX Content inside BaseLayout.
+ */
+import type { CollectionKey } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export interface Props {
+  Content?: any;
+  collectionName: CollectionKey;
+  collectionMeta: any;
+  seoProps: any;
+  hasContent?: boolean;
+  [key: string]: any;
+}
+
+const {
+  Content,
+  seoProps,
+  hasContent = false,
+} = Astro.props;
+---
+<BaseLayout {...seoProps}>
+  <main class="flex-1">
+    {
+      hasContent && Content && <Content />
+    }
+  </main>
+</BaseLayout>

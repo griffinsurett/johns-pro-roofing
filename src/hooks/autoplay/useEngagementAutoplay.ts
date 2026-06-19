@@ -119,8 +119,8 @@ export default function useEngagementAutoplay({
     };
 
     items.forEach((element) => {
-      element.addEventListener("mouseenter", onEnter);
-      element.addEventListener("mouseleave", onLeave);
+      element.addEventListener("mouseenter", onEnter as EventListener);
+      element.addEventListener("mouseleave", onLeave as EventListener);
     });
 
     const pointerListener = (event: PointerEvent) => {
@@ -136,8 +136,8 @@ export default function useEngagementAutoplay({
 
     return () => {
       items.forEach((element) => {
-        element.removeEventListener("mouseenter", onEnter);
-        element.removeEventListener("mouseleave", onLeave);
+        element.removeEventListener("mouseenter", onEnter as EventListener);
+        element.removeEventListener("mouseleave", onLeave as EventListener);
       });
       document.removeEventListener("pointermove", pointerListener);
     };

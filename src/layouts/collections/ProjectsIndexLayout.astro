@@ -1,0 +1,408 @@
+---
+// src/layouts/collections/ProjectsIndexLayout.astro
+/**
+ * Projects Index Layout
+ * Premium masonry-style project gallery matching the site's navy/red theme.
+ */
+import type { CollectionKey } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SecondaryHero from "@/layouts/SecondaryHero.astro";
+import { getPublishedCollection } from "@/utils/collections/core";
+import "../../styles/johns-pro-roofing.css";
+
+export interface Props {
+  Content?: any;
+  collectionName: CollectionKey;
+  collectionMeta: any;
+  seoProps: any;
+  [key: string]: any;
+}
+
+const { seoProps } = Astro.props;
+
+const projects = await getPublishedCollection("projects");
+const sortedProjects = projects.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+// Map service images as fallbacks
+const categoryImages: Record<string, string> = {
+  "roofing":    "/src/assets/images/service_roof_install.png",
+  "repair":     "/src/assets/images/service_roof_repair.png",
+  "solar":      "/src/assets/images/service_solar.png",
+  "gutter":     "/src/assets/images/service_gutter.png",
+  "siding":     "/src/assets/images/service_siding.png",
+  "decking":    "/src/assets/images/service_siding.png",
+};
+---
+
+<BaseLayout {...seoProps}>
+  <main class="flex-1">
+    <SecondaryHero
+      eyebrow="Our Work"
+      title="Projects We're Proud Of"
+      description="Every job we take on gets our full attention — clean installs, quality materials, and results that last."
+      minHeight="40vh"
+    />
+
+    <!-- Stats Bar -->
+    <div class="projects-stats-bar">
+      <div class="container">
+        <div class="projects-stats-grid">
+          <div class="projects-stat">
+            <span class="projects-stat-number">500+</span>
+            <span class="projects-stat-label">Roofs Installed</span>
+          </div>
+          <div class="projects-stat-divider"></div>
+          <div class="projects-stat">
+            <span class="projects-stat-number">25yr</span>
+            <span class="projects-stat-label">Warranty</span>
+          </div>
+          <div class="projects-stat-divider"></div>
+          <div class="projects-stat">
+            <span class="projects-stat-number">4.7★</span>
+            <span class="projects-stat-label">Google Rating</span>
+          </div>
+          <div class="projects-stat-divider"></div>
+          <div class="projects-stat">
+            <span class="projects-stat-number">NJ</span>
+            <span class="projects-stat-label">Licensed & Insured</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects Grid -->
+    <section class="projects-index-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pretitle">Completed Work</span>
+          <h2 class="section-title">Recent Projects</h2>
+          <p class="section-description">
+            From full roof replacements to solar installations — here's a look at what we've been building.
+          </p>
+        </div>
+
+        {sortedProjects.length > 0 ? (
+          <div class="projects-index-grid">
+            {sortedProjects.map((project) => {
+              const img = project.data.featuredImage;
+              const category = (project.data as any).category || "Roofing";
+              const location = (project.data as any).location || "New Jersey";
+              const fallbackKey = Object.keys(categoryImages).find(k =>
+                category.toLowerCase().includes(k)
+              ) || "roofing";
+              const imgSrc = img?.src || categoryImages[fallbackKey];
+
+              return (
+                <div class="project-index-card">
+                  <div class="project-index-image">
+                    <img src={imgSrc} alt={project.data.title} />
+                    <div class="project-index-overlay">
+                      <span class="project-index-category">{category}</span>
+                    </div>
+                  </div>
+                  <div class="project-index-body">
+                    <div class="project-index-meta">
+                      <span class="project-index-location">
+                        <i class="fa-solid fa-location-dot"></i> {location}
+                      </span>
+                    </div>
+                    <h3 class="project-index-title">{project.data.title}</h3>
+                    <p class="project-index-desc">{project.data.description}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <!-- Empty state when no projects exist yet -->
+          <div class="projects-empty-state">
+            <div class="projects-empty-icon">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+                <path d="M10 90 L50 40 L90 90" stroke="var(--color-brand-navy)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+                <rect x="42" y="70" width="16" height="16" stroke="var(--color-brand-navy)" stroke-width="3" fill="none" opacity="0.3"/>
+                <line x1="50" y1="70" x2="50" y2="86" stroke="var(--color-brand-navy)" stroke-width="2" opacity="0.3"/>
+                <line x1="42" y1="78" x2="58" y2="78" stroke="var(--color-brand-navy)" stroke-width="2" opacity="0.3"/>
+              </svg>
+            </div>
+            <h3 class="projects-empty-title">Projects Coming Soon</h3>
+            <p class="projects-empty-desc">We're documenting our latest work — check back soon to see completed projects.</p>
+            <a href="tel:7323513518" class="btn btn-accent">
+              Get a Free Estimate <i class="fa-solid fa-phone ml-2"></i>
+            </a>
+          </div>
+        )}
+
+        <!-- CTA Banner -->
+        <div class="projects-cta-banner">
+          <div class="projects-cta-content">
+            <h3 class="projects-cta-title">Ready to Start Your Project?</h3>
+            <p class="projects-cta-desc">Get a free, no-obligation estimate from our team today.</p>
+          </div>
+          <a href="tel:7323513518" class="btn btn-accent btn-large">
+            Call Now — 732-351-3518 <i class="fa-solid fa-phone"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+/* ── Stats Bar ───────────────────────────────────────────────── */
+.projects-stats-bar {
+  background-color: var(--color-brand-navy);
+  padding: 28px 0;
+  border-bottom: 3px solid var(--color-accent-red);
+}
+
+.projects-stats-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.projects-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 48px;
+}
+
+.projects-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.15);
+}
+
+.projects-stat-number {
+  font-family: var(--font-family-headings);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-canvas-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.projects-stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Projects Index Section ──────────────────────────────────── */
+.projects-index-section {
+  padding: 100px 0;
+  background-color: var(--color-canvas-secondary);
+}
+
+.section-description {
+  font-size: 18px;
+  color: var(--color-text-muted);
+  max-width: 600px;
+  margin: 12px auto 0;
+  line-height: 1.65;
+}
+
+/* ── Projects Grid ───────────────────────────────────────────── */
+.projects-index-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 60px;
+}
+
+/* ── Project Card ────────────────────────────────────────────── */
+.project-index-card {
+  background: var(--color-canvas-primary);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-smooth);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.project-index-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-premium);
+}
+
+.project-index-image {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+
+.project-index-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-index-card:hover .project-index-image img {
+  transform: scale(1.06);
+}
+
+.project-index-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(5,24,48,0.75) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+  transition: var(--transition-smooth);
+}
+
+.project-index-category {
+  background-color: var(--color-accent-red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.project-index-body {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.project-index-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.project-index-location {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.project-index-location i {
+  color: var(--color-accent-red);
+  font-size: 10px;
+}
+
+.project-index-title {
+  font-family: var(--font-family-headings);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-brand-navy);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.project-index-desc {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Empty State ─────────────────────────────────────────────── */
+.projects-empty-state {
+  text-align: center;
+  padding: 80px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.projects-empty-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-brand-navy);
+}
+
+.projects-empty-desc {
+  font-size: 16px;
+  color: var(--color-text-muted);
+  max-width: 400px;
+}
+
+/* ── CTA Banner ──────────────────────────────────────────────── */
+.projects-cta-banner {
+  margin-top: 80px;
+  background: var(--color-brand-navy);
+  border-radius: 20px;
+  padding: 52px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.projects-cta-banner::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(200,16,46,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.projects-cta-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.projects-cta-desc {
+  font-size: 16px;
+  color: rgba(255,255,255,0.7);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .projects-index-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .projects-cta-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 32px;
+  }
+
+  .projects-stat {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .projects-index-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-stats-grid {
+    gap: 16px;
+  }
+
+  .projects-stat-divider {
+    display: none;
+  }
+}
+</style>

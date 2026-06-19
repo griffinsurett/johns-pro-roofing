@@ -16,42 +16,73 @@ import { query, related } from "@/utils/query";
 import PreferencesLayout from "./PreferencesLayout.astro";
 ---
 
-<footer class="bg-text text-bg mt-auto">
-  <div class="mx-auto">
-    <div class="flex flex-col justify-between items-center gap-6 py-4 w-full">
-      {/* Footer navigation links */}
-      <div class="flex flex-wrap items-center justify-center gap-4 text-sm">
-        <ContentRenderer
-          query={related("menu-items", "menu", "footer-menu")}
-          variant="ListVariant"
-          className="text-bg flex"
-        />
+<footer class="bg-text text-bg mt-auto pt-16 pb-8 border-t border-bg/10">
+  <div class="container mx-auto px-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-left">
+      
+      {/* Column 1: Brand & Contact */}
+      <div class="flex flex-col gap-6">
+        <a href="/" class="inline-block text-2xl font-black text-bg tracking-tight">
+          John's Pro Roofing
+        </a>
+        <p class="text-bg/80 text-sm leading-relaxed">
+          Built on Trust. Roofed for Life.<br/>
+          Your trusted local New Jersey roofing professionals.
+        </p>
+        <div class="flex flex-col gap-2 text-sm text-bg/80 mt-2">
+          <a href="tel:7323513518" class="hover:text-bg transition-colors">📞 (732) 351-3518</a>
+          <a href="mailto:contact@johnsproroofing.com" class="hover:text-bg transition-colors">✉️ contact@johnsproroofing.com</a>
+        </div>
+        <div class="mt-4">
+          <ContentRenderer
+            query={query("social-media")}
+            variant="SocialMediaVariant"
+            size="sm"
+            alignment="left"
+            className="text-bg"
+          />
+        </div>
       </div>
 
-      {/* Legal and privacy links */}
-      <div class="flex flex-wrap items-center justify-center gap-4 text-sm">
-        <ContentRenderer
-          query={query("legal")}
-          variant="ListVariant"
-          className="text-bg flex"
-        />
-
-        <PreferencesLayout />
+      {/* Column 2: Quick Links */}
+      <div class="flex flex-col gap-6">
+        <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Quick Links</h3>
+        <div class="flex flex-col gap-3 text-sm text-bg/80">
+          <ContentRenderer
+            query={related("menu-items", "menu", "footer-menu")}
+            variant="ListVariant"
+            className="flex-col items-start gap-4 py-0"
+          />
+        </div>
       </div>
 
-      {/* Social media icons */}
-      <ContentRenderer
-        query={query("social-media")}
-        variant="SocialMediaVariant"
-        size="md"
-        alignment="left"
-        className="text-bg"
-      />
+      {/* Column 3: Legal & Support */}
+      <div class="flex flex-col gap-6">
+        <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Legal</h3>
+        <div class="flex flex-col gap-3 text-sm text-bg/80">
+          <ContentRenderer
+            query={query("legal")}
+            variant="ListVariant"
+            className="flex-col items-start gap-4 py-0"
+            title=""
+          />
+        </div>
+      </div>
 
-      {/* Copyright notice */}
-      <p class="text-bg text-sm">
-        &copy; {new Date().getFullYear()}
-        {siteData.legalName}. All rights reserved.
+      {/* Column 4: Preferences */}
+      <div class="flex flex-col gap-6">
+        <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Preferences</h3>
+        <div class="w-full flex flex-col items-start text-left">
+          <PreferencesLayout buttonClassName="!text-bg/80 hover:!text-bg hover:underline text-sm transition-colors !text-left" />
+        </div>
+      </div>
+
+    </div>
+
+    {/* Bottom Bar: Copyright */}
+    <div class="pt-8 border-t border-bg/10 text-center">
+      <p class="text-bg/50 text-xs">
+        &copy; {new Date().getFullYear()} {siteData.legalName}. All rights reserved.
       </p>
     </div>
   </div>

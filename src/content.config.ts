@@ -132,7 +132,8 @@ export const collections = {
     loader: GlobLoad("projects"),
     schema: ({ image }) =>
       baseSchema({ image }).extend({
-        client: z.string(),
+        client: z.string().optional(),
+        location: z.string().optional(),
         projectUrl: z.string().url().optional(),
         technologies: z.array(z.string()).default([]),
         category: z.string(),

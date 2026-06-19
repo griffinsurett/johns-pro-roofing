@@ -23,7 +23,7 @@ export function useLanguage() {
     {
       raw: true,
       syncTabs: true,
-      validate: (code) => !!getLanguageByCode?.(code),
+      validate: (code: unknown) => typeof code === "string" && !!getLanguageByCode?.(code),
     }
   );
 

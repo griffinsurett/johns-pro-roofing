@@ -20,7 +20,7 @@ export default function PrimaryButton({
 }: ButtonProps) {
   // Primary button styling
   const variantClasses =
-    "bg-accent text-bg hover:bg-accent-700 focus:ring-accent";
+    "bg-[var(--color-accent-red)] hover:bg-[var(--color-accent-red-hover)] !text-white shadow-[0_4px_12px_rgba(200,16,46,0.2)] hover:shadow-[0_6px_16px_rgba(200,16,46,0.35)] transition-all";
 
   return (
     <ButtonBase

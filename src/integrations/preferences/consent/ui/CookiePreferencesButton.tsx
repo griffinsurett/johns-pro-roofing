@@ -5,7 +5,11 @@ import Button from "@/components/Button/Button";
 
 const CookiePreferencesModal = lazy(() => import("./CookiePreferencesModal"));
 
-function CookiePreferencesButton() {
+interface CookiePreferencesButtonProps {
+  className?: string;
+}
+
+function CookiePreferencesButton({ className = "" }: CookiePreferencesButtonProps) {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -22,6 +26,7 @@ function CookiePreferencesButton() {
         onClick={() => setShowModal(true)}
         aria-label="Manage cookie preferences"
         rightIcon="lucide:settings"
+        className={className}
       >
         Your Privacy Choices
       </Button>

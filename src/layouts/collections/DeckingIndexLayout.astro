@@ -1,0 +1,534 @@
+---
+// src/layouts/collections/DeckingIndexLayout.astro
+/**
+ * Premium Decking Index Layout
+ * Dedicated custom layout for residential decking services.
+ */
+import type { CollectionKey } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SecondaryHero from "@/layouts/SecondaryHero.astro";
+import InteractiveDeckingForm from "@/components/Form/forms/InteractiveDeckingForm";
+import "../../styles/johns-pro-roofing.css";
+
+export interface Props {
+  Content?: any;
+  collectionName: CollectionKey;
+  collectionMeta: any;
+  seoProps: any;
+  [key: string]: any;
+}
+
+const { collectionMeta, seoProps } = Astro.props;
+
+const { title: pageTitle, description: pageDescription } = seoProps;
+const heroImage = collectionMeta.featuredImage;
+---
+
+<BaseLayout {...seoProps}>
+  <main class="flex-1">
+    {/* Keep original hero image/settings */}
+    <SecondaryHero
+      eyebrow="Outdoor Living"
+      title={pageTitle}
+      description={pageDescription}
+      image={heroImage}
+      minHeight="50vh"
+    />
+
+    {/* Section 1: Introduction & Trust Badges */}
+    <section class="decking-intro-section">
+      <div class="container">
+        <div class="intro-grid">
+          <div class="intro-text">
+            <span class="section-pretitle">Custom Construction</span>
+            <h2 class="section-title">Extend Your Living Space Outdoors</h2>
+            <p class="section-description-large">
+              A well-built deck is more than just boards and screws — it's an extension of your home. At John's Pro Roofing, we design and build custom decks suited to your family's lifestyle, architectural preferences, and budget constraints.
+            </p>
+          </div>
+          <div class="intro-badges">
+            <div class="trust-badge-card">
+              <div class="badge-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div class="badge-body">
+                <h4 class="badge-title">Licensed & Insured</h4>
+                <p class="badge-desc">Fully registered home improvement contractor in NJ.</p>
+              </div>
+            </div>
+
+            <div class="trust-badge-card">
+              <div class="badge-icon">
+                <i class="fa-solid fa-award"></i>
+              </div>
+              <div class="badge-body">
+                <h4 class="badge-title">5-Year Warranty</h4>
+                <p class="badge-desc">We back our decking craftsmanship with a written guarantee.</p>
+              </div>
+            </div>
+
+            <div class="trust-badge-card">
+              <div class="badge-icon">
+                <i class="fa-solid fa-leaf"></i>
+              </div>
+              <div class="badge-body">
+                <h4 class="badge-title">Premium Materials</h4>
+                <p class="badge-desc">Trex, TimberTech, and hand-selected natural lumber options.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Section 2: Premium Material Comparison (Wood vs. Composite) */}
+    <section class="decking-materials-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pretitle">Material Guide</span>
+          <h2 class="section-title">Composite vs. Traditional Wood</h2>
+          <p class="section-description">
+            Choosing the right material is the most important decision for your deck. Here is how they stack up.
+          </p>
+        </div>
+
+        <div class="comparison-container">
+          {/* Composite Decking */}
+          <div class="comparison-column composite-highlight">
+            <div class="column-badge">Highly Recommended</div>
+            <h3 class="comparison-column-title">Premium Composite</h3>
+            <p class="comparison-column-subtitle">Trex, TimberTech & Azek systems</p>
+            
+            <div class="comparison-price-indicator">
+              <span class="price-label">Lifespan:</span>
+              <span class="price-value">25 - 50+ Years</span>
+            </div>
+
+            <ul class="comparison-list">
+              <li>
+                <i class="fa-solid fa-circle-check icon-red"></i>
+                <div>
+                  <strong>Maintenance Free:</strong> No sanding, staining, painting, or sealing required. Just simple washdowns.
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-circle-check icon-red"></i>
+                <div>
+                  <strong>Extreme Durability:</strong> Won't rot, warp, crack, or splinter. Resistant to insects, fading, and mold.
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-circle-check icon-red"></i>
+                <div>
+                  <strong>Value Addition:</strong> Recovers a high percentage of building costs in home resale value.
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-circle-check icon-red"></i>
+                <div>
+                  <strong>Eco-Friendly:</strong> Made from up to 95% recycled wood fibers and plastics.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          {/* Natural Wood Decking */}
+          <div class="comparison-column wood-highlight">
+            <h3 class="comparison-column-title">Traditional Natural Wood</h3>
+            <p class="comparison-column-subtitle">Pressure-Treated Pine, Cedar & Redwood</p>
+
+            <div class="comparison-price-indicator">
+              <span class="price-label">Lifespan:</span>
+              <span class="price-value">15 - 25 Years</span>
+            </div>
+
+            <ul class="comparison-list">
+              <li>
+                <i class="fa-solid fa-circle-check icon-navy"></i>
+                <div>
+                  <strong>Classic Aesthetic:</strong> Nothing matches the natural warmth, grain variations, and smell of real wood.
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-circle-check icon-navy"></i>
+                <div>
+                  <strong>Lower Upfront Cost:</strong> Pressure-treated pine offers the lowest initial installation pricing.
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-circle-check icon-navy"></i>
+                <div>
+                  <strong>Staining Versatility:</strong> Can be stained any shade or painted to perfectly match house trim.
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-circle-check icon-navy"></i>
+                <div>
+                  <strong>Naturally Resistant:</strong> Premium Cedar and Redwood are naturally insect-resistant and rot-resistant.
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Section 3: Decking Sizing & Styles Showcase */}
+    <section class="decking-styles-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pretitle">Deck Configurations</span>
+          <h2 class="section-title">Popular Layout Options</h2>
+          <p class="section-description">
+            From single-level platforms to complex multi-tiered structures, we build to fit your yard's natural layout.
+          </p>
+        </div>
+
+        <div class="styles-grid">
+          <div class="style-card">
+            <div class="style-card-icon">
+              <i class="fa-solid fa-border-all"></i>
+            </div>
+            <h3 class="style-card-title">Single-Level Platform</h3>
+            <p class="style-card-desc">
+              Low-profile layout built close to the ground. Ideal for flat yards, simple dining setups, and cost-effective extensions.
+            </p>
+            <div class="style-card-specs">
+              <span>Best for: Flat Lots</span>
+              <span>Cost: Budget-Friendly</span>
+            </div>
+          </div>
+
+          <div class="style-card">
+            <div class="style-card-icon">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h3 class="style-card-title">Multi-Tier & Sloped</h3>
+            <p class="style-card-desc">
+              Connect multiple levels with beautiful steps. Perfect for walk-out basements, sloping properties, and creating distinct zones.
+            </p>
+            <div class="style-card-specs">
+              <span>Best for: Slopes / Steps</span>
+              <span>Cost: Premium</span>
+            </div>
+          </div>
+
+          <div class="style-card">
+            <div class="style-card-icon">
+              <i class="fa-solid fa-arrows-to-eye"></i>
+            </div>
+            <h3 class="style-card-title">Wraparound Decks</h3>
+            <p class="style-card-desc">
+              Expansive layouts that flow around multiple sides of your home. Provides panoramic views and multiple entry access.
+            </p>
+            <div class="style-card-specs">
+              <span>Best for: Large Views</span>
+              <span>Cost: Ultra Premium</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Section 4: Estimator Form */}
+    <section class="decking-form-section" id="estimator">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pretitle">Get Started</span>
+          <h2 class="section-title">Calculate Your Estimate</h2>
+          <p class="section-description">
+            Use our interactive decking tool below to select your desired style, material, and dimensions.
+          </p>
+        </div>
+
+        {/* Load React component dynamically */}
+        <InteractiveDeckingForm client:load />
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  /* --- Intro Section --- */
+  .decking-intro-section {
+    padding: 100px 0 80px 0;
+    background-color: var(--color-canvas-primary);
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .section-description-large {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--color-text-body);
+    margin-top: 20px;
+  }
+
+  .intro-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .trust-badge-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background-color: var(--color-canvas-secondary);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    transition: var(--transition-smooth);
+  }
+
+  .trust-badge-card:hover {
+    transform: translateX(6px);
+    border-color: var(--color-brand-navy-light);
+  }
+
+  .badge-icon {
+    font-size: 24px;
+    color: var(--color-accent-red);
+    background-color: var(--color-accent-red-light);
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .badge-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-brand-navy);
+    margin-bottom: 4px;
+  }
+
+  .badge-desc {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  /* --- Materials Section --- */
+  .decking-materials-section {
+    padding: 100px 0;
+    background-color: var(--color-canvas-secondary);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .comparison-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+  }
+
+  .comparison-column {
+    background-color: var(--color-canvas-primary);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comparison-column:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-premium);
+  }
+
+  .composite-highlight {
+    border: 2px solid var(--color-brand-navy);
+  }
+
+  .column-badge {
+    position: absolute;
+    top: -14px;
+    left: 40px;
+    background-color: var(--color-accent-red);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 5px 16px;
+    border-radius: 20px;
+  }
+
+  .comparison-column-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-brand-navy);
+    margin-bottom: 4px;
+  }
+
+  .comparison-column-subtitle {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    margin-bottom: 24px;
+  }
+
+  .comparison-price-indicator {
+    background-color: var(--color-canvas-secondary);
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .price-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .price-value {
+    font-family: var(--font-family-headings);
+    font-weight: 700;
+    color: var(--color-brand-navy);
+  }
+
+  .comparison-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .comparison-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .comparison-list li i {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .icon-red {
+    color: var(--color-accent-red);
+  }
+
+  .icon-navy {
+    color: var(--color-brand-navy-light);
+  }
+
+  /* --- Styles Section --- */
+  .decking-styles-section {
+    padding: 100px 0;
+    background-color: var(--color-canvas-primary);
+  }
+
+  .styles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 60px;
+  }
+
+  .style-card {
+    background-color: var(--color-canvas-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .style-card:hover {
+    background-color: var(--color-canvas-primary);
+    border-color: var(--color-accent-red);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .style-card-icon {
+    font-size: 32px;
+    color: var(--color-brand-navy);
+    background-color: var(--color-canvas-tertiary);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: var(--transition-smooth);
+  }
+
+  .style-card:hover .style-card-icon {
+    color: var(--color-canvas-primary);
+    background-color: var(--color-brand-navy);
+  }
+
+  .style-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-brand-navy);
+    margin-bottom: 12px;
+  }
+
+  .style-card-desc {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+
+  .style-card-specs {
+    width: 100%;
+    border-top: 1px solid var(--color-border);
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* --- Form Section --- */
+  .decking-form-section {
+    padding: 100px 0;
+    background-color: var(--color-canvas-secondary);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* --- Responsive Styles --- */
+  @media (max-width: 900px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .comparison-container {
+      grid-template-columns: 1fr;
+    }
+
+    .styles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

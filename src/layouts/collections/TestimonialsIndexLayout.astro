@@ -1,0 +1,137 @@
+---
+// src/layouts/collections/TestimonialsIndexLayout.astro
+/**
+ * Testimonials Index Layout
+ *
+ * Renders all reviews using the same design and review card format as the homepage.
+ */
+import type { CollectionKey } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SecondaryHero from "@/layouts/SecondaryHero.astro";
+import { getPublishedCollection } from "@/utils/collections/core";
+import "../../styles/johns-pro-roofing.css";
+
+export interface Props {
+  Content?: any;
+  collectionName: CollectionKey;
+  collectionMeta: any;
+  seoProps: any;
+  hasContent?: boolean;
+  [key: string]: any;
+}
+
+const {
+  collectionMeta,
+  seoProps,
+} = Astro.props;
+
+const { title: pageTitle, description: pageDescription } = seoProps;
+const heroImage = collectionMeta.featuredImage;
+
+// Fetch all testimonials and sort by order
+const testimonials = await getPublishedCollection("testimonials");
+const sortedTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+import { render } from "astro:content";
+const renderedTestimonials = await Promise.all(
+  sortedTestimonials.map(async (testimonial) => {
+    const { Content } = await render(testimonial);
+    return { ...testimonial, Content };
+  })
+);
+---
+
+<BaseLayout {...seoProps}>
+  <main class="flex-1">
+    <SecondaryHero
+      eyebrow="Reviews"
+      title="What Our Customers Say"
+      description="John's Pro Roofing LLC is trusted for responsive service, clean workmanship, and roofing projects completed the right way."
+      minHeight="40vh"
+    />
+
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pretitle">Google Reviews</span>
+          <h2 class="section-title">All Customer Reviews</h2>
+        </div>
+
+        <div class="reviews-summary">
+          <div class="reviews-score">4.7</div>
+          <div class="reviews-meta">
+            <div class="reviews-brand">John's Pro Roofing LLC</div>
+            <div class="reviews-count">{renderedTestimonials.length} Reviews</div>
+          </div>
+        </div>
+
+        <div class="testimonials-grid">
+          {
+            renderedTestimonials.map(({ data, Content }) => {
+              const initial = data.title?.charAt(0).toUpperCase() || '?';
+              return (
+                <div class="testimonial-card">
+                  <div class="testimonial-header">
+                    <div class="testimonial-avatar-initials">{initial}</div>
+                    <div class="testimonial-meta">
+                      <span class="testimonial-name">{data.title}</span>
+                      <span class="testimonial-role">{data.role}</span>
+                    </div>
+                  </div>
+                  <h3 class="testimonial-heading">{data.description}</h3>
+                  <div class="testimonial-text"><Content /></div>
+                  <svg
+                    class="testimonial-watermark"
+                    viewBox="0 0 100 100"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 90 L50 40 L90 90"
+                      stroke="rgba(255,255,255,0.06)"
+                      stroke-width="4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M25 90 L50 60 L75 90"
+                      stroke="rgba(255,255,255,0.04)"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <rect
+                      x="42"
+                      y="70"
+                      width="16"
+                      height="16"
+                      stroke="rgba(255,255,255,0.06)"
+                      stroke-width="3"
+                      fill="none"
+                    />
+                    <line
+                      x1="50"
+                      y1="70"
+                      x2="50"
+                      y2="86"
+                      stroke="rgba(255,255,255,0.06)"
+                      stroke-width="2"
+                    />
+                    <line
+                      x1="42"
+                      y1="78"
+                      x2="58"
+                      y2="78"
+                      stroke="rgba(255,255,255,0.06)"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </div>
+              );
+            })
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

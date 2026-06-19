@@ -171,16 +171,16 @@ export const usePointerInteraction = ({
       pointerStateRef.current.delete(pointerId);
     };
 
-    host.addEventListener("pointerdown", handlePointerDown, { passive: !preventDefaultOnPointer });
-    host.addEventListener("pointermove", handlePointerMove, { passive: !preventDefaultOnPointer });
-    host.addEventListener("pointerup", handlePointerUp, { passive: !preventDefaultOnPointer });
-    host.addEventListener("pointercancel", handlePointerCancel, { passive: true });
+    host.addEventListener("pointerdown", handlePointerDown as EventListener, { passive: !preventDefaultOnPointer });
+    host.addEventListener("pointermove", handlePointerMove as EventListener, { passive: !preventDefaultOnPointer });
+    host.addEventListener("pointerup", handlePointerUp as EventListener, { passive: !preventDefaultOnPointer });
+    host.addEventListener("pointercancel", handlePointerCancel as EventListener, { passive: true });
 
     return () => {
-      host.removeEventListener("pointerdown", handlePointerDown);
-      host.removeEventListener("pointermove", handlePointerMove);
-      host.removeEventListener("pointerup", handlePointerUp);
-      host.removeEventListener("pointercancel", handlePointerCancel);
+      host.removeEventListener("pointerdown", handlePointerDown as EventListener);
+      host.removeEventListener("pointermove", handlePointerMove as EventListener);
+      host.removeEventListener("pointerup", handlePointerUp as EventListener);
+      host.removeEventListener("pointercancel", handlePointerCancel as EventListener);
       clearAllTimers();
     };
   }, [
