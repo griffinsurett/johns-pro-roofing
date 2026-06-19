@@ -53,16 +53,16 @@ const heroImage = collectionMeta.featuredImage;
     />
 
     {/* Content - Either custom MDX or default grid */}
-    <div class="container mx-auto px-4 pb-16">
-      {
-        hasContent && Content ? (
-          /* Custom MDX content from _meta.mdx body */
-          <Content />
-        ) : (
-          /* Default: Grid of collection items */
+    {
+      hasContent && Content ? (
+        /* Custom MDX manages its own layout/container */
+        <Content />
+      ) : (
+        /* Default: Grid of collection items */
+        <div class="container mx-auto px-4 pb-16">
           <ContentRenderer query={query(collectionName)} variant="GridVariant" />
-        )
-      }
-    </div>
+        </div>
+      )
+    }
   </main>
 </BaseLayout>

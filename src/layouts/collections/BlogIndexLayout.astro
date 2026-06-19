@@ -65,7 +65,7 @@ const preparedEntries = await prepareCollectionEntries(
 );
 
 const feedPosts = await Promise.all(
-  preparedEntries.map(async (item) => {
+  preparedEntries.map(async (item: any) => {
     const authorRefs = item.author
       ? Array.isArray(item.author)
         ? item.author
@@ -73,8 +73,8 @@ const feedPosts = await Promise.all(
       : [];
 
     const authorNames = (
-      await Promise.all(authorRefs.map((authorRef) => getAuthorName(authorRef)))
-    ).filter((authorName): authorName is string => Boolean(authorName));
+      await Promise.all(authorRefs.map((authorRef: any) => getAuthorName(authorRef)))
+    ).filter((authorName: string | null): authorName is string => Boolean(authorName));
 
     return {
       id: item.id,

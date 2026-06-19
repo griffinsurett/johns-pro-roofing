@@ -9,9 +9,14 @@ import serviceRoofInstall from "../assets/images/service_roof_install.png";
 import serviceRoofRepair from "../assets/images/service_roof_repair.png";
 import serviceRoofReplace from "../assets/images/service_roof_replace.png";
 import serviceSiding from "../assets/images/service_siding.png";
-import serviceSolar from "../assets/images/service_solar.png";
-import avatarRita from "../assets/images/avatar_rita.png";
-import avatarRyan from "../assets/images/avatar_ryan.png";
+import project1Before from "../assets/images/project_1_before.png";
+import project1After from "../assets/images/project_1_after.png";
+import project2Before from "../assets/images/project_2_before.jpg";
+import project2After from "../assets/images/project_2_after.jpg";
+
+import { getPublishedCollection } from "@/utils/collections/core";
+const testimonials = await getPublishedCollection("testimonials");
+const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (b.data.order || 0)).slice(0, 3);
 ---
 
 <BaseLayout
@@ -58,14 +63,15 @@ import avatarRyan from "../assets/images/avatar_ryan.png";
     <section class="services-section" id="services">
       <div class="container">
         <div class="section-header">
-          <span class="section-pretitle">Professional Roofing Services</span>
+          <span class="section-pretitle">Professional Roofing & Decking</span>
           <h2 class="section-title">Free Estimate Financing Available</h2>
           <p class="section-description">
-            We provide residential roofing, commercial roofing, and decking services with premium materials and a straightforward process. Call now for a free estimate.
+            We provide residential roofing, commercial roofing, flat roof expertise, and custom decking services with premium materials and a straightforward process.
           </p>
         </div>
 
         <div class="services-grid">
+          {/* Residential Roofing */}
           <div class="service-card">
             <div class="card-image-container">
               <img
@@ -86,6 +92,7 @@ import avatarRyan from "../assets/images/avatar_ryan.png";
             </div>
           </div>
 
+          {/* Commercial Roofing */}
           <div class="service-card">
             <div class="card-image-container">
               <img
@@ -106,6 +113,28 @@ import avatarRyan from "../assets/images/avatar_ryan.png";
             </div>
           </div>
 
+          {/* Flat Roof Experts */}
+          <div class="service-card">
+            <div class="card-image-container">
+              <img
+                src={serviceRoofRepair.src}
+                alt="Flat Roof Experts"
+                class="card-image"
+              />
+              <div class="card-badge">Expert Solutions</div>
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Flat Roof Experts</h3>
+              <p class="card-text">
+                Specialized flat roof installations, durable silicone coatings, and expert repairs for residential and commercial properties.
+              </p>
+              <a href="#quote-form" class="card-link">
+                Learn More <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+            </div>
+          </div>
+
+          {/* Roof Repair */}
           <div class="service-card">
             <div class="card-image-container">
               <img
@@ -126,6 +155,7 @@ import avatarRyan from "../assets/images/avatar_ryan.png";
             </div>
           </div>
 
+          {/* Deck Installation */}
           <div class="service-card">
             <div class="card-image-container">
               <img
@@ -145,6 +175,7 @@ import avatarRyan from "../assets/images/avatar_ryan.png";
             </div>
           </div>
 
+          {/* Deck Repair */}
           <div class="service-card">
             <div class="card-image-container">
               <img
@@ -157,26 +188,6 @@ import avatarRyan from "../assets/images/avatar_ryan.png";
               <h3 class="card-title">Deck Repair</h3>
               <p class="card-text">
                 Repair loose boards, weather damage, and structural wear on existing decks.
-              </p>
-              <a href="#quote-form" class="card-link">
-                Learn More <i class="fa-solid fa-arrow-right-long"></i>
-              </a>
-            </div>
-          </div>
-
-          <div class="service-card">
-            <div class="card-image-container">
-              <img
-                src={serviceSolar.src}
-                alt="Deck Replacement Service"
-                class="card-image"
-              />
-              <div class="card-badge">Popular</div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Deck Replacement</h3>
-              <p class="card-text">
-                Full deck replacement with safer materials and a clean finished look.
               </p>
               <a href="#quote-form" class="card-link">
                 Learn More <i class="fa-solid fa-arrow-right-long"></i>
@@ -228,93 +239,46 @@ import avatarRyan from "../assets/images/avatar_ryan.png";
         </div>
 
         <div class="testimonials-grid">
-          <div class="testimonial-card">
-            <div class="testimonial-header">
-              <img
-                src={avatarRita.src}
-                alt="Orlando Silva"
-                class="testimonial-avatar"
-              />
-              <div class="testimonial-meta">
-                <span class="testimonial-name">Orlando Silva</span>
-                <span class="testimonial-role">Customer</span>
-              </div>
-            </div>
-            <h3 class="testimonial-heading">Did great job</h3>
-            <p class="testimonial-text">Did great job 👏</p>
-            <svg
-              class="testimonial-watermark"
-              viewBox="0 0 100 100"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.06)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M25 90 L50 60 L75 90" stroke="rgba(255,255,255,0.04)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-              <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none" />
-              <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
-              <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
-            </svg>
-          </div>
+          {
+            (await Promise.all(featuredTestimonials.map(async (testimonial) => {
+              const { render } = await import("astro:content");
+              const { Content } = await render(testimonial);
+              return { ...testimonial, Content };
+            }))).map(({ data, Content }) => {
+              const initial = data.title?.charAt(0).toUpperCase() || '?';
+              return (
+                <div class="testimonial-card">
+                  <div class="testimonial-header">
+                    <div class="testimonial-avatar-initials">{initial}</div>
+                    <div class="testimonial-meta">
+                      <span class="testimonial-name">{data.title}</span>
+                      <span class="testimonial-role">{data.role}</span>
+                    </div>
+                  </div>
+                  <h3 class="testimonial-heading">{data.description}</h3>
+                  <div class="testimonial-text"><Content /></div>
+                  <svg
+                    class="testimonial-watermark"
+                    viewBox="0 0 100 100"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.06)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M25 90 L50 60 L75 90" stroke="rgba(255,255,255,0.04)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                    <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none" />
+                    <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+                    <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
+                  </svg>
+                </div>
+              );
+            })
+          }
+        </div>
 
-          <div class="testimonial-card">
-            <div class="testimonial-header">
-              <img
-                src={avatarRyan.src}
-                alt="Timothy Park"
-                class="testimonial-avatar"
-              />
-              <div class="testimonial-meta">
-                <span class="testimonial-name">Timothy Park</span>
-                <span class="testimonial-role">Customer</span>
-              </div>
-            </div>
-            <h3 class="testimonial-heading">Great job Charlie!</h3>
-            <p class="testimonial-text">
-              Great job Charlie! Very happy with the work. Looking forward...
-            </p>
-            <svg
-              class="testimonial-watermark"
-              viewBox="0 0 100 100"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.06)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M25 90 L50 60 L75 90" stroke="rgba(255,255,255,0.04)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-              <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none" />
-              <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
-              <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
-            </svg>
-          </div>
-
-          <div class="testimonial-card">
-            <div class="testimonial-header">
-              <img
-                src={avatarRita.src}
-                alt="Johnny O'Neill"
-                class="testimonial-avatar"
-              />
-              <div class="testimonial-meta">
-                <span class="testimonial-name">Johnny O'Neill</span>
-                <span class="testimonial-role">Customer</span>
-              </div>
-            </div>
-            <h3 class="testimonial-heading">Roof repair done right</h3>
-            <p class="testimonial-text">
-              Charlie and his crew did an amazing job on my roof repair j...
-            </p>
-            <svg
-              class="testimonial-watermark"
-              viewBox="0 0 100 100"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.06)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M25 90 L50 60 L75 90" stroke="rgba(255,255,255,0.04)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-              <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none" />
-              <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
-              <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
-            </svg>
-          </div>
+        <div class="flex justify-center mt-12">
+          <a href="/testimonials" class="btn btn-accent btn-large">
+            See More Reviews <i class="fa-solid fa-arrow-right-long ml-2"></i>
+          </a>
         </div>
       </div>
     </section>
@@ -326,17 +290,25 @@ import avatarRyan from "../assets/images/avatar_ryan.png";
           <h2 class="section-title">Choose A Contractor With Confidence</h2>
         </div>
         <div class="projects-gallery">
-          <div class="project-item">
-            <img src={serviceRoofInstall.src} alt="Roofer measuring tiles" />
+          <div class="project-pair">
+            <div class="project-item">
+              <span class="project-label before">Before</span>
+              <img src={project1Before.src} alt="Project 1 - Before roof replacement" />
+            </div>
+            <div class="project-item">
+              <span class="project-label after">After</span>
+              <img src={project1After.src} alt="Project 1 - After roof replacement" />
+            </div>
           </div>
-          <div class="project-item">
-            <img src={serviceRoofReplace.src} alt="Scaffolding roof replacement" />
-          </div>
-          <div class="project-item">
-            <img src={serviceRoofRepair.src} alt="Applying roof caulk sealant" />
-          </div>
-          <div class="project-item">
-            <img src={serviceSolar.src} alt="Completed roof with solar panels" />
+          <div class="project-pair">
+            <div class="project-item">
+              <span class="project-label before">Before</span>
+              <img src={project2Before.src} alt="Project 2 - Before roof replacement" />
+            </div>
+            <div class="project-item">
+              <span class="project-label after">After</span>
+              <img src={project2After.src} alt="Project 2 - After roof replacement" />
+            </div>
           </div>
         </div>
       </div>

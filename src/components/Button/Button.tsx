@@ -26,6 +26,9 @@ export interface BaseButtonProps {
   size?: ButtonSize;       // Button size
   children: ReactNode;              // Button text/content
   className?: string;               // Additional CSS classes
+  fullWidth?: boolean;
+  buttonWrapperClasses?: string;
+  animated?: boolean;
 }
 
 /**
@@ -52,7 +55,7 @@ export type ButtonProps = ButtonAsButton | ButtonAsLink;
  * Uses forwardRef to allow ref passing to underlying element
  */
 export const ButtonBase = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
-  ({ href, className = '', leftIcon, rightIcon, size = 'md', children, ...props }, ref) => {
+  ({ href, className = '', leftIcon, rightIcon, size = 'md', children, fullWidth, buttonWrapperClasses, animated, ...props }, ref) => {
     // Map size prop to Tailwind classes
     const normalizedSize = size ?? 'md';
     const sizeClass =
@@ -61,7 +64,7 @@ export const ButtonBase = forwardRef<HTMLButtonElement | HTMLAnchorElement, Butt
         : normalizedSize === 'lg'
         ? 'btn-lg'
         : 'btn-md';
-    const baseClasses = `btn-base ${sizeClass} ${className}`.trim();
+    const baseClasses = `btn-base ${sizeClass} ${fullWidth ? 'w-full' : ''} ${className}`.trim();
 
     // Render as anchor if href is provided
     if (href) {

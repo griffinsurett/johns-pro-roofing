@@ -1,19 +1,122 @@
 ---
-title: "About Us"
-description: "We are dedicated to providing the best service possible. Learn more about our mission, vision, and team."
+title: "About"
+description: "Learn about our mission, values, and commitment to our customers"
 hasPage: true
 itemsHasPage: false
-redirectFrom:
-  - "/about"
-  - "/aboutus"
+indexLayout: "../layouts/collections/CustomIndexLayout.astro"
 addToMenu:
+  - menu: "main-menu"
+    order: 3
   - menu: "footer-menu"
 ---
-import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { query } from "@/utils/query";
+import Button from "@/components/Button/Button";
 
-<ContentRenderer
-  query={query("about-us")}
-  variant="AccordionVariant"
-  columns={1}
-/>
+import heroWorker from "@/assets/images/hero_worker.png";
+import serviceRoofInstall from "@/assets/images/service_roof_install.png";
+
+<section class="premium-hero">
+  <div class="premium-hero-fade"></div>
+  <div class="premium-hero-content">
+    <div class="premium-badge">Licensed & Insured in NJ</div>
+    <h1 class="premium-hero-title">We build roofs, but we stand on trust.</h1>
+    <p class="premium-hero-subtitle">
+      John's Pro Roofing is a local New Jersey company dedicated to straightforward service, honest communication, and roofing projects completed the right way.
+    </p>
+  </div>
+</section>
+
+<section class="premium-story">
+  <div class="container">
+    <div class="premium-story-flex">
+      <div class="premium-story-text">
+        <h2>Built on Trust.<br/>Roofed for Life.</h2>
+        <p>John's Pro Roofing LLC was founded on a simple belief: every homeowner deserves a roofer they can actually trust. We're a local New Jersey company — not a franchise, not a chain — just a dedicated crew that shows up on time, does the job right, and stands behind every nail we drive.</p>
+        <p>From a single shingle repair to a full roof replacement or solar installation, we treat every project with the same care and precision. We're not done until you're 100% satisfied.</p>
+        <div style="margin-top: 40px;">
+          <Button href="/#quote-form" variant="primary" size="lg">Get a Free Estimate</Button>
+        </div>
+      </div>
+      <div class="premium-story-visual">
+        <img src={serviceRoofInstall.src} alt="John's Pro Roofing crew at work" class="premium-story-img" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="premium-stats-banner">
+  <div class="container">
+    <div class="premium-stats-grid">
+      <div class="premium-stat">
+        <div class="premium-stat-num">500+</div>
+        <div class="premium-stat-label">Roofs Completed</div>
+      </div>
+      <div class="premium-stat">
+        <div class="premium-stat-num">10+</div>
+        <div class="premium-stat-label">Years Experience</div>
+      </div>
+      <div class="premium-stat">
+        <div class="premium-stat-num">0%</div>
+        <div class="premium-stat-label">Financing</div>
+      </div>
+      <div class="premium-stat">
+        <div class="premium-stat-num">NJ</div>
+        <div class="premium-stat-label">Licensed & Insured</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="premium-timeline-section">
+  <div class="container">
+    <div class="premium-timeline-header">
+      <h2>The John's Pro Roofing Difference</h2>
+    </div>
+    <div class="premium-timeline">
+      <div class="premium-timeline-item">
+        <div class="premium-timeline-num">01</div>
+        <div class="premium-timeline-content">
+          <h3>Same-Day Response</h3>
+          <p>We pick up the phone and respond to estimates fast — because your time matters. Don't wait weeks just for a callback.</p>
+        </div>
+        <div class="premium-timeline-visual"></div>
+      </div>
+      
+      <div class="premium-timeline-item">
+        <div class="premium-timeline-num">02</div>
+        <div class="premium-timeline-content">
+          <h3>Transparent Pricing</h3>
+          <p>No hidden fees, no surprises. You know the full cost before we pick up a tool, allowing you to make confident decisions for your home.</p>
+        </div>
+        <div class="premium-timeline-visual"></div>
+      </div>
+
+      <div class="premium-timeline-item">
+        <div class="premium-timeline-num">03</div>
+        <div class="premium-timeline-content">
+          <h3>25-Year Warranty</h3>
+          <p>Our installations are backed by a 25-year workmanship warranty. We stand by our work long after the final nail is driven.</p>
+        </div>
+        <div class="premium-timeline-visual"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="premium-values">
+  <div class="container">
+    <div class="premium-values-flex">
+      <div class="premium-value-item">
+        <h4>Integrity First</h4>
+        <p>We never sell you what you don't need. Our recommendations are based purely on protecting your home.</p>
+      </div>
+      <div class="premium-value-item">
+        <h4>Clean Job Sites</h4>
+        <p>We leave your property cleaner than we found it. No debris, no mess, no excuses.</p>
+      </div>
+      <div class="premium-value-item">
+        <h4>Master Craftsmanship</h4>
+        <p>Every shingle is placed with precision. We don't cut corners, ensuring a roof that lasts a lifetime.</p>
+      </div>
+    </div>
+  </div>
+</section>

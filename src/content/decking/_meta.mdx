@@ -4,6 +4,7 @@ description: "Residential decking services for outdoor living spaces"
 hasPage: true
 itemsHasPage: true
 itemsRootPath: false
+indexLayout: "@/layouts/collections/DeckingIndexLayout.astro"
 itemsAddToMenu:
   - menu: "main-menu"
 addToMenu:
@@ -11,12 +12,4 @@ addToMenu:
     order: 2
   - menu: "footer-menu"
 ---
-import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { query, sortByOrder } from "@/utils/query";
 
-<ContentRenderer
-  query={query("decking").orderBy(sortByOrder())}
-  variant="GridVariant"
-  columns={1}
-  gap="lg"
-/>

@@ -1,17 +1,15 @@
-// src/integrations/preferences/ui/consent/components/CookieConsentBanner.tsx
+// src/integrations/preferences/consent/ui/CookieConsentBanner.tsx
 /**
  * Cookie Consent Banner (Default UI)
  *
  * Initial consent prompt that appears for first-time visitors.
- * Loads eagerly on first user interaction via client:firstInteraction.
- *
- * After consent is given, enables scripts via scriptManager.
+ * Renders as a fixed bottom card directly in the layout flow,
+ * avoiding portal scroll-lock or backdrop issues.
  */
 
 import { useState, useEffect, useTransition, lazy, Suspense } from "react";
 import { useCookieStorage } from "@/hooks/useCookieStorage";
 import { enableConsentedScripts } from "@/integrations/preferences/consent/core/scripts/scriptManager";
-import Modal from "@/components/Modal";
 import type { CookieConsent } from "@/integrations/preferences/consent/core/types";
 import Button from "@/components/Button/Button";
 
@@ -87,69 +85,72 @@ export default function CookieConsentBanner() {
     });
   };
 
+  if (!showBanner) {
+    return showModal ? (
+      <Suspense fallback={null}>
+        <CookiePreferencesModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+        />
+      </Suspense>
+    ) : null;
+  }
+
   return (
     <>
-      <Modal
-        isOpen={showBanner}
-        onClose={() => setShowBanner(false)}
-        closeButton={false}
-        position="bottom-left"
-        className="max-w-xl w-full bg-transparent border-0 p-0 shadow-none outline-none focus:outline-none focus-visible:outline-none"
-        overlayClass="bg-transparent pointer-events-none"
-        allowScroll={true}
-        ssr={false}
-        ariaLabel="Cookie consent banner"
+      <div
+        id="cookie-consent-banner"
+        className="fixed bottom-6 left-6 z-[9999] max-w-[440px] w-[calc(100%-3rem)] transition-all duration-300 animate-slide-up"
       >
-        <div id="cookie-consent-banner" className="group text-left transition-all duration-300">
-          <div className="rounded-3xl border border-text/10 bg-surface p-6 shadow-md backdrop-blur-sm">
-            <div className="flex flex-col gap-6">
-              <div className="flex items-start gap-3">
-                <span className="text-2xl" role="img" aria-label="Cookie">
-                  🍪
-                </span>
-                <p className="text-sm text-text leading-relaxed">
-                  We use cookies to improve your browsing experience and for
-                  marketing purposes.{" "}
-                  <Button
-                    variant="link"
-                    onClick={handleOpenSettings}
-                    type="button"
-                    className="text-sm"
-                  >
-                    Manage preferences
-                  </Button>
-                </p>
-              </div>
+        <div className="rounded-2xl border border-text/10 bg-surface/95 p-6 shadow-2xl backdrop-blur-md flex flex-col gap-5 text-left">
+          <div className="flex items-start gap-4">
+            <span className="text-3xl shrink-0 select-none" role="img" aria-label="Cookie">
+              🍪
+            </span>
+            <div className="flex flex-col gap-1.5">
+              <h3 className="font-semibold text-heading text-base leading-snug">Cookie Preferences</h3>
+              <p className="text-sm text-text/80 leading-relaxed">
+                We use cookies to improve your browsing experience and for marketing purposes. You can customize your settings or accept them all.
+              </p>
+            </div>
+          </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  variant="secondary"
-                  onClick={handleRejectAll}
-                  fullWidth={true}
-                  type="button"
-                  buttonWrapperClasses="text-center"
-                  size="md"
-                  disabled={isPending}
-                >
-                  Reject All
-                </Button>
-                <Button
-                  variant="primary"
-                  onClick={handleAcceptAll}
-                  fullWidth={true}
-                  className="flex-1"
-                  animated={false}
-                  type="button"
-                  size="md"
-                  disabled={isPending}
-                >
-                  Accept All
-                </Button>
-              </div>
+          <div className="flex flex-col gap-3.5 mt-1 border-t border-text/5 pt-4">
+            <div className="flex flex-col sm:flex-row gap-2.5 w-full">
+              <Button
+                variant="primary"
+                onClick={handleAcceptAll}
+                type="button"
+                size="sm"
+                disabled={isPending}
+                className="w-full sm:flex-1 justify-center px-4 py-2.5 text-sm order-1 sm:order-2"
+              >
+                Accept All
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={handleRejectAll}
+                type="button"
+                size="sm"
+                disabled={isPending}
+                className="w-full sm:flex-1 justify-center px-4 py-2.5 text-sm order-2 sm:order-1"
+              >
+                Reject
+              </Button>
+            </div>
+            <div className="flex justify-center w-full">
+              <Button
+                variant="link"
+                onClick={handleOpenSettings}
+                type="button"
+                className="text-xs font-semibold text-text/60 hover:text-text hover:underline py-1"
+              >
+                Manage preferences
+              </Button>
             </div>
           </div>
         </div>
-      </Modal>
+      </div>
 
       {showModal && (
         <Suspense fallback={null}>

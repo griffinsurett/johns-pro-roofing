@@ -16,5 +16,8 @@ export function getPositionForHost(host: HostElement | null): number {
   if (host === window) {
     return typeof window !== "undefined" ? window.scrollY || 0 : 0;
   }
-  return host.scrollTop || 0;
+  if (host instanceof HTMLElement) {
+    return host.scrollTop || 0;
+  }
+  return 0;
 }

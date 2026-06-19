@@ -10,7 +10,11 @@ import Button from "@/components/Button/Button";
 
 const AccessibilityModal = lazy(() => import("./AccessibilityModal"));
 
-function AccessibilityButton() {
+interface AccessibilityButtonProps {
+  className?: string;
+}
+
+function AccessibilityButton({ className = "" }: AccessibilityButtonProps) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -22,6 +26,7 @@ function AccessibilityButton() {
         aria-label="Manage reading preferences"
         aria-expanded={showModal}
         rightIcon="lucide:book-open"
+        className={className}
       >
         Reading Preferences
       </Button>

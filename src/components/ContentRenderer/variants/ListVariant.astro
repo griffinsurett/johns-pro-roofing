@@ -24,7 +24,7 @@ const {
 const viewAllText = `See Complete ${collectionTitle || "List"}`;
 ---
 
-<section id={id} class={`py-16 ${className}`}>
+<section id={id} class={`${className.includes('py-') ? '' : 'py-16'} ${className}`}>
   {
     (title || description) && (
       <div class="mb-12">

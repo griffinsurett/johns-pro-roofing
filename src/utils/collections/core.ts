@@ -17,7 +17,7 @@ export function getCollectionNames(): string[] {
  * Filter function that excludes draft entries
  * Drafts should never appear in any collection query
  */
-const excludeDrafts = (entry: CollectionEntry<any>) =>
+const excludeDrafts = (entry: any) =>
   (entry.data as any).draft !== true;
 
 /**

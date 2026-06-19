@@ -19,6 +19,7 @@ interface AccordionProps {
     expanded: boolean;
   }) => ReactNode;
   headerClassName?: string;
+  showIndicator?: boolean;
 }
 
 export default function Accordion({
@@ -27,6 +28,7 @@ export default function Accordion({
   className = "",
   headerSlot,
   headerClassName = "",
+  showIndicator,
 }: AccordionProps) {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const panelRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -88,6 +90,7 @@ export default function Accordion({
                 : undefined
             }
             headerClassName={headerClassName}
+            showIndicator={showIndicator}
           >
             {/* Simple container - content gets cloned here when panel opens */}
             <div 
