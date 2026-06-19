@@ -1,0 +1,127 @@
+---
+// src/components/ContentRenderer/variants/MarqueeVariant.astro
+/**
+ * Marquee Variant - Continuously scrolling highlight strip
+ *
+ * Renders collection item titles as a single-line marquee that scrolls
+ * horizontally and loops seamlessly. The track is duplicated so the second
+ * copy slides into place exactly as the first scrolls off.
+ *
+ * Items are separated by a star divider. Pauses on hover, and respects
+ * prefers-reduced-motion (falls back to a static, centered, wrapped row).
+ *
+ * Props:
+ * - speed:   seconds for one full loop (default 40)
+ * - divider: character used between items (default ★)
+ */
+
+import type { BaseVariantProps } from "../ContentRenderer.types";
+
+interface Props extends BaseVariantProps {
+  speed?: number;
+  divider?: string;
+}
+
+const {
+  items = [],
+  className = "",
+  id,
+  speed = 40,
+  divider = "★",
+} = Astro.props as Props;
+---
+
+{
+  items.length > 0 && (
+    <div
+      id={id}
+      class={`hero-marquee ${className}`}
+      aria-label="Highlights"
+      style={`--marquee-speed: ${speed}s;`}
+    >
+      <div class="hero-marquee-track">
+        {[0, 1].map(() => (
+          <ul class="hero-marquee-group">
+            {items.map((item) => (
+              <li>{item.title}</li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+<style define:vars={{ divider: `"${divider}"` }}>
+  .hero-marquee {
+    background: linear-gradient(
+      120deg,
+      var(--color-brand-navy-dark) 0%,
+      var(--color-brand-navy) 50%,
+      var(--color-brand-navy-light) 100%
+    );
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    padding: 18px 0;
+  }
+
+  .hero-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: hero-marquee-scroll var(--marquee-speed, 40s) linear infinite;
+  }
+
+  .hero-marquee:hover .hero-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .hero-marquee-group {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-shrink: 0;
+  }
+
+  .hero-marquee-group li {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-family-headings);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+    padding: 0 28px;
+  }
+
+  .hero-marquee-group li::after {
+    content: var(--divider);
+    display: inline-block;
+    margin-left: 56px;
+    font-size: 14px;
+    line-height: 1;
+    color: #fff;
+  }
+
+  @keyframes hero-marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-marquee-track {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+</style>

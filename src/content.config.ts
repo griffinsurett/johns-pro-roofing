@@ -147,4 +147,13 @@ export const collections = {
         category: z.string().optional(),
       }),
   }),
+
+  // ── selling-points ──────────────────────────────────────
+  // Short highlight phrases scrolled in the hero marquee.
+  // `title` is the displayed text; `order` controls sequence.
+  "selling-points": defineCollection({
+    loader: FileLoad("selling-points", "selling-points.json"),
+    schema: ({ image }) =>
+      baseSchema({ image }),
+  }),
 };

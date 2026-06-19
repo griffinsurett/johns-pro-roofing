@@ -3,7 +3,6 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import "../styles/johns-pro-roofing.css";
 
 import heroWorker from "../assets/images/hero_worker.png";
-import logoWhiteout from "../assets/images/logo-whiteout.png";
 import serviceGutter from "../assets/images/service_gutter.png";
 import serviceRoofInstall from "../assets/images/service_roof_install.png";
 import serviceRoofRepair from "../assets/images/service_roof_repair.png";
@@ -13,6 +12,9 @@ import project1Before from "../assets/images/project_1_before.png";
 import project1After from "../assets/images/project_1_after.png";
 import project2Before from "../assets/images/project_2_before.jpg";
 import project2After from "../assets/images/project_2_after.jpg";
+
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder } from "@/utils/query";
 
 import { getPublishedCollection } from "@/utils/collections/core";
 const testimonials = await getPublishedCollection("testimonials");
@@ -27,7 +29,7 @@ const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Saira+Condensed:ital,wght@1,700;1,800&display=swap"
       rel="stylesheet"
     />
   </Fragment>
@@ -37,13 +39,9 @@ const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (
       <div class="hero-overlay"></div>
       <div class="container hero-container">
         <div class="hero-text-content">
-          <img
-            src={logoWhiteout.src}
-            alt="John's Pro Roofing Logo"
-            class="hero-logo"
-          />
           <h1 class="hero-title">
-            Professional Roofing <span class="highlight-text">Services</span>
+            <span class="hero-title-top">John's Pro</span>
+            <span class="hero-title-bottom">Roofing</span>
           </h1>
           <p class="hero-subtitle">
             Free estimates, 0% financing available, and dependable roofing work from a local team you can count on.
@@ -59,6 +57,11 @@ const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (
         </div>
       </div>
     </section>
+
+    <ContentRenderer
+      query={query("selling-points").orderBy(sortByOrder())}
+      variant="MarqueeVariant"
+    />
 
     <section class="services-section" id="services">
       <div class="container">
