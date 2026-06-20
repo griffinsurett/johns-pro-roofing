@@ -34,6 +34,11 @@ import PhoneLink from "@/components/PhoneLink.astro";
       </div>
     </div>
   </div>
+
+  {/* Mobile-only phone bar — keeps the number reachable as the user scrolls */}
+  <div class="mobile-phone-bar">
+    <PhoneLink variant="phone" tone="white" />
+  </div>
 </header>
 
 <style>
@@ -84,9 +89,22 @@ import PhoneLink from "@/components/PhoneLink.astro";
     gap: 20px;
   }
 
+  /* Mobile phone bar — hidden on desktop, shown when the header CTA drops out */
+  .mobile-phone-bar {
+    display: none;
+  }
+
   @media (max-width: 1024px) {
     .header-cta {
       display: none;
+    }
+
+    .mobile-phone-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--color-primary);
+      padding: 12px 24px;
     }
   }
 
