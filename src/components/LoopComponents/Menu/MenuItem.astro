@@ -46,19 +46,19 @@ const isToggleOnly = hasChildren && !url;
 
 const linkClasses = isTopLevel
   ? `
-    flex items-center gap-1 px-4 py-2 rounded-md transition-colors font-medium
+    flex items-center gap-1 px-4 py-2 border-b-2 border-transparent transition-colors font-medium
     ${
       isActive || childIsActive
-        ? "text-primary bg-primary/10"
-        : "text-text hover:text-primary hover:bg-text/5"
+        ? "text-primary border-primary"
+        : "text-text hover:text-primary hover:border-text/30"
     }
   `
   : `
     flex items-center gap-1 px-4 py-2 text-sm transition-colors whitespace-nowrap
     ${
       isActive
-        ? "text-primary bg-primary/10 font-medium"
-        : "text-text hover:text-primary hover:bg-text/5"
+        ? "text-primary font-medium"
+        : "text-text hover:text-primary"
     }
   `;
 

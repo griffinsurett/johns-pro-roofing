@@ -14,18 +14,18 @@ import Button from "@/components/Button/Button";
 import heroWorker from "@/assets/images/hero_worker.png";
 import serviceRoofInstall from "@/assets/images/service_roof_install.png";
 
-<section class="premium-hero">
-  <div class="premium-hero-fade"></div>
+<section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-[url('../assets/images/hero_worker.png')] bg-cover bg-center">
+  <div class="absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(11,37,69,0.4)_0%,rgba(11,37,69,0.7)_60%,var(--color-canvas-primary)_100%)]"></div>
   <div class="premium-hero-content">
-    <div class="premium-badge">Licensed & Insured in NJ</div>
-    <h1 class="premium-hero-title">We build roofs, but we stand on trust.</h1>
-    <p class="premium-hero-subtitle">
+    <div class="inline-flex items-center gap-2 bg-[rgba(200,16,46,0.9)] text-white py-2 px-5 rounded-[100px] text-sm font-bold uppercase tracking-[0.1em] mb-[30px]">Licensed & Insured in NJ</div>
+    <h1 class="text-[clamp(48px,6vw,72px)] font-extrabold text-white leading-[1.1] tracking-[-0.02em] mb-6">We build roofs, but we stand on trust.</h1>
+    <p class="text-xl text-white/85 font-light max-w-[600px] mx-auto">
       John's Pro Roofing is a local New Jersey company dedicated to straightforward service, honest communication, and roofing projects completed the right way.
     </p>
   </div>
 </section>
 
-<section class="premium-story">
+<section class="pt-[80px] pb-[140px] relative bg-[var(--color-canvas-primary)]">
   <div class="container">
     <div class="premium-story-flex">
       <div class="premium-story-text">
@@ -37,13 +37,13 @@ import serviceRoofInstall from "@/assets/images/service_roof_install.png";
         </div>
       </div>
       <div class="premium-story-visual">
-        <img src={serviceRoofInstall.src} alt="John's Pro Roofing crew at work" class="premium-story-img" />
+        <img src={serviceRoofInstall.src} alt="John's Pro Roofing crew at work" class="w-full h-full object-cover" />
       </div>
     </div>
   </div>
 </section>
 
-<section class="premium-stats-banner">
+<section class="bg-[var(--color-brand-navy)] py-5 relative overflow-hidden">
   <div class="container">
     <div class="premium-stats-grid">
       <div class="premium-stat">
@@ -66,12 +66,12 @@ import serviceRoofInstall from "@/assets/images/service_roof_install.png";
   </div>
 </section>
 
-<section class="premium-timeline-section">
+<section class="py-[160px] bg-[var(--color-canvas-primary)]">
   <div class="container">
     <div class="premium-timeline-header">
       <h2>The John's Pro Roofing Difference</h2>
     </div>
-    <div class="premium-timeline">
+    <div class="flex flex-col gap-[120px]">
       <div class="premium-timeline-item">
         <div class="premium-timeline-num">01</div>
         <div class="premium-timeline-content">
@@ -102,7 +102,7 @@ import serviceRoofInstall from "@/assets/images/service_roof_install.png";
   </div>
 </section>
 
-<section class="premium-values">
+<section class="py-[120px] bg-[var(--color-brand-navy)] text-white border-t border-white/5">
   <div class="container">
     <div class="premium-values-flex">
       <div class="premium-value-item">
