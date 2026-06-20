@@ -14,6 +14,8 @@ import SecondaryButton from './variants/SecondaryButton';
 import GhostButton from './variants/GhostButton';
 import LinkButton from './variants/LinkButton';
 import TertiaryButton from './variants/TertiaryButton';
+import PhoneButton from './variants/PhoneButton';
+import PhoneOutlineButton from './variants/PhoneOutlineButton';
 
 /**
  * Base props shared by all button variants
@@ -29,6 +31,7 @@ export interface BaseButtonProps {
   fullWidth?: boolean;
   buttonWrapperClasses?: string;
   animated?: boolean;
+  tone?: "white" | "blue";          // Color tone (used by the phone variant)
 }
 
 /**
@@ -55,7 +58,7 @@ export type ButtonProps = ButtonAsButton | ButtonAsLink;
  * Uses forwardRef to allow ref passing to underlying element
  */
 export const ButtonBase = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
-  ({ href, className = '', leftIcon, rightIcon, size = 'md', children, fullWidth, buttonWrapperClasses, animated, ...props }, ref) => {
+  ({ href, className = '', leftIcon, rightIcon, size = 'md', children, fullWidth, buttonWrapperClasses, animated, tone, ...props }, ref) => {
     // Map size prop to Tailwind classes
     const normalizedSize = size ?? 'md';
     const sizeClass =
@@ -110,6 +113,8 @@ const VARIANT_MAP = {
   ghost: GhostButton,
   link: LinkButton,
   tertiary: TertiaryButton,
+  phone: PhoneButton,
+  "phone-outline": PhoneOutlineButton,
 };
 
 export type ButtonVariant = keyof typeof VARIANT_MAP;

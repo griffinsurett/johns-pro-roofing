@@ -18,7 +18,7 @@
  */
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
-import { baseSchema, MenuSchema, MenuItemFields, refSchema } from "./content/schema";
+import { baseSchema, MenuSchema, MenuItemFields, refSchema, imageInputSchema } from "./content/schema";
 import { GlobLoad, FileLoad } from "@/utils/loaders/loaderUtils";
 import { MenuItemsLoader } from "@/utils/loaders/MenuItemsLoader";
 
@@ -137,6 +137,8 @@ export const collections = {
         projectUrl: z.string().url().optional(),
         technologies: z.array(z.string()).default([]),
         category: z.string(),
+        beforeImage: imageInputSchema({ image }),
+        afterImage: imageInputSchema({ image }),
       }),
   }),
 

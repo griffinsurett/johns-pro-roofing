@@ -7,6 +7,8 @@ import headerLogo from "@/assets/images/logo.png";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { related } from "@/utils/query";
 import { siteData } from "@/content/siteData";
+import Button from "@/components/Button/Button";
+import PhoneLink from "@/components/PhoneLink.astro";
 ---
 
 <header class="site-header">
@@ -25,7 +27,10 @@ import { siteData } from "@/content/siteData";
       />
 
       <div class="header-cta">
-        <a href="tel:7323513518" class="header-cta-link">Call Now</a>
+        <PhoneLink variant="phone" tone="blue" />
+        <Button variant="primary" href="/contact-us">
+          Request an Estimate
+        </Button>
       </div>
     </div>
   </div>
@@ -41,7 +46,7 @@ import { siteData } from "@/content/siteData";
 
   .header-width {
     width: 100%;
-    max-width: 1140px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 0 48px;
   }
@@ -74,27 +79,9 @@ import { siteData } from "@/content/siteData";
 
   .header-cta {
     flex-shrink: 0;
-  }
-
-  .header-cta-link {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 10px 22px;
-    border-radius: 8px;
-    background-color: #c8102e;
-    color: #fff;
-    font-family: Outfit, sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(200, 16, 46, 0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .header-cta-link:hover {
-    background-color: #a60c23;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(200, 16, 46, 0.35);
+    gap: 20px;
   }
 
   @media (max-width: 1024px) {

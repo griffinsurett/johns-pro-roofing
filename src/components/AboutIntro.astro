@@ -1,0 +1,60 @@
+---
+// src/components/AboutIntro.astro
+/**
+ * AboutIntro — shared "about" intro block: text on the left, an animated
+ * morphing-blob image on the right (the .premium-story-visual style).
+ *
+ * Used by the homepage About section AND the /about-us page so they stay in
+ * sync. Stacks (text over image) on mobile.
+ */
+import Button from "@/components/Button/Button";
+import heroWorker from "@/assets/images/hero_worker.png";
+
+interface Props {
+  pretitle?: string;
+  title?: string;
+  accentTitle?: string; // red italic accent phrase, placed mid-headline
+  titleAfter?: string; // text after the accent phrase
+  description?: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  reverse?: boolean; // image on the left, text on the right (desktop)
+  class?: string;
+}
+
+const {
+  pretitle = "Local. Family Run.",
+  title = "A higher standard",
+  accentTitle = "for the roofs",
+  titleAfter = "we work on.",
+  description = "No job is too big or too small. John's Pro Roofing LLC serves homeowners across New Jersey and Pennsylvania with residential roofing, commercial roofing, and deck work — straightforward service, honest communication, and dependable results, all backed by our workmanship warranty.",
+  image = heroWorker,
+  imageAlt = "John's Pro Roofing crew on site",
+  reverse = false,
+  class: className = "",
+} = Astro.props as Props;
+---
+
+<div class={`grid lg:grid-cols-2 gap-12 lg:gap-16 items-center ${className}`}>
+  {/* Text */}
+  <div class={reverse ? "lg:order-2" : ""}>
+    {pretitle && <span class="section-pretitle">{pretitle}</span>}
+    <h2 class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
+      {title}{accentTitle && (
+        <span class="italic font-[family-name:var(--font-body)] text-accent normal-case"> {accentTitle} </span>
+      )}{titleAfter}
+    </h2>
+    <p class="text-[var(--color-text-body)] text-base leading-[1.8] mb-8 max-w-[560px]">
+      {description}
+    </p>
+    <div class="flex flex-wrap gap-4">
+      <Button variant="primary" size="lg" href="/about-us">About Us</Button>
+      <Button variant="secondary" size="lg" href="#projects">See Our Work</Button>
+    </div>
+  </div>
+
+  {/* Animated morph-blob image */}
+  <div class={`premium-story-visual !h-[480px] max-lg:!h-[360px] mx-auto w-full max-w-[520px] ${reverse ? "lg:order-1" : ""}`}>
+    <img src={image.src} alt={imageAlt} class="w-full h-full object-cover" />
+  </div>
+</div>

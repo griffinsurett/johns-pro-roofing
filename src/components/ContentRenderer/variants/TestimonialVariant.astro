@@ -1,0 +1,82 @@
+---
+// src/components/ContentRenderer/variants/TestimonialVariant.astro
+/**
+ * Testimonial Variant — responsive grid of customer review cards.
+ * Loops the queried testimonials through TestimonialCard.
+ */
+
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
+import Button from "@/components/Button/Button";
+import { shouldShowCollectionCTA } from "../utils/helpers";
+import GoogleRating from "@/components/GoogleRating.astro";
+
+interface Props extends BaseVariantProps {
+  columns?: 1 | 2 | 3 | 4;
+}
+
+const {
+  items = [],
+  title,
+  description,
+  className = "",
+  columns = 3,
+  collectionUrl,
+  collectionTitle,
+  showButtonSection = true,
+  id,
+} = Astro.props as Props;
+
+const safeItems = Array.isArray(items) ? items : [];
+
+const columnClasses = {
+  1: "grid-cols-1",
+  2: "grid-cols-1 md:grid-cols-2",
+  3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+};
+---
+
+<section id={id} class={`testimonials-section ${className}`}>
+  <div class="container">
+    {
+      (title || description) && (
+        <div class="section-header">
+          <span class="section-pretitle">Reviews</span>
+          {title && <h2 class="section-title">{title}</h2>}
+          {description && <p class="section-description">{description}</p>}
+        </div>
+      )
+    }
+
+    {
+      safeItems.length > 0 && (
+        <ul
+          class={`grid ${columnClasses[columns]} gap-[30px] list-none items-start`}
+        >
+          {safeItems.map((item) => (
+            <li>
+              <TestimonialCard {...item} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      showButtonSection &&
+        shouldShowCollectionCTA(collectionUrl, safeItems.length) && (
+          <div class="flex justify-center mt-12">
+            <Button
+              variant="primary"
+              size="lg"
+              href={collectionUrl}
+              rightIcon="lu:arrow-right"
+            >
+              {`Read All ${collectionTitle || "Reviews"}`.trim()}
+            </Button>
+          </div>
+        )
+    }
+  </div>
+</section>

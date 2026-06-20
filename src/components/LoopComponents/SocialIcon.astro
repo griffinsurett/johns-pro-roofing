@@ -41,18 +41,18 @@ const wrapperPadding = {
     href={link}
     target="_blank"
     rel="noopener noreferrer"
-    class={`${wrapperPadding[size]} bg-surface hover:bg-primary/10 rounded-full inline-flex items-center justify-center transition-all duration-200 hover:scale-110`}
+    class={`${wrapperPadding[size]} border border-current/30 hover:border-current/60 hover:bg-current/10 rounded-md inline-flex items-center justify-center transition-all duration-200`}
     aria-label={`Visit our ${title} page`}
     title={title}
   >
-    <Icon icon={displayIcon} size={size} className="text-text" />
+    <Icon icon={displayIcon} size={size} className="text-current" />
   </a>
 ) : (
   /* Otherwise just display icon */
-  <div 
-    class={`${wrapperPadding[size]} bg-surface rounded-full inline-flex items-center justify-center`}
+  <div
+    class={`${wrapperPadding[size]} border border-current/30 rounded-md inline-flex items-center justify-center`}
     title={title}
   >
-    <Icon icon={displayIcon} size={size} className="text-text" />
+    <Icon icon={displayIcon} size={size} className="text-current" />
   </div>
 )}

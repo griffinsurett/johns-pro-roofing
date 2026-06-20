@@ -1,0 +1,69 @@
+---
+// src/components/LoopComponents/TestimonialCard.astro
+/**
+ * Testimonial Card — single customer review card.
+ *
+ * Consumes a prepared collection item (title = reviewer name, description =
+ * short headline, role, plus the raw review body in `content`). Used by
+ * TestimonialVariant.
+ */
+
+import { Image } from "astro:assets";
+import roofMark from "@/assets/roof-from-logo-white.png";
+import { siteData } from "@/content/siteData";
+
+export interface Props {
+  title: string;
+  description?: string;
+  role?: string;
+  content?: string;
+}
+
+const { title, description, role, content } = Astro.props as Props;
+const initial = title?.charAt(0).toUpperCase() || "?";
+
+// Truncate long reviews; "Read more" links to the Google reviews profile.
+const MAX_CHARS = 280;
+const plain = (content ?? "").trim();
+const isLong = plain.length > MAX_CHARS;
+const displayText = isLong
+  ? plain.slice(0, MAX_CHARS).replace(/\s+\S*$/, "") + "…"
+  : plain;
+const reviewsUrl = siteData.googleReviewsUrl;
+---
+
+<div class="testimonial-card">
+  <div class="testimonial-header">
+    <div class="testimonial-avatar-initials">{initial}</div>
+    <div class="testimonial-meta">
+      <span class="testimonial-name">{title}</span>
+      {role && <span class="testimonial-role">{role}</span>}
+    </div>
+  </div>
+
+  {description && <h3 class="testimonial-heading">{description}</h3>}
+
+  {displayText && (
+    <div class="testimonial-text">
+      {displayText}
+      {isLong && reviewsUrl && (
+        <a
+          href={reviewsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="testimonial-readmore"
+        >
+          Read more
+        </a>
+      )}
+    </div>
+  )}
+
+  <Image
+    src={roofMark}
+    alt=""
+    aria-hidden="true"
+    class="testimonial-watermark"
+    widths={[160, 320]}
+  />
+</div>

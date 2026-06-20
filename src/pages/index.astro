@@ -7,17 +7,14 @@ import serviceRoofInstall from "../assets/images/service_roof_install.png";
 import serviceRoofRepair from "../assets/images/service_roof_repair.png";
 import serviceRoofReplace from "../assets/images/service_roof_replace.png";
 import serviceSiding from "../assets/images/service_siding.png";
-import project1Before from "../assets/images/project_1_before.png";
-import project1After from "../assets/images/project_1_after.png";
-import project2Before from "../assets/images/project_2_before.jpg";
-import project2After from "../assets/images/project_2_after.jpg";
 
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, sortByOrder } from "@/utils/query";
-
-import { getPublishedCollection } from "@/utils/collections/core";
-const testimonials = await getPublishedCollection("testimonials");
-const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (b.data.order || 0)).slice(0, 3);
+import Button from "@/components/Button/Button";
+import PhoneLink from "@/components/PhoneLink.astro";
+import BackgroundMedia from "@/components/BackgroundMedia.astro";
+import GoogleRating from "@/components/GoogleRating.astro";
+import AboutIntro from "@/components/AboutIntro.astro";
 ---
 
 <BaseLayout
@@ -35,30 +32,43 @@ const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (
 
   <main class="flex-1">
     <section class="hero" id="hero">
+      <BackgroundMedia
+        backgroundMedia={{
+          image: { src: heroWorker, aboveTheFold: true },
+          video: {
+            src: "/hero.mp4",
+            autoPlay: true,
+            muted: true,
+            loop: true,
+            playsInline: true,
+            controls: false,
+            preload: "metadata",
+          },
+        }}
+      />
       <div class="absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(15,23,42,0.8)_0%,rgba(15,23,42,0.85)_60%,rgba(15,23,42,0.92)_100%)]"></div>
       <div class="container relative z-[2] flex justify-center">
         <div class="flex flex-col items-center text-center max-w-[900px]">
           <h1 class="font-['Saira_Condensed'] font-extrabold italic leading-[0.9] mb-4 tracking-normal uppercase text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.35)]">
             <span class="hero-title-top">John's Pro</span>
-            <span class="hero-title-bottom">Roofing</span>
+            <span class="hero-title-bottom not-italic">Roofing</span>
           </h1>
           <p class="hero-subtitle">
-            Free estimates, 0% financing available, and dependable roofing work from a local team you can count on.
+            Free estimates, 0% financing available, and dependable roofing work for homeowners across New Jersey and Pennsylvania — from a local team you can count on.
           </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a href="tel:7323513518" class="btn btn-accent btn-large">
-              Call Now - 732-351-3518 <i class="fa-solid fa-phone"></i>
-            </a>
-            <a href="#quote-form" class="btn btn-outline-light btn-large">
+          <div class="flex flex-wrap justify-center gap-4 py-6">
+            <Button variant="primary" size="lg" href="/contact-us">
               Request an Estimate
-            </a>
+            </Button>
+            <PhoneLink variant="phone" tone="white" size="lg" />
           </div>
 
           <a
             href="/testimonials"
-            class="inline-flex items-center gap-3 mt-7"
+            class="inline-flex items-center gap-3"
             aria-label="Rated 4.7 out of 5 from 20 Google reviews"
           >
+            <span class="text-sm font-medium text-white/75 leading-none whitespace-nowrap">20 Reviews</span>
             <svg class="w-[22px] h-[22px] shrink-0" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09Z" />
               <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.23 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z" />
@@ -73,8 +83,6 @@ const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (
               <i class="fa-solid fa-star"></i>
             </span>
             <span class="font-['Saira_Condensed'] font-bold text-base text-white leading-none">4.7</span>
-            <span class="text-white text-[11px] leading-none" aria-hidden="true">★</span>
-            <span class="text-sm font-medium text-white/75 leading-none whitespace-nowrap">20 Reviews</span>
           </a>
         </div>
       </div>
@@ -84,6 +92,74 @@ const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (
       query={query("selling-points").orderBy(sortByOrder())}
       variant="MarqueeVariant"
     />
+
+    <section class="about-section" id="about">
+      <div class="container">
+        <AboutIntro reverse={true} />
+      </div>
+    </section>
+
+    {/* Roofing pointers — heading left, copy + stats right (Axel's-style) */}
+    <section class="py-[100px] bg-[var(--color-canvas-secondary)]" id="why-us">
+      <div class="container">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Heading */}
+          <div>
+            <span class="section-pretitle">The John's Pro Difference</span>
+            <h2 class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
+              Roofs that last,
+              <span class="italic font-[family-name:var(--font-body)] text-accent normal-case"> done right, </span>
+              the first time.
+            </h2>
+          </div>
+
+          {/* Copy + stats */}
+          <div>
+            <p class="text-[var(--color-text-body)] text-base leading-[1.8] mb-5">
+              We don't cut corners. Every job gets a thorough inspection, honest recommendations, and quality materials installed by a crew that treats your home like their own — no subs, no surprises.
+            </p>
+            <p class="text-[var(--color-text-body)] text-base leading-[1.8] mb-8">
+              From storm-damage repairs to full replacements, we back our work with a 25-year workmanship warranty and a satisfaction guarantee. If it's not right, we make it right.
+            </p>
+
+            <div class="border-t border-[var(--color-border)] pt-8 grid grid-cols-3 gap-6">
+              <div>
+                <div class="text-[clamp(28px,3vw,38px)] font-extrabold text-accent leading-none">500+</div>
+                <div class="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] mt-2">Roofs Installed</div>
+              </div>
+              <div>
+                <div class="text-[clamp(28px,3vw,38px)] font-extrabold text-accent leading-none">25-Yr</div>
+                <div class="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] mt-2">Workmanship Warranty</div>
+              </div>
+              <div>
+                <div class="text-[clamp(28px,3vw,38px)] font-extrabold text-accent leading-none">0%</div>
+                <div class="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] mt-2">Financing Available</div>
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <Button variant="secondary" size="lg" href="/about-us">Our Story</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <ContentRenderer
+        query={query("projects")
+          .where((entry) => Boolean(entry.data.beforeImage && entry.data.afterImage))
+          .orderBy(sortByOrder())}
+        variant="BeforeAfterVariant"
+        pretitle="Recent Projects"
+        title="Real Homes."
+        accentTitle="Real Work."
+        description="A look at recent roofing transformations across New Jersey and Pennsylvania."
+        dark={true}
+        columns={2}
+        showButtonSection={false}
+      />
+    </section>
 
     <section class="bg-[var(--color-canvas-secondary)] py-[100px] border-t border-[var(--color-border)]" id="services">
       <div class="container">
@@ -223,126 +299,42 @@ const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (
       </div>
     </section>
 
-    <section class="about-section" id="about">
+    <div id="testimonials" class="pt-[100px]">
+
+      <ContentRenderer
+        query={query("testimonials").orderBy(sortByOrder())}
+        variant="TestimonialCarouselVariant"
+        collectionUrl="/testimonials"
+        collectionTitle="Reviews"
+      />
+    </div>
+
+    {/* CTA banner — replaces the contact form (form commented out below) */}
+    <section class="bg-primary py-[100px]" id="quote-form">
       <div class="container">
-        <div class="text-center max-w-[900px] mx-auto mb-[50px]">
-          <h2 class="about-title">John's Pro Roofing LLC</h2>
-          <p class="text-[var(--color-text-body)] text-base leading-[1.8] font-normal tracking-[0.1px]">
-            No job is too big or too small. Let us help with residential roofing, commercial roofing, and deck work. John's Pro Roofing LLC serves Somerset, New Jersey with straightforward service, honest communication, and dependable results.
-          </p>
-        </div>
-        <div class="about-gallery">
-          <div class="about-gallery-item">
-            <img src={heroWorker.src} alt="John's Pro Roofing crew on site" />
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
+          <div class="max-w-[640px]">
+            <span class="section-pretitle">Get In Touch</span>
+            <h2 class="section-title !text-bg !text-[clamp(36px,5vw,56px)] leading-[1.05]">
+              Ready for a
+              <span class="italic font-[family-name:var(--font-body)] text-accent normal-case"> better </span>
+              roof?
+            </h2>
+            <p class="text-white/70 text-base leading-[1.7] max-w-[480px]">
+              Free quotes by phone or email — we respond same day, every day.
+            </p>
           </div>
-          <div class="about-gallery-item">
-            <img
-              src={serviceRoofReplace.src}
-              alt="Roofing and decking work"
-            />
+          <div class="flex flex-wrap items-center gap-4 shrink-0">
+            <Button variant="primary" size="lg" href="/contact-us">
+              Request an Estimate
+            </Button>
+            <PhoneLink variant="phone" tone="white" size="lg" />
           </div>
         </div>
       </div>
     </section>
 
-    <section class="testimonials-section" id="testimonials">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-pretitle">Reviews</span>
-          <h2 class="section-title">4.7 From 20 Reviews</h2>
-          <p class="section-description">
-            John's Pro Roofing LLC is trusted for responsive service, clean workmanship, and roofing projects completed the right way.
-          </p>
-        </div>
-
-        <div class="reviews-summary">
-          <span class="reviews-score">4.7</span>
-          <span class="reviews-brand">John's Pro Roofing LLC</span>
-          <span class="reviews-count">· 20 Reviews</span>
-        </div>
-
-        <div class="testimonials-marquee" aria-label="Customer testimonials">
-          {await (async () => {
-            const rendered = await Promise.all(featuredTestimonials.map(async (testimonial) => {
-              const { render } = await import("astro:content");
-              const { Content } = await render(testimonial);
-              return { ...testimonial, Content };
-            }));
-            // Duplicate the set so the marquee loops seamlessly.
-            return [0, 1].map((groupIndex) => (
-              <div class="testimonials-marquee-group" aria-hidden={groupIndex === 1 ? "true" : undefined}>
-                {rendered.map(({ data, Content }) => {
-                  const initial = data.title?.charAt(0).toUpperCase() || '?';
-                  return (
-                    <div class="testimonial-card">
-                      <div class="testimonial-header">
-                        <div class="testimonial-avatar-initials">{initial}</div>
-                        <div class="testimonial-meta">
-                          <span class="testimonial-name">{data.title}</span>
-                          <span class="testimonial-role">{data.role}</span>
-                        </div>
-                      </div>
-                      <h3 class="testimonial-heading">{data.description}</h3>
-                      <div class="testimonial-text"><Content /></div>
-                      <svg
-                        class="testimonial-watermark"
-                        viewBox="0 0 100 100"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M10 90 L50 40 L90 90" stroke="rgba(255,255,255,0.06)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M25 90 L50 60 L75 90" stroke="rgba(255,255,255,0.04)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                        <rect x="42" y="70" width="16" height="16" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none" />
-                        <line x1="50" y1="70" x2="50" y2="86" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
-                        <line x1="42" y1="78" x2="58" y2="78" stroke="rgba(255,255,255,0.06)" stroke-width="2" />
-                      </svg>
-                    </div>
-                  );
-                })}
-              </div>
-            ));
-          })()}
-        </div>
-
-        <div class="flex justify-center mt-12">
-          <a href="/testimonials" class="btn btn-accent btn-large">
-            See More Reviews <i class="fa-solid fa-arrow-right-long ml-2"></i>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-[100px] bg-[var(--color-canvas-secondary)] border-t border-b border-[var(--color-border)]" id="projects">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-pretitle">Recent Projects</span>
-          <h2 class="section-title">Choose A Contractor With Confidence</h2>
-        </div>
-        <div class="projects-gallery">
-          <div class="project-pair">
-            <div class="project-item">
-              <span class="project-label before">Before</span>
-              <img src={project1Before.src} alt="Project 1 - Before roof replacement" />
-            </div>
-            <div class="project-item">
-              <span class="project-label after">After</span>
-              <img src={project1After.src} alt="Project 1 - After roof replacement" />
-            </div>
-          </div>
-          <div class="project-pair">
-            <div class="project-item">
-              <span class="project-label before">Before</span>
-              <img src={project2Before.src} alt="Project 2 - Before roof replacement" />
-            </div>
-            <div class="project-item">
-              <span class="project-label after">After</span>
-              <img src={project2After.src} alt="Project 2 - After roof replacement" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    {/* Contact form — commented out, replaced by the CTA banner above.
     <section class="contact-section" id="quote-form">
       <svg
         class="contact-watermark left-[-50px] top-[10%] rotate-[15deg]"
@@ -390,11 +382,12 @@ const featuredTestimonials = testimonials.sort((a, b) => (a.data.order || 0) - (
           </div>
 
           <div class="text-center">
-            <button type="submit" class="btn btn-accent btn-large">Submit</button>
+            <Button variant="primary" size="lg" type="submit">Submit</Button>
           </div>
         </form>
       </div>
     </section>
+    */}
 
   </main>
 </BaseLayout>

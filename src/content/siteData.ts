@@ -10,6 +10,7 @@ export const siteData = {
   url: SITE_URL,
   location: "New Jersey, USA",
   address: "20 Emerald Place, Somerset, NJ 08873",
+  googleReviewsUrl: "https://share.google/I4KdUD3BPIPIdFkoy",
 };
 
 export const ctaData = {

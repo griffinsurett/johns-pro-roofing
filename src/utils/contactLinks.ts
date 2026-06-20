@@ -58,6 +58,18 @@ export async function getContactLinks(): Promise<ContactLink[]> {
   return normalizeContactLinks(entries as CollectionEntry<'contact-us'>[]);
 }
 
+/**
+ * Fetch the phone contact entry via the query system (matched by its
+ * "phone" tag) and return it as a normalized ContactLink
+ * (formatted displayValue + tel: url).
+ */
+export async function getPhoneContact(): Promise<ContactLink | undefined> {
+  const { byTag } = await import('@/utils/query');
+  const entry = await byTag('contact-us', 'phone').first();
+  if (!entry) return undefined;
+  return normalizeContactLinks([entry as CollectionEntry<'contact-us'>])[0];
+}
+
 const PHONE_CONTACT_IDS = new Set(["phone"]);
 const EMAIL_CONTACT_IDS = new Set(["email", "support-email", "contact-email"]);
 

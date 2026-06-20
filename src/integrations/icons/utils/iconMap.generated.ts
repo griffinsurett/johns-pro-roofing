@@ -2,9 +2,9 @@
 // Do not edit manually. Run "npm run generate:icons" (or node src/integrations/icons/utils/generate-icon-map.mjs) to regenerate.
 
 import type { IconType } from 'react-icons';
+import { FaArrowsUpDownLeftRight, FaBullseye, FaClockRotateLeft, FaCompass, FaEye, FaFeather, FaFileLines, FaHeadset, FaHouseChimney, FaLayerGroup, FaLifeRing, FaLink, FaPalette, FaPhone, FaRobot, FaRotateLeft, FaScaleBalanced, FaShieldHalved, FaUniversalAccess, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
 import { LuArrowRight, LuBookOpen, LuChevronRight, LuContact, LuGithub, LuGlobe, LuImage, LuLinkedin, LuMail, LuPhone, LuSettings, LuTwitter } from 'react-icons/lu';
-import { FaBuilding, FaTree } from 'react-icons/fa';
-import { FaArrowsUpDownLeftRight, FaBullseye, FaClockRotateLeft, FaCompass, FaEye, FaFeather, FaFileLines, FaHeadset, FaHouseChimney, FaLayerGroup, FaLifeRing, FaLink, FaPalette, FaRobot, FaRotateLeft, FaScaleBalanced, FaShieldHalved, FaUniversalAccess, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
+import { FaBuilding } from 'react-icons/fa';
 import { SiFacebook } from 'react-icons/si';
 
 export const iconMap = {
@@ -21,6 +21,7 @@ export const iconMap = {
   'fa6:life-ring': FaLifeRing,
   'fa6:link': FaLink,
   'fa6:palette': FaPalette,
+  'fa6:phone': FaPhone,
   'fa6:robot': FaRobot,
   'fa6:rotate-left': FaRotateLeft,
   'fa6:scale-balanced': FaScaleBalanced,
@@ -29,7 +30,6 @@ export const iconMap = {
   'fa6:wand-magic-sparkles': FaWandMagicSparkles,
   'fa6:xmark': FaXmark,
   'fa:building': FaBuilding,
-  'fa:tree': FaTree,
   'lu:arrow-right': LuArrowRight,
   'lu:book-open': LuBookOpen,
   'lu:chevron-right': LuChevronRight,

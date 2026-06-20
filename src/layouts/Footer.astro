@@ -14,24 +14,48 @@ import { siteData } from "@/content/siteData";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, related } from "@/utils/query";
 import PreferencesLayout from "./PreferencesLayout.astro";
+import { getContactLinks } from "@/utils/contactLinks";
+import footerLogo from "@/assets/images/logo.png";
+import footerBg from "@/assets/images/project_1_after.png";
+
+const contactLinks = await getContactLinks();
+const phone = contactLinks.find((l) => l.id === "phone");
+const email = contactLinks.find((l) => l.id === "email");
 ---
 
-<footer class="bg-text text-bg mt-auto pt-16 pb-8 border-t border-bg/10">
-  <div class="container mx-auto px-6">
+<footer class="relative text-bg mt-auto pt-16 pb-8 border-t border-bg/10 overflow-hidden">
+  {/* Background project photo */}
+  <img
+    src={footerBg.src}
+    alt=""
+    aria-hidden="true"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  {/* Blue brand overlay (reversed navy gradient) */}
+  <div
+    class="absolute inset-0 bg-[linear-gradient(120deg,var(--color-brand-navy-light)_0%,var(--color-brand-navy)_50%,var(--color-brand-navy-dark)_100%)] opacity-[0.96]"
+    aria-hidden="true"
+  ></div>
+
+  <div class="container mx-auto px-6 relative z-10">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-left">
       
       {/* Column 1: Brand & Contact */}
       <div class="flex flex-col gap-6">
-        <a href="/" class="inline-block text-2xl font-black text-bg tracking-tight">
-          John's Pro Roofing
+        <a href="/" class="inline-block" aria-label={siteData.title}>
+          <img src={footerLogo.src} alt={`${siteData.title} logo`} class="h-16 w-auto" />
         </a>
         <p class="text-bg/80 text-sm leading-relaxed">
           Built on Trust. Roofed for Life.<br/>
           Your trusted local New Jersey roofing professionals.
         </p>
         <div class="flex flex-col gap-2 text-sm text-bg/80 mt-2">
-          <a href="tel:7323513518" class="hover:text-bg transition-colors">📞 (732) 351-3518</a>
-          <a href="mailto:contact@johnsproroofing.com" class="hover:text-bg transition-colors">✉️ contact@johnsproroofing.com</a>
+          {phone && (
+            <a href={phone.url} class="hover:text-bg transition-colors">📞 {phone.displayValue}</a>
+          )}
+          {email && (
+            <a href={email.url} class="hover:text-bg transition-colors">✉️ {email.displayValue}</a>
+          )}
         </div>
         <div class="mt-4">
           <ContentRenderer

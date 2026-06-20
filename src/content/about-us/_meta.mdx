@@ -10,9 +10,9 @@ addToMenu:
   - menu: "footer-menu"
 ---
 import Button from "@/components/Button/Button";
+import AboutIntro from "@/components/AboutIntro.astro";
 
 import heroWorker from "@/assets/images/hero_worker.png";
-import serviceRoofInstall from "@/assets/images/service_roof_install.png";
 
 <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-[url('../assets/images/hero_worker.png')] bg-cover bg-center">
   <div class="absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(11,37,69,0.4)_0%,rgba(11,37,69,0.7)_60%,var(--color-canvas-primary)_100%)]"></div>
@@ -27,19 +27,13 @@ import serviceRoofInstall from "@/assets/images/service_roof_install.png";
 
 <section class="pt-[80px] pb-[140px] relative bg-[var(--color-canvas-primary)]">
   <div class="container">
-    <div class="premium-story-flex">
-      <div class="premium-story-text">
-        <h2>Built on Trust.<br/>Roofed for Life.</h2>
-        <p>John's Pro Roofing LLC was founded on a simple belief: every homeowner deserves a roofer they can actually trust. We're a local New Jersey company — not a franchise, not a chain — just a dedicated crew that shows up on time, does the job right, and stands behind every nail we drive.</p>
-        <p>From a single shingle repair to a full roof replacement or solar installation, we treat every project with the same care and precision. We're not done until you're 100% satisfied.</p>
-        <div style="margin-top: 40px;">
-          <Button href="/#quote-form" variant="primary" size="lg">Get a Free Estimate</Button>
-        </div>
-      </div>
-      <div class="premium-story-visual">
-        <img src={serviceRoofInstall.src} alt="John's Pro Roofing crew at work" class="w-full h-full object-cover" />
-      </div>
-    </div>
+    <AboutIntro
+      pretitle="Local. Family Run."
+      title="Built on trust."
+      accentTitle="Roofed"
+      titleAfter="for life."
+      description="John's Pro Roofing LLC was founded on a simple belief: every homeowner deserves a roofer they can actually trust. We're a local New Jersey company — not a franchise, not a chain — just a dedicated crew that shows up on time, does the job right, and stands behind every nail we drive. From a single shingle repair to a full roof replacement, we treat every project with the same care and precision."
+    />
   </div>
 </section>
 

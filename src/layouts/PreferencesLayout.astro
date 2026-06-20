@@ -37,17 +37,19 @@ const { buttonClassName = "" } = Astro.props;
 <BrowserTranslateScript enableNative={true} enableGoogle={true} />
 
 <div class="flex flex-col items-center gap-4 w-full">
-  {/* Language Switcher - Client-side only */}
+  {/* Language Switcher - commented out
   <div class="w-full">
     <LanguageSwitcher client:visible />
   </div>
+  */}
 
   {/* Preferences Buttons Row */}
   <div class="flex flex-wrap justify-center items-center gap-4 text-xs">
-    {/* CCPA Opt-Out Link */}
+    {/* CCPA Opt-Out Link - commented out
     <a href="/privacy-policy#ccpa-rights" class="text-bg/60 hover:text-bg hover:underline leading-relaxed transition-colors"
       >Do Not Sell My Personal Information</a
     >
+    */}
 
     {/* Cookie Preferences Button - Client-side only */}
     <CookiePreferencesButton client:visible className={buttonClassName} />
