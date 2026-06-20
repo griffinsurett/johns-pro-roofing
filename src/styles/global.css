@@ -274,6 +274,16 @@ body {
     @apply text-[96px] text-accent tracking-[0.12em] max-lg:text-[72px] max-md:text-[36px];
   }
 
+  .hero-eyebrow {
+    @apply mb-5 inline-flex items-center justify-center gap-3 text-base font-bold uppercase
+           text-white tracking-[0.25em] [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]
+           max-md:text-sm max-md:gap-2 max-md:tracking-[0.2em];
+  }
+
+  .hero-eyebrow-star {
+    @apply text-white text-[0.7em];
+  }
+
   .hero-subtitle {
     @apply text-xl text-white/90 leading-[1.65] font-normal max-w-[680px] max-md:text-[15px];
   }
