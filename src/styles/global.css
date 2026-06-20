@@ -281,7 +281,10 @@ body {
   }
 
   .hero-eyebrow-star {
-    @apply text-white text-[0.7em];
+    /* Fixed, legible size so the stars don't shrink away on mobile (was 0.7em
+       ≈ 10px at the small breakpoint and hard to see). tracking-normal kills
+       the inherited letter-spacing that adds dead space around the glyph. */
+    @apply text-white text-xs tracking-normal max-md:text-[11px];
   }
 
   .hero-subtitle {
