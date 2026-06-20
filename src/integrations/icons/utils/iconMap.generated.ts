@@ -3,7 +3,7 @@
 
 import type { IconType } from 'react-icons';
 import { FaArrowsUpDownLeftRight, FaBullseye, FaClockRotateLeft, FaCompass, FaEye, FaFeather, FaFileLines, FaHeadset, FaHouseChimney, FaLayerGroup, FaLifeRing, FaLink, FaPalette, FaPhone, FaRobot, FaRotateLeft, FaScaleBalanced, FaShieldHalved, FaUniversalAccess, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
-import { LuArrowRight, LuBookOpen, LuChevronRight, LuContact, LuGithub, LuGlobe, LuImage, LuLinkedin, LuMail, LuPhone, LuSettings, LuTwitter } from 'react-icons/lu';
+import { LuArrowRight, LuBookOpen, LuChevronRight, LuContact, LuGithub, LuGlobe, LuImage, LuLinkedin, LuMail, LuMapPin, LuPhone, LuSettings, LuTwitter } from 'react-icons/lu';
 import { FaBuilding } from 'react-icons/fa';
 import { SiFacebook } from 'react-icons/si';
 
@@ -39,6 +39,7 @@ export const iconMap = {
   'lu:image': LuImage,
   'lu:linkedin': LuLinkedin,
   'lu:mail': LuMail,
+  'lu:map-pin': LuMapPin,
   'lu:phone': LuPhone,
   'lu:settings': LuSettings,
   'lu:twitter': LuTwitter,

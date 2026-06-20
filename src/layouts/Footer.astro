@@ -15,12 +15,12 @@ import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro"
 import { query, related } from "@/utils/query";
 import PreferencesLayout from "./PreferencesLayout.astro";
 import { getContactLinks } from "@/utils/contactLinks";
+import Icon from "@/components/Icon";
 import footerLogo from "@/assets/images/logo.png";
 import footerBg from "@/assets/images/project_1_after.png";
 
+// Contact info, looped straight from the contact-us content collection
 const contactLinks = await getContactLinks();
-const phone = contactLinks.find((l) => l.id === "phone");
-const email = contactLinks.find((l) => l.id === "email");
 ---
 
 <footer class="relative text-bg mt-auto pt-16 pb-8 border-t border-bg/10 overflow-hidden">
@@ -49,14 +49,21 @@ const email = contactLinks.find((l) => l.id === "email");
           Built on Trust. Roofed for Life.<br/>
           Your trusted local New Jersey roofing professionals.
         </p>
-        <div class="flex flex-col gap-2 text-sm text-bg/80 mt-2">
-          {phone && (
-            <a href={phone.url} class="hover:text-bg transition-colors">📞 {phone.displayValue}</a>
-          )}
-          {email && (
-            <a href={email.url} class="hover:text-bg transition-colors">✉️ {email.displayValue}</a>
-          )}
-        </div>
+        <ul class="flex flex-col gap-3 text-sm text-bg/80 mt-2 list-none">
+          {contactLinks.map((item) => (
+            <li>
+              <a
+                href={item.url}
+                class="inline-flex items-start gap-2.5 hover:text-bg transition-colors"
+                target={item.url?.startsWith("http") ? "_blank" : undefined}
+                rel={item.url?.startsWith("http") ? "noopener noreferrer" : undefined}
+              >
+                <Icon icon={item.icon || "lu:contact"} size="sm" className="text-bg/70 shrink-0 mt-0.5" />
+                <span>{item.displayValue}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
         <div class="mt-4">
           <ContentRenderer
             query={query("social-media")}

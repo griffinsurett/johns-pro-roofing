@@ -40,6 +40,7 @@ export const collections = {
     schema: ({ image }) =>
       baseSchema({ image }).extend({
         linkPrefix: z.string().optional(),
+        url: z.string().optional(),
       }),
   }),
 
