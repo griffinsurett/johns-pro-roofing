@@ -1,0 +1,178 @@
+---
+// src/layouts/FrontPageHero2.astro
+/**
+ * Front Page Hero — variation 2 ("fph2")
+ *
+ * Split background: image on the left half, looping video on the right half.
+ * The cut-out "john-pointing" person is absolutely centered over the seam.
+ * Text content (heading / subtitle / CTA) overlays the left half with a scrim.
+ */
+import { Image } from "astro:assets";
+import Button from "@/components/Button/Button";
+import PhoneLink from "@/components/PhoneLink.astro";
+import GoogleRating from "@/components/GoogleRating.astro";
+import bgImage from "@/assets/images/hero_worker.png";
+import personImage from "@/assets/john-pointing.png";
+
+export interface Props {
+  /** Small kicker above the headline. */
+  eyebrow?: string;
+  /** Headline lead-in (navy). */
+  titleTop?: string;
+  /** Headline emphasis (accent red). */
+  titleBottom?: string;
+  /** Optional text after the emphasis, completing the headline (navy). */
+  titleAfter?: string;
+  description?: string;
+  /** Left-half background image. */
+  image?: ImageMetadata;
+  /** Right-half background video (public path). */
+  video?: string;
+  /** Foreground cut-out person, centered. */
+  person?: ImageMetadata;
+  personAlt?: string;
+  primaryCTA?: { text: string; link: string };
+  /** Show the Google rating trust row. */
+  googleRating?: boolean;
+  className?: string;
+  id?: string;
+}
+
+const {
+  eyebrow,
+  titleTop = "Your Roof,",
+  titleBottom = "Done Right",
+  titleAfter = "the First Time.",
+  description,
+  image = bgImage,
+  video = "/hero.mp4",
+  person = personImage,
+  personAlt = "John's Pro Roofing crew member pointing at a finished roof",
+  primaryCTA = { text: "Get a Free Quote", link: "/contact-us" },
+  googleRating = true,
+  className = "",
+  id = "hero",
+} = Astro.props;
+---
+
+<section
+  id={id}
+  class={`relative overflow-hidden min-h-[clamp(520px,70vh,760px)] ${className}`}
+>
+  {/* ── Split backgrounds (left image + white panel, right video, slanted seam) ── */}
+  {/* Base layer: image fills the whole section */}
+  <div class="absolute inset-0">
+    <Image
+      src={image}
+      alt=""
+      aria-hidden="true"
+      widths={[960, 1280, 1600]}
+      sizes="100vw"
+      class="absolute inset-0 w-full h-full object-cover"
+      loading="eager"
+      fetchpriority="high"
+    />
+    {/* White overlay so the left reads as a light panel for dark text */}
+    <div
+      class="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.92)_45%,rgba(255,255,255,0.78)_100%)]"
+    >
+    </div>
+  </div>
+
+  {/* Right video panel, clipped with a slanted left edge so the seam is diagonal */}
+  <div class="fph2-video absolute inset-y-0 right-0 w-full lg:w-[58%]">
+    <video
+      class="absolute inset-0 w-full h-full object-cover"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+    >
+      <source src={video} type="video/mp4" />
+    </video>
+    {/* Desktop: subtle brand tint. */}
+    <div class="hidden lg:block absolute inset-0 bg-primary/15"></div>
+  </div>
+
+  {/* Mobile-only dark scrim over everything so white text passes WCAG AA on
+     the full-bleed video. Hidden on desktop (split layout handles contrast). */}
+  <div
+    class="lg:hidden absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgba(2,29,78,0.78)_0%,rgba(2,29,78,0.7)_55%,rgba(2,29,78,0.85)_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+
+  {/* ── Text content overlaid on the left ── */}
+  <div class="relative z-[3] w-full max-w-[1600px] mx-auto px-6 lg:px-12 h-full">
+    <div
+      class="flex flex-col justify-center items-start gap-5 min-h-[clamp(520px,70vh,760px)] max-w-[560px] py-16"
+    >
+      {
+        eyebrow && (
+          <p class="inline-flex items-center text-[13px] font-bold uppercase tracking-[0.18em] text-accent">
+            {eyebrow}
+          </p>
+        )
+      }
+
+      <h1
+        class="font-display font-extrabold italic uppercase text-white lg:text-heading leading-[1] text-[clamp(32px,4vw,52px)] [text-wrap:balance] [text-shadow:0_2px_16px_rgba(0,0,0,0.4)] lg:[text-shadow:none]"
+      >
+        <span>{titleTop} </span>
+        <span class="not-italic text-accent">{titleBottom}</span>
+        {titleAfter && <span> {titleAfter}</span>}
+      </h1>
+
+      {
+        description && (
+          <p class="text-white/90 lg:text-muted text-base lg:text-lg leading-relaxed max-w-[460px]">
+            {description}
+          </p>
+        )
+      }
+
+      <div class="flex flex-wrap items-center gap-4 mt-1">
+        {
+          primaryCTA && (
+            <Button variant="primary" size="lg" href={primaryCTA.link}>
+              {primaryCTA.text}
+            </Button>
+          )
+        }
+        {/* White tone on mobile (dark scrim), blue on desktop (light panel) */}
+        <span class="lg:hidden"><PhoneLink variant="phone" tone="white" size="lg" /></span>
+        <span class="hidden lg:inline-flex"><PhoneLink variant="phone" tone="blue" size="lg" /></span>
+      </div>
+
+      {googleRating && (
+        <>
+          <span class="lg:hidden"><GoogleRating tone="dark" /></span>
+          <span class="hidden lg:inline-flex"><GoogleRating tone="light" /></span>
+        </>
+      )}
+    </div>
+  </div>
+
+  {/* ── Centered foreground person ── */}
+  <Image
+    src={person}
+    alt={personAlt}
+    widths={[480, 720, 960]}
+    sizes="(max-width: 1024px) 60vw, 40vw"
+    class="hidden md:block absolute bottom-0 left-1/2 -translate-x-1/2 z-[2] h-[92%] w-auto object-contain object-bottom pointer-events-none"
+    loading="eager"
+    fetchpriority="high"
+  />
+</section>
+
+<style>
+  @media (min-width: 1024px) {
+    /* Diagonal seam: the video panel's left edge slants. Top-left starts
+       further right than the bottom-left, so the cut leans forward. */
+    .fph2-video {
+      clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
+</style>
