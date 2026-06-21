@@ -92,16 +92,7 @@ const {
     >
       <source src={video} type="video/mp4" />
     </video>
-    {/* Desktop: subtle brand tint. */}
-    <div class="hidden lg:block absolute inset-0 bg-primary/15"></div>
-  </div>
-
-  {/* Mobile-only dark scrim over everything so white text passes WCAG AA on
-     the full-bleed video. Hidden on desktop (split layout handles contrast). */}
-  <div
-    class="lg:hidden absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgba(2,29,78,0.78)_0%,rgba(2,29,78,0.7)_55%,rgba(2,29,78,0.85)_100%)]"
-    aria-hidden="true"
-  >
+    <div class="absolute inset-0 bg-primary/15"></div>
   </div>
 
   {/* ── Text content overlaid on the left ── */}
@@ -118,7 +109,7 @@ const {
       }
 
       <h1
-        class="font-display font-extrabold italic uppercase text-white lg:text-heading leading-[1] text-[clamp(32px,4vw,52px)] [text-wrap:balance] [text-shadow:0_2px_16px_rgba(0,0,0,0.4)] lg:[text-shadow:none]"
+        class="font-display font-extrabold italic uppercase text-heading leading-[1] text-[clamp(32px,4vw,52px)] [text-wrap:balance]"
       >
         <span>{titleTop} </span>
         <span class="not-italic text-accent">{titleBottom}</span>
@@ -127,7 +118,7 @@ const {
 
       {
         description && (
-          <p class="text-white/90 lg:text-muted text-base lg:text-lg leading-relaxed max-w-[460px]">
+          <p class="text-muted text-base lg:text-lg leading-relaxed max-w-[460px]">
             {description}
           </p>
         )
@@ -141,17 +132,10 @@ const {
             </Button>
           )
         }
-        {/* White tone on mobile (dark scrim), blue on desktop (light panel) */}
-        <span class="lg:hidden"><PhoneLink variant="phone" tone="white" size="lg" /></span>
-        <span class="hidden lg:inline-flex"><PhoneLink variant="phone" tone="blue" size="lg" /></span>
+        <PhoneLink variant="phone" tone="blue" size="lg" />
       </div>
 
-      {googleRating && (
-        <>
-          <span class="lg:hidden"><GoogleRating tone="dark" /></span>
-          <span class="hidden lg:inline-flex"><GoogleRating tone="light" /></span>
-        </>
-      )}
+      {googleRating && <GoogleRating tone="light" />}
     </div>
   </div>
 

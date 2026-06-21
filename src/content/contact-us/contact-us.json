@@ -8,14 +8,6 @@
     "linkPrefix": "tel:"
   },
   {
-    "id": "email",
-    "title": "Email Us",
-    "description": "griffinswebservices@gmail.com",
-    "icon": "lu:mail",
-    "tags": ["email"],
-    "linkPrefix": "mailto:"
-  },
-  {
     "id": "address",
     "title": "Visit Us",
     "description": "20 Emerald Pl, Somerset, NJ 08873",
