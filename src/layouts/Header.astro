@@ -2,6 +2,9 @@
 // src/layouts/Header.astro
 /**
  * Site Header with Navigation
+ *
+ * Desktop (lg+): nav left · logo centered · CTA right.
+ * Mobile (<lg):  hamburger left · logo absolutely centered · two-button action row below.
  */
 import headerLogo from "@/assets/images/logo.png";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
@@ -11,11 +14,13 @@ import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
 ---
 
-<header class="site-header">
-  <div class="header-shell">
-    <div class="header-width header-container">
+<header class="sticky top-0 py-1 space-y-2 lg:py-0 z-[60] shadow-[0_1px_0_rgba(5,24,48,0.08)]">
+  <div class="bg-bg/95 backdrop-blur-md">
+    <div
+      class="relative w-full max-w-[1600px] mx-auto px-6 lg:px-12 flex items-center justify-start lg:justify-between gap-6 min-h-[80px] lg:min-h-[90px]"
+    >
       {/* Nav: desktop inline menu + mobile hamburger (hamburger sits left on mobile) */}
-      <div class="header-nav">
+      <div class="order-1 z-[2] flex items-center justify-start flex-none lg:flex-1">
         <ContentRenderer
           query={related("menu-items", "menu", "main-menu")}
           variant="MenuVariant"
@@ -26,11 +31,19 @@ import PhoneLink from "@/components/PhoneLink.astro";
         />
       </div>
 
-      <a href="/" class="logo-link" aria-label={siteData.title}>
-        <img src={headerLogo.src} alt={`${siteData.title} logo`} class="brand-logo" />
+      <a
+        href="/"
+        class="order-2 inline-flex items-center flex-shrink-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0"
+        aria-label={siteData.title}
+      >
+        <img
+          src={headerLogo.src}
+          alt={`${siteData.title} logo`}
+          class="block w-auto object-contain h-20 lg:h-[72px]"
+        />
       </a>
 
-      <div class="header-cta">
+      <div class="order-3 hidden lg:flex flex-1 flex-shrink-0 items-center justify-end gap-5">
         <Button variant="primary" href="/contact-us">
           Request an Estimate
         </Button>
@@ -39,146 +52,10 @@ import PhoneLink from "@/components/PhoneLink.astro";
   </div>
 
   {/* Mobile-only action row — red estimate + blue phone, full width */}
-  <div class="mobile-action-bar">
+  <div class="flex lg:hidden gap-3 px-6 bg-bg [&>*]:flex-1 [&_.btn-base]:w-full [&_.btn-base]:justify-center">
     <Button variant="primary" href="/contact-us" className="mobile-action-btn" fullWidth>
       Contact Us
     </Button>
     <PhoneLink variant="phone" tone="blue" class="mobile-action-btn" />
   </div>
 </header>
-
-<style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 60;
-    box-shadow: 0 1px 0 rgba(5, 24, 48, 0.08);
-  }
-
-  .header-width {
-    width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 48px;
-  }
-
-  .header-shell {
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-  }
-
-  .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 90px;
-    gap: 24px;
-  }
-
-  /* Desktop order: nav (left), logo (center), cta (right) */
-  .header-nav {
-    order: 1;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex: 1;
-  }
-
-  .logo-link {
-    order: 2;
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .brand-logo {
-    display: block;
-    height: 72px;
-    width: auto;
-    object-fit: contain;
-  }
-
-  .header-cta {
-    order: 3;
-    flex: 1;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 20px;
-  }
-
-  /* Mobile action bar — hidden on desktop */
-  .mobile-action-bar {
-    display: none;
-  }
-
-  /* ===== Mobile layout: hamburger left, logo centered, action row below ===== */
-  @media (max-width: 1024px) {
-    /* Even vertical rhythm for the whole white header block:
-       top padding on the logo row, matching bottom padding on the action
-       bar, and a consistent gap in between. No padding baked into the
-       button row itself. */
-    .header-container {
-      position: relative;
-      justify-content: flex-start;
-    }
-
-    /* Hamburger stays at the left */
-    .header-nav {
-      flex: 0 0 auto;
-      z-index: 2;
-    }
-
-    /* Logo absolutely centered within the header row, enlarged for mobile */
-    .logo-link {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .brand-logo {
-      height: 92px;
-    }
-
-    /* Desktop inline CTA hidden on mobile */
-    .header-cta {
-      display: none;
-    }
-
-    /* Full-width two-button action row. The action bar is the last white
-       block, so it owns the bottom padding; the gap above it comes from
-       margin-top. Horizontal gutter matches the logo row. */
-    .mobile-action-bar {
-      display: flex;
-      gap: 12px;
-      padding: 0 24px;
-      background-color: #fff;
-    }
-
-    /* Each button (and its wrapper, if any) fills half the row */
-    .mobile-action-bar > :global(*) {
-      flex: 1;
-    }
-
-    .mobile-action-bar :global(.btn-base) {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .header-width {
-      padding: 0 24px;
-    }
-
-    .header-container {
-      min-height: 80px;
-    }
-
-    .brand-logo {
-      height: 80px;
-    }
-  }
-</style>
