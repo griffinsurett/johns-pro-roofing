@@ -41,15 +41,15 @@ const columnClasses = {
 };
 ---
 
-<section id={id} class={`py-[100px] ${dark ? "bg-primary" : ""} ${className}`}>
+<section id={id} class={`py-[100px] ${dark ? "bg-brand-gradient" : ""} ${className}`}>
   <div class="container">
     {(title || description) && (
       <div class="section-header">
-        {pretitle && <span class="section-pretitle">{pretitle}</span>}
+        {pretitle && <span class={`section-pretitle ${dark ? "!text-bg" : ""}`}>{pretitle}</span>}
         {title && (
           <h2 class={`section-title ${dark ? "!text-bg" : ""}`}>
             {title}{accentTitle && (
-              <span class="italic font-[family-name:var(--font-body)] text-accent normal-case"> {accentTitle}</span>
+              <span class="not-italic font-[family-name:var(--font-body)] text-accent"> {accentTitle}</span>
             )}
           </h2>
         )}

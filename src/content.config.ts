@@ -126,6 +126,8 @@ export const collections = {
         role: z.string(),
         company: z.string().optional(),
         rating: z.number().min(1).max(5).default(5),
+        // Where the review came from; "google" shows the Google G badge.
+        source: z.string().default("google"),
       }),
   }),
 
@@ -158,5 +160,16 @@ export const collections = {
     loader: FileLoad("selling-points", "selling-points.json"),
     schema: ({ image }) =>
       baseSchema({ image }),
+  }),
+
+  // ── service-areas ───────────────────────────────────────
+  // States we serve. title = full name (e.g. "New Jersey"),
+  // abbr = postal code (e.g. "NJ"). No pages — used for labels only.
+  "service-areas": defineCollection({
+    loader: FileLoad("service-areas", "service-areas.json"),
+    schema: ({ image }) =>
+      baseSchema({ image }).extend({
+        abbr: z.string(),
+      }),
   }),
 };

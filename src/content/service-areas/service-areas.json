@@ -1,0 +1,20 @@
+[
+  {
+    "id": "new-jersey",
+    "title": "New Jersey",
+    "abbr": "NJ",
+    "order": 1
+  },
+  {
+    "id": "new-york",
+    "title": "New York",
+    "abbr": "NY",
+    "order": 2
+  },
+  {
+    "id": "pennsylvania",
+    "title": "Pennsylvania",
+    "abbr": "PA",
+    "order": 3
+  }
+]

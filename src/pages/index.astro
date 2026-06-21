@@ -15,6 +15,15 @@ import PhoneLink from "@/components/PhoneLink.astro";
 import BackgroundMedia from "@/components/BackgroundMedia.astro";
 import GoogleRating from "@/components/GoogleRating.astro";
 import AboutIntro from "@/components/AboutIntro.astro";
+import { getServiceAreaNames } from "@/utils/serviceAreas";
+
+// Top 4 selling points for the "Why Choose Us" benefits list
+const whyChoosePoints = (
+  await query("selling-points").orderBy(sortByOrder()).all()
+).slice(0, 4);
+
+// Service-area states (single source of truth) → full-name label for copy.
+const serviceAreaLabel = await getServiceAreaNames();
 ---
 
 <BaseLayout
@@ -54,7 +63,7 @@ import AboutIntro from "@/components/AboutIntro.astro";
             <span class="hero-title-bottom not-italic">Roofing</span>
           </h1>
           <p class="hero-subtitle">
-            Free estimates, 0% financing available, and dependable roofing work for homeowners across New Jersey and Pennsylvania — from a local team you can count on.
+            Free estimates, 0% financing available, and dependable roofing work from a local team you can count on.
           </p>
           <div class="flex flex-wrap justify-center gap-4 py-6">
             <Button variant="primary" size="lg" href="/contact-us">
@@ -108,7 +117,7 @@ import AboutIntro from "@/components/AboutIntro.astro";
             <span class="section-pretitle">The John's Pro Difference</span>
             <h2 class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
               Roofs that last,
-              <span class="italic font-[family-name:var(--font-body)] text-accent normal-case"> done right, </span>
+              <span class="not-italic font-[family-name:var(--font-body)] text-accent"> done right, </span>
               the first time.
             </h2>
           </div>
@@ -154,7 +163,7 @@ import AboutIntro from "@/components/AboutIntro.astro";
         pretitle="Recent Projects"
         title="Real Homes."
         accentTitle="Real Work."
-        description="A look at recent roofing transformations across New Jersey and Pennsylvania."
+        description={`A look at recent roofing transformations across ${serviceAreaLabel}.`}
         dark={true}
         columns={2}
         showButtonSection={false}
@@ -310,22 +319,49 @@ import AboutIntro from "@/components/AboutIntro.astro";
     </div>
 
     {/* CTA banner — replaces the contact form (form commented out below) */}
-    <section class="bg-primary py-[100px]" id="quote-form">
-      <div class="container">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-          <div class="max-w-[640px]">
-            <span class="section-pretitle">Get In Touch</span>
-            <h2 class="section-title !text-bg !text-[clamp(36px,5vw,56px)] leading-[1.05]">
-              Ready for a
-              <span class="italic font-[family-name:var(--font-body)] text-accent normal-case"> better </span>
-              roof?
-            </h2>
-            <p class="text-white/70 text-base leading-[1.7] max-w-[480px]">
-              Free quotes by phone or email — we respond same day, every day.
-            </p>
-          </div>
-          <div class="flex flex-wrap items-center gap-4 shrink-0">
-            <Button variant="primary" size="lg" href="/contact-us">
+    {/* Bottom CTA — photo bg with red gradient (opaque left → transparent right) */}
+    <section class="relative overflow-hidden" id="quote-form">
+      {/* Background photo */}
+      <img
+        src={serviceRoofRepair.src}
+        alt=""
+        aria-hidden="true"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      {/* Red gradient overlay: opaque on the left, fading to transparent on the right */}
+      <div
+        class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_30%,color-mix(in_oklab,var(--color-accent)_55%,transparent)_62%,transparent_100%)]"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="container relative z-10 py-[100px]">
+        <div class="max-w-[640px] text-bg">
+          <span class="section-pretitle !text-bg">Why Choose Us</span>
+          <h2 class="section-title !text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] mb-4">
+            Ready for a
+            <span class="not-italic font-[family-name:var(--font-body)]"> better </span>
+            roof?
+          </h2>
+          <p class="text-bg/90 text-lg leading-relaxed mb-8 max-w-[480px]">
+            Our unmatched benefits that set us apart and ensure your peace of mind.
+          </p>
+
+          <ul class="flex flex-col gap-5 mb-10">
+            {
+              whyChoosePoints.map((point, i) => (
+                <li class="flex items-center gap-4">
+                  <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <span class="text-bg text-lg font-semibold">{point.data.title}</span>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="flex flex-wrap items-center gap-4">
+            <Button variant="gradient" size="lg" href="/contact-us">
               Request an Estimate
             </Button>
             <PhoneLink variant="phone" tone="white" size="lg" />

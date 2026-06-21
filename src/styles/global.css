@@ -13,13 +13,13 @@
 
 @theme {
   /* ───── PRIMARY – change ONLY this one line for the brand ───── */
-  --color-primary: #15407d;   /* John's Pro Roofing brand navy */
+  --color-primary: #05295c;   /* John's Pro Roofing brand navy (logo lightest) */
   /* ───── ACCENT – secondary / interactive ───── */
   --color-accent: #c8102e;    /* patriotic bold red */
 
   /* ───── Neutrals ───── */
   --color-text:         #2d3748;   /* soft charcoal body text */
-  --color-heading:      #15407d;   /* brand navy headings */
+  --color-heading:      #05295c;   /* brand navy headings (logo lightest) */
   --color-bg:           #ffffff;   /* canvas / page background */
   --color-surface:      #f4f6f9;   /* cards, nav, modals (slate off-white) */
 
@@ -50,8 +50,8 @@
 
   /* ───── Brand palette extras (John's Pro Roofing) ───── */
   --color-canvas-tertiary:    #edf2f7;  /* slightly deeper slate grey */
-  --color-brand-navy-light:   #134074;  /* lighter navy for tags/borders */
-  --color-brand-navy-dark:    #051830;  /* deeper navy for hover states */
+  --color-brand-navy-light:   #05295c;  /* logo navy (lightest) — gradient end */
+  --color-brand-navy-dark:    #001c4d;  /* logo navy (darkest) — gradient start */
   --color-text-muted:         #718096;  /* slate grey for descriptions */
   --color-border:             #e2e8f0;  /* soft separator lines */
   --color-accent-red-hover:   #a60c23;  /* darker red hover state */
@@ -219,6 +219,16 @@ body {
     @apply w-full max-w-[1140px] mx-auto px-12 max-lg:px-6;
   }
 
+  /* ───── Brand blue gradient (logo navy) for dark section backgrounds ───── */
+  .bg-brand-gradient {
+    background-image: linear-gradient(
+      120deg,
+      var(--color-brand-navy-dark) 0%,
+      var(--color-brand-navy) 50%,
+      var(--color-brand-navy-light) 100%
+    );
+  }
+
   /* ───── Nav link blue-gradient hover/active (top-level + dropdown items) ───── */
   .nav-link {
     @apply transition-[background,color] duration-200;
@@ -313,7 +323,7 @@ body {
   }
 
   .section-title {
-    @apply text-[40px] font-extrabold mb-5 max-md:text-[30px];
+    @apply text-[40px] font-extrabold uppercase italic mb-5 max-md:text-[30px];
   }
 
   .section-description {
@@ -415,11 +425,7 @@ body {
    ========================================================================== */
 @layer components {
   .about-section {
-    @apply bg-surface py-[100px] border-b border-[var(--color-border)] max-md:py-[70px];
-    background-image:
-      linear-gradient(rgba(226, 232, 240, 0.4) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(226, 232, 240, 0.4) 1px, transparent 1px);
-    background-size: 40px 40px;
+    @apply bg-surface py-[100px] max-md:py-[70px];
   }
 
   .about-title {
@@ -453,8 +459,14 @@ body {
   }
 
   .testimonial-card {
-    @apply relative bg-primary text-bg pt-7 px-7 pb-[52px] rounded-xl flex flex-col
+    @apply relative text-bg pt-7 px-7 pb-[52px] rounded-xl flex flex-col
            max-[991px]:pt-[35px] max-[991px]:px-6 max-[991px]:pb-[55px];
+    background-image: linear-gradient(
+      120deg,
+      var(--color-brand-navy-dark) 0%,
+      var(--color-brand-navy) 50%,
+      var(--color-brand-navy-light) 100%
+    );
     clip-path: polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%);
   }
 
@@ -488,7 +500,15 @@ body {
   }
 
   .testimonial-readmore {
-    @apply inline whitespace-nowrap ml-1 font-semibold text-accent hover:underline;
+    @apply inline whitespace-nowrap ml-1 font-semibold text-bg underline hover:no-underline;
+  }
+
+  /* Google "G" badge — top-right of Google-sourced review cards */
+  .testimonial-google {
+    @apply absolute top-5 right-5 z-[3] inline-flex w-7 h-7 rounded-full bg-white items-center justify-center shadow-sm;
+  }
+  .testimonial-google svg {
+    @apply w-[18px] h-[18px];
   }
 
   .testimonial-watermark {

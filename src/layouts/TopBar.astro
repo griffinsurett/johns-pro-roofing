@@ -2,71 +2,92 @@
 // src/layouts/TopBar.astro
 /**
  * Top utility bar — sits above the site header.
- * Navy gradient strip with the "Serving ★ NJ ★ NY ★ PA" service-area line.
+ * Navy gradient strip: brand message on the left, phone on the right.
+ * Service-area states are pulled from the service-areas collection.
  */
-const states = ["NJ", "NY", "PA"];
+import FlagStarIcon from "@/components/FlagStarIcon.astro";
+import PhoneLink from "@/components/PhoneLink.astro";
+import { getServiceAreaAbbrs } from "@/utils/serviceAreas";
+
+const areaLabel = await getServiceAreaAbbrs(); // "NJ, NY & PA"
 ---
 
 <div class="top-bar">
-  <p class="top-bar-serving">
-    <span>Serving</span>
-    {
-      states.map((state) => (
-        <>
-          <i class="fa-solid fa-star top-bar-star" aria-hidden="true"></i>
-          <span>{state}</span>
-        </>
-      ))
-    }
-  </p>
+  <div class="top-bar-inner">
+    <p class="top-bar-message">
+      <FlagStarIcon class="top-bar-star" />
+      Protecting Homes Across {areaLabel} — One Roof At A Time
+    </p>
+    <div class="top-bar-phone">
+      <PhoneLink variant="phone" tone="white" size="sm" />
+    </div>
+  </div>
 </div>
 
 <style>
   .top-bar {
+    /* Scrolls away with the page; the header below is the sticky element. */
+    position: relative;
+    z-index: 1;
     background: linear-gradient(
       120deg,
       var(--color-brand-navy-dark) 0%,
       var(--color-brand-navy) 50%,
       var(--color-brand-navy-light) 100%
     );
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 24px;
+    padding-block: 8px;
   }
 
-  .top-bar-serving {
+  /* Match the header's gutter exactly: max-width 1600px, 48px sides (24px mobile). */
+  .top-bar-inner {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding-inline: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .top-bar-message {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 14px;
+    gap: 10px;
     margin: 0;
     color: #fff;
     font-family: var(--font-family-headings);
     font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
   }
 
-  .top-bar-star {
-    /* Solid FA glyphs require weight 900; the bold <p> would otherwise hide them. */
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    font-size: 11px;
-    letter-spacing: normal;
+  .top-bar-message :global(.top-bar-star) {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
     color: #fff;
-    opacity: 0.85;
+    opacity: 0.9;
+  }
+
+  .top-bar-phone {
+    flex-shrink: 0;
   }
 
   @media (max-width: 767px) {
-    .top-bar-serving {
-      font-size: 12px;
-      gap: 10px;
-      letter-spacing: 0.14em;
+    /* Match the header's mobile gutter */
+    .top-bar-inner {
+      padding-inline: 24px;
     }
-    .top-bar-star {
-      font-size: 10px;
+    /* On phones, drop the phone link and shrink the message */
+    .top-bar-phone {
+      display: none;
+    }
+    .top-bar-message {
+      font-size: 12px;
+      justify-content: center;
+      width: 100%;
+      text-align: center;
     }
   }
 </style>

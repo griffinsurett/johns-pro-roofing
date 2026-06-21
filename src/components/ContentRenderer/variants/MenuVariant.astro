@@ -15,11 +15,15 @@ import { isTopLevelPlacement } from '@/utils/navigation/topLevelCheck';
 
 type MenuMode = 'responsive' | 'flat-only' | 'hamburger-only';
 
+type MenuBreakpoint = 'md' | 'lg';
+
 interface Props extends BaseVariantProps {
   maxDepth?: number;
   mode?: MenuMode;
   closeButton?: boolean;
   hamburgerTransform?: boolean;
+  /** Viewport at which the inline nav appears and the hamburger hides. */
+  breakpoint?: MenuBreakpoint;
 }
 
 const {
@@ -30,6 +34,7 @@ const {
   mode = 'responsive',
   closeButton = false,
   hamburgerTransform = true,
+  breakpoint = 'md',
 } = Astro.props as Props;
 
 // Build hierarchical tree from flat items
@@ -39,10 +44,17 @@ const menuTree = buildMenuTree(items);
 const showDesktop = mode === 'responsive' || mode === 'flat-only';
 const showMobile = mode === 'responsive' || mode === 'hamburger-only';
 
+// Static (non-interpolated) class strings so Tailwind can detect them.
+const VISIBILITY = {
+  md: { desktop: 'hidden md:block', mobile: 'md:hidden', media: '(max-width: 768px)' },
+  lg: { desktop: 'hidden lg:block', mobile: 'lg:hidden', media: '(max-width: 1024px)' },
+} as const;
+const bp = VISIBILITY[breakpoint];
+
 // Responsive visibility classes
-const desktopClasses = mode === 'responsive' ? 'hidden md:block' : '';
+const desktopClasses = mode === 'responsive' ? bp.desktop : '';
 const mobileClasses =
-  showMobile && mode === 'responsive' ? 'md:hidden' : '';
+  showMobile && mode === 'responsive' ? bp.mobile : '';
 
 const inferredTopLevel = isTopLevelPlacement({
   id,
@@ -84,7 +96,15 @@ const mobileHydrationStrategy =
           client:visible
         />
       )}
-      {mobileHydrationStrategy === 'media' && (
+      {mobileHydrationStrategy === 'media' && breakpoint === 'lg' && (
+        <MobileMenuDrawer
+          items={menuTree}
+          closeButton={closeButton}
+          hamburgerTransform={hamburgerTransform}
+          client:media="(max-width: 1024px)"
+        />
+      )}
+      {mobileHydrationStrategy === 'media' && breakpoint !== 'lg' && (
         <MobileMenuDrawer
           items={menuTree}
           closeButton={closeButton}

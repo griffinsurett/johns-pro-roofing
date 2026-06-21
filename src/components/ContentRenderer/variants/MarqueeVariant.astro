@@ -7,19 +7,18 @@
  * horizontally and loops seamlessly. The track is duplicated so the second
  * copy slides into place exactly as the first scrolls off.
  *
- * Items are separated by a star divider. Pauses on hover, and respects
+ * Items are separated by a FlagStarIcon divider. Pauses on hover, and respects
  * prefers-reduced-motion (falls back to a static, centered, wrapped row).
  *
  * Props:
- * - speed:   seconds for one full loop (default 40)
- * - divider: character used between items (default ★)
+ * - speed: seconds for one full loop (default 40)
  */
 
 import type { BaseVariantProps } from "../ContentRenderer.types";
+import FlagStarIcon from "@/components/FlagStarIcon.astro";
 
 interface Props extends BaseVariantProps {
   speed?: number;
-  divider?: string;
 }
 
 const {
@@ -27,7 +26,6 @@ const {
   className = "",
   id,
   speed = 40,
-  divider = "★",
 } = Astro.props as Props;
 ---
 
@@ -43,7 +41,10 @@ const {
         {[0, 1].map(() => (
           <ul class="hero-marquee-group">
             {items.map((item) => (
-              <li>{item.title}</li>
+              <li>
+                <span>{item.title}</span>
+                <FlagStarIcon class="hero-marquee-star" />
+              </li>
             ))}
           </ul>
         ))}
@@ -52,7 +53,7 @@ const {
   )
 }
 
-<style define:vars={{ divider: `"${divider}"` }}>
+<style>
   .hero-marquee {
     background: linear-gradient(
       120deg,
@@ -102,12 +103,11 @@ const {
     line-height: 0.9;
   }
 
-  .hero-marquee-group li::after {
-    content: var(--divider);
-    display: inline-block;
+  .hero-marquee-group li :global(.hero-marquee-star) {
+    width: 0.7em;
+    height: 0.7em;
     margin-left: 56px;
-    font-size: 14px;
-    line-height: 1;
+    flex-shrink: 0;
     color: #fff;
   }
 
@@ -140,7 +140,7 @@ const {
       padding: 0 18px;
     }
 
-    .hero-marquee-group li::after {
+    .hero-marquee-group li :global(.hero-marquee-star) {
       margin-left: 24px;
     }
   }

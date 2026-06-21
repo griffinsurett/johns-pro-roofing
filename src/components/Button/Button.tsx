@@ -16,6 +16,7 @@ import LinkButton from './variants/LinkButton';
 import TertiaryButton from './variants/TertiaryButton';
 import PhoneButton from './variants/PhoneButton';
 import PhoneOutlineButton from './variants/PhoneOutlineButton';
+import GradientButton from './variants/GradientButton';
 
 /**
  * Base props shared by all button variants
@@ -115,6 +116,7 @@ const VARIANT_MAP = {
   tertiary: TertiaryButton,
   phone: PhoneButton,
   "phone-outline": PhoneOutlineButton,
+  gradient: GradientButton,
 };
 
 export type ButtonVariant = keyof typeof VARIANT_MAP;

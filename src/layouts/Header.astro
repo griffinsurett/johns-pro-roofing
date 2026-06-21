@@ -20,6 +20,7 @@ import PhoneLink from "@/components/PhoneLink.astro";
           query={related("menu-items", "menu", "main-menu")}
           variant="MenuVariant"
           mode="responsive"
+          breakpoint="lg"
           className="header-navigation"
           hamburgerTransform={true}
         />
@@ -30,7 +31,6 @@ import PhoneLink from "@/components/PhoneLink.astro";
       </a>
 
       <div class="header-cta">
-        <PhoneLink variant="phone" tone="blue" />
         <Button variant="primary" href="/contact-us">
           Request an Estimate
         </Button>
@@ -75,20 +75,20 @@ import PhoneLink from "@/components/PhoneLink.astro";
     gap: 24px;
   }
 
-  /* Desktop order: logo, nav, cta (logo on the left as before) */
-  .logo-link {
+  /* Desktop order: nav (left), logo (center), cta (right) */
+  .header-nav {
     order: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+  }
+
+  .logo-link {
+    order: 2;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-  }
-
-  .header-nav {
-    order: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
   }
 
   .brand-logo {
@@ -115,11 +115,13 @@ import PhoneLink from "@/components/PhoneLink.astro";
 
   /* ===== Mobile layout: hamburger left, logo centered, action row below ===== */
   @media (max-width: 1024px) {
+    /* Even vertical rhythm for the whole white header block:
+       top padding on the logo row, matching bottom padding on the action
+       bar, and a consistent gap in between. No padding baked into the
+       button row itself. */
     .header-container {
       position: relative;
       justify-content: flex-start;
-      padding-top: 32px;
-      padding-bottom: 32px;
     }
 
     /* Hamburger stays at the left */
@@ -145,11 +147,13 @@ import PhoneLink from "@/components/PhoneLink.astro";
       display: none;
     }
 
-    /* Full-width two-button action row */
+    /* Full-width two-button action row. The action bar is the last white
+       block, so it owns the bottom padding; the gap above it comes from
+       margin-top. Horizontal gutter matches the logo row. */
     .mobile-action-bar {
       display: flex;
       gap: 12px;
-      padding: 6px 24px;
+      padding: 0 24px;
       background-color: #fff;
     }
 
