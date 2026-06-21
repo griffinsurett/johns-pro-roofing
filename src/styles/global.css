@@ -13,13 +13,13 @@
 
 @theme {
   /* ───── PRIMARY – change ONLY this one line for the brand ───── */
-  --color-primary: #0b2545;   /* John's Pro Roofing brand navy */
+  --color-primary: #15407d;   /* John's Pro Roofing brand navy */
   /* ───── ACCENT – secondary / interactive ───── */
   --color-accent: #c8102e;    /* patriotic bold red */
 
   /* ───── Neutrals ───── */
   --color-text:         #2d3748;   /* soft charcoal body text */
-  --color-heading:      #0b2545;   /* brand navy headings */
+  --color-heading:      #15407d;   /* brand navy headings */
   --color-bg:           #ffffff;   /* canvas / page background */
   --color-surface:      #f4f6f9;   /* cards, nav, modals (slate off-white) */
 
@@ -218,6 +218,26 @@ body {
   .container {
     @apply w-full max-w-[1140px] mx-auto px-12 max-lg:px-6;
   }
+
+  /* ───── Nav link blue-gradient hover/active (top-level + dropdown items) ───── */
+  .nav-link {
+    @apply transition-[background,color] duration-200;
+  }
+  .nav-link:hover,
+  .nav-link:hover *,
+  .nav-link-active,
+  .nav-link-active * {
+    color: var(--color-bg) !important;
+  }
+  .nav-link:hover,
+  .nav-link-active {
+    background-image: linear-gradient(
+      120deg,
+      var(--color-brand-navy-dark) 0%,
+      var(--color-brand-navy) 50%,
+      var(--color-brand-navy-light) 100%
+    );
+  }
 }
 
 /* ==========================================================================
@@ -272,19 +292,6 @@ body {
 
   .hero-title-bottom {
     @apply text-[96px] text-accent tracking-[0.12em] max-lg:text-[72px] max-md:text-[36px];
-  }
-
-  .hero-eyebrow {
-    @apply mb-5 inline-flex items-center justify-center gap-3 text-base font-bold uppercase
-           text-white tracking-[0.25em] [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]
-           max-md:text-sm max-md:gap-2 max-md:tracking-[0.2em];
-  }
-
-  .hero-eyebrow-star {
-    /* Fixed, legible size so the stars don't shrink away on mobile (was 0.7em
-       ≈ 10px at the small breakpoint and hard to see). tracking-normal kills
-       the inherited letter-spacing that adds dead space around the glyph. */
-    @apply text-white text-xs tracking-normal max-md:text-[11px];
   }
 
   .hero-subtitle {
@@ -449,11 +456,6 @@ body {
     @apply relative bg-primary text-bg pt-7 px-7 pb-[52px] rounded-xl flex flex-col
            max-[991px]:pt-[35px] max-[991px]:px-6 max-[991px]:pb-[55px];
     clip-path: polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%);
-    transition: var(--transition-smooth);
-  }
-
-  .testimonial-card:hover {
-    @apply bg-[var(--color-brand-navy-dark)];
   }
 
   .testimonial-header {

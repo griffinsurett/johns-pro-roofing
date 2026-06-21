@@ -14,17 +14,20 @@ import PhoneLink from "@/components/PhoneLink.astro";
 <header class="site-header">
   <div class="header-shell">
     <div class="header-width header-container">
+      {/* Nav: desktop inline menu + mobile hamburger (hamburger sits left on mobile) */}
+      <div class="header-nav">
+        <ContentRenderer
+          query={related("menu-items", "menu", "main-menu")}
+          variant="MenuVariant"
+          mode="responsive"
+          className="header-navigation"
+          hamburgerTransform={true}
+        />
+      </div>
+
       <a href="/" class="logo-link" aria-label={siteData.title}>
         <img src={headerLogo.src} alt={`${siteData.title} logo`} class="brand-logo" />
       </a>
-
-      <ContentRenderer
-        query={related("menu-items", "menu", "main-menu")}
-        variant="MenuVariant"
-        mode="responsive"
-        className="header-navigation"
-        hamburgerTransform={true}
-      />
 
       <div class="header-cta">
         <PhoneLink variant="phone" tone="blue" />
@@ -35,9 +38,12 @@ import PhoneLink from "@/components/PhoneLink.astro";
     </div>
   </div>
 
-  {/* Mobile-only phone bar — keeps the number reachable as the user scrolls */}
-  <div class="mobile-phone-bar">
-    <PhoneLink variant="phone" tone="white" />
+  {/* Mobile-only action row — red estimate + blue phone, full width */}
+  <div class="mobile-action-bar">
+    <Button variant="primary" href="/contact-us" className="mobile-action-btn" fullWidth>
+      Contact Us
+    </Button>
+    <PhoneLink variant="phone" tone="blue" class="mobile-action-btn" />
   </div>
 </header>
 
@@ -69,10 +75,19 @@ import PhoneLink from "@/components/PhoneLink.astro";
     gap: 24px;
   }
 
+  /* Desktop order: logo, nav, cta (logo on the left as before) */
   .logo-link {
+    order: 1;
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
+  }
+
+  .header-nav {
+    order: 2;
+    display: flex;
+    align-items: center;
+    flex: 1;
   }
 
   .brand-logo {
@@ -83,28 +98,68 @@ import PhoneLink from "@/components/PhoneLink.astro";
   }
 
   .header-cta {
+    order: 3;
+    flex: 1;
     flex-shrink: 0;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 20px;
   }
 
-  /* Mobile phone bar — hidden on desktop, shown when the header CTA drops out */
-  .mobile-phone-bar {
+  /* Mobile action bar — hidden on desktop */
+  .mobile-action-bar {
     display: none;
   }
 
+  /* ===== Mobile layout: hamburger left, logo centered, action row below ===== */
   @media (max-width: 1024px) {
+    .header-container {
+      position: relative;
+      justify-content: flex-start;
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    /* Hamburger stays at the left */
+    .header-nav {
+      flex: 0 0 auto;
+      z-index: 2;
+    }
+
+    /* Logo absolutely centered within the header row, enlarged for mobile */
+    .logo-link {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .brand-logo {
+      height: 92px;
+    }
+
+    /* Desktop inline CTA hidden on mobile */
     .header-cta {
       display: none;
     }
 
-    .mobile-phone-bar {
+    /* Full-width two-button action row */
+    .mobile-action-bar {
       display: flex;
-      align-items: center;
+      gap: 12px;
+      padding: 6px 24px;
+      background-color: #fff;
+    }
+
+    /* Each button (and its wrapper, if any) fills half the row */
+    .mobile-action-bar > :global(*) {
+      flex: 1;
+    }
+
+    .mobile-action-bar :global(.btn-base) {
+      width: 100%;
       justify-content: center;
-      background-color: var(--color-primary);
-      padding: 12px 24px;
     }
   }
 
@@ -113,16 +168,12 @@ import PhoneLink from "@/components/PhoneLink.astro";
       padding: 0 24px;
     }
 
-    .top-bar-left span {
-      display: none;
-    }
-
     .header-container {
-      min-height: 72px;
+      min-height: 80px;
     }
 
     .brand-logo {
-      height: 56px;
+      height: 80px;
     }
   }
 </style>

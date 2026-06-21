@@ -20,6 +20,7 @@ import SEO from "./SEO.astro";
 import Theme from "./Theme.astro";
 import BodyTags from "./BodyTags.astro";
 import Header from "./Header.astro";
+import TopBar from "./TopBar.astro";
 import Footer from "./Footer.astro";
 
 export interface Props {
@@ -52,6 +53,7 @@ const { hideHeader = false, hideFooter = false, ...seoProps } = Astro.props;
   </head>
 
   <body class="antialiased">
+    {!hideHeader && <TopBar />}
     {!hideHeader && <Header />}
 
     {/* Body-level scripts and elements */}

@@ -1,0 +1,72 @@
+---
+// src/layouts/TopBar.astro
+/**
+ * Top utility bar — sits above the site header.
+ * Navy gradient strip with the "Serving ★ NJ ★ NY ★ PA" service-area line.
+ */
+const states = ["NJ", "NY", "PA"];
+---
+
+<div class="top-bar">
+  <p class="top-bar-serving">
+    <span>Serving</span>
+    {
+      states.map((state) => (
+        <>
+          <i class="fa-solid fa-star top-bar-star" aria-hidden="true"></i>
+          <span>{state}</span>
+        </>
+      ))
+    }
+  </p>
+</div>
+
+<style>
+  .top-bar {
+    background: linear-gradient(
+      120deg,
+      var(--color-brand-navy-dark) 0%,
+      var(--color-brand-navy) 50%,
+      var(--color-brand-navy-light) 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 24px;
+  }
+
+  .top-bar-serving {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 0;
+    color: #fff;
+    font-family: var(--font-family-headings);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+
+  .top-bar-star {
+    /* Solid FA glyphs require weight 900; the bold <p> would otherwise hide them. */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: normal;
+    color: #fff;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 767px) {
+    .top-bar-serving {
+      font-size: 12px;
+      gap: 10px;
+      letter-spacing: 0.14em;
+    }
+    .top-bar-star {
+      font-size: 10px;
+    }
+  }
+</style>
