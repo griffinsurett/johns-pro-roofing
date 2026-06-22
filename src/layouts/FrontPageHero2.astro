@@ -57,10 +57,10 @@ const {
 
 <section
   id={id}
-  class={`relative overflow-hidden min-h-[clamp(520px,70vh,760px)] ${className}`}
+  class={`relative overflow-hidden bg-surface lg:min-h-[clamp(560px,85vh,900px)] ${className}`}
 >
-  {/* ── Split backgrounds (left image + white panel, right video, slanted seam) ── */}
-  {/* Base layer: image fills the whole section */}
+  {/* ── Background image + white overlay. Behind the text on all sizes so the
+        mobile text panel has the same translucency as desktop. ── */}
   <div class="absolute inset-0">
     <Image
       src={image}
@@ -72,15 +72,16 @@ const {
       loading="eager"
       fetchpriority="high"
     />
-    {/* White overlay so the left reads as a light panel for dark text */}
+    {/* White overlay so the panel reads light for dark text. Mobile uses the
+        same opacity range as desktop, just top→bottom instead of left→right. */}
     <div
-      class="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.92)_45%,rgba(255,255,255,0.78)_100%)]"
+      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.72)_45%,rgba(255,255,255,0.5)_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.72)_45%,rgba(255,255,255,0.5)_100%)]"
     >
     </div>
   </div>
 
-  {/* Right video panel, clipped with a slanted left edge so the seam is diagonal */}
-  <div class="fph2-video absolute inset-y-0 right-0 w-full lg:w-[58%]">
+  {/* Right video panel (lg+), clipped with a slanted left edge */}
+  <div class="fph2-video hidden lg:block absolute inset-y-0 right-0 w-[58%]">
     <video
       class="absolute inset-0 w-full h-full object-cover"
       autoplay
@@ -95,10 +96,21 @@ const {
     <div class="absolute inset-0 bg-primary/15"></div>
   </div>
 
-  {/* ── Text content overlaid on the left ── */}
-  <div class="relative z-[3] w-full max-w-[1600px] mx-auto px-6 lg:px-12 h-full">
+  {/* Desktop foreground person (lg+), centered over the seam */}
+  <Image
+    src={person}
+    alt={personAlt}
+    widths={[480, 720, 960]}
+    sizes="40vw"
+    class="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 z-[2] h-[92%] w-auto object-contain object-bottom pointer-events-none"
+    loading="eager"
+    fetchpriority="high"
+  />
+
+  {/* ── Content. Desktop: overlaid left. Mobile: stacked text block on top ── */}
+  <div class="relative z-[3] w-full max-w-[1600px] mx-auto px-6 lg:px-12">
     <div
-      class="flex flex-col justify-center items-start gap-5 min-h-[clamp(520px,70vh,760px)] max-w-[560px] py-16"
+      class="flex flex-col justify-center items-start gap-5 max-w-[560px] py-12 lg:py-16 lg:min-h-[clamp(560px,85vh,900px)]"
     >
       {
         eyebrow && (
@@ -139,16 +151,29 @@ const {
     </div>
   </div>
 
-  {/* ── Centered foreground person ── */}
-  <Image
-    src={person}
-    alt={personAlt}
-    widths={[480, 720, 960]}
-    sizes="(max-width: 1024px) 60vw, 40vw"
-    class="hidden md:block absolute bottom-0 left-1/2 -translate-x-1/2 z-[2] h-[92%] w-auto object-contain object-bottom pointer-events-none"
-    loading="eager"
-    fetchpriority="high"
-  />
+  {/* ── Mobile media banner (below lg): video with the person composited in ── */}
+  <div class="lg:hidden relative w-full h-[300px] sm:h-[380px]">
+    <video
+      class="absolute inset-0 w-full h-full object-cover"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+    >
+      <source src={video} type="video/mp4" />
+    </video>
+    <div class="absolute inset-0 bg-primary/15"></div>
+    <Image
+      src={person}
+      alt={personAlt}
+      widths={[480, 720]}
+      sizes="(max-width: 640px) 70vw, 50vw"
+      class="absolute bottom-0 left-1/2 -translate-x-1/2 h-full w-auto object-contain object-bottom pointer-events-none"
+      loading="eager"
+    />
+  </div>
 </section>
 
 <style>

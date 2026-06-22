@@ -1,0 +1,21 @@
+---
+title: "Roofing Specialties"
+description: "Specialized roof systems and capabilities — including flat roofs, coatings, and expert repairs"
+hasPage: true
+itemsHasPage: true
+itemsRootPath: false
+itemsAddToMenu:
+  - menu: "main-menu"
+    attachTo: "roofing"
+addToMenu:
+  - menu: "footer-menu"
+---
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder } from "@/utils/query";
+
+<ContentRenderer
+  query={query("roofing-specialties").orderBy(sortByOrder())}
+  variant="GridVariant"
+  columns={2}
+  gap="lg"
+/>

@@ -251,37 +251,31 @@ body {
 }
 
 /* ============================================================================
-   Header nav — full-width dropdown band (scoped to .header-navigation).
-   The dropdown drops down flush under the header, spanning the full width,
-   with left-aligned stacked items and divider lines (i75/Flow Right style).
+   Header nav dropdown (scoped to .header-navigation).
+   A contained box anchored under its parent item, opening flush so there is
+   no hover gap. Blue gradient, white items, red on hover.
    Unlayered so it overrides the dropdown's Tailwind utility classes.
    ============================================================================ */
 @media (min-width: 1024px) {
-  /* Top-level items must NOT be the positioning context, so the dropdown
-     can anchor to the sticky <header> and span full width. */
-  .header-navigation .menu-desktop > ul > li {
-    position: static;
-  }
-
-  /* The dropdown wrapper: full-width band pinned under the header. */
+  /* Dropdown wrapper: directly under the parent item, no gap. The padding-top
+     creates an invisible "hover bridge" so the cursor never leaves :hover when
+     traveling from the item down into the menu. */
   .header-navigation .menu-dropdown {
     position: absolute;
-    left: 0;
-    right: 0;
     top: 100%;
+    left: 0;
     margin-top: 0;
+    padding-top: 10px;
   }
 
-  /* The dropdown list itself spans full width, blue gradient band. */
+  /* The dropdown list: contained blue gradient card. */
   .header-navigation .menu-dropdown > ul {
     position: static;
-    width: 100%;
-    min-width: 0;
-    max-width: 1600px;
-    margin: 0 auto;
+    min-width: 240px;
     padding: 0;
     border: 0;
-    border-radius: 0;
+    border-radius: 10px;
+    overflow: hidden;
     box-shadow: 0 16px 32px rgba(5, 24, 48, 0.18);
     background-image: linear-gradient(
       120deg,
@@ -304,14 +298,18 @@ body {
   /* Dropdown links: white text, red on hover (no gradient fill here). */
   .header-navigation .menu-dropdown .nav-link {
     width: 100%;
-    padding: 16px 48px;
+    padding: 14px 22px;
     color: var(--color-bg);
     background-image: none;
+    white-space: nowrap;
   }
   .header-navigation .menu-dropdown .nav-link:hover,
   .header-navigation .menu-dropdown .nav-link:hover * {
-    color: var(--color-accent) !important;
+    color: var(--color-bg) !important;
     background-image: none;
+  }
+  .header-navigation .menu-dropdown .nav-link:hover {
+    background-color: var(--color-accent);
   }
 }
 

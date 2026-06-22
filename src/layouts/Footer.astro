@@ -22,9 +22,9 @@ import footerLogo from "@/assets/white-logo.png";
 const contactLinks = await getContactLinks();
 ---
 
-<footer class="relative bg-brand-gradient text-bg mt-auto pt-16 pb-8 border-t border-bg/10 overflow-hidden">
-  <div class="container mx-auto px-6 relative z-10">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-left">
+<footer class="relative bg-brand-gradient text-bg mt-auto pt-16 border-t border-bg/10 overflow-hidden">
+  <div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12 relative z-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-16 text-left">
       
       {/* Column 1: Brand & Contact */}
       <div class="flex flex-col gap-6">
@@ -64,11 +64,13 @@ const contactLinks = await getContactLinks();
       {/* Column 2: Quick Links */}
       <div class="flex flex-col gap-6">
         <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Quick Links</h3>
-        <div class="flex flex-col gap-3 text-sm text-bg/80">
+        <div class="text-sm text-bg/80">
           <ContentRenderer
             query={related("menu-items", "menu", "footer-menu")}
             variant="ListVariant"
-            className="flex-col items-start gap-4 py-0"
+            title=""
+            description=""
+            className="py-0 [&_nav]:flex-col [&_nav]:items-start [&_nav]:gap-3"
           />
         </div>
       </div>
@@ -76,32 +78,42 @@ const contactLinks = await getContactLinks();
       {/* Column 3: Legal & Support */}
       <div class="flex flex-col gap-6">
         <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Legal</h3>
-        <div class="flex flex-col gap-3 text-sm text-bg/80">
+        <div class="text-sm text-bg/80">
           <ContentRenderer
             query={query("legal")}
             variant="ListVariant"
-            className="flex-col items-start gap-4 py-0"
             title=""
             description=""
+            className="py-0 [&_nav]:flex-col [&_nav]:items-start [&_nav]:gap-3"
           />
-        </div>
-      </div>
-
-      {/* Column 4: Preferences */}
-      <div class="flex flex-col gap-6">
-        <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Preferences</h3>
-        <div class="w-full flex flex-col items-start text-left">
-          <PreferencesLayout buttonClassName="!text-bg/80 hover:!text-bg hover:underline text-sm transition-colors !text-left" />
         </div>
       </div>
 
     </div>
 
-    {/* Bottom Bar: Copyright */}
-    <div class="pt-8 border-t border-bg/10 text-center">
-      <p class="text-bg/50 text-xs">
-        &copy; {new Date().getFullYear()} {siteData.legalName}. All rights reserved.
-      </p>
+  </div>
+
+  {/* Bottom Bar — full-width red band: copyright + credit (left), preferences row (right) */}
+  <div class="relative z-10 bg-accent mt-12">
+    <div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12 py-4">
+      <div class="flex flex-col gap-3 text-sm text-bg/90 lg:flex-row lg:items-center lg:justify-between">
+        <p class="text-xs">
+          &copy; {new Date().getFullYear()} {siteData.legalName}. All rights reserved. Built by{" "}
+          <a
+            href="https://griffinswebservices.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold underline-offset-4 transition hover:underline"
+          >
+            Griffin&apos;s Web Services
+          </a>
+        </p>
+
+        <PreferencesLayout
+          className="flex flex-wrap items-center justify-start lg:justify-end gap-x-6 gap-y-2"
+          buttonClassName="!text-bg/90 hover:!text-bg hover:underline text-xs transition-colors"
+        />
+      </div>
     </div>
   </div>
 </footer>

@@ -1,0 +1,83 @@
+---
+// src/components/ContentRenderer/variants/ServiceCardVariant.astro
+/**
+ * Service Card Variant — John's Pro Roofing service grid.
+ *
+ * Renders prepared collection items as `.service-card` tiles via ServiceCard.
+ * Uses the site's section-header + services-grid classes so it matches the
+ * homepage design, driven entirely by a collection query.
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import ServiceCard from "@/components/LoopComponents/ServiceCard.astro";
+
+interface Props extends BaseVariantProps {
+  pretitle?: string;
+  columns?: 2 | 3;
+  /** Render without the <section>/container/padding wrapper, for nesting
+   *  inside a parent section (e.g. a specialties sub-row). */
+  bare?: boolean;
+  /** Smaller, lighter heading for nested sub-rows. */
+  subheading?: boolean;
+}
+
+const {
+  items = [],
+  title,
+  description,
+  pretitle,
+  className = "",
+  columns = 3,
+  bare = false,
+  subheading = false,
+  id,
+} = Astro.props as Props;
+
+const gridCols = columns === 2 ? "!grid-cols-2 max-md:!grid-cols-1" : "";
+const gridClass = `services-grid ${gridCols} ${columns === 2 ? "max-w-[820px] mx-auto" : ""}`;
+---
+
+{/* Header + grid; either bare (for nesting) or wrapped in its own section. */}
+{
+  bare ? (
+    <div class={className}>
+      {(pretitle || title || description) && (
+        <div class={subheading ? "section-header !mb-8" : "section-header"}>
+          {pretitle && <span class="section-pretitle">{pretitle}</span>}
+          {title &&
+            (subheading ? (
+              <h3 class="section-title !text-[clamp(22px,2.5vw,30px)]">{title}</h3>
+            ) : (
+              <h2 class="section-title">{title}</h2>
+            ))}
+          {description && <p class="section-description">{description}</p>}
+        </div>
+      )}
+      {items.length > 0 && (
+        <div class={gridClass}>
+          {items.map((item) => (
+            <ServiceCard {...item} />
+          ))}
+        </div>
+      )}
+    </div>
+  ) : (
+    <section id={id} class={`py-[100px] border-t border-border ${className}`}>
+      <div class="container">
+        {(pretitle || title || description) && (
+          <div class="section-header">
+            {pretitle && <span class="section-pretitle">{pretitle}</span>}
+            {title && <h2 class="section-title">{title}</h2>}
+            {description && <p class="section-description">{description}</p>}
+          </div>
+        )}
+        {items.length > 0 && (
+          <div class={gridClass}>
+            {items.map((item) => (
+              <ServiceCard {...item} />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}

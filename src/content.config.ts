@@ -101,6 +101,7 @@ export const collections = {
       }),
   }),
 
+  // Customer-type roofing services (residential, commercial).
   "roofing": defineCollection({
     loader: GlobLoad("roofing"),
     schema: ({ image }) =>
@@ -110,8 +111,19 @@ export const collections = {
       }),
   }),
 
-  "decking": defineCollection({
-    loader: GlobLoad("decking"),
+  // Roof-type / capability specialties (flat roofs, coatings, etc.).
+  "roofing-specialties": defineCollection({
+    loader: GlobLoad("roofing-specialties"),
+    schema: ({ image }) =>
+      baseSchema({ image }).extend({
+        price: z.string().optional(),
+        features: z.array(z.string()).default([]),
+      }),
+  }),
+
+  // Additional (non-roofing) services: decking, siding, etc.
+  "additional-services": defineCollection({
+    loader: GlobLoad("additional-services"),
     schema: ({ image }) =>
       baseSchema({ image }).extend({
         price: z.string().optional(),

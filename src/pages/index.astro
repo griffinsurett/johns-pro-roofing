@@ -1,11 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
-import serviceGutter from "../assets/images/service_gutter.png";
-import serviceRoofInstall from "../assets/images/service_roof_install.png";
 import serviceRoofRepair from "../assets/images/service_roof_repair.png";
-import serviceRoofReplace from "../assets/images/service_roof_replace.png";
-import serviceSiding from "../assets/images/service_siding.png";
 
 import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
@@ -22,6 +18,7 @@ const whyChoosePoints = (
 
 // Service-area states (single source of truth) → full-name label for copy.
 const serviceAreaLabel = await getServiceAreaNames();
+
 ---
 
 <BaseLayout
@@ -59,9 +56,9 @@ const serviceAreaLabel = await getServiceAreaNames();
     </section>
 
     {/* Roofing pointers — heading left, copy + stats right (Axel's-style) */}
-    <section class="py-[100px] bg-[var(--color-canvas-secondary)]" id="why-us">
+    <section class="pt-[100px] pb-0 lg:pb-[100px] bg-[var(--color-canvas-secondary)]" id="why-us">
       <div class="container">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="grid lg:grid-cols-2 gap-6 lg:gap-20 items-center">
           {/* Heading */}
           <div>
             <span class="section-pretitle">The John's Pro Difference</span>
@@ -120,143 +117,43 @@ const serviceAreaLabel = await getServiceAreaNames();
       />
     </section>
 
-    <section class="bg-[var(--color-canvas-secondary)] py-[100px] border-t border-[var(--color-border)]" id="services">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-pretitle">Professional Roofing & Decking</span>
-          <h2 class="section-title">Free Estimate Financing Available</h2>
-          <p class="section-description">
-            We provide residential roofing, commercial roofing, flat roof expertise, and custom decking services with premium materials and a straightforward process.
-          </p>
-        </div>
+    {/* ── Roofing: core services + a specialties sub-row, one section ── */}
+    <section class="bg-surface py-[100px] border-t border-border" id="services">
+      <div class="container flex flex-col gap-16">
+        {/* Core roofing (residential + commercial) */}
+        <ContentRenderer
+          query={query("roofing").orderBy(sortByOrder())}
+          variant="ServiceCardVariant"
+          bare={true}
+          columns={2}
+          pretitle="Our Roofing Services"
+          title="Roofing Done Right"
+          description="Residential and commercial roofing — backed by 0% down financing and free estimates."
+        />
 
-        <div class="services-grid">
-          {/* Residential Roofing */}
-          <div class="service-card">
-            <div class="card-image-container">
-              <img
-                src={serviceRoofInstall.src}
-                alt="Residential Roofing Service"
-                class="card-image"
-              />
-              <div class="card-badge">Premium</div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Residential Roofing</h3>
-              <p class="card-text">
-                Full residential roofing services built for lasting protection and clean, dependable results.
-              </p>
-              <a href="#quote-form" class="card-link">
-                Learn More <i class="fa-solid fa-arrow-right-long"></i>
-              </a>
-            </div>
-          </div>
-
-          {/* Commercial Roofing */}
-          <div class="service-card">
-            <div class="card-image-container">
-              <img
-                src={serviceRoofReplace.src}
-                alt="Commercial Roofing Service"
-                class="card-image"
-              />
-              <div class="card-badge">Certified</div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Commercial Roofing</h3>
-              <p class="card-text">
-                Commercial roof replacement and repair work completed with quality materials and careful attention to detail.
-              </p>
-              <a href="#quote-form" class="card-link">
-                Learn More <i class="fa-solid fa-arrow-right-long"></i>
-              </a>
-            </div>
-          </div>
-
-          {/* Flat Roof Experts */}
-          <div class="service-card">
-            <div class="card-image-container">
-              <img
-                src={serviceRoofRepair.src}
-                alt="Flat Roof Experts"
-                class="card-image"
-              />
-              <div class="card-badge">Expert Solutions</div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Flat Roof Experts</h3>
-              <p class="card-text">
-                Specialized flat roof installations, durable silicone coatings, and expert repairs for residential and commercial properties.
-              </p>
-              <a href="#quote-form" class="card-link">
-                Learn More <i class="fa-solid fa-arrow-right-long"></i>
-              </a>
-            </div>
-          </div>
-
-          {/* Roof Repair */}
-          <div class="service-card">
-            <div class="card-image-container">
-              <img
-                src={serviceRoofRepair.src}
-                alt="Roof Repair Service"
-                class="card-image"
-              />
-              <div class="card-badge">24/7 Support</div>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Roof Repair</h3>
-              <p class="card-text">
-                Fast repair service for leaks, storm damage, missing shingles, and flashing issues.
-              </p>
-              <a href="#quote-form" class="card-link">
-                Learn More <i class="fa-solid fa-arrow-right-long"></i>
-              </a>
-            </div>
-          </div>
-
-          {/* Deck Installation */}
-          <div class="service-card">
-            <div class="card-image-container">
-              <img
-                src={serviceSiding.src}
-                alt="Deck Installation Service"
-                class="card-image"
-              />
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Deck Installation</h3>
-              <p class="card-text">
-                Custom deck builds that create durable outdoor living space.
-              </p>
-              <a href="#quote-form" class="card-link">
-                Learn More <i class="fa-solid fa-arrow-right-long"></i>
-              </a>
-            </div>
-          </div>
-
-          {/* Deck Repair */}
-          <div class="service-card">
-            <div class="card-image-container">
-              <img
-                src={serviceGutter.src}
-                alt="Deck Repair Service"
-                class="card-image"
-              />
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Deck Repair</h3>
-              <p class="card-text">
-                Repair loose boards, weather damage, and structural wear on existing decks.
-              </p>
-              <a href="#quote-form" class="card-link">
-                Learn More <i class="fa-solid fa-arrow-right-long"></i>
-              </a>
-            </div>
-          </div>
-        </div>
+        {/* Specialties sub-row (flat roofs, coatings, …) */}
+        <ContentRenderer
+          query={query("roofing-specialties").orderBy(sortByOrder())}
+          variant="ServiceCardVariant"
+          bare={true}
+          subheading={true}
+          columns={2}
+          pretitle="Roofing Specialties"
+          title="Built for Every Roof"
+        />
       </div>
     </section>
+
+    {/* ── Beyond the Roof: non-roofing services (decking, siding) ── */}
+    <ContentRenderer
+      query={query("additional-services").orderBy(sortByOrder())}
+      variant="ServiceCardVariant"
+      id="additional-services"
+      columns={2}
+      pretitle="Other Services"
+      title="Beyond the Roof"
+      description="Custom decking and siding to round out and protect your home's exterior."
+    />
 
     <div id="testimonials" class="pt-[100px]">
 
