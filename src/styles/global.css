@@ -250,6 +250,71 @@ body {
   }
 }
 
+/* ============================================================================
+   Header nav — full-width dropdown band (scoped to .header-navigation).
+   The dropdown drops down flush under the header, spanning the full width,
+   with left-aligned stacked items and divider lines (i75/Flow Right style).
+   Unlayered so it overrides the dropdown's Tailwind utility classes.
+   ============================================================================ */
+@media (min-width: 1024px) {
+  /* Top-level items must NOT be the positioning context, so the dropdown
+     can anchor to the sticky <header> and span full width. */
+  .header-navigation .menu-desktop > ul > li {
+    position: static;
+  }
+
+  /* The dropdown wrapper: full-width band pinned under the header. */
+  .header-navigation .menu-dropdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    margin-top: 0;
+  }
+
+  /* The dropdown list itself spans full width, blue gradient band. */
+  .header-navigation .menu-dropdown > ul {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 16px 32px rgba(5, 24, 48, 0.18);
+    background-image: linear-gradient(
+      120deg,
+      var(--color-brand-navy-dark) 0%,
+      var(--color-brand-navy) 50%,
+      var(--color-brand-navy-light) 100%
+    );
+    background-color: transparent;
+  }
+
+  /* Stacked, left-aligned items with divider lines between them. */
+  .header-navigation .menu-dropdown > ul > li {
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .header-navigation .menu-dropdown > ul > li:first-child {
+    border-top: 0;
+  }
+
+  /* Dropdown links: white text, red on hover (no gradient fill here). */
+  .header-navigation .menu-dropdown .nav-link {
+    width: 100%;
+    padding: 16px 48px;
+    color: var(--color-bg);
+    background-image: none;
+  }
+  .header-navigation .menu-dropdown .nav-link:hover,
+  .header-navigation .menu-dropdown .nav-link:hover * {
+    color: var(--color-accent) !important;
+    background-image: none;
+  }
+}
+
 /* ==========================================================================
    BUTTONS
    ========================================================================== */
