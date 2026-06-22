@@ -7,5 +7,13 @@
     "order": 0,
     "openInNewTab": false,
     "menu": ["main-menu", "links-menu", "footer-menu"]
+  },
+  {
+    "id": "resources",
+    "title": "Resources",
+    "description": "Company info, FAQs, and helpful guides",
+    "order": 40,
+    "openInNewTab": false,
+    "menu": "main-menu"
   }
 ]

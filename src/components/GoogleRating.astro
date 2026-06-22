@@ -24,7 +24,8 @@ const {
 const href = (siteData as any).googleReviewsUrl ?? "/testimonials";
 const isExternal = href.startsWith("http");
 const numberClass = tone === "dark" ? "text-white" : "text-primary";
-const countClass = tone === "dark" ? "text-white/75" : "text-text-muted";
+// light tone: use text (charcoal ~10:1 on white) not muted (~4:1, fails AA)
+const countClass = tone === "dark" ? "text-white/90" : "text-text";
 ---
 
 <a
