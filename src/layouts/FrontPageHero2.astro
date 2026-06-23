@@ -11,7 +11,7 @@ import { Image } from "astro:assets";
 import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
 import GoogleRating from "@/components/GoogleRating.astro";
-import bgImage from "@/assets/images/hero_worker.png";
+import bgImage from "@/assets/images/service_roof_install.png";
 import personImage from "@/assets/john-pointing.png";
 
 export interface Props {
@@ -59,9 +59,9 @@ const {
   id={id}
   class={`relative overflow-hidden bg-surface lg:min-h-[clamp(560px,85vh,900px)] ${className}`}
 >
-  {/* ── Background image + white overlay. Behind the text on all sizes so the
-        mobile text panel has the same translucency as desktop. ── */}
-  <div class="absolute inset-0">
+  {/* ── Background image + white overlay. Covers the full section on desktop;
+        on mobile it only fills the top text panel (the video stacks below). ── */}
+  <div class="absolute inset-x-0 top-0 bottom-[300px] sm:bottom-[380px] lg:bottom-0">
     <Image
       src={image}
       alt=""
@@ -75,7 +75,7 @@ const {
     {/* White overlay so the panel reads light for dark text. Mobile uses the
         same opacity range as desktop, just top→bottom instead of left→right. */}
     <div
-      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.72)_45%,rgba(255,255,255,0.5)_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.72)_45%,rgba(255,255,255,0.5)_100%)]"
+      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.9)_45%,rgba(255,255,255,0.82)_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.72)_45%,rgba(255,255,255,0.5)_100%)]"
     >
     </div>
   </div>
