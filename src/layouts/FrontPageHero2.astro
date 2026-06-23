@@ -60,8 +60,9 @@ const {
   class={`relative overflow-hidden bg-surface lg:min-h-[clamp(560px,85vh,900px)] ${className}`}
 >
   {/* ── Background image + white overlay. Covers the full section on desktop;
-        on mobile it only fills the top text panel (the video stacks below). ── */}
-  <div class="absolute inset-x-0 top-0 bottom-[300px] sm:bottom-[380px] lg:bottom-0">
+        on mobile it only fills the tall top text panel (the video stacks
+        below it, off the initial frame). Height matches the panel's min-h. ── */}
+  <div class="absolute inset-x-0 top-0 h-[88vh] lg:h-auto lg:inset-0">
     <Image
       src={image}
       alt=""
@@ -110,7 +111,7 @@ const {
   {/* ── Content. Desktop: overlaid left. Mobile: stacked text block on top ── */}
   <div class="relative z-[3] w-full max-w-[1600px] mx-auto px-6 lg:px-12">
     <div
-      class="flex flex-col justify-center items-start gap-5 max-w-[560px] py-12 lg:py-16 lg:min-h-[clamp(560px,85vh,900px)]"
+      class="flex flex-col justify-center items-start gap-5 max-w-[560px] py-12 lg:py-16 min-h-[88vh] lg:min-h-[clamp(560px,85vh,900px)]"
     >
       {
         eyebrow && (
@@ -151,8 +152,8 @@ const {
     </div>
   </div>
 
-  {/* ── Mobile media banner (below lg): video only, no cut-out person ── */}
-  <div class="lg:hidden relative w-full h-[300px] sm:h-[380px]">
+  {/* ── Mobile media banner (below lg): landscape video, no cut-out person ── */}
+  <div class="lg:hidden relative w-full aspect-video">
     <video
       class="absolute inset-0 w-full h-full object-cover"
       autoplay
