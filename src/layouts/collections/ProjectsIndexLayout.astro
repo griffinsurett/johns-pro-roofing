@@ -7,6 +7,7 @@
 import type { CollectionKey } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SecondaryHero from "@/layouts/SecondaryHero.astro";
+import Icon from "@/components/Icon";
 import { getPublishedCollection } from "@/utils/collections/core";
 
 export interface Props {
@@ -102,7 +103,7 @@ const categoryImages: Record<string, string> = {
                   <div class="project-index-body">
                     <div class="project-index-meta">
                       <span class="project-index-location">
-                        <i class="fa-solid fa-location-dot"></i> {location}
+                        <Icon icon="fa6:location-dot" size="sm" /> {location}
                       </span>
                     </div>
                     <h3 class="project-index-title">{project.data.title}</h3>
@@ -126,7 +127,7 @@ const categoryImages: Record<string, string> = {
             <h3 class="projects-empty-title">Projects Coming Soon</h3>
             <p class="projects-empty-desc">We're documenting our latest work — check back soon to see completed projects.</p>
             <a href="tel:7323513518" class="btn btn-accent">
-              Get a Free Estimate <i class="fa-solid fa-phone ml-2"></i>
+              Get a Free Estimate <Icon icon="fa6:phone" size="sm" className="ml-2" />
             </a>
           </div>
         )}
@@ -138,7 +139,7 @@ const categoryImages: Record<string, string> = {
             <p class="projects-cta-desc">Get a free, no-obligation estimate from our team today.</p>
           </div>
           <a href="tel:7323513518" class="btn btn-accent btn-large">
-            Call Now — 732-351-3518 <i class="fa-solid fa-phone"></i>
+            Call Now — 732-351-3518 <Icon icon="fa6:phone" size="sm" />
           </a>
         </div>
       </div>
