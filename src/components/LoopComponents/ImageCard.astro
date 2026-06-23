@@ -5,6 +5,7 @@
  * title / description / link below. Consumes a prepared collection item
  * (title, description, resolved `url`, `featuredImage`). Tailwind inline.
  */
+import Icon from "@/components/Icon";
 
 export interface Props {
   title: string;
@@ -57,7 +58,7 @@ const Tag = url ? "a" : "div";
       url && (
         <span class="inline-flex items-center gap-1.5 font-[family-name:var(--font-headings)] text-sm font-bold uppercase tracking-wide text-primary transition-colors duration-200 group-hover:text-accent">
           {ctaText}
-          <i class="fa-solid fa-arrow-right-long transition-transform duration-300 group-hover:translate-x-1" />
+          <Icon icon="fa6:arrow-right-long" size="sm" className="transition-transform duration-300 group-hover:translate-x-1" />
         </span>
       )
     }
