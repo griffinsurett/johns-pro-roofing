@@ -5,7 +5,7 @@ import serviceRoofRepair from "../assets/images/service_roof_repair.png";
 
 import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { query, sortByOrder } from "@/utils/query";
+import { query, sortByOrder, roots } from "@/utils/query";
 import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
 import AboutIntro from "@/components/AboutIntro.astro";
@@ -101,6 +101,28 @@ const serviceAreaLabel = await getServiceAreaNames();
       </div>
     </section>
 
+    {/* Services callout — red-gradient photo band with a numbered list.
+        Only Roofing links (has a page); decking/siding are plain entries. */}
+    <ContentRenderer
+      query={query("services").orderBy(sortByOrder())}
+      variant="ServiceCalloutVariant"
+      pretitle="Our Services"
+      title="Built to Protect Your Home"
+      description="Full-service exterior work done right the first time — quality materials, honest pricing, and a crew that treats your property like its own."
+      id="services"
+    />
+
+    {/* Full roofing services list (rows with arrow CTAs). */}
+    <ContentRenderer
+      query={query("roofing")
+        .where((entry) => Boolean(entry.data.cardSize))
+        .orderBy(sortByOrder())}
+      variant="ServiceListVariant"
+      title="Roofing Services"
+      className="!border-t-0"
+      id="roofing-services"
+    />
+
     <section id="projects">
       <ContentRenderer
         query={query("projects")
@@ -116,44 +138,6 @@ const serviceAreaLabel = await getServiceAreaNames();
         showButtonSection={false}
       />
     </section>
-
-    {/* ── Roofing: core services + a specialties sub-row, one section ── */}
-    <section class="bg-surface py-[100px] border-t border-border" id="services">
-      <div class="container flex flex-col gap-16">
-        {/* Core roofing (residential + commercial) */}
-        <ContentRenderer
-          query={query("roofing").orderBy(sortByOrder())}
-          variant="ServiceCardVariant"
-          bare={true}
-          columns={2}
-          pretitle="Our Roofing Services"
-          title="Roofing Done Right"
-          description="Residential and commercial roofing — backed by 0% down financing and free estimates."
-        />
-
-        {/* Specialties sub-row (flat roofs, coatings, …) */}
-        <ContentRenderer
-          query={query("roofing-specialties").orderBy(sortByOrder())}
-          variant="ServiceCardVariant"
-          bare={true}
-          subheading={true}
-          columns={2}
-          pretitle="Roofing Specialties"
-          title="Built for Every Roof"
-        />
-      </div>
-    </section>
-
-    {/* ── Beyond the Roof: non-roofing services (decking, siding) ── */}
-    <ContentRenderer
-      query={query("additional-services").orderBy(sortByOrder())}
-      variant="ServiceCardVariant"
-      id="additional-services"
-      columns={2}
-      pretitle="Other Services"
-      title="Beyond the Roof"
-      description="Custom decking and siding to round out and protect your home's exterior."
-    />
 
     <div id="testimonials" class="pt-[100px]">
 

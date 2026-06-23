@@ -101,31 +101,33 @@ export const collections = {
       }),
   }),
 
-  // Customer-type roofing services (residential, commercial).
+  // Roofing services — a single collection with a parent/child hierarchy
+  // (e.g. Residential Roofing → Residential Roof Repair).
   "roofing": defineCollection({
     loader: GlobLoad("roofing"),
     schema: ({ image }) =>
       baseSchema({ image }).extend({
         price: z.string().optional(),
         features: z.array(z.string()).default([]),
+        // Homepage service-grid presentation overrides
+        cardSize: z.enum(["large", "small"]).optional(),
+        cardTitle: z.string().optional(),
+        cardCta: z.string().optional(),
+        cardBlurb: z.string().optional(),
+        badge: z.string().optional(),
       }),
   }),
 
-  // Roof-type / capability specialties (flat roofs, coatings, etc.).
-  "roofing-specialties": defineCollection({
-    loader: GlobLoad("roofing-specialties"),
+  // Top-level services shown as cards on the homepage: roofing, decking,
+  // siding. Only roofing has a page (links to the roofing collection index);
+  // decking/siding are page-less and render as non-linking cards.
+  "services": defineCollection({
+    loader: GlobLoad("services"),
     schema: ({ image }) =>
       baseSchema({ image }).extend({
-        price: z.string().optional(),
-        features: z.array(z.string()).default([]),
-      }),
-  }),
-
-  // Additional (non-roofing) services: decking, siding, etc.
-  "additional-services": defineCollection({
-    loader: GlobLoad("additional-services"),
-    schema: ({ image }) =>
-      baseSchema({ image }).extend({
+        // Explicit link target (e.g. roofing → /roofing). Page-less services
+        // (decking, siding) omit this and render as non-linking cards.
+        url: z.string().optional(),
         price: z.string().optional(),
         features: z.array(z.string()).default([]),
       }),

@@ -1,21 +1,23 @@
 ---
 title: "Roofing"
-description: "Residential and commercial roofing services"
+description: "Residential, commercial, and specialty roofing services"
 hasPage: true
 itemsHasPage: true
+itemsChildHasPage: true
 itemsRootPath: false
 itemsAddToMenu:
   - menu: "main-menu"
 addToMenu:
   - menu: "main-menu"
+    parent: "services"
     order: 1
   - menu: "footer-menu"
 ---
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { query, sortByOrder } from "@/utils/query";
+import { roots } from "@/utils/query";
 
 <ContentRenderer
-  query={query("roofing").orderBy(sortByOrder())}
+  query={roots("roofing")}
   variant="GridVariant"
   columns={2}
   gap="lg"

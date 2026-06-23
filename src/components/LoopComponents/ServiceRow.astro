@@ -1,0 +1,41 @@
+---
+// src/components/LoopComponents/ServiceRow.astro
+/**
+ * Service Row — editorial full-width row for a service.
+ * Title (left) · description (center) · arrow-circle (right), hairline divider.
+ * Consumes a prepared collection item (title, description, resolved url).
+ */
+import Icon from "@/components/Icon";
+
+export interface Props {
+  title: string;
+  description?: string;
+  url?: string;
+}
+
+const { title, description, url } = Astro.props as Props;
+const Tag = url ? "a" : "div";
+---
+
+<li class="border-b border-heading/12">
+  <Tag
+    href={url}
+    class="group grid gap-4 py-8 md:py-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)_4.5rem] lg:items-center lg:gap-10"
+  >
+    <h3 class="font-heading font-extrabold uppercase text-heading text-[clamp(26px,3vw,38px)] leading-[1.05] transition-colors duration-200 group-hover:text-primary">
+      {title}
+    </h3>
+    {
+      description && (
+        <p class="max-w-3xl text-base md:text-lg leading-relaxed text-[var(--color-text-muted)]">
+          {description}
+        </p>
+      )
+    }
+    <span class="inline-flex items-center justify-start lg:justify-end">
+      <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-bg transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:bg-accent">
+        <Icon icon="lu:arrow-up-right" size="lg" className="text-current" />
+      </span>
+    </span>
+  </Tag>
+</li>

@@ -1,0 +1,131 @@
+---
+// src/components/ContentRenderer/variants/ServiceCalloutVariant.astro
+/**
+ * Service Callout Variant — photo band with a left-anchored red gradient
+ * (opaque left → transparent right) and a numbered list of services, matching
+ * the homepage "Ready for a better roof?" CTA treatment.
+ *
+ * The background is a cross-fading slideshow of the queried services' featured
+ * images (CSS-only; freezes on the first image for reduced-motion users).
+ * Items with a resolved url (e.g. roofing) render as links; page-less ones
+ * (decking, siding) render as plain list entries.
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import Button from "@/components/Button/Button";
+
+interface Props extends BaseVariantProps {
+  pretitle?: string;
+  /** Optional CTA button under the list. */
+  ctaText?: string;
+  ctaLink?: string;
+}
+
+const {
+  items = [],
+  title,
+  description,
+  pretitle,
+  className = "",
+  ctaText,
+  ctaLink,
+  id,
+} = Astro.props as Props;
+
+const safeItems = Array.isArray(items) ? items : [];
+
+/** Resolve a prepared item's featuredImage (Astro image object or string) to a src. */
+function imgSrc(featuredImage: any): string {
+  return typeof featuredImage === "string"
+    ? featuredImage
+    : (featuredImage?.src?.src ?? featuredImage?.src ?? "");
+}
+
+const slides = safeItems.map((i) => imgSrc(i.featuredImage)).filter(Boolean);
+// One full cycle = N slides × time-per-slide; used to stagger each layer's delay.
+const perSlide = 5; // seconds each image is featured
+const cycle = Math.max(slides.length, 1) * perSlide;
+---
+
+<section id={id} class={`relative overflow-hidden ${className}`}>
+  {/* Background slideshow: stacked images cross-fading on a loop */}
+  {slides.length > 0 && (
+    <div class="absolute inset-0" aria-hidden="true">
+      {slides.map((src, i) => (
+        <img
+          src={src}
+          alt=""
+          class="svc-slide absolute inset-0 w-full h-full object-cover"
+          style={`animation-duration:${cycle}s; animation-delay:${i * perSlide}s;`}
+        />
+      ))}
+    </div>
+  )}
+  {/* Red gradient overlay: opaque on the left, fading to transparent on the right */}
+  <div
+    class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_30%,color-mix(in_oklab,var(--color-accent)_55%,transparent)_62%,transparent_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="container relative z-10 py-[80px] lg:py-[100px]">
+    <div class="max-w-[640px] text-bg">
+      {pretitle && <span class="section-pretitle !text-bg">{pretitle}</span>}
+      {title && (
+        <h2 class="section-title !text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] mb-4">
+          {title}
+        </h2>
+      )}
+      {description && (
+        <p class="text-bg/90 text-lg leading-relaxed mb-8 max-w-[480px]">{description}</p>
+      )}
+
+      {safeItems.length > 0 && (
+        <ul class="flex flex-col gap-5 mb-10 list-none">
+          {safeItems.map((item, i) => (
+            <li class="flex items-center gap-4">
+              <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
+                {i + 1}
+              </span>
+              <span class="text-bg text-lg font-semibold">{item.title}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {ctaText && ctaLink && (
+        <Button variant="gradient" size="lg" href={ctaLink}>{ctaText}</Button>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Each slide starts hidden and is faded up only during its own window
+     (≈ first third of the shared cycle), staggered via animation-delay. */
+  .svc-slide {
+    opacity: 0;
+    animation-name: svc-slide-fade;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    will-change: opacity;
+  }
+
+  @keyframes svc-slide-fade {
+    0%   { opacity: 0; }
+    4%   { opacity: 1; }
+    29%  { opacity: 1; }
+    33%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* Reduced motion: no slideshow — show only the first image. */
+  @media (prefers-reduced-motion: reduce) {
+    .svc-slide {
+      animation: none;
+      opacity: 0;
+    }
+    .svc-slide:first-child {
+      opacity: 1;
+    }
+  }
+</style>

@@ -275,7 +275,6 @@ body {
     padding: 0;
     border: 0;
     border-radius: 10px;
-    overflow: hidden;
     box-shadow: 0 16px 32px rgba(5, 24, 48, 0.18);
     background-image: linear-gradient(
       120deg,
@@ -284,6 +283,26 @@ body {
       var(--color-brand-navy-light) 100%
     );
     background-color: transparent;
+  }
+
+  /* ── Nested (level-2+) submenu: fly out to the right of its parent item,
+        not below. Bridge the gap horizontally so hover holds. ── */
+  .header-navigation .menu-dropdown .menu-item {
+    position: relative;
+  }
+  .header-navigation .menu-dropdown .menu-dropdown {
+    top: 0;
+    left: 100%;
+    padding-top: 0;
+    padding-left: 8px;
+    z-index: 10;
+  }
+  /* The level-2 parent item shows a right-chevron instead of down. */
+  .header-navigation .menu-dropdown .menu-item > .nav-link .menu-arrow {
+    transform: rotate(-90deg);
+  }
+  .header-navigation .menu-dropdown .menu-item:hover > .nav-link .menu-arrow {
+    transform: rotate(-90deg);
   }
 
   /* Stacked, left-aligned items with divider lines between them. */

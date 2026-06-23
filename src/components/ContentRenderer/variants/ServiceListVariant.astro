@@ -1,0 +1,47 @@
+---
+// src/components/ContentRenderer/variants/ServiceListVariant.astro
+/**
+ * Service List Variant — editorial row list (Hymanson "Our Expertise" style).
+ * Each item is a full-width row: title · description · arrow, with hairline
+ * dividers. Driven by a collection query.
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import ServiceRow from "@/components/LoopComponents/ServiceRow.astro";
+
+interface Props extends BaseVariantProps {
+  pretitle?: string;
+}
+
+const {
+  items = [],
+  title,
+  description,
+  pretitle,
+  className = "",
+  id,
+} = Astro.props as Props;
+---
+
+<section id={id} class={`py-[100px] border-t border-border ${className}`}>
+  <div class="container">
+    {
+      (pretitle || title || description) && (
+        <div class="section-header">
+          {pretitle && <span class="section-pretitle">{pretitle}</span>}
+          {title && <h2 class="section-title">{title}</h2>}
+          {description && <p class="section-description">{description}</p>}
+        </div>
+      )
+    }
+
+    {
+      items.length > 0 && (
+        <ul class="mt-12 border-t border-heading/12 list-none [&>li:last-child]:border-b-0">
+          {items.map((item) => (
+            <ServiceRow {...item} />
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</section>

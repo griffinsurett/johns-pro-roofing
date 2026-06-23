@@ -23,16 +23,22 @@ const {
 
 const href = (siteData as any).googleReviewsUrl ?? "/testimonials";
 const isExternal = href.startsWith("http");
-const numberClass = tone === "dark" ? "text-white" : "text-primary";
+const isDark = tone === "dark";
+const numberClass = isDark ? "text-black" : "text-primary";
 // light tone: use text (charcoal ~10:1 on white) not muted (~4:1, fails AA)
-const countClass = tone === "dark" ? "text-white/90" : "text-text";
+const countClass = isDark ? "text-black" : "text-text";
+// dark tone: clean/borderless black text; a soft white halo keeps the text +
+// the colored G/stars legible over the light hero photo (no heavy pill).
+const wrapClass = isDark
+  ? "inline-flex items-center gap-3 [filter:drop-shadow(0_0_4px_rgba(255,255,255,0.85))]"
+  : "inline-flex items-center gap-3";
 ---
 
 <a
   href={href}
   target={isExternal ? "_blank" : undefined}
   rel={isExternal ? "noopener noreferrer" : undefined}
-  class={`inline-flex items-center gap-3 ${className}`}
+  class={`${wrapClass} ${className}`}
   aria-label={`Rated ${rating} out of 5 from ${count} Google reviews`}
 >
   <span class={`text-sm font-medium leading-none whitespace-nowrap ${countClass}`}>{count} Reviews</span>

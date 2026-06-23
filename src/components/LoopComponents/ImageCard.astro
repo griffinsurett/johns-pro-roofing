@@ -1,0 +1,65 @@
+---
+// src/components/LoopComponents/ImageCard.astro
+/**
+ * Image Card — image-forward tile: prominent rounded image on top, centered
+ * title / description / link below. Consumes a prepared collection item
+ * (title, description, resolved `url`, `featuredImage`). Tailwind inline.
+ */
+
+export interface Props {
+  title: string;
+  description?: string;
+  url?: string;
+  featuredImage?: any;
+  ctaText?: string;
+}
+
+const {
+  title,
+  description,
+  url,
+  featuredImage,
+  ctaText = "Learn More",
+} = Astro.props as Props;
+
+const imgSrc =
+  typeof featuredImage === "string"
+    ? featuredImage
+    : (featuredImage?.src?.src ?? featuredImage?.src ?? "");
+
+const Tag = url ? "a" : "div";
+---
+
+<Tag href={url} class="group flex flex-col text-center">
+  {
+    imgSrc && (
+      <div class="relative overflow-hidden rounded-2xl aspect-[4/3] shadow-[var(--shadow-md)]">
+        <img
+          src={imgSrc}
+          alt={title}
+          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+        />
+      </div>
+    )
+  }
+  <div class="flex flex-col items-center gap-3 pt-6">
+    <h3 class="text-[22px] font-bold text-heading transition-colors duration-200 group-hover:text-accent">
+      {title}
+    </h3>
+    {
+      description && (
+        <p class="text-[var(--color-text-muted)] text-sm leading-relaxed max-w-[360px]">
+          {description}
+        </p>
+      )
+    }
+    {
+      url && (
+        <span class="inline-flex items-center gap-1.5 font-[family-name:var(--font-headings)] text-sm font-bold uppercase tracking-wide text-primary transition-colors duration-200 group-hover:text-accent">
+          {ctaText}
+          <i class="fa-solid fa-arrow-right-long transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
+      )
+    }
+  </div>
+</Tag>

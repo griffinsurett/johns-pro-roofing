@@ -45,7 +45,7 @@ const {
   titleAfter = "the First Time.",
   description,
   image = bgImage,
-  video = "/hero.mp4",
+  video = "/placeholder-vid.mp4",
   person = personImage,
   personAlt = "John's Pro Roofing crew member pointing at a finished roof",
   primaryCTA = { text: "Get a Free Quote", link: "/contact-us" },
@@ -130,7 +130,7 @@ const {
 
       {
         description && (
-          <p class="text-muted text-base lg:text-lg leading-relaxed max-w-[460px]">
+          <p class="text-[var(--color-text-muted)] text-base lg:text-lg leading-relaxed max-w-[460px]">
             {description}
           </p>
         )
@@ -147,11 +147,11 @@ const {
         <PhoneLink variant="phone" tone="blue" size="lg" />
       </div>
 
-      {googleRating && <GoogleRating tone="light" />}
+      {googleRating && <GoogleRating tone="dark" />}
     </div>
   </div>
 
-  {/* ── Mobile media banner (below lg): video with the person composited in ── */}
+  {/* ── Mobile media banner (below lg): video only, no cut-out person ── */}
   <div class="lg:hidden relative w-full h-[300px] sm:h-[380px]">
     <video
       class="absolute inset-0 w-full h-full object-cover"
@@ -165,14 +165,6 @@ const {
       <source src={video} type="video/mp4" />
     </video>
     <div class="absolute inset-0 bg-primary/15"></div>
-    <Image
-      src={person}
-      alt={personAlt}
-      widths={[480, 720]}
-      sizes="(max-width: 640px) 70vw, 50vw"
-      class="absolute bottom-0 left-1/2 -translate-x-1/2 h-full w-auto object-contain object-bottom pointer-events-none"
-      loading="eager"
-    />
   </div>
 </section>
 

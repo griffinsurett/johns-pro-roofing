@@ -1,0 +1,55 @@
+---
+// src/components/ContentRenderer/variants/ImageCardVariant.astro
+/**
+ * Image Card Variant — image-forward card grid (centered text under a large
+ * rounded image). Driven by a collection query. Used for the additional
+ * services (decking, siding) section.
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import ImageCard from "@/components/LoopComponents/ImageCard.astro";
+
+interface Props extends BaseVariantProps {
+  pretitle?: string;
+  columns?: 2 | 3 | 4;
+}
+
+const {
+  items = [],
+  title,
+  description,
+  pretitle,
+  className = "",
+  columns = 3,
+  id,
+} = Astro.props as Props;
+
+const columnClasses = {
+  2: "grid-cols-1 md:grid-cols-2 max-w-[900px] mx-auto",
+  3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+};
+---
+
+<section id={id} class={`py-[100px] border-t border-border ${className}`}>
+  <div class="container">
+    {
+      (pretitle || title || description) && (
+        <div class="section-header">
+          {pretitle && <span class="section-pretitle">{pretitle}</span>}
+          {title && <h2 class="section-title">{title}</h2>}
+          {description && <p class="section-description">{description}</p>}
+        </div>
+      )
+    }
+
+    {
+      items.length > 0 && (
+        <div class={`grid gap-8 ${columnClasses[columns]}`}>
+          {items.map((item) => (
+            <ImageCard {...item} />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
