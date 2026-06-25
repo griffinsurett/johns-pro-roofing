@@ -1,0 +1,88 @@
+---
+// src/components/CtaBanner.astro
+/**
+ * CtaBanner — bottom-of-page call to action: photo background with a red
+ * gradient (opaque left → transparent right), a numbered list of the top
+ * selling points, and an estimate CTA + phone link.
+ *
+ * Self-contained so it can drop onto any page (homepage, collection pages)
+ * without copying markup. Pulls its own selling points from the content
+ * collection and imports its own background image.
+ */
+import { query, sortByOrder } from "@/utils/query";
+import Button from "@/components/Button/Button";
+import PhoneLink from "@/components/PhoneLink.astro";
+import serviceRoofRepair from "@/assets/images/service_roof_repair.png";
+
+interface Props {
+  id?: string;
+  title?: string; // text before the accent word
+  accent?: string; // emphasized (non-italic) word mid-headline
+  titleAfter?: string; // text after the accent word
+  description?: string;
+  count?: number; // how many selling points to list
+}
+
+const {
+  id = "quote-form",
+  title = "Ready for a",
+  accent = "better",
+  titleAfter = "roof?",
+  description = "Our unmatched benefits that set us apart and ensure your peace of mind.",
+  count = 4,
+} = Astro.props as Props;
+
+// Top selling points for the numbered benefits list.
+const points = (
+  await query("selling-points").orderBy(sortByOrder()).all()
+).slice(0, count);
+---
+
+<section class="relative overflow-hidden" id={id}>
+  {/* Background photo */}
+  <img
+    src={serviceRoofRepair.src}
+    alt=""
+    aria-hidden="true"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  {/* Red gradient overlay: opaque on the left, fading to transparent on the right */}
+  <div
+    class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_30%,color-mix(in_oklab,var(--color-accent)_55%,transparent)_62%,transparent_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="container relative z-10 py-[100px]">
+    <div class="max-w-[640px] text-bg">
+      <h2 class="section-title !text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] mb-4">
+        {title}
+        <span class="not-italic font-[family-name:var(--font-body)]"> {accent} </span>
+        {titleAfter}
+      </h2>
+      <p class="text-bg/90 text-lg leading-relaxed mb-8 max-w-[480px]">
+        {description}
+      </p>
+
+      <ul class="flex flex-col gap-5 mb-10">
+        {
+          points.map((point, i) => (
+            <li class="flex items-center gap-4">
+              <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
+                {i + 1}
+              </span>
+              <span class="text-bg text-lg font-semibold">{point.data.title}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <Button variant="gradient" size="lg" href="/contact-us">
+          Request an Estimate
+        </Button>
+        <PhoneLink variant="phone" tone="white" size="lg" />
+      </div>
+    </div>
+  </div>
+</section>

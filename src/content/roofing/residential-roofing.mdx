@@ -15,4 +15,14 @@ features:
   - "Full replacements"
   - "Storm damage restoration"
 ---
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { children } from "@/utils/query/snippets";
+
 Residential roofing built for long-term protection, clean installation, and reliable workmanship from start to finish.
+
+{/* Child services under Residential Roofing. */}
+<ContentRenderer
+  query={children("roofing", "residential-roofing")}
+  variant="ServiceListVariant"
+  title="Residential Roofing Services"
+/>

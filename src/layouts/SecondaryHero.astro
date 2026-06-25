@@ -1,24 +1,30 @@
 ---
 // src/layouts/SecondaryHero.astro
 /**
- * Secondary Hero Layout
+ * Secondary Hero — interior page hero, styled to match the John's Pro Roofing
+ * brand (mirrors the homepage FrontPageHero2 pattern):
+ *  - brand image background with a white left-light gradient overlay so the
+ *    panel reads light for dark navy text (NOT a black scrim)
+ *  - accent-red eyebrow + navy extrabold italic uppercase headline
+ *    (the same `.section-title` treatment used across the site)
+ *  - optional post metadata row (date / author / reading time)
  *
- * Full-width hero with optimized background media support.
- * Uses BackgroundMedia component for responsive image optimization.
- *
- * Features:
- * - Responsive background images (mobile/tablet/desktop)
- * - Automatic LCP optimization with aboveTheFold
- * - Gradient overlay for text readability
- * - Optional metadata display (date, author, reading time)
+ * Used by every collection item & index layout, so restyling here rebrands all
+ * interior page heroes at once.
  */
 
+import { Image } from "astro:assets";
 import { getAuthorName } from "@/layouts/collections/helpers/layoutHelpers";
-import BackgroundMedia from "@/components/BackgroundMedia.astro";
-import backgroundSvg from "@/assets/background.jpg";
+import defaultImage from "@/assets/images/service_roof_install.png";
+
+type Heading = string | { before?: string; text?: string; after?: string };
 
 export interface Props {
   title: string;
+  /** Main H1 override — the sought-after heading. Falls back to `title`.
+   *  Supports a segmented form `{ before, text, after }` where `text` is the
+   *  accent-red emphasis. */
+  heading?: Heading;
   eyebrow?: string;
   description?: string;
   image?: any; // Astro image asset or public path
@@ -31,6 +37,7 @@ export interface Props {
 
 const {
   title,
+  heading,
   eyebrow,
   description,
   image,
@@ -38,131 +45,123 @@ const {
   author,
   readingTime,
   className = "",
-  minHeight = "60vh",
+  minHeight = "clamp(360px,52vh,560px)",
 } = Astro.props;
 
-// Prepare optimized background media
-const backgroundMedia = {
-  image: {
-    src: image || backgroundSvg,
-    imageClass: "bg-cover bg-center",
-    aboveTheFold: true, // Automatic LCP optimization
-  },
-  overlayClass: "bg-gradient-to-b from-black/40 via-black/50 to-black/70",
-};
+const bg = image || defaultImage;
+const hasMeta = Boolean(publishDate || author || readingTime);
+
+// The H1 prefers `heading` (string or segmented) and falls back to `title`.
+const headingObj =
+  heading && typeof heading === "object" ? heading : undefined;
+const headingStr =
+  typeof heading === "string" && heading.trim() ? heading : undefined;
 ---
 
-<section class={`relative ${className}`}>
+<section
+  class={`relative overflow-hidden bg-surface ${className}`}
+  style={`min-height: ${minHeight}`}
+>
+  {/* Brand image background + white left-light gradient (reads light for dark text) */}
+  <div class="absolute inset-0">
+    {
+      typeof bg === "string" ? (
+        <img
+          src={bg}
+          alt=""
+          aria-hidden="true"
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+        />
+      ) : (
+        <Image
+          src={bg}
+          alt=""
+          aria-hidden="true"
+          widths={[960, 1280, 1600]}
+          sizes="100vw"
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+        />
+      )
+    }
+    <div
+      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(255,255,255,0.88)_55%,rgba(255,255,255,0.78)_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.82)_48%,rgba(255,255,255,0.55)_100%)]"
+    >
+    </div>
+  </div>
+
+  {/* Content — left-aligned, matching the homepage hero */}
   <div
-    class="relative flex items-center justify-center overflow-hidden"
+    class="relative z-10 container flex flex-col justify-center items-start gap-4 py-16 lg:py-20"
     style={`min-height: ${minHeight}`}
   >
-    {/* Optimized background with overlay */}
-    <BackgroundMedia backgroundMedia={backgroundMedia} />
+    {eyebrow && <span class="section-pretitle">{eyebrow}</span>}
 
-    {/* Hero content */}
-    <div class="relative container mx-auto px-4 py-16 md:py-24 z-10">
-      <div class="max-w-4xl mx-auto text-center text-bg">
-        {
-          eyebrow && (
-            <p class="inline-flex items-center justify-center px-5 py-2 mb-6 rounded-full border border-bg/60 text-sm md:text-base font-semibold tracking-[0.28em] uppercase text-bg/95">
-              {eyebrow}
-            </p>
-          )
-        }
+    <h1
+      class="section-title !mb-0 !text-[clamp(36px,6vw,56px)] leading-[1.05] [text-wrap:balance]"
+    >
+      {
+        headingObj ? (
+          <>
+            {headingObj.before && <span>{headingObj.before} </span>}
+            {headingObj.text && (
+              <span class="not-italic text-accent">{headingObj.text}</span>
+            )}
+            {headingObj.after && <span> {headingObj.after}</span>}
+          </>
+        ) : (
+          headingStr ?? title
+        )
+      }
+    </h1>
 
-        <h1
-          class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 drop-shadow-lg"
-        >
-          {title}
-        </h1>
+    {
+      description && (
+        <p class="text-[var(--color-text-muted)] text-lg leading-relaxed max-w-[560px] mt-1">
+          {description}
+        </p>
+      )
+    }
 
-        {
-          description && (
-            <p class="text-xl md:text-2xl mb-8 opacity-95 drop-shadow-md leading-relaxed">
-              {description}
-            </p>
-          )
-        }
+    {
+      hasMeta && (
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-3 text-sm font-medium text-[var(--color-text-muted)]">
+          {publishDate && (
+            <time
+              datetime={new Date(publishDate).toISOString()}
+              class="flex items-center gap-2"
+            >
+              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {new Date(publishDate).toLocaleDateString()}
+            </time>
+          )}
 
-        {/* Metadata row with icons */}
-        {
-          (publishDate || author || readingTime) && (
-            <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-base text-bg/90">
-              {publishDate && (
-                <time
-                  datetime={new Date(publishDate).toISOString()}
-                  class="flex items-center gap-2"
-                >
-                  <svg
-                    class="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  {new Date(publishDate).toLocaleDateString()}
-                </time>
-              )}
+          {author && (
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              By {getAuthorName(author)}
+            </span>
+          )}
 
-              {author && (
-                <span class="flex items-center gap-2">
-                  <svg
-                    class="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                  By {getAuthorName(author)}
-                </span>
-              )}
-
-              {readingTime && (
-                <span class="flex items-center gap-2">
-                  <svg
-                    class="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  {readingTime} min read
-                </span>
-              )}
-            </div>
-          )
-        }
-      </div>
-    </div>
+          {readingTime && (
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {readingTime} min read
+            </span>
+          )}
+        </div>
+      )
+    }
   </div>
 
   {/* Optional slot for additional content below hero */}
   <slot />
 </section>
-
-<style>
-  /* Ensure text is readable on all backgrounds */
-  h1,
-  p {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  }
-</style>

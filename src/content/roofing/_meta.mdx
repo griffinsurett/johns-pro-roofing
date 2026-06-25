@@ -1,5 +1,6 @@
 ---
 title: "Roofing"
+heading: "Our Roofing Services"
 description: "Residential, commercial, and specialty roofing services"
 hasPage: true
 itemsHasPage: true
@@ -14,11 +15,24 @@ addToMenu:
   - menu: "footer-menu"
 ---
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { roots } from "@/utils/query";
+import CtaBanner from "@/components/CtaBanner.astro";
+import { roots, query, sortByOrder } from "@/utils/query";
 
+{/* Full roofing services list (rows with arrow CTAs) — same style as the homepage. */}
 <ContentRenderer
   query={roots("roofing")}
-  variant="GridVariant"
-  columns={2}
-  gap="lg"
+  variant="ServiceListVariant"
 />
+
+{/* Testimonials carousel — same as the homepage. */}
+<div id="testimonials" class="pt-[100px]">
+  <ContentRenderer
+    query={query("testimonials").orderBy(sortByOrder())}
+    variant="TestimonialCarouselVariant"
+    collectionUrl="/testimonials"
+    collectionTitle="Reviews"
+  />
+</div>
+
+{/* Bottom CTA banner. */}
+<CtaBanner />

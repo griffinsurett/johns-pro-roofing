@@ -1,20 +1,13 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
-import serviceRoofRepair from "../assets/images/service_roof_repair.png";
-
 import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { query, sortByOrder, roots } from "@/utils/query";
+import { query, sortByOrder } from "@/utils/query";
 import Button from "@/components/Button/Button";
-import PhoneLink from "@/components/PhoneLink.astro";
 import AboutIntro from "@/components/AboutIntro.astro";
+import CtaBanner from "@/components/CtaBanner.astro";
 import { getServiceAreaNames } from "@/utils/serviceAreas";
-
-// Top 4 selling points for the "Why Choose Us" benefits list
-const whyChoosePoints = (
-  await query("selling-points").orderBy(sortByOrder()).all()
-).slice(0, 4);
 
 // Service-area states (single source of truth) → full-name label for copy.
 const serviceAreaLabel = await getServiceAreaNames();
@@ -61,7 +54,7 @@ const serviceAreaLabel = await getServiceAreaNames();
         <div class="grid lg:grid-cols-2 gap-6 lg:gap-20 items-center">
           {/* Heading */}
           <div>
-            <span class="section-pretitle">The John's Pro Difference</span>
+            <span class="section-pretitle">Why Choose Us</span>
             <h2 class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
               Roofs that last,
               <span class="not-italic font-[family-name:var(--font-body)] text-accent"> done right, </span>
@@ -150,56 +143,7 @@ const serviceAreaLabel = await getServiceAreaNames();
     </div>
 
     {/* CTA banner — replaces the contact form (form commented out below) */}
-    {/* Bottom CTA — photo bg with red gradient (opaque left → transparent right) */}
-    <section class="relative overflow-hidden" id="quote-form">
-      {/* Background photo */}
-      <img
-        src={serviceRoofRepair.src}
-        alt=""
-        aria-hidden="true"
-        class="absolute inset-0 w-full h-full object-cover"
-      />
-      {/* Red gradient overlay: opaque on the left, fading to transparent on the right */}
-      <div
-        class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_30%,color-mix(in_oklab,var(--color-accent)_55%,transparent)_62%,transparent_100%)]"
-        aria-hidden="true"
-      >
-      </div>
-
-      <div class="container relative z-10 py-[100px]">
-        <div class="max-w-[640px] text-bg">
-          <span class="section-pretitle !text-bg">Why Choose Us</span>
-          <h2 class="section-title !text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] mb-4">
-            Ready for a
-            <span class="not-italic font-[family-name:var(--font-body)]"> better </span>
-            roof?
-          </h2>
-          <p class="text-bg/90 text-lg leading-relaxed mb-8 max-w-[480px]">
-            Our unmatched benefits that set us apart and ensure your peace of mind.
-          </p>
-
-          <ul class="flex flex-col gap-5 mb-10">
-            {
-              whyChoosePoints.map((point, i) => (
-                <li class="flex items-center gap-4">
-                  <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
-                    {i + 1}
-                  </span>
-                  <span class="text-bg text-lg font-semibold">{point.data.title}</span>
-                </li>
-              ))
-            }
-          </ul>
-
-          <div class="flex flex-wrap items-center gap-4">
-            <Button variant="gradient" size="lg" href="/contact-us">
-              Request an Estimate
-            </Button>
-            <PhoneLink variant="phone" tone="white" size="lg" />
-          </div>
-        </div>
-      </div>
-    </section>
+    <CtaBanner />
 
     {/* Contact form — commented out, replaced by the CTA banner above.
     <section class="contact-section" id="quote-form">

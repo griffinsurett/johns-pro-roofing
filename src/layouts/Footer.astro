@@ -12,7 +12,7 @@
  */
 import { siteData } from "@/content/siteData";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { query, related } from "@/utils/query";
+import { query, related, sortByOrder } from "@/utils/query";
 import PreferencesLayout from "./PreferencesLayout.astro";
 import { getContactLinks } from "@/utils/contactLinks";
 import Icon from "@/components/Icon";
@@ -25,7 +25,7 @@ const contactLinks = await getContactLinks();
 
 <footer class="relative bg-brand-gradient text-bg mt-auto pt-16 border-t border-bg/10 overflow-hidden">
   <div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12 relative z-10">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-16 text-left">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-left">
       
       {/* Column 1: Brand & Contact */}
       <div class="flex flex-col gap-6">
@@ -64,7 +64,24 @@ const contactLinks = await getContactLinks();
         <ReviewButton class="mt-2" />
       </div>
 
-      {/* Column 2: Quick Links */}
+      {/* Column 2: Roofing Services */}
+      <div class="flex flex-col gap-6">
+        <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Roofing Services</h3>
+        <div class="text-sm text-bg/80">
+          <ContentRenderer
+            query={query("roofing")
+              .where((entry) => Boolean(entry.data.cardSize))
+              .orderBy(sortByOrder())}
+            variant="ListVariant"
+            title=""
+            description=""
+            showButtonSection={false}
+            className="py-0 [&_nav]:flex-col [&_nav]:items-start [&_nav]:gap-3"
+          />
+        </div>
+      </div>
+
+      {/* Column 3: Quick Links */}
       <div class="flex flex-col gap-6">
         <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Quick Links</h3>
         <div class="text-sm text-bg/80">
@@ -78,7 +95,7 @@ const contactLinks = await getContactLinks();
         </div>
       </div>
 
-      {/* Column 3: Legal & Support */}
+      {/* Column 4: Legal & Support */}
       <div class="flex flex-col gap-6">
         <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Legal</h3>
         <div class="text-sm text-bg/80">

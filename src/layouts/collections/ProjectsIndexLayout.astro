@@ -18,7 +18,7 @@ export interface Props {
   [key: string]: any;
 }
 
-const { seoProps } = Astro.props;
+const { seoProps, collectionMeta } = Astro.props;
 
 const projects = await getPublishedCollection("projects");
 const sortedProjects = projects.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
@@ -39,6 +39,7 @@ const categoryImages: Record<string, string> = {
     <SecondaryHero
       eyebrow="Our Work"
       title="Projects We're Proud Of"
+      heading={collectionMeta.heading}
       description="Every job we take on gets our full attention — clean installs, quality materials, and results that last."
       minHeight="40vh"
     />

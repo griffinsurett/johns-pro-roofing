@@ -18,6 +18,7 @@ const {
   className = "",
   collectionUrl,
   collectionTitle,
+  showButtonSection = true,
   id,
 } = Astro.props as Props;
 
@@ -49,7 +50,7 @@ const viewAllText = `See Complete ${collectionTitle || "List"}`;
   }
 
   {
-    shouldShowCollectionCTA(collectionUrl, items.length) && (
+    showButtonSection && shouldShowCollectionCTA(collectionUrl, items.length) && (
       <div class="mt-12">
         <Button href={collectionUrl} variant="tertiary">
           {viewAllText}

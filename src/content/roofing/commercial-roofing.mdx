@@ -15,4 +15,14 @@ features:
   - "Preventive maintenance"
   - "Leak response"
 ---
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { children } from "@/utils/query/snippets";
+
 Commercial roofing services designed to keep business properties protected with dependable materials and straightforward execution.
+
+{/* Child services under Commercial Roofing. */}
+<ContentRenderer
+  query={children("roofing", "commercial-roofing")}
+  variant="ServiceListVariant"
+  title="Commercial Roofing Services"
+/>
