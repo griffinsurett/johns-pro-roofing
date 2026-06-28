@@ -1,6 +1,6 @@
 ---
 title: "Flat Roofing"
-description: "Expert flat roof installations, coatings, and repairs for residential and commercial properties"
+description: "Flat roofing in Somerset, NJ — TPO and EPDM installations, silicone coatings, and leak repairs for homes and businesses. Free estimates."
 order: 4
 icon: "fa6:layer-group"
 cardSize: "small"
@@ -9,10 +9,72 @@ cardBlurb: "Expert flat roof installations, coatings, and repairs for residentia
 price: "Free estimates available"
 bannerImage: "../../assets/images/service_roof_repair.png"
 featuredImage: "../../assets/images/service_roof_repair.png"
+seo:
+  metaTitle: "Flat Roofing in Somerset, NJ | TPO, EPDM & Coatings"
+  metaDescription: "Flat roof installation, coatings & repair in Somerset, NJ — TPO, EPDM & silicone systems. Free estimate. Call 732-351-3518."
+  keywords:
+    - "flat roofing somerset nj"
+    - "tpo roof installation nj"
+    - "epdm flat roof nj"
+    - "flat roof coating nj"
 features:
   - "TPO & EPDM installations"
   - "Durable silicone coatings"
   - "Leak detection & repairs"
   - "Preventive flat roof care"
+cta:
+  title: "Flat roof"
+  accent: "done"
+  titleAfter: "right."
+  description: "Get a free estimate on flat-roof installation, coating, or repair."
 ---
-Flat roof systems require specialized knowledge. Our team provides expert installations, maintenance, and durable coatings for leak-free performance.
+import CtaBanner from "@/components/CtaBanner.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import { query, sortByOrder } from "@/utils/query";
+
+export const certs = (await query("certifications").orderBy(sortByOrder()).all())
+  .map((c) => c.data.title)
+  .join(", ");
+
+<Bands>
+
+<Band>
+
+Flat roof systems require specialized knowledge. Our team provides expert installations, maintenance, and durable coatings for leak-free performance — for homes, additions, and commercial buildings across Somerset and throughout New Jersey.
+
+</Band>
+
+<Band>
+
+## Flat-roof systems we install and service
+
+- **TPO** — a reflective single-ply membrane that's energy-efficient and popular on commercial buildings
+- **EPDM** — a proven rubber membrane known for durability and value
+- **Silicone and elastomeric coatings** — restore and waterproof an existing flat roof for a fraction of replacement cost
+- **Modified bitumen** and other low-slope systems
+
+</Band>
+
+<Band>
+
+## Why flat roofs need a specialist
+
+On a sloped roof, gravity moves water off. On a flat roof, water sits — so seams, flashing, drainage, and detailing have to be done right or the roof leaks. We install to manufacturer spec, get the slope-to-drain right, and seal every penetration properly so your roof actually performs through New Jersey's freeze-thaw winters and heavy summer rain.
+
+</Band>
+
+<Band>
+
+## Repairs and coatings, not just replacements
+
+If your flat roof is leaking but the structure is sound, a targeted repair or a full coating can add years of life without a full tear-off. We'll inspect it, tell you honestly what it needs, and give you a free estimate. For larger commercial flat roofs, see [Commercial Roofing](/roofing/commercial-roofing) and [Commercial Roof Repair](/roofing/commercial-roof-repair).
+
+We're a local NJ company, {businessData.insurance} (HIC #{businessData.njHicNumber}).{certs && ` Certified installer: ${certs}.`} See what customers say in our [reviews](/#testimonials).
+
+</Band>
+
+</Bands>
+
+<CtaBanner cta={frontmatter.cta} />

@@ -1,0 +1,101 @@
+---
+// src/components/RepairCallout.astro
+/**
+ * RepairCallout — a focused "already have a leak or damage?" image CTA that
+ * branches the visitor from a roofing-replacement parent page to its dedicated
+ * repair child page (e.g. Residential Roofing → Residential Roof Repair).
+ *
+ * Self-contained: given the parent slug, it resolves the repair child from the
+ * roofing collection (title, description, URL all come from that page's own
+ * content — single source of truth, no hardcoded copy or links). Renders
+ * nothing if the parent has no repair child.
+ *
+ * Layout: placeholder image on one side, text + stacked buttons on the other.
+ *
+ * @example
+ *   <RepairCallout parent="residential-roofing" />
+ */
+import type { CollectionEntry } from "astro:content";
+import Button from "@/components/Button/Button";
+import { children } from "@/utils/query/snippets";
+import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
+import { getPhoneContact } from "@/utils/contactLinks";
+// TODO: swap for a dedicated repair-callout image once assets are ready.
+import placeholderImage from "@/assets/images/service_roof_repair.png";
+
+interface Props {
+  /** Slug of the parent roofing page whose repair child this links to. */
+  parent: string;
+  /** Optional headline override. */
+  heading?: string;
+  /** Optional supporting copy override. */
+  description?: string;
+}
+
+const {
+  parent,
+  heading = "Already have a leak or storm damage?",
+  description = "You may just need a repair, not a full replacement. Our team will find the source, fix it cleanly, and tell you honestly what your roof needs.",
+} = Astro.props as Props;
+
+// Resolve the repair child of this parent from the roofing collection, using
+// the same prepare pipeline the rest of the site uses (canonical URL, etc.).
+const meta = getCollectionMeta("roofing");
+// children() is typed against the broad CollectionKey union; narrow back to the
+// roofing collection we queried so prepareCollectionEntries lines up.
+const childEntries = (await children("roofing", parent).all()) as CollectionEntry<"roofing">[];
+const [repair] = await prepareCollectionEntries(childEntries, "roofing", meta);
+
+const phone = await getPhoneContact();
+---
+
+{
+  repair && (
+    <section class="border-t border-border bg-surface">
+      <div class="container py-16 md:py-20">
+        <div class="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
+          {/* Placeholder image (landscape) */}
+          <div class="overflow-hidden rounded-2xl">
+            <img
+              src={placeholderImage.src}
+              alt=""
+              aria-hidden="true"
+              class="aspect-video w-full object-cover"
+            />
+          </div>
+
+          {/* Text + stacked buttons */}
+          <div class="flex flex-col justify-center gap-6">
+            <div>
+              <h2 class="section-title !text-[clamp(26px,3.2vw,40px)] leading-[1.1] !mb-3">
+                {heading}
+              </h2>
+              <p class="text-[var(--color-text-muted)] text-lg leading-relaxed">
+                {description}
+              </p>
+            </div>
+
+            <div class="flex flex-col items-start gap-4">
+              {repair.url && (
+                <Button variant="primary" size="lg" href={repair.url}>
+                  {repair.title} →
+                </Button>
+              )}
+              {phone?.url && (
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  href={phone.url}
+                  leftIcon="fa6:phone"
+                  aria-label={`Call us at ${phone.displayValue}`}
+                >
+                  {phone.displayValue}
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

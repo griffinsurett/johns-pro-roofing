@@ -343,7 +343,10 @@ async function processCollectionMenus(
         const collectionId = getUniqueId(semanticId);
 
         const hasPage = meta.hasPage ?? false;
-        const itemUrl = hasPage ? `/${collection}` : undefined;
+        // An explicit `url` on the menu config wins (lets a page-less collection
+        // point its menu entry at an anchor or external link); otherwise fall
+        // back to the generated collection page when it has one.
+        const itemUrl = menuConfig.url ?? (hasPage ? `/${collection}` : undefined);
 
         store.set({
           id: collectionId,

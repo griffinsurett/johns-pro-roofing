@@ -1,6 +1,6 @@
 ---
 title: "Residential Roofing"
-description: "Complete residential roofing services for homes that need dependable protection and long-lasting results"
+description: "Residential roof replacement and new roof installation in Somerset, NJ — clean, code-compliant work backed by free estimates and 0% financing."
 order: 1
 icon: "fa6:house-chimney"
 cardSize: "large"
@@ -9,20 +9,73 @@ cardBlurb: "Roofing services for homeowners, including repairs, maintenance, and
 price: "Free estimates available"
 bannerImage: "../../assets/images/service_roof_install.png"
 featuredImage: "../../assets/images/service_roof_install.png"
+seo:
+  metaTitle: "Residential Roofing in Somerset, NJ | John's Pro Roofing"
+  metaDescription: "Residential roof replacement & new roof installation in Somerset, NJ. Free estimates, 0% financing, clean install. Call 732-351-3518."
+  keywords:
+    - "residential roofing somerset nj"
+    - "roof replacement nj"
+    - "new roof installation nj"
+    - "residential roofers near me"
 features:
   - "Roof inspections"
   - "Leak repairs"
   - "Full replacements"
   - "Storm damage restoration"
+cta:
+  title: "Ready for a"
+  accent: "new"
+  titleAfter: "roof?"
+  description: "Free estimates and 0% financing on residential roof replacement across Somerset and New Jersey."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
 ---
-import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { children } from "@/utils/query/snippets";
+import CtaBanner from "@/components/CtaBanner.astro";
+import RepairCallout from "@/components/RepairCallout.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
 
-Residential roofing built for long-term protection, clean installation, and reliable workmanship from start to finish.
+<Bands>
 
-{/* Child services under Residential Roofing. */}
-<ContentRenderer
-  query={children("roofing", "residential-roofing")}
-  variant="ServiceListVariant"
-  title="Residential Roofing Services"
-/>
+<Band>
+
+Residential roofing built for long-term protection, clean installation, and reliable workmanship from start to finish. John's Pro Roofing replaces and installs roofs for homeowners across Somerset and throughout New Jersey — with free estimates and 0% financing available, so a new roof fits your home and your budget.
+
+</Band>
+
+<Band>
+
+## When it's time to replace your roof
+
+Most asphalt-shingle roofs in New Jersey last 20–25 years, but our weather speeds that up — nor'easters, high winds, ice dams, and summer heat all take their toll. If your roof is aging, curling or losing shingles, showing daylight in the attic, or driving up energy bills, a full replacement usually costs less over time than chasing one repair after another. Not sure which you need? Start with a [roof inspection](/roofing/roof-inspections) and we'll give you an honest answer.
+
+</Band>
+
+<Band>
+
+## What a residential roof replacement includes
+
+- **Tear-off and inspection** of the existing roof down to the decking, so nothing gets hidden under new shingles
+- **Decking repair** wherever we find rot or soft spots
+- **New underlayment, flashing, and ventilation** — the parts that actually keep water out and your attic healthy
+- **Quality shingle installation** done to manufacturer spec
+- **A clean jobsite** — we protect your landscaping, magnet-sweep for nails, and leave the property the way we found it
+
+</Band>
+
+<Band>
+
+## Why homeowners choose John's Pro Roofing
+
+We're a local New Jersey company, not a franchise — the same crew that quotes your roof is the one that installs it. Every replacement is backed by {businessData.warranty}, and we're {businessData.insurance} in NJ (HIC #{businessData.njHicNumber}). See what your neighbors say on our [reviews](/#testimonials).
+
+</Band>
+
+</Bands>
+
+{/* Branch visitors who need a repair to the dedicated repair child page. */}
+<RepairCallout parent="residential-roofing" />
+
+<CtaBanner cta={frontmatter.cta} />

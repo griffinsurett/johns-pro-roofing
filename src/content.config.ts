@@ -186,4 +186,16 @@ export const collections = {
         abbr: z.string(),
       }),
   }),
+
+  // ── certifications ──────────────────────────────────────
+  // Manufacturer certifications (e.g. GAF, CertainTeed). title = display name,
+  // icon/featuredImage = optional logo, url = optional certified-contractor
+  // link. No pages — used for labels, badges, and schema credentials.
+  "certifications": defineCollection({
+    loader: FileLoad("certifications", "certifications.json"),
+    schema: ({ image }) =>
+      baseSchema({ image }).extend({
+        url: z.string().optional(),
+      }),
+  }),
 };

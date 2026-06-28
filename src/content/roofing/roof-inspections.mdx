@@ -1,6 +1,6 @@
 ---
 title: "Roof Inspections"
-description: "Thorough roof inspections to catch problems early, document storm damage, and plan ahead with confidence"
+description: "Roof inspections in Somerset, NJ — honest condition reports, storm-damage documentation, and insurance-claim support. Free estimates."
 order: 3
 icon: "fa6:magnifying-glass"
 cardSize: "small"
@@ -9,10 +9,68 @@ cardBlurb: "Detailed roof assessments for damage, age, storm impact, and repair 
 price: "Free estimates available"
 bannerImage: "../../assets/images/service_roof_install.png"
 featuredImage: "../../assets/images/service_roof_install.png"
+seo:
+  metaTitle: "Roof Inspections in Somerset, NJ | John's Pro Roofing"
+  metaDescription: "Honest roof inspections in Somerset, NJ — condition reports, storm-damage documentation & insurance support. Call 732-351-3518."
+  keywords:
+    - "roof inspection somerset nj"
+    - "roof inspection near me"
+    - "storm damage roof inspection nj"
+    - "roof inspection for insurance claim nj"
 features:
   - "Full roof condition reports"
   - "Storm & hail damage documentation"
   - "Insurance claim support"
   - "Maintenance recommendations"
+cta:
+  title: "Know your roof's"
+  accent: "real"
+  titleAfter: "condition."
+  description: "Schedule a roof inspection and get honest, clear recommendations."
 ---
-A detailed inspection is the smartest first step. We assess your roof's condition, document any damage, and give you honest, clear recommendations.
+import CtaBanner from "@/components/CtaBanner.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+
+<Bands>
+
+<Band>
+
+A detailed inspection is the smartest first step. We assess your roof's condition, document any damage, and give you honest, clear recommendations — no pressure to buy anything you don't need. John's Pro Roofing inspects roofs across Somerset and throughout New Jersey.
+
+</Band>
+
+<Band>
+
+## When to get a roof inspection
+
+- **After a storm** — wind, hail, and falling limbs cause damage you can't see from the ground
+- **Before buying or selling a home** — know what you're getting into
+- **When you spot warning signs** — interior stains, missing shingles, granules in the gutters, daylight in the attic
+- **For an aging roof** — to plan ahead instead of waiting for a leak
+- **For an insurance claim** — we document the damage clearly to support your case
+
+</Band>
+
+<Band>
+
+## What our inspection covers
+
+We check the full roof system, not just the surface — shingles or membrane, flashing, valleys, penetrations, gutters, and the attic for moisture and ventilation problems. You get a straightforward condition report: what's fine, what to watch, and what needs attention now.
+
+</Band>
+
+<Band>
+
+## Honest recommendations
+
+We'll tell you the truth, even when it's "your roof is fine, come back in a few years." If we do find a problem, we'll explain your options clearly — a [repair](/roofing/residential-roof-repair), a [full replacement](/roofing/residential-roofing) with 0% financing, or routine maintenance. As a local NJ company that's {businessData.insurance} (HIC #{businessData.njHicNumber}), our reputation depends on giving you straight answers — see our [reviews](/#testimonials).
+
+> Roofing for businesses? See [Commercial Roofing](/roofing/commercial-roofing) and [Flat Roofing](/roofing/flat-roofing).
+
+</Band>
+
+</Bands>
+
+<CtaBanner cta={frontmatter.cta} />

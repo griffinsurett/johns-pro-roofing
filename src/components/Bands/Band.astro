@@ -1,0 +1,34 @@
+---
+// src/components/Bands/Band.astro
+/**
+ * Band — one content section inside a <Bands> wrapper.
+ *
+ * Stack as many <Band> blocks as you want; backgrounds alternate
+ * automatically (odd = white, even = brand navy with light text) via the
+ * `:nth-of-type` rules in <Bands>. Authors never set a color — just add
+ * content. Put any markup/MDX inside; headings and prose are styled by the
+ * `.band-prose` rules so copy reads consistently across bands.
+ *
+ * @example
+ *   <Bands>
+ *     <Band>
+ *       ## When it's time to replace your roof
+ *       Most asphalt-shingle roofs...
+ *     </Band>
+ *     <Band>
+ *       ## What a replacement includes
+ *       - Tear-off and inspection...
+ *     </Band>
+ *   </Bands>
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props as Props;
+---
+
+<section class={`band ${className}`}>
+  <div class="container band-prose">
+    <slot />
+  </div>
+</section>

@@ -1,16 +1,74 @@
 ---
 title: "Residential Roof Repair"
-description: "Fast, reliable repairs for leaks, storm damage, missing shingles, and worn flashing on your home"
+description: "Residential roof repair in Somerset, NJ — leaks, missing shingles, flashing, and storm damage fixed right the first time. Free estimates."
 parent: "residential-roofing"
 order: 1
 icon: "fa6:house-chimney-crack"
 price: "Free estimates available"
 bannerImage: "../../assets/images/service_roof_repair.png"
 featuredImage: "../../assets/images/service_roof_repair.png"
+seo:
+  metaTitle: "Residential Roof Repair in Somerset, NJ | John's Pro Roofing"
+  metaDescription: "Roof leaks, missing shingles & storm damage repaired in Somerset, NJ. Honest assessment, free estimate. Call 732-351-3518."
+  keywords:
+    - "roof repair somerset nj"
+    - "residential roof leak repair nj"
+    - "shingle repair nj"
+    - "roof repair near me"
 features:
   - "Leak detection & repair"
   - "Shingle replacement"
   - "Flashing & seal repairs"
   - "Storm damage restoration"
+cta:
+  title: "Got a"
+  accent: "roof"
+  titleAfter: "problem?"
+  description: "Tell us what's going on and we'll get you a free estimate fast."
 ---
-Targeted residential roof repairs done right the first time — we find the source, fix it cleanly, and protect your home from further damage.
+import CtaBanner from "@/components/CtaBanner.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+
+<Bands>
+
+<Band>
+
+Targeted residential roof repairs done right the first time — we find the source, fix it cleanly, and protect your home from further damage. John's Pro Roofing repairs roofs for homeowners across Somerset and throughout New Jersey, with a free estimate before any work begins.
+
+</Band>
+
+<Band>
+
+## Common repairs we handle
+
+- **Roof leaks** — we trace the water back to its actual source, which is rarely where the stain shows up inside
+- **Missing, cracked, or curling shingles** after wind and storms
+- **Flashing and seal repairs** around chimneys, skylights, vents, and valleys — the spots that leak first
+- **Storm and wind damage**, including documentation if you're filing an insurance claim
+- **Worn or failing sealant** at penetrations and transitions
+
+</Band>
+
+<Band>
+
+## We fix the cause, not just the symptom
+
+A patch over the wrong spot just moves the problem. We inspect the roof, attic, and the area around the leak so the repair actually holds — and we'll always tell you honestly if a repair makes sense or if your roof is near the end of its life. If it's time for a new roof instead, see [Residential Roofing](/roofing/residential-roofing) for full replacement and 0% financing options.
+
+</Band>
+
+<Band>
+
+## Local, licensed, and accountable
+
+We're a New Jersey company that stands behind its work. Repairs are backed by {businessData.warranty}, and we're {businessData.insurance} in NJ (HIC #{businessData.njHicNumber}). Read what homeowners say in our [reviews](/#testimonials).
+
+> **Active leak right now?** Don't wait for the next rain — see [Emergency Roof Leak Repair](/roofing/emergency-roof-leak-repair) for fast response.
+
+</Band>
+
+</Bands>
+
+<CtaBanner cta={frontmatter.cta} />

@@ -1,6 +1,6 @@
 ---
 title: "Emergency Roof Leak Repair"
-description: "Fast emergency response for active leaks and storm damage — we stop the water and protect your property"
+description: "Emergency roof leak repair in Somerset, NJ — fast response for active leaks and storm damage. We stop the water and protect your property."
 order: 5
 icon: "fa6:triangle-exclamation"
 cardSize: "small"
@@ -10,10 +10,71 @@ cardBlurb: "Fast help for leaks, water intrusion, and roof damage before the pro
 price: "Free estimates available"
 bannerImage: "../../assets/images/service_roof_repair.png"
 featuredImage: "../../assets/images/service_roof_repair.png"
+seo:
+  metaTitle: "Emergency Roof Leak Repair in Somerset, NJ | John's Pro Roofing"
+  metaDescription: "Active roof leak or storm damage in NJ? We respond fast to stop the water. Call 732-351-3518 now for emergency roof repair."
+  keywords:
+    - "emergency roof repair somerset nj"
+    - "roof leak repair nj"
+    - "storm damage roof repair nj"
+    - "emergency roofer near me"
 features:
   - "Rapid emergency response"
   - "Active leak containment"
   - "Storm & wind damage repair"
   - "Temporary & permanent fixes"
+cta:
+  title: "Roof"
+  accent: "leaking"
+  titleAfter: "right now?"
+  description: "Call us and we'll respond fast to stop the water and protect your property."
 ---
-When a leak can't wait, we respond fast — containing the damage, stopping the water, and getting your roof watertight again.
+import CtaBanner from "@/components/CtaBanner.astro";
+import PhoneLink from "@/components/PhoneLink.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+
+<Bands>
+
+<Band>
+
+When a leak can't wait, we respond fast — containing the damage, stopping the water, and getting your roof watertight again. If water is coming into your home or building right now, **call us first**: <PhoneLink />. John's Pro Roofing handles emergency roof leaks across Somerset and throughout New Jersey.
+
+</Band>
+
+<Band>
+
+## What to do while you wait for us
+
+1. **Move what you can** out from under the leak and put down a bucket or tub.
+2. **Catch and relieve pooling water** in the ceiling — a small hole in a sagging bulge drains it safely instead of letting it collapse.
+3. **Stay off the roof.** Wet roofs are dangerous, and storm damage can hide weak spots. Let our crew handle it.
+4. **Take photos** of the damage inside and out — it helps with any insurance claim.
+
+</Band>
+
+<Band>
+
+## How we respond
+
+- **Fast containment** to stop active water intrusion and limit interior damage
+- **Source diagnosis** — we find where the water is actually getting in
+- **Temporary protection** (tarping/sealing) when weather or time requires it, followed by a **permanent repair**
+- **Storm and wind damage repair**, with documentation for insurance claims
+
+</Band>
+
+<Band>
+
+## After the emergency
+
+Once the roof is secure, we'll walk you through what failed and what it'll take to fix it for good. Sometimes that's a targeted repair — see [Residential Roof Repair](/roofing/residential-roof-repair) or [Commercial Roof Repair](/roofing/commercial-roof-repair). If the roof is failing overall, we'll lay out replacement and 0% financing options honestly, with no pressure.
+
+We're a local New Jersey company, {businessData.insurance} (HIC #{businessData.njHicNumber}), and homeowners trust us when it matters most — see our [reviews](/#testimonials).
+
+</Band>
+
+</Bands>
+
+<CtaBanner cta={frontmatter.cta} />

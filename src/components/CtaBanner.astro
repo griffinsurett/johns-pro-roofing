@@ -12,30 +12,39 @@
 import { query, sortByOrder } from "@/utils/query";
 import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
+import { ctaData } from "@/content/siteData";
+import type { CTAData } from "@/content/schema";
 import serviceRoofRepair from "@/assets/images/service_roof_repair.png";
 
 interface Props {
   id?: string;
-  title?: string; // text before the accent word
-  accent?: string; // emphasized (non-italic) word mid-headline
-  titleAfter?: string; // text after the accent word
-  description?: string;
-  count?: number; // how many selling points to list
+  /**
+   * Per-page CTA config (from frontmatter `cta:`). Any field omitted falls
+   * back to the defaults below, so a page only sets what it wants to change.
+   */
+  cta?: CTAData;
 }
 
-const {
-  id = "quote-form",
-  title = "Ready for a",
-  accent = "better",
-  titleAfter = "roof?",
-  description = "Our unmatched benefits that set us apart and ensure your peace of mind.",
-  count = 4,
-} = Astro.props as Props;
+const { id = "quote-form", cta = {} } = Astro.props as Props;
 
-// Top selling points for the numbered benefits list.
-const points = (
-  await query("selling-points").orderBy(sortByOrder()).all()
-).slice(0, count);
+// Resolve content with defaults — page frontmatter wins, else fall back.
+const title = cta?.title ?? "Ready for a";
+const accent = cta?.accent ?? "better";
+const titleAfter = cta?.titleAfter ?? "roof?";
+const description =
+  cta?.description ??
+  "Our unmatched benefits that set us apart and ensure your peace of mind.";
+
+// Benefit list: explicit `points` from frontmatter, else top selling-points.
+const points =
+  cta?.points ??
+  (await query("selling-points").orderBy(sortByOrder()).all())
+    .slice(0, cta?.count ?? 4)
+    .map((p) => p.data.title);
+
+// Buttons: configurable primary, with the phone link as the default secondary.
+const primary = cta?.primary ?? { text: ctaData.text, href: "/contact-us" };
+const secondary = cta?.secondary;
 ---
 
 <section class="relative overflow-hidden" id={id}>
@@ -64,24 +73,34 @@ const points = (
         {description}
       </p>
 
-      <ul class="flex flex-col gap-5 mb-10">
-        {
-          points.map((point, i) => (
-            <li class="flex items-center gap-4">
-              <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
-                {i + 1}
-              </span>
-              <span class="text-bg text-lg font-semibold">{point.data.title}</span>
-            </li>
-          ))
-        }
-      </ul>
+      {
+        points.length > 0 && (
+          <ul class="flex flex-col gap-5 mb-10">
+            {points.map((point, i) => (
+              <li class="flex items-center gap-4">
+                <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
+                  {i + 1}
+                </span>
+                <span class="text-bg text-lg font-semibold">{point}</span>
+              </li>
+            ))}
+          </ul>
+        )
+      }
 
       <div class="flex flex-wrap items-center gap-4">
-        <Button variant="gradient" size="lg" href="/contact-us">
-          Request an Estimate
+        <Button variant="gradient" size="lg" href={primary.href}>
+          {primary.text}
         </Button>
-        <PhoneLink variant="phone" tone="white" size="lg" />
+        {
+          secondary ? (
+            <Button variant="phone-outline" size="lg" href={secondary.href}>
+              {secondary.text}
+            </Button>
+          ) : (
+            <PhoneLink variant="phone" tone="white" size="lg" />
+          )
+        }
       </div>
     </div>
   </div>

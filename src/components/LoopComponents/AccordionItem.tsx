@@ -7,9 +7,12 @@ export interface AccordionItemProps {
   description?: string;
   children?: ReactNode;
   className?: string;
+  animationProps?: Record<string, any>;
   isExpanded: boolean;
   onToggle: () => void;
   headerClassName?: string;
+  indicatorClassName?: string;
+  contentClassName?: string;
   headerSlot?: ReactNode;
   showIndicator?: boolean;
 }
@@ -17,41 +20,51 @@ export interface AccordionItemProps {
 export default function AccordionItem({
   id,
   title,
-  description,
   className = "",
+  animationProps = {},
   children,
   isExpanded,
   onToggle,
   headerClassName = "",
+  indicatorClassName = "",
+  contentClassName = "",
   headerSlot,
   showIndicator,
 }: AccordionItemProps) {
   return (
-    <div className={`border border-surface bg-surface rounded-lg overflow-hidden ${className}`}>
+    <div {...animationProps} className={`border-b border-heading/12 ${className}`}>
       <button
         type="button"
-        className={`flex items-center justify-between p-4 bg-text/5 cursor-pointer hover:bg-text/5 transition-colors w-full text-left ${headerClassName}`}
+        className={`grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-6 py-6 text-left transition-colors duration-200 md:gap-8 md:py-8 ${headerClassName}`}
         onClick={onToggle}
         aria-expanded={isExpanded}
         aria-controls={`${id}-content`}
       >
-          {showIndicator !== false && (
-            <span className="text-text font-medium text-xl px-2">
-              {isExpanded ? "−" : "+"}
-            </span>
-          )}
-          {headerSlot ? (
-            <div className="flex-1">{headerSlot}</div>
-          ) : (
-            <div className="flex-1">
-              <h3 className="font-semibold text-heading">{title}</h3>
-            </div>
-          )}
+        {headerSlot ? (
+          <div className="min-w-0">{headerSlot}</div>
+        ) : (
+          <div className="min-w-0">
+            <h3 className="font-[family-name:var(--font-headings)] font-bold text-[1.4rem] leading-[1.2] text-heading md:text-[1.75rem]">
+              {title}
+            </h3>
+          </div>
+        )}
+        {showIndicator !== false && (
+          <span
+            className={`inline-flex h-10 w-10 items-center justify-center text-[2.35rem] font-light leading-none text-accent transition-transform duration-200 ${isExpanded ? "rotate-45" : ""} ${indicatorClassName}`}
+            aria-hidden="true"
+          >
+            +
+          </span>
+        )}
       </button>
 
       {isExpanded && children && (
-        <div id={`${id}-content`} className="p-6">
-          <div className="prose prose-surface max-w-none">{children}</div>
+        <div
+          id={`${id}-content`}
+          className={`pb-8 pr-12 md:pb-10 md:pr-16 ${contentClassName}`}
+        >
+          <div className="prose prose-surface max-w-3xl text-text">{children}</div>
         </div>
       )}
     </div>

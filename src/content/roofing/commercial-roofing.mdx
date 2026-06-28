@@ -1,6 +1,6 @@
 ---
 title: "Commercial Roofing"
-description: "Commercial roofing solutions for businesses that need durable systems and careful project management"
+description: "Commercial roofing in Somerset, NJ — flat-roof systems, replacements, and new installs for businesses and property managers. Free estimates."
 order: 2
 icon: "fa:building"
 cardSize: "large"
@@ -9,20 +9,80 @@ cardBlurb: "Roofing solutions for businesses, flat roofs, commercial buildings, 
 price: "Free estimates available"
 bannerImage: "../../assets/images/service_roof_replace.png"
 featuredImage: "../../assets/images/service_roof_replace.png"
+seo:
+  metaTitle: "Commercial Roofing in Somerset, NJ | John's Pro Roofing"
+  metaDescription: "Commercial roof replacement & flat-roof installation in Somerset, NJ. Minimal downtime, free estimate. Call 732-351-3518."
+  keywords:
+    - "commercial roofing somerset nj"
+    - "commercial roof replacement nj"
+    - "flat roof installation nj"
+    - "commercial roofers near me"
 features:
   - "Flat roof repair"
   - "Commercial replacements"
   - "Preventive maintenance"
   - "Leak response"
+cta:
+  title: "Protect your"
+  accent: "business"
+  titleAfter: "property."
+  description: "Request a free commercial roofing estimate scheduled around your hours."
 ---
-import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { children } from "@/utils/query/snippets";
+import CtaBanner from "@/components/CtaBanner.astro";
+import RepairCallout from "@/components/RepairCallout.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import { query, sortByOrder } from "@/utils/query";
 
-Commercial roofing services designed to keep business properties protected with dependable materials and straightforward execution.
+export const certs = (await query("certifications").orderBy(sortByOrder()).all())
+  .map((c) => c.data.title)
+  .join(", ");
 
-{/* Child services under Commercial Roofing. */}
-<ContentRenderer
-  query={children("roofing", "commercial-roofing")}
-  variant="ServiceListVariant"
-  title="Commercial Roofing Services"
+<Bands>
+
+<Band>
+
+Commercial roofing services designed to keep business properties protected with dependable materials and straightforward execution. John's Pro Roofing installs and replaces commercial roofs across Somerset and throughout New Jersey, working around your operating hours to keep disruption to a minimum.
+
+</Band>
+
+<Band>
+
+## Built for business properties
+
+Commercial roofs are a different job than residential — most are low-slope or flat systems that need the right membrane, the right detailing, and a crew that understands how water moves on a flat surface. We work with property managers and business owners on:
+
+- **Flat-roof systems** — TPO, EPDM, and modified bitumen ([see Flat Roofing](/roofing/flat-roofing))
+- **Full commercial replacements and re-roofs**
+- **New-construction and addition roofing**
+- **Preventive maintenance programs** that extend roof life and head off emergencies
+
+</Band>
+
+<Band>
+
+## Minimal downtime, clear communication
+
+A roof project shouldn't shut down your business. We schedule around your hours, stage the work to keep entrances and operations accessible, and keep a clean, safe site throughout. You'll know the scope and the cost before we start — and estimates are free.
+
+</Band>
+
+<Band>
+
+## Licensed, insured, and local
+
+We're a New Jersey company you can hold accountable. Commercial work is backed by {businessData.warranty}, and we're {businessData.insurance} in NJ (HIC #{businessData.njHicNumber}).{certs && ` Certified installer: ${certs}.`}
+
+</Band>
+
+</Bands>
+
+{/* Branch visitors who need a repair to the dedicated repair child page. */}
+<RepairCallout
+  parent="commercial-roofing"
+  heading="Need a fix, not a replacement?"
+  description="Membrane punctures, failed seams, and flat-roof leaks add up fast. We find the source and make a lasting repair — scheduled around your operations."
 />
+
+<CtaBanner cta={frontmatter.cta} />

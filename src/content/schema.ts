@@ -290,6 +290,38 @@ export const seoSchema = ({ image }: { image: Function }) =>
 export type SEOData = z.infer<ReturnType<typeof seoSchema>>;
 
 // ============================================================================
+// CTA SCHEMA
+// ============================================================================
+
+/**
+ * Per-page CTA banner config. Lives on items (baseSchema) and collection
+ * meta (metaSchema). Every field is optional — the CtaBanner component
+ * supplies defaults, so a page only overrides what it wants to customize.
+ */
+const ctaButtonSchema = z.object({
+  text: z.string(),
+  href: z.string(),
+});
+
+export const ctaSchema = z
+  .object({
+    // Headline is split so one word can be emphasized mid-line.
+    title: z.string().optional(), // text before the accent word
+    accent: z.string().optional(), // emphasized word
+    titleAfter: z.string().optional(), // text after the accent word
+    description: z.string().optional(),
+    // Explicit benefit list. If omitted, the banner falls back to the
+    // selling-points collection (limited by `count`).
+    points: z.array(z.string()).optional(),
+    count: z.number().optional(), // how many selling-points to show when points is omitted
+    primary: ctaButtonSchema.optional(),
+    secondary: ctaButtonSchema.optional(),
+  })
+  .optional();
+
+export type CTAData = z.infer<typeof ctaSchema>;
+
+// ============================================================================
 // LLMS SCHEMAS
 // ============================================================================
 
@@ -321,6 +353,7 @@ export const baseSchema = ({ image }: { image: Function }) =>
     rootPath: z.boolean().optional(),
     icon: iconSchema({ image }).optional(),
     seo: seoSchema({ image }),
+    cta: ctaSchema,
     addToMenu: z.array(AddToMenuFields).optional(),
     redirectFrom: redirectFromSchema,
     draft: z.boolean().default(false),
@@ -420,6 +453,7 @@ export const metaSchema = ({ image }: { image: Function }) =>
     hasPage: z.boolean().default(true),
     featuredImage: imageInputSchema({ image }).optional(),
     seo: seoSchema({ image }),
+    cta: ctaSchema,
     addToMenu: z.array(AddToMenuFields).optional(),
     redirectFrom: redirectFromSchema,
     itemsHasPage: z.boolean().default(true),

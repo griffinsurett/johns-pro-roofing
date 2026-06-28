@@ -1,5 +1,6 @@
 ---
 title: "FAQ"
+heading: "Frequently Asked Questions"
 description: "Get answers to common questions about our roofing and solar services"
 hasPage: true
 itemsHasPage: false
@@ -8,3 +9,14 @@ addToMenu:
     parent: "resources"
     order: 2
 ---
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder } from "@/utils/query";
+
+<section class="py-[30px] lg:py-[50px]">
+  <div class="container">
+    <ContentRenderer
+      query={query("faq").orderBy(sortByOrder())}
+      variant="AccordionVariant"
+    />
+  </div>
+</section>

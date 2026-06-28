@@ -1,6 +1,7 @@
 // src/components/LoopTemplates/Accordion.tsx
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import AccordionItem from "@/components/LoopComponents/AccordionItem";
+import { staggeredAnimationProps } from "@/integrations/scroll-animations";
 
 interface AccordionItemData {
   id?: string;
@@ -19,6 +20,8 @@ interface AccordionProps {
     expanded: boolean;
   }) => ReactNode;
   headerClassName?: string;
+  indicatorClassName?: string;
+  contentClassName?: string;
   showIndicator?: boolean;
 }
 
@@ -28,6 +31,8 @@ export default function Accordion({
   className = "",
   headerSlot,
   headerClassName = "",
+  indicatorClassName = "",
+  contentClassName = "",
   showIndicator,
 }: AccordionProps) {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -72,16 +77,20 @@ export default function Accordion({
   }, [expandedItems, items]);
 
   return (
-    <div className={`space-y-2 ${className}`}>
+    <div className={className}>
       {items.map((item, index) => {
         const itemId = item.id || `item-${index}`;
-        
+
         return (
           <AccordionItem
             key={itemId}
             id={itemId}
             title={item.title}
             description={item.description}
+            animationProps={staggeredAnimationProps("fade-in-up", index, {
+              once: true,
+              staggerDelay: 100,
+            })}
             isExpanded={expandedItems.has(itemId)}
             onToggle={() => toggleItem(itemId)}
             headerSlot={
@@ -90,6 +99,8 @@ export default function Accordion({
                 : undefined
             }
             headerClassName={headerClassName}
+            indicatorClassName={indicatorClassName}
+            contentClassName={contentClassName}
             showIndicator={showIndicator}
           >
             {/* Simple container - content gets cloned here when panel opens */}

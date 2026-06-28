@@ -1,16 +1,76 @@
 ---
 title: "Commercial Roof Repair"
-description: "Dependable repair service for commercial and flat roof systems, minimizing downtime for your business"
+description: "Commercial roof repair in Somerset, NJ — flat-roof leaks, membrane and seam repairs, and coatings with minimal downtime. Free estimates."
 parent: "commercial-roofing"
 order: 1
 icon: "fa6:building-shield"
 price: "Free estimates available"
 bannerImage: "../../assets/images/service_roof_replace.png"
 featuredImage: "../../assets/images/service_roof_replace.png"
+seo:
+  metaTitle: "Commercial Roof Repair in Somerset, NJ | John's Pro Roofing"
+  metaDescription: "Flat-roof leaks, membrane & seam repairs for NJ businesses. Fast response, minimal downtime, free estimate. Call 732-351-3518."
+  keywords:
+    - "commercial roof repair somerset nj"
+    - "flat roof leak repair nj"
+    - "commercial roof leak repair nj"
+    - "membrane roof repair nj"
 features:
   - "Membrane & seam repairs"
   - "Leak detection"
   - "Coating & resealing"
   - "Preventive maintenance"
+cta:
+  title: "Stop the"
+  accent: "leak"
+  titleAfter: "fast."
+  description: "Tell us what's happening on your roof and we'll schedule a free assessment."
 ---
-Commercial roof repairs that protect your building and your bottom line — quick response, quality materials, and minimal disruption to operations.
+import CtaBanner from "@/components/CtaBanner.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+
+<Bands>
+
+<Band>
+
+Commercial roof repairs that protect your building and your bottom line — quick response, quality materials, and minimal disruption to operations. John's Pro Roofing repairs commercial and flat roofs for businesses across Somerset and throughout New Jersey.
+
+</Band>
+
+<Band>
+
+## Repairs for flat and low-slope roofs
+
+Most commercial leaks come from a handful of failure points, and finding the real one is half the job:
+
+- **Membrane punctures and tears** in TPO, EPDM, and modified bitumen
+- **Failed seams and laps** where sections meet
+- **Flashing and detail leaks** at curbs, drains, HVAC units, and parapet walls
+- **Ponding water** and drainage issues that shorten roof life
+- **Coating and resealing** to extend the system you already have
+
+</Band>
+
+<Band>
+
+## Less downtime, less damage
+
+A commercial leak puts inventory, equipment, and tenants at risk. We respond quickly, isolate the source, and make a lasting repair — scheduled around your operations so the business keeps running. You get a clear scope and a free estimate before work begins, and documentation if you're filing an insurance claim.
+
+</Band>
+
+<Band>
+
+## Accountable, local, and insured
+
+We're a New Jersey company that stands behind its work. Repairs are backed by {businessData.warranty}, and we're {businessData.insurance} in NJ (HIC #{businessData.njHicNumber}).
+
+> **Roof past the point of patching?** A re-roof may cost less long-term — see [Commercial Roofing](/roofing/commercial-roofing) and [Flat Roofing](/roofing/flat-roofing).
+
+</Band>
+
+</Bands>
+
+<CtaBanner cta={frontmatter.cta} />
