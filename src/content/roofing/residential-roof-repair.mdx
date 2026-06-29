@@ -26,7 +26,7 @@ cta:
   titleAfter: "problem?"
   description: "Tell us what's going on and we'll get you a free estimate fast."
 ---
-import CtaBanner from "@/components/CtaBanner.astro";
+import QuoteCta from "@/components/QuoteCta.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
@@ -71,4 +71,4 @@ We're a New Jersey company that stands behind its work. Repairs are backed by {b
 
 </Bands>
 
-<CtaBanner cta={frontmatter.cta} />
+<QuoteCta cta={frontmatter.cta} />

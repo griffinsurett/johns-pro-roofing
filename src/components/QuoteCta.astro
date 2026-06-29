@@ -1,0 +1,96 @@
+---
+// src/components/QuoteCta.astro
+/**
+ * QuoteCta — conversion section for service pages: the CtaBanner's pitch
+ * (photo + red gradient, selling-points, phone) on the left, with the wired
+ * QuoteForm embedded on the right so visitors convert in place (no page jump).
+ *
+ * Drop-in replacement for <CtaBanner /> on service pages. Reuses the same
+ * `cta` frontmatter shape, so a page's existing `cta:` block drives the copy.
+ */
+import PhoneLink from "@/components/PhoneLink.astro";
+import QuoteForm from "@/components/Form/forms/QuoteForm.astro";
+import { query, sortByOrder } from "@/utils/query";
+import type { CTAData } from "@/content/schema";
+import serviceRoofRepair from "@/assets/images/service_roof_repair.png";
+
+interface Props {
+  id?: string;
+  cta?: CTAData;
+}
+
+const { id = "quote-form", cta = {} } = Astro.props as Props;
+
+const title = cta?.title ?? "Ready for a";
+const accent = cta?.accent ?? "better";
+const titleAfter = cta?.titleAfter ?? "roof?";
+const description =
+  cta?.description ??
+  "Tell us about your project and we'll get you a free, no-obligation estimate.";
+
+// Benefit list: explicit `points` from frontmatter, else top selling-points.
+const points =
+  cta?.points ??
+  (await query("selling-points").orderBy(sortByOrder()).all())
+    .slice(0, cta?.count ?? 4)
+    .map((p) => p.data.title);
+---
+
+<section class="relative overflow-hidden" id={id}>
+  {/* Background photo */}
+  <img
+    src={serviceRoofRepair.src}
+    alt=""
+    aria-hidden="true"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  {/* Red gradient overlay: opaque left → transparent right */}
+  <div
+    class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_45%,color-mix(in_oklab,var(--color-accent)_70%,transparent)_80%,color-mix(in_oklab,var(--color-accent)_55%,transparent)_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="container relative z-10 py-[80px]">
+    <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+      {/* Pitch */}
+      <div class="text-bg">
+        <h2 class="section-title !text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] mb-4">
+          {title}
+          <span class="not-italic font-[family-name:var(--font-body)]"> {accent} </span>
+          {titleAfter}
+        </h2>
+        <p class="text-bg/90 text-lg leading-relaxed mb-8 max-w-[480px]">
+          {description}
+        </p>
+
+        {
+          points.length > 0 && (
+            <ul class="flex flex-col gap-4 mb-8">
+              {points.map((point, i) => (
+                <li class="flex items-center gap-4">
+                  <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                  <span class="text-bg text-lg font-semibold">{point}</span>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        <div class="flex items-center gap-3 text-bg">
+          <span class="text-bg/80">Prefer to call?</span>
+          <PhoneLink variant="phone" tone="white" size="lg" />
+        </div>
+      </div>
+
+      {/* Quote form */}
+      <div class="bg-bg rounded-2xl shadow-xl p-6 md:p-8">
+        <h3 class="text-2xl font-bold text-heading mb-1">Request a free estimate</h3>
+        <p class="text-text mb-6">No cost, no obligation — we'll be in touch fast.</p>
+        <QuoteForm />
+      </div>
+    </div>
+  </div>
+</section>

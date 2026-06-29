@@ -28,7 +28,7 @@ cta:
   titleAfter: "right."
   description: "Get a free estimate on flat-roof installation, coating, or repair."
 ---
-import CtaBanner from "@/components/CtaBanner.astro";
+import QuoteCta from "@/components/QuoteCta.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
@@ -77,4 +77,4 @@ We're a local NJ company, {businessData.insurance} (HIC #{businessData.njHicNumb
 
 </Bands>
 
-<CtaBanner cta={frontmatter.cta} />
+<QuoteCta cta={frontmatter.cta} />

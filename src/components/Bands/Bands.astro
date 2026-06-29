@@ -71,16 +71,18 @@ const { class: className = "" } = Astro.props as Props;
     flex-direction: column;
     gap: 0.5rem;
   }
-  .band-prose a {
+  /* Prose links only — never restyle buttons (.btn-base) rendered inside a band
+     (e.g. RepairCallout), which own their color/decoration. */
+  .band-prose a:not(.btn-base) {
     text-decoration: underline;
     text-underline-offset: 2px;
   }
   /* On navy (even) bands, links and muted text use the light palette. */
-  .bands .band:nth-of-type(even) .band-prose a {
+  .bands .band:nth-of-type(even) .band-prose a:not(.btn-base) {
     color: var(--color-bg);
     font-weight: 600;
   }
-  .bands .band:nth-of-type(odd) .band-prose a {
+  .bands .band:nth-of-type(odd) .band-prose a:not(.btn-base) {
     color: var(--color-primary);
     font-weight: 600;
   }

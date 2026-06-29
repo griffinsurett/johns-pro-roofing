@@ -1,31 +1,46 @@
 ---
 // src/components/RepairCallout.astro
 /**
- * RepairCallout — a focused "already have a leak or damage?" image CTA that
- * branches the visitor from a roofing-replacement parent page to its dedicated
- * repair child page (e.g. Residential Roofing → Residential Roof Repair).
+ * RepairCallout — a focused image CTA that branches the visitor to a related
+ * roofing page (a repair child, or the emergency leak page).
  *
- * Self-contained: given the parent slug, it resolves the repair child from the
- * roofing collection (title, description, URL all come from that page's own
- * content — single source of truth, no hardcoded copy or links). Renders
- * nothing if the parent has no repair child.
+ * Target the destination one of two ways:
+ *   - `parent` → resolves that parent's repair child
+ *     (e.g. Residential Roofing → Residential Roof Repair)
+ *   - `target` → links to a specific roofing item by slug
+ *     (e.g. "emergency-roof-leak-repair")
  *
- * Layout: placeholder image on one side, text + stacked buttons on the other.
+ * Self-contained: the destination's title/URL come from its own content
+ * (single source of truth — no hardcoded links). Renders nothing if the
+ * destination can't be resolved. Stack two with alternating `reverse` to
+ * vary the image side.
  *
  * @example
  *   <RepairCallout parent="residential-roofing" />
+ *   <RepairCallout target="emergency-roof-leak-repair" reverse
+ *     heading="Active leak right now?"
+ *     description="Water coming in? We respond fast to stop it." />
  */
 import type { CollectionEntry } from "astro:content";
 import Button from "@/components/Button/Button";
-import { children } from "@/utils/query/snippets";
+import { children, byItemKeys } from "@/utils/query/snippets";
 import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
 import { getPhoneContact } from "@/utils/contactLinks";
 // TODO: swap for a dedicated repair-callout image once assets are ready.
 import placeholderImage from "@/assets/images/service_roof_repair.png";
 
 interface Props {
-  /** Slug of the parent roofing page whose repair child this links to. */
-  parent: string;
+  /** Parent roofing slug whose repair child this links to. */
+  parent?: string;
+  /** Specific roofing item slug to link to (alternative to `parent`). */
+  target?: string;
+  /** Flip the image to the other side (for stacking two callouts). */
+  reverse?: boolean;
+  /**
+   * Drop the outer section/background wrapper so the callout can sit inside a
+   * <Band> and inherit the band's white/navy background + text color.
+   */
+  bare?: boolean;
   /** Optional headline override. */
   heading?: string;
   /** Optional supporting copy override. */
@@ -34,28 +49,34 @@ interface Props {
 
 const {
   parent,
+  target,
+  reverse = false,
+  bare = false,
   heading = "Already have a leak or storm damage?",
   description = "You may just need a repair, not a full replacement. Our team will find the source, fix it cleanly, and tell you honestly what your roof needs.",
 } = Astro.props as Props;
 
-// Resolve the repair child of this parent from the roofing collection, using
-// the same prepare pipeline the rest of the site uses (canonical URL, etc.).
+// Resolve the destination from the roofing collection, using the same prepare
+// pipeline the rest of the site uses (canonical URL, etc.). `target` wins if
+// both are given. children()/byItemKeys() are typed against the broad
+// CollectionKey union; narrow back to roofing so prepareCollectionEntries lines up.
 const meta = getCollectionMeta("roofing");
-// children() is typed against the broad CollectionKey union; narrow back to the
-// roofing collection we queried so prepareCollectionEntries lines up.
-const childEntries = (await children("roofing", parent).all()) as CollectionEntry<"roofing">[];
-const [repair] = await prepareCollectionEntries(childEntries, "roofing", meta);
+const queryBuilder = target
+  ? byItemKeys("roofing", target)
+  : children("roofing", parent ?? "");
+const entries = (await queryBuilder.all()) as CollectionEntry<"roofing">[];
+const [repair] = await prepareCollectionEntries(entries, "roofing", meta);
 
 const phone = await getPhoneContact();
 ---
 
 {
   repair && (
-    <section class="border-t border-border bg-surface">
-      <div class="container py-16 md:py-20">
+    <div class:list={["repair-callout", { "repair-callout--standalone": !bare }]}>
+      <div class={bare ? "" : "container py-16 md:py-20"}>
         <div class="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
           {/* Placeholder image (landscape) */}
-          <div class="overflow-hidden rounded-2xl">
+          <div class={`overflow-hidden rounded-2xl ${reverse ? "md:order-2" : ""}`}>
             <img
               src={placeholderImage.src}
               alt=""
@@ -65,12 +86,12 @@ const phone = await getPhoneContact();
           </div>
 
           {/* Text + stacked buttons */}
-          <div class="flex flex-col justify-center gap-6">
+          <div class={`flex flex-col justify-center gap-6 ${reverse ? "md:order-1" : ""}`}>
             <div>
-              <h2 class="section-title !text-[clamp(26px,3.2vw,40px)] leading-[1.1] !mb-3">
+              <h2 class="repair-callout-heading section-title !text-[clamp(26px,3.2vw,40px)] leading-[1.1] !mb-3">
                 {heading}
               </h2>
-              <p class="text-[var(--color-text-muted)] text-lg leading-relaxed">
+              <p class="repair-callout-desc text-lg leading-relaxed">
                 {description}
               </p>
             </div>
@@ -96,6 +117,17 @@ const phone = await getPhoneContact();
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
+
+<style>
+  /* Standalone mode: its own light band (when not inside <Bands>). */
+  .repair-callout--standalone {
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+  }
+  .repair-callout--standalone .repair-callout-desc {
+    color: var(--color-text-muted);
+  }
+</style>

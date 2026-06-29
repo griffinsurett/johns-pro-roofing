@@ -29,7 +29,7 @@ cta:
   titleAfter: "right now?"
   description: "Call us and we'll respond fast to stop the water and protect your property."
 ---
-import CtaBanner from "@/components/CtaBanner.astro";
+import QuoteCta from "@/components/QuoteCta.astro";
 import PhoneLink from "@/components/PhoneLink.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
@@ -77,4 +77,4 @@ We're a local New Jersey company, {businessData.insurance} (HIC #{businessData.n
 
 </Bands>
 
-<CtaBanner cta={frontmatter.cta} />
+<QuoteCta cta={frontmatter.cta} />

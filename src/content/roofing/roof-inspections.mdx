@@ -28,7 +28,7 @@ cta:
   titleAfter: "condition."
   description: "Schedule a roof inspection and get honest, clear recommendations."
 ---
-import CtaBanner from "@/components/CtaBanner.astro";
+import QuoteCta from "@/components/QuoteCta.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
@@ -73,4 +73,4 @@ We'll tell you the truth, even when it's "your roof is fine, come back in a few 
 
 </Bands>
 
-<CtaBanner cta={frontmatter.cta} />
+<QuoteCta cta={frontmatter.cta} />

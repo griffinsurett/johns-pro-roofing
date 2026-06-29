@@ -28,7 +28,7 @@ cta:
   titleAfter: "property."
   description: "Request a free commercial roofing estimate scheduled around your hours."
 ---
-import CtaBanner from "@/components/CtaBanner.astro";
+import QuoteCta from "@/components/QuoteCta.astro";
 import RepairCallout from "@/components/RepairCallout.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
@@ -76,13 +76,31 @@ We're a New Jersey company you can hold accountable. Commercial work is backed b
 
 </Band>
 
-</Bands>
+{/* Repair path: not a full replacement — route to the repair child page. */}
+<Band>
 
-{/* Branch visitors who need a repair to the dedicated repair child page. */}
 <RepairCallout
   parent="commercial-roofing"
-  heading="Need a fix, not a replacement?"
+  bare
+  heading="Just need a repair?"
   description="Membrane punctures, failed seams, and flat-roof leaks add up fast. We find the source and make a lasting repair — scheduled around your operations."
 />
 
-<CtaBanner cta={frontmatter.cta} />
+</Band>
+
+{/* Emergency path: active leak / water coming in right now. */}
+<Band>
+
+<RepairCallout
+  target="emergency-roof-leak-repair"
+  bare
+  reverse
+  heading="Need emergency repairs?"
+  description="An active leak puts inventory, equipment, and tenants at risk. We respond fast to contain the water and protect your property."
+/>
+
+</Band>
+
+</Bands>
+
+<QuoteCta cta={frontmatter.cta} />

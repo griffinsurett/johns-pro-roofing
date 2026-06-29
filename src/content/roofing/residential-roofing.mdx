@@ -31,7 +31,7 @@ cta:
     text: "Request a Free Estimate"
     href: "/contact-us"
 ---
-import CtaBanner from "@/components/CtaBanner.astro";
+import QuoteCta from "@/components/QuoteCta.astro";
 import RepairCallout from "@/components/RepairCallout.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
@@ -73,9 +73,31 @@ We're a local New Jersey company, not a franchise — the same crew that quotes 
 
 </Band>
 
+{/* Repair path: not a full replacement — route to the repair child page. */}
+<Band>
+
+<RepairCallout
+  parent="residential-roofing"
+  bare
+  heading="Just need a repair?"
+  description="If your roof isn't ready for a full replacement, we fix leaks, missing shingles, flashing, and storm damage — done right the first time."
+/>
+
+</Band>
+
+{/* Emergency path: active leak / water coming in right now. */}
+<Band>
+
+<RepairCallout
+  target="emergency-roof-leak-repair"
+  bare
+  reverse
+  heading="Need emergency repairs?"
+  description="Active leak or water coming in right now? Don't wait for the next rain — we respond fast to contain the damage and get your roof watertight again."
+/>
+
+</Band>
+
 </Bands>
 
-{/* Branch visitors who need a repair to the dedicated repair child page. */}
-<RepairCallout parent="residential-roofing" />
-
-<CtaBanner cta={frontmatter.cta} />
+<QuoteCta cta={frontmatter.cta} />
