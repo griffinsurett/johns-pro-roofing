@@ -13,11 +13,18 @@ itemsLinkBehavior:
   linkPrefix: linkPrefix
   valueFormatter: phone
 ---
-import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { query } from "@/utils/query";
+import QuoteCta from "@/components/QuoteCta.astro";
 
-<ContentRenderer
-  query={query("contact-us")}
-  variant="ContactVariant"
-  columns={2}
+<QuoteCta
+  id="contact-form"
+  form="contact"
+  formTitle="Send us a message"
+  formDescription="We'll get back to you as soon as we can."
+  cta={{
+    title: "Let's talk about your",
+    accent: "roof",
+    titleAfter: ".",
+    description:
+      "Questions, scheduling, or a free estimate — send us a message and we'll get right back to you.",
+  }}
 />

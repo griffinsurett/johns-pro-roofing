@@ -25,7 +25,6 @@ import type { CollectionEntry } from "astro:content";
 import Button from "@/components/Button/Button";
 import { children, byItemKeys } from "@/utils/query/snippets";
 import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
-import { getPhoneContact } from "@/utils/contactLinks";
 // TODO: swap for a dedicated repair-callout image once assets are ready.
 import placeholderImage from "@/assets/images/service_roof_repair.png";
 
@@ -66,8 +65,6 @@ const queryBuilder = target
   : children("roofing", parent ?? "");
 const entries = (await queryBuilder.all()) as CollectionEntry<"roofing">[];
 const [repair] = await prepareCollectionEntries(entries, "roofing", meta);
-
-const phone = await getPhoneContact();
 ---
 
 {
@@ -100,17 +97,6 @@ const phone = await getPhoneContact();
               {repair.url && (
                 <Button variant="primary" size="lg" href={repair.url}>
                   {repair.title} →
-                </Button>
-              )}
-              {phone?.url && (
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  href={phone.url}
-                  leftIcon="fa6:phone"
-                  aria-label={`Call us at ${phone.displayValue}`}
-                >
-                  {phone.displayValue}
                 </Button>
               )}
             </div>

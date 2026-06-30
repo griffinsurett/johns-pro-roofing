@@ -10,16 +10,33 @@
  */
 import PhoneLink from "@/components/PhoneLink.astro";
 import QuoteForm from "@/components/Form/forms/QuoteForm.astro";
+import ContactForm from "@/components/Form/forms/ContactForm.astro";
+import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
 import { query, sortByOrder } from "@/utils/query";
+import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
+import type { CollectionEntry } from "astro:content";
 import type { CTAData } from "@/content/schema";
 import serviceRoofRepair from "@/assets/images/service_roof_repair.png";
 
 interface Props {
   id?: string;
   cta?: CTAData;
+  /** Which form to embed: the short quote form (default) or the full contact form (adds a message field). */
+  form?: "quote" | "contact";
+  /** Heading above the embedded form panel. */
+  formTitle?: string;
+  /** Subtext under the form-panel heading. */
+  formDescription?: string;
 }
 
-const { id = "quote-form", cta = {} } = Astro.props as Props;
+const {
+  id = "quote-form",
+  cta = {},
+  form = "quote",
+  formTitle = "Request a free estimate",
+  formDescription = "No cost, no obligation — we'll be in touch fast.",
+} = Astro.props as Props;
+const Form = form === "contact" ? ContactForm : QuoteForm;
 
 const title = cta?.title ?? "Ready for a";
 const accent = cta?.accent ?? "better";
@@ -28,12 +45,19 @@ const description =
   cta?.description ??
   "Tell us about your project and we'll get you a free, no-obligation estimate.";
 
-// Benefit list: explicit `points` from frontmatter, else top selling-points.
-const points =
-  cta?.points ??
-  (await query("selling-points").orderBy(sortByOrder()).all())
-    .slice(0, cta?.count ?? 4)
-    .map((p) => p.data.title);
+// Social proof: real reviews next to the form to maximize conversions.
+// Prepared so TestimonialCard gets the review body (`content`).
+const testimonialMeta = getCollectionMeta("testimonials");
+const testimonialEntries = (await query("testimonials")
+  .orderBy(sortByOrder())
+  .all()) as CollectionEntry<"testimonials">[];
+const testimonials = await prepareCollectionEntries(
+  testimonialEntries,
+  "testimonials",
+  testimonialMeta,
+);
+// Duplicate the set so the vertical marquee loops seamlessly (translateY -50%).
+const loopTestimonials = [...testimonials, ...testimonials];
 ---
 
 <section class="relative overflow-hidden" id={id}>
@@ -65,17 +89,22 @@ const points =
         </p>
 
         {
-          points.length > 0 && (
-            <ul class="flex flex-col gap-4 mb-8">
-              {points.map((point, i) => (
-                <li class="flex items-center gap-4">
-                  <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
-                    {i + 1}
-                  </span>
-                  <span class="text-bg text-lg font-semibold">{point}</span>
-                </li>
-              ))}
-            </ul>
+          testimonials.length > 0 && (
+            <div
+              class="qc-testimonials mb-8"
+              aria-label="Customer testimonials"
+            >
+              <ul class="qc-testimonials-track">
+                {loopTestimonials.map((item, i) => (
+                  <li
+                    class="qc-testimonials-item"
+                    aria-hidden={i >= testimonials.length ? "true" : undefined}
+                  >
+                    <TestimonialCard {...item} />
+                  </li>
+                ))}
+              </ul>
+            </div>
           )
         }
 
@@ -87,10 +116,49 @@ const points =
 
       {/* Quote form */}
       <div class="bg-bg rounded-2xl shadow-xl p-6 md:p-8">
-        <h3 class="text-2xl font-bold text-heading mb-1">Request a free estimate</h3>
-        <p class="text-text mb-6">No cost, no obligation — we'll be in touch fast.</p>
-        <QuoteForm />
+        <h3 class="text-2xl font-bold text-heading mb-1">{formTitle}</h3>
+        <p class="text-text mb-6">{formDescription}</p>
+        <Form />
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* Vertical auto-scrolling testimonial marquee beside the form. */
+  .qc-testimonials {
+    position: relative;
+    height: 360px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .qc-testimonials-track {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    animation: qc-testimonials-scroll 40s linear infinite;
+  }
+  .qc-testimonials:hover .qc-testimonials-track {
+    animation-play-state: paused;
+  }
+  .qc-testimonials-item {
+    flex: 0 0 auto;
+  }
+  /* Cards keep their own (light) look so they pop on the red panel. */
+  .qc-testimonials-item :global(.testimonial-card) {
+    height: 100%;
+  }
+  @keyframes qc-testimonials-scroll {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .qc-testimonials-track {
+      animation: none;
+    }
+  }
+</style>

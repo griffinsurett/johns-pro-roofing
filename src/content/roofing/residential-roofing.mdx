@@ -73,6 +73,14 @@ We're a local New Jersey company, not a franchise — the same crew that quotes 
 
 </Band>
 
+</Bands>
+
+{/* Primary conversion: quote form first. */}
+<QuoteCta cta={frontmatter.cta} />
+
+{/* Secondary paths: repair, then emergency. */}
+<Bands>
+
 {/* Repair path: not a full replacement — route to the repair child page. */}
 <Band>
 
@@ -99,5 +107,3 @@ We're a local New Jersey company, not a franchise — the same crew that quotes 
 </Band>
 
 </Bands>
-
-<QuoteCta cta={frontmatter.cta} />
