@@ -1,0 +1,113 @@
+---
+// src/components/ServiceBands.astro
+/**
+ * ServiceBands — lists a collection's top-level services using the same
+ * alternating white/navy <Bands> treatment as the service pages. Each service
+ * is a band with its featured image on one side and a prose heading +
+ * description + button on the other; the image side alternates per band (zig-
+ * zag), and band backgrounds alternate (odd = white/navy text, even = navy/
+ * light text) via the shared <Bands> styling.
+ */
+import type { CollectionKey, CollectionEntry } from "astro:content";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import Button from "@/components/Button/Button";
+import { roots, sortByOrder } from "@/utils/query";
+import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
+
+interface Props {
+  /** Collection to list the top-level (root) items of. */
+  collection: CollectionKey;
+  /** Button label shown on each service band. */
+  ctaLabel?: string;
+}
+
+const { collection, ctaLabel = "Learn More" } = Astro.props as Props;
+
+const meta = getCollectionMeta(collection);
+const entries = (await roots(collection)
+  .orderBy(sortByOrder())
+  .all()) as CollectionEntry<CollectionKey>[];
+const services = await prepareCollectionEntries(entries, collection, meta);
+
+/** Resolve a prepared item's featuredImage (Astro image object or string) to a src. */
+function imgSrc(featuredImage: any): string {
+  return typeof featuredImage === "string"
+    ? featuredImage
+    : (featuredImage?.src?.src ?? featuredImage?.src ?? "");
+}
+---
+
+<Bands>
+  {
+    services.map((service, i) => {
+      const src = imgSrc(service.featuredImage);
+      // Zig-zag: image on the left by default, flipped to the right on odd rows.
+      const imageRight = i % 2 === 1;
+      return (
+        <Band class="band-service">
+          <div class={`band-service-grid ${imageRight ? "is-image-right" : ""}`}>
+            {src && (
+              <div class="band-service-media">
+                <img src={src} alt={service.title} loading="lazy" />
+              </div>
+            )}
+            <div class="band-service-body">
+              <h2>{service.title}</h2>
+              {service.description && <p>{service.description}</p>}
+              {service.url && (
+                <div class="band-cta">
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    href={service.url}
+                    rightIcon="lu:arrow-up-right"
+                  >
+                    {ctaLabel}
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </Band>
+      );
+    })
+  }
+</Bands>
+
+<style is:global>
+  /* Side-by-side image + text inside each band. */
+  .band-service .band-service-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .band-service .band-service-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    /* Zig-zag: push the media column to the right (after the text) on alt rows. */
+    .band-service .band-service-grid.is-image-right .band-service-media {
+      order: 2;
+    }
+  }
+
+  .band-service .band-service-media {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  .band-service .band-service-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .band-service .band-service-body > * + * {
+    margin-top: 1rem;
+  }
+  .band-service .band-cta {
+    margin-top: 1.75rem;
+  }
+</style>

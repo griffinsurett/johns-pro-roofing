@@ -9,9 +9,7 @@ import type { CollectionKey } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SecondaryHero from "@/layouts/SecondaryHero.astro";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import GoogleRating from "@/components/GoogleRating.astro";
 import { query, sortByOrder } from "@/utils/query";
-import { getPublishedCollection } from "@/utils/collections/core";
 
 export interface Props {
   Content?: any;
@@ -26,10 +24,6 @@ const {
   collectionMeta,
   seoProps,
 } = Astro.props;
-
-// Count for the reviews-summary badge
-const testimonials = await getPublishedCollection("testimonials");
-const reviewCount = testimonials.length;
 ---
 
 <BaseLayout {...seoProps}>
@@ -41,14 +35,6 @@ const reviewCount = testimonials.length;
       description="John's Pro Roofing LLC is trusted for responsive service, clean workmanship, and roofing projects completed the right way."
       minHeight="40vh"
     />
-
-    <div class="pt-12">
-      <div class="container">
-        <div class="flex justify-center">
-          <GoogleRating tone="light" rating={4.7} count={reviewCount} />
-        </div>
-      </div>
-    </div>
 
     <ContentRenderer
       query={query("testimonials").orderBy(sortByOrder())}

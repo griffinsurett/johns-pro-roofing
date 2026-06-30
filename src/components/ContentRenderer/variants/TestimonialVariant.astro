@@ -52,10 +52,10 @@ const columnClasses = {
     {
       safeItems.length > 0 && (
         <ul
-          class={`grid ${columnClasses[columns]} gap-[30px] list-none items-start`}
+          class={`grid ${columnClasses[columns]} gap-[30px] list-none items-stretch`}
         >
           {safeItems.map((item) => (
-            <li>
+            <li class="h-full">
               <TestimonialCard {...item} />
             </li>
           ))}

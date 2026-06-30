@@ -10,7 +10,8 @@ export const siteData = {
   url: SITE_URL,
   location: "New Jersey, USA",
   address: "20 Emerald Place, Somerset, NJ 08873",
-  googleReviewsUrl: "https://share.google/I4KdUD3BPIPIdFkoy",
+  googleReviewsUrl:
+    "https://www.google.com/search?kgmid=/g/11mx000nb3&hl=en-US&q=John%27s+Pro+Roofing+LLC&shem=epsd1,ltae,rimspwouoe&shndl=30&source=sh/x/loc/osrp/m5/1&kgs=9d1507ae5b28eddc&utm_source=epsd1,ltae,rimspwouoe,sh/x/loc/osrp/m5/1&safe=strict#lrd=0x89c3c1af88bc03fb:0x3e59fc7c7673d755,1,,,,",
 };
 
 // ─────────────────────────────────────────────────────────────────────────

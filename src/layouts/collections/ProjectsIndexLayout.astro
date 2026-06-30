@@ -43,33 +43,6 @@ const categoryImages: Record<string, string> = {
       minHeight="40vh"
     />
 
-    <!-- Stats Bar -->
-    <div class="projects-stats-bar">
-      <div class="container">
-        <div class="projects-stats-grid">
-          <div class="projects-stat">
-            <span class="projects-stat-number">500+</span>
-            <span class="projects-stat-label">Roofs Installed</span>
-          </div>
-          <div class="projects-stat-divider"></div>
-          <div class="projects-stat">
-            <span class="projects-stat-number">25yr</span>
-            <span class="projects-stat-label">Warranty</span>
-          </div>
-          <div class="projects-stat-divider"></div>
-          <div class="projects-stat">
-            <span class="projects-stat-number">4.7★</span>
-            <span class="projects-stat-label">Google Rating</span>
-          </div>
-          <div class="projects-stat-divider"></div>
-          <div class="projects-stat">
-            <span class="projects-stat-number">NJ</span>
-            <span class="projects-stat-label">Licensed & Insured</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Projects Grid -->
     <section class="projects-index-section">
       <div class="container">
@@ -131,68 +104,12 @@ const categoryImages: Record<string, string> = {
             </a>
           </div>
         )}
-
-        <!-- CTA Banner -->
-        <div class="projects-cta-banner">
-          <div class="projects-cta-content">
-            <h3 class="projects-cta-title">Ready to Start Your Project?</h3>
-            <p class="projects-cta-desc">Get a free, no-obligation estimate from our team today.</p>
-          </div>
-          <a href="tel:7323513518" class="btn btn-accent btn-large">
-            Call Now — 732-351-3518 <Icon icon="fa6:phone" size="sm" />
-          </a>
-        </div>
       </div>
     </section>
   </main>
 </BaseLayout>
 
 <style>
-/* ── Stats Bar ───────────────────────────────────────────────── */
-.projects-stats-bar {
-  background-color: var(--color-brand-navy);
-  padding: 28px 0;
-  border-bottom: 3px solid var(--color-accent-red);
-}
-
-.projects-stats-grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  flex-wrap: wrap;
-}
-
-.projects-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 48px;
-}
-
-.projects-stat-divider {
-  width: 1px;
-  height: 40px;
-  background: rgba(255,255,255,0.15);
-}
-
-.projects-stat-number {
-  font-family: var(--font-family-headings);
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--color-canvas-primary);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
-.projects-stat-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.6);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
 /* ── Projects Index Section ──────────────────────────────────── */
 .projects-index-section {
   padding: 100px 0;
@@ -338,71 +255,16 @@ const categoryImages: Record<string, string> = {
   max-width: 400px;
 }
 
-/* ── CTA Banner ──────────────────────────────────────────────── */
-.projects-cta-banner {
-  margin-top: 80px;
-  background: var(--color-brand-navy);
-  border-radius: 20px;
-  padding: 52px 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-  position: relative;
-  overflow: hidden;
-}
-
-.projects-cta-banner::before {
-  content: '';
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(200,16,46,0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.projects-cta-title {
-  font-size: 28px;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 8px;
-}
-
-.projects-cta-desc {
-  font-size: 16px;
-  color: rgba(255,255,255,0.7);
-}
-
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .projects-index-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .projects-cta-banner {
-    flex-direction: column;
-    text-align: center;
-    padding: 40px 32px;
-  }
-
-  .projects-stat {
-    padding: 0 24px;
   }
 }
 
 @media (max-width: 600px) {
   .projects-index-grid {
     grid-template-columns: 1fr;
-  }
-
-  .projects-stats-grid {
-    gap: 16px;
-  }
-
-  .projects-stat-divider {
-    display: none;
   }
 }
 </style>

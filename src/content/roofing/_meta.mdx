@@ -16,13 +16,11 @@ addToMenu:
 ---
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import CtaBanner from "@/components/CtaBanner.astro";
-import { roots, query, sortByOrder } from "@/utils/query";
+import ServiceBands from "@/components/ServiceBands.astro";
+import { query, sortByOrder } from "@/utils/query";
 
-{/* Full roofing services list (rows with arrow CTAs) — same style as the homepage. */}
-<ContentRenderer
-  query={roots("roofing")}
-  variant="ServiceListVariant"
-/>
+{/* Full roofing services list — alternating white/navy bands. */}
+<ServiceBands collection="roofing" />
 
 {/* Testimonials carousel — same as the homepage. */}
 <div id="testimonials" class="pt-[100px]">

@@ -330,6 +330,16 @@ body {
   .header-navigation .menu-dropdown .nav-link:hover {
     background-color: var(--color-accent);
   }
+  /* Match the card's rounded corners so the hover fill doesn't square them off.
+     Scoped to direct children only — nested fly-out submenus are unaffected. */
+  .header-navigation .menu-dropdown > ul > li:first-child > .nav-link {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .header-navigation .menu-dropdown > ul > li:last-child > .nav-link {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 }
 
 /* ==========================================================================
@@ -541,7 +551,7 @@ body {
   }
 
   .testimonial-card {
-    @apply relative text-bg pt-7 px-7 pb-[52px] rounded-xl flex flex-col
+    @apply relative h-full text-bg pt-7 px-7 pb-[52px] rounded-xl flex flex-col
            max-[991px]:pt-[35px] max-[991px]:px-6 max-[991px]:pb-[55px];
     background-image: linear-gradient(
       120deg,
