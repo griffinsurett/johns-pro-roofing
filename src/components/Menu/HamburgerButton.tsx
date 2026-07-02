@@ -39,10 +39,10 @@ function HamburgerButton({
         aria-label={ariaLabel}
       />
 
-      {/* Label styled as hamburger button */}
+      {/* Label styled as hamburger button — solid primary square, bars reversed out */}
       <label
         htmlFor={id}
-        className="cursor-pointer p-2 text-text hover:text-primary transition-colors inline-flex items-center justify-center"
+        className="cursor-pointer p-3 rounded-lg bg-primary text-bg hover:bg-primary-700 transition-colors inline-flex items-center justify-center"
       >
         <div className="w-6 h-5 relative flex items-center justify-center">
           {/* Top line */}
