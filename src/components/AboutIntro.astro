@@ -8,6 +8,7 @@
  * sync. Stacks (text over image) on mobile.
  */
 import Button from "@/components/Button/Button";
+import Video from "@/components/Video/Video.astro";
 import heroWorker from "@/assets/images/hero_worker.png";
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
   titleAfter?: string; // text after the accent phrase
   description?: string;
   image?: ImageMetadata;
+  video?: string; // public path to a video; when set, plays in the blob instead of the image
   imageAlt?: string;
   reverse?: boolean; // image on the left, text on the right (desktop)
   class?: string;
@@ -29,6 +31,7 @@ const {
   titleAfter = "we work on.",
   description = "No job is too big or too small. John's Pro Roofing LLC serves homeowners across New Jersey and Pennsylvania with residential roofing, commercial roofing, and deck work — straightforward service, honest communication, and dependable results, all backed by our workmanship warranty.",
   image = heroWorker,
+  video = "/john-commercial.mp4",
   imageAlt = "John's Pro Roofing crew on site",
   reverse = false,
   class: className = "",
@@ -53,8 +56,12 @@ const {
     </div>
   </div>
 
-  {/* Animated morph-blob image */}
+  {/* Animated morph-blob media */}
   <div class={`premium-story-visual !h-[480px] max-lg:!h-[360px] mx-auto w-full max-w-[520px] ${reverse ? "lg:order-1" : ""}`}>
-    <img src={image.src} alt={imageAlt} class="w-full h-full object-cover" />
+    {video ? (
+      <Video src={video} alt={imageAlt} class="w-full h-full object-cover" wrapperClass="w-full h-full" />
+    ) : (
+      <img src={image.src} alt={imageAlt} class="w-full h-full object-cover" />
+    )}
   </div>
 </div>

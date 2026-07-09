@@ -4,7 +4,7 @@
  *
  * Client-side video player with lazy loading support.
  */
-import { useRef, useEffect, forwardRef, useState } from "react";
+import { useRef, useEffect, forwardRef, useState, useCallback } from "react";
 import type {
   VideoHTMLAttributes,
   ReactNode,
@@ -19,6 +19,8 @@ interface VideoProps extends VideoHTMLAttributes<HTMLVideoElement> {
   clientPosterSrc?: string;
   clientPlaceholderSrc?: string;
   wrapperClass?: string;
+  /** Show a play/pause control that appears on hover (desktop) / tap (touch). */
+  hoverControls?: boolean;
 }
 
 export const Video = forwardRef<HTMLVideoElement, VideoProps>(
@@ -40,11 +42,13 @@ export const Video = forwardRef<HTMLVideoElement, VideoProps>(
       clientPosterSrc,
       clientPlaceholderSrc,
       wrapperClass = "",
+      hoverControls = false,
       ...rest
     },
     ref,
   ) => {
     const internalRef = useRef<HTMLVideoElement | null>(null);
+    const [isPlaying, setIsPlaying] = useState<boolean>(autoPlay);
     const [resolvedPoster, setResolvedPoster] = useState<string | undefined>(
       poster,
     );
