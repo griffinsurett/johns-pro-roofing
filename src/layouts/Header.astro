@@ -3,8 +3,8 @@
 /**
  * Site Header with Navigation
  *
- * Desktop (lg+): nav left · logo centered · CTA right.
- * Mobile (<lg):  hamburger left · logo absolutely centered · two-button action row below.
+ * Desktop (xl+): nav left · logo centered · CTA right.
+ * Mobile (<xl):  hamburger left · logo absolutely centered · two-button action row below.
  */
 import headerLogo from "@/assets/images/logo.png";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
@@ -14,19 +14,19 @@ import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
 ---
 
-<header class="sticky top-0 py-1 bg-bg backdrop-blur-md space-y-2 lg:py-0 z-[60]">
+<header class="sticky top-0 py-1 bg-bg backdrop-blur-md space-y-2 xl:py-0 z-[60]">
   <div class="">
     <div
       data-menu-anchor
-      class="relative w-full max-w-[1600px] mx-auto px-6 lg:px-12 flex items-center justify-start lg:justify-between gap-6 min-h-[80px] py-1"
+      class="relative w-full max-w-[1600px] mx-auto px-6 xl:px-12 flex items-center justify-start xl:justify-between gap-6 min-h-[80px] py-1"
     >
       {/* Nav: desktop inline menu + mobile hamburger (hamburger sits left on mobile) */}
-      <div class="order-1 z-[2] flex items-center justify-start flex-none lg:flex-1">
+      <div class="order-1 z-[2] flex items-center justify-start flex-none xl:flex-1">
         <ContentRenderer
           query={related("menu-items", "menu", "main-menu")}
           variant="MenuVariant"
           mode="responsive"
-          breakpoint="lg"
+          breakpoint="xl"
           className="header-navigation"
           hamburgerTransform={true}
         />
@@ -34,17 +34,17 @@ import PhoneLink from "@/components/PhoneLink.astro";
 
       <a
         href="/"
-        class="order-2 inline-flex items-center flex-shrink-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0"
+        class="order-2 inline-flex items-center flex-shrink-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 xl:static xl:translate-x-0 xl:translate-y-0"
         aria-label={siteData.title}
       >
         <img
           src={headerLogo.src}
           alt={`${siteData.title} logo`}
-          class="block w-auto object-contain h-20 lg:h-[80px]"
+          class="block w-auto object-contain h-20 xl:h-[80px]"
         />
       </a>
 
-      <div class="order-3 hidden lg:flex flex-1 flex-shrink-0 items-center justify-end gap-5">
+      <div class="order-3 hidden xl:flex flex-1 flex-shrink-0 items-center justify-end gap-5">
         <Button variant="primary" href="/contact-us">
           Request an Estimate
         </Button>
@@ -53,7 +53,7 @@ import PhoneLink from "@/components/PhoneLink.astro";
   </div>
 
   {/* Mobile-only action row — red estimate + blue phone, full width */}
-  <div class="flex lg:hidden gap-3 px-6 bg-bg [&>*]:flex-1 [&_.btn-base]:w-full [&_.btn-base]:justify-center">
+  <div class="flex xl:hidden gap-3 px-6 bg-bg [&>*]:flex-1 [&_.btn-base]:w-full [&_.btn-base]:justify-center">
     <Button variant="primary" href="/contact-us" className="mobile-action-btn" fullWidth>
       Contact Us
     </Button>

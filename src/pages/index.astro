@@ -8,6 +8,7 @@ import Button from "@/components/Button/Button";
 import AboutIntro from "@/components/AboutIntro.astro";
 import CtaBanner from "@/components/CtaBanner.astro";
 import { getServiceAreaNames } from "@/utils/serviceAreas";
+import aboutImage from "@/assets/john-w-client.webp";
 
 // Service-area states (single source of truth) → full-name label for copy.
 const serviceAreaLabel = await getServiceAreaNames();
@@ -45,7 +46,12 @@ const serviceAreaLabel = await getServiceAreaNames();
 
     <section class="about-section" id="about">
       <div class="container">
-        <AboutIntro reverse={true} />
+        <AboutIntro
+          reverse={true}
+          video={null}
+          image={aboutImage}
+          imageAlt="John with a satisfied John's Pro Roofing customer"
+        />
       </div>
     </section>
 

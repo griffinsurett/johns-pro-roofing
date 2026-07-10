@@ -15,7 +15,7 @@ import { isTopLevelPlacement } from '@/utils/navigation/topLevelCheck';
 
 type MenuMode = 'responsive' | 'flat-only' | 'hamburger-only';
 
-type MenuBreakpoint = 'md' | 'lg';
+type MenuBreakpoint = 'md' | 'lg' | 'xl';
 
 interface Props extends BaseVariantProps {
   maxDepth?: number;
@@ -48,6 +48,7 @@ const showMobile = mode === 'responsive' || mode === 'hamburger-only';
 const VISIBILITY = {
   md: { desktop: 'hidden md:block', mobile: 'md:hidden', media: '(max-width: 768px)' },
   lg: { desktop: 'hidden lg:block', mobile: 'lg:hidden', media: '(max-width: 1024px)' },
+  xl: { desktop: 'hidden xl:block', mobile: 'xl:hidden', media: '(max-width: 1280px)' },
 } as const;
 const bp = VISIBILITY[breakpoint];
 
@@ -96,6 +97,15 @@ const mobileHydrationStrategy =
           client:visible
         />
       )}
+      {/* client:media needs a static literal, so branch per breakpoint. */}
+      {mobileHydrationStrategy === 'media' && breakpoint === 'xl' && (
+        <MobileMenuDrawer
+          items={menuTree}
+          closeButton={closeButton}
+          hamburgerTransform={hamburgerTransform}
+          client:media="(max-width: 1280px)"
+        />
+      )}
       {mobileHydrationStrategy === 'media' && breakpoint === 'lg' && (
         <MobileMenuDrawer
           items={menuTree}
@@ -104,7 +114,7 @@ const mobileHydrationStrategy =
           client:media="(max-width: 1024px)"
         />
       )}
-      {mobileHydrationStrategy === 'media' && breakpoint !== 'lg' && (
+      {mobileHydrationStrategy === 'media' && breakpoint === 'md' && (
         <MobileMenuDrawer
           items={menuTree}
           closeButton={closeButton}

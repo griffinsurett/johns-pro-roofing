@@ -80,12 +80,12 @@ const h = {
 
 <section
   id={id}
-  class={`relative overflow-hidden bg-surface lg:min-h-[clamp(560px,85vh,900px)] ${className}`}
+  class={`relative overflow-hidden bg-surface xl:min-h-[clamp(560px,85vh,900px)] ${className}`}
 >
   {/* ── Background image + white overlay. Covers the full section on desktop;
         on mobile it only fills the tall top text panel (the video stacks
         below it, off the initial frame). Height matches the panel's min-h. ── */}
-  <div class="absolute inset-x-0 top-0 h-[72vh] lg:h-auto lg:inset-0">
+  <div class="absolute inset-x-0 top-0 h-[72vh] xl:h-auto xl:inset-0">
     <Image
       src={image}
       alt=""
@@ -99,13 +99,13 @@ const h = {
     {/* White overlay so the panel reads light for dark text. Mobile uses the
         same opacity range as desktop, just top→bottom instead of left→right. */}
     <div
-      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.9)_45%,rgba(255,255,255,0.82)_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.72)_45%,rgba(255,255,255,0.5)_100%)]"
+      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.9)_45%,rgba(255,255,255,0.82)_100%)] xl:bg-[linear-gradient(90deg,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.72)_45%,rgba(255,255,255,0.5)_100%)]"
     >
     </div>
   </div>
 
   {/* Right video panel (lg+), clipped with a slanted left edge */}
-  <div class="fph2-video hidden lg:block absolute inset-y-0 right-0 w-[58%]">
+  <div class="fph2-video hidden xl:block absolute inset-y-0 right-0 w-[58%]">
     <Video
       src={video}
       alt=""
@@ -122,15 +122,15 @@ const h = {
     alt={personAlt}
     widths={[480, 720, 960]}
     sizes="40vw"
-    class="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 z-[2] h-[92%] w-auto object-contain object-bottom pointer-events-none"
+    class="hidden xl:block absolute bottom-0 left-1/2 -translate-x-1/2 z-[2] h-[92%] w-auto object-contain object-bottom pointer-events-none"
     loading="eager"
     fetchpriority="high"
   />
 
   {/* ── Content. Desktop: overlaid left. Mobile: stacked text block on top ── */}
-  <div class="relative z-[3] w-full max-w-[1600px] mx-auto px-6 lg:px-12">
+  <div class="relative z-[3] w-full max-w-[1600px] mx-auto px-6 xl:px-12">
     <div
-      class="flex flex-col justify-center items-start gap-5 max-w-[560px] py-10 lg:py-16 min-h-[72vh] lg:min-h-[clamp(560px,85vh,900px)]"
+      class="flex flex-col justify-center items-start gap-5 max-w-[560px] py-10 xl:py-16 min-h-[72vh] xl:min-h-[clamp(560px,85vh,900px)]"
     >
       {
         eyebrow && (
@@ -174,7 +174,7 @@ const h = {
   </div>
 
   {/* ── Mobile media banner (below lg): landscape video, no cut-out person ── */}
-  <div class="lg:hidden relative w-full aspect-video">
+  <div class="xl:hidden relative w-full aspect-video">
     <Video
       src={video}
       alt=""
@@ -187,7 +187,7 @@ const h = {
 </section>
 
 <style>
-  @media (min-width: 1024px) {
+  @media (min-width: 1280px) {
     /* Diagonal seam: the video panel's left edge slants. Top-left starts
        further right than the bottom-left, so the cut leans forward. */
     .fph2-video {
