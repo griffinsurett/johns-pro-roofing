@@ -36,6 +36,8 @@ import RepairCallout from "@/components/RepairCallout.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
+import { related } from "@/utils/query";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 
 <Bands>
 
@@ -74,6 +76,19 @@ We're a local New Jersey company, not a franchise — the same crew that quotes 
 </Band>
 
 </Bands>
+
+{/* Portfolio: residential before/afters that reference this page via the `roofing` field. */}
+<ContentRenderer
+  query={related("projects", "roofing", "residential-roofing")
+    .where((entry) => Boolean(entry.data.beforeImage && entry.data.afterImage))}
+  variant="BeforeAfterVariant"
+  pretitle="Recent Projects"
+  title="Real Homes."
+  accentTitle="Real Work."
+  description="A look at recent residential roofing transformations across New Jersey."
+  columns={2}
+  showButtonSection={false}
+/>
 
 {/* Primary conversion: quote form first. */}
 <QuoteCta cta={frontmatter.cta} />

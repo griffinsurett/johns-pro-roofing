@@ -1,0 +1,20 @@
+[
+  {
+    "id": "roofs-installed",
+    "value": "500+",
+    "title": "Roofs Installed",
+    "order": 1
+  },
+  {
+    "id": "workmanship-warranty",
+    "value": "25-Yr",
+    "title": "Workmanship Warranty",
+    "order": 2
+  },
+  {
+    "id": "financing-available",
+    "value": "0%",
+    "title": "Financing Available",
+    "order": 3
+  }
+]

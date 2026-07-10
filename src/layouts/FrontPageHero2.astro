@@ -11,6 +11,7 @@ import { Image } from "astro:assets";
 import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
 import GoogleRating from "@/components/GoogleRating.astro";
+import Video from "@/components/Video/Video.astro";
 import bgImage from "@/assets/images/service_roof_install.png";
 import personImage from "@/assets/john-pointing.png";
 
@@ -83,18 +84,14 @@ const {
 
   {/* Right video panel (lg+), clipped with a slanted left edge */}
   <div class="fph2-video hidden lg:block absolute inset-y-0 right-0 w-[58%]">
-    <video
-      class="absolute inset-0 w-full h-full object-cover"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      aria-hidden="true"
-    >
-      <source src={video} type="video/mp4" />
-    </video>
-    <div class="absolute inset-0 bg-primary/15"></div>
+    <Video
+      src={video}
+      alt=""
+      lazy={false}
+      wrapperClass="absolute inset-0"
+      class="object-cover"
+    />
+    <div class="absolute inset-0 bg-primary/15 z-[2]"></div>
   </div>
 
   {/* Desktop foreground person (lg+), centered over the seam */}
@@ -154,18 +151,14 @@ const {
 
   {/* ── Mobile media banner (below lg): landscape video, no cut-out person ── */}
   <div class="lg:hidden relative w-full aspect-video">
-    <video
-      class="absolute inset-0 w-full h-full object-cover"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      aria-hidden="true"
-    >
-      <source src={video} type="video/mp4" />
-    </video>
-    <div class="absolute inset-0 bg-primary/15"></div>
+    <Video
+      src={video}
+      alt=""
+      lazy={false}
+      wrapperClass="absolute inset-0"
+      class="object-cover"
+    />
+    <div class="absolute inset-0 bg-primary/15 z-[2]"></div>
   </div>
 </section>
 

@@ -154,6 +154,9 @@ export const collections = {
         projectUrl: z.string().url().optional(),
         technologies: z.array(z.string()).default([]),
         category: z.string(),
+        // Residential vs. commercial — references the matching roofing
+        // collection entry (residential-roofing / commercial-roofing).
+        roofing: refSchema("roofing"),
         beforeImage: imageInputSchema({ image }),
         afterImage: imageInputSchema({ image }),
       }),
@@ -164,6 +167,18 @@ export const collections = {
     schema: ({ image }) =>
       baseSchema({ image }).extend({
         category: z.string().optional(),
+      }),
+  }),
+
+  // ── stats ───────────────────────────────────────────────
+  // Headline proof-point stats for the "Why Choose Us" band.
+  // value = the big number (e.g. "500+"), title = the label
+  // beneath it (e.g. "Roofs Installed"). order controls sequence.
+  "stats": defineCollection({
+    loader: FileLoad("stats", "stats.json"),
+    schema: ({ image }) =>
+      baseSchema({ image }).extend({
+        value: z.string(),
       }),
   }),
 

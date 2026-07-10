@@ -33,7 +33,8 @@ import RepairCallout from "@/components/RepairCallout.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
-import { query, sortByOrder } from "@/utils/query";
+import { query, sortByOrder, related } from "@/utils/query";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 
 export const certs = (await query("certifications").orderBy(sortByOrder()).all())
   .map((c) => c.data.title)
@@ -77,6 +78,19 @@ We're a New Jersey company you can hold accountable. Commercial work is backed b
 </Band>
 
 </Bands>
+
+{/* Portfolio: commercial before/afters that reference this page via the `roofing` field. */}
+<ContentRenderer
+  query={related("projects", "roofing", "commercial-roofing")
+    .where((entry) => Boolean(entry.data.beforeImage && entry.data.afterImage))}
+  variant="BeforeAfterVariant"
+  pretitle="Recent Projects"
+  title="Commercial Roofs."
+  accentTitle="Real Work."
+  description="A look at recent commercial roofing projects across New Jersey."
+  columns={2}
+  showButtonSection={false}
+/>
 
 {/* Primary conversion: quote form first. */}
 <QuoteCta cta={frontmatter.cta} />

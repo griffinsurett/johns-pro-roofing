@@ -3,9 +3,9 @@
 
 import type { IconType } from 'react-icons';
 import { FaArrowRightLong, FaArrowsUpDownLeftRight, FaBuildingShield, FaBullseye, FaClockRotateLeft, FaCompass, FaEye, FaFeather, FaFileLines, FaHeadset, FaHouse, FaHouseChimney, FaHouseChimneyCrack, FaLayerGroup, FaLifeRing, FaLink, FaLocationDot, FaMagnifyingGlass, FaPalette, FaPhone, FaRobot, FaRotateLeft, FaScaleBalanced, FaShieldHalved, FaStar, FaTree, FaTriangleExclamation, FaUniversalAccess, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
-import { LuArrowRight, LuArrowUpRight, LuBookOpen, LuChevronRight, LuContact, LuGithub, LuGlobe, LuImage, LuLinkedin, LuMail, LuMapPin, LuPhone, LuSettings, LuTwitter } from 'react-icons/lu';
+import { LuArrowRight, LuArrowUpRight, LuBookOpen, LuChevronRight, LuContact, LuGlobe, LuImage, LuMail, LuMapPin, LuPhone, LuSettings } from 'react-icons/lu';
 import { FaBuilding } from 'react-icons/fa';
-import { SiFacebook } from 'react-icons/si';
+import { SiFacebook, SiInstagram, SiYoutube } from 'react-icons/si';
 
 export const iconMap = {
   'fa6:arrow-right-long': FaArrowRightLong,
@@ -44,16 +44,15 @@ export const iconMap = {
   'lu:book-open': LuBookOpen,
   'lu:chevron-right': LuChevronRight,
   'lu:contact': LuContact,
-  'lu:github': LuGithub,
   'lu:globe': LuGlobe,
   'lu:image': LuImage,
-  'lu:linkedin': LuLinkedin,
   'lu:mail': LuMail,
   'lu:map-pin': LuMapPin,
   'lu:phone': LuPhone,
   'lu:settings': LuSettings,
-  'lu:twitter': LuTwitter,
   'si:facebook': SiFacebook,
+  'si:instagram': SiInstagram,
+  'si:youtube': SiYoutube,
 } satisfies Record<string, IconType>;
 
 export type IconKey = keyof typeof iconMap;

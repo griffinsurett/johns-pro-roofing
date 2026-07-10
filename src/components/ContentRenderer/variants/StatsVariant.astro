@@ -1,0 +1,77 @@
+---
+// src/components/ContentRenderer/variants/StatsVariant.astro
+/**
+ * Stats Variant — "Why Choose Us" band. Heading + accent copy on the left,
+ * body paragraphs, a stats row, and a CTA on the right. The stats row is
+ * driven by a collection query; the surrounding prose is passed as props
+ * (bespoke one-off copy).
+ *
+ * Props (beyond items):
+ * - pretitle: small uppercase eyebrow above the heading
+ * - body: array of paragraph strings for the right column
+ * - cta: { text, href } for the button below the stats
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import StatCard from "@/components/LoopComponents/StatCard.astro";
+import Button from "@/components/Button/Button";
+
+interface Props extends BaseVariantProps {
+  pretitle?: string;
+  body?: string[];
+  cta?: { text: string; href: string };
+}
+
+const {
+  items = [],
+  pretitle,
+  body = [],
+  cta,
+  className = "",
+  id,
+} = Astro.props as Props;
+---
+
+<section
+  id={id}
+  class={`py-[60px] lg:py-[100px] bg-[var(--color-canvas-secondary)] ${className}`}
+>
+  <div class="container">
+    <div class="grid lg:grid-cols-2 gap-6 lg:gap-20 items-center">
+      {/* Heading */}
+      <div>
+        {pretitle && <span class="section-pretitle">{pretitle}</span>}
+        <slot name="heading" />
+      </div>
+
+      {/* Copy + stats */}
+      <div>
+        {body.map((paragraph, i) => (
+          <p
+            class:list={[
+              "text-[var(--color-text-body)] text-base leading-[1.8]",
+              i === body.length - 1 ? "mb-8" : "mb-5",
+            ]}
+          >
+            {paragraph}
+          </p>
+        ))}
+
+        {items.length > 0 && (
+          <div class="border-t border-[var(--color-border)] pt-8 grid grid-cols-3 gap-6">
+            {items.map((item) => (
+              <StatCard {...item} />
+            ))}
+          </div>
+        )}
+
+        {cta && (
+          <div class="mt-8">
+            <Button variant="secondary" size="lg" href={cta.href}>
+              {cta.text}
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

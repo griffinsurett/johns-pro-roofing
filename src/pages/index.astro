@@ -48,51 +48,25 @@ const serviceAreaLabel = await getServiceAreaNames();
       </div>
     </section>
 
-    {/* Roofing pointers — heading left, copy + stats right (Axel's-style) */}
-    <section class="py-[60px] lg:py-[100px] bg-[var(--color-canvas-secondary)]" id="why-us">
-      <div class="container">
-        <div class="grid lg:grid-cols-2 gap-6 lg:gap-20 items-center">
-          {/* Heading */}
-          <div>
-            <span class="section-pretitle">Why Choose Us</span>
-            <h2 class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
-              Roofs that last,
-              <span class="not-italic font-[family-name:var(--font-body)] text-accent"> done right, </span>
-              the first time.
-            </h2>
-          </div>
-
-          {/* Copy + stats */}
-          <div>
-            <p class="text-[var(--color-text-body)] text-base leading-[1.8] mb-5">
-              We don't cut corners. Every job gets a thorough inspection, honest recommendations, and quality materials installed by a crew that treats your home like their own — no subs, no surprises.
-            </p>
-            <p class="text-[var(--color-text-body)] text-base leading-[1.8] mb-8">
-              From storm-damage repairs to full replacements, we back our work with a 25-year workmanship warranty and a satisfaction guarantee. If it's not right, we make it right.
-            </p>
-
-            <div class="border-t border-[var(--color-border)] pt-8 grid grid-cols-3 gap-6">
-              <div>
-                <div class="text-[clamp(28px,3vw,38px)] font-extrabold text-accent leading-none">500+</div>
-                <div class="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] mt-2">Roofs Installed</div>
-              </div>
-              <div>
-                <div class="text-[clamp(28px,3vw,38px)] font-extrabold text-accent leading-none">25-Yr</div>
-                <div class="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] mt-2">Workmanship Warranty</div>
-              </div>
-              <div>
-                <div class="text-[clamp(28px,3vw,38px)] font-extrabold text-accent leading-none">0%</div>
-                <div class="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] mt-2">Financing Available</div>
-              </div>
-            </div>
-
-            <div class="mt-8">
-              <Button variant="secondary" size="lg" href="/#about">Our Story</Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    {/* Roofing pointers — heading left, copy + stats right (Axel's-style).
+        Stats are driven by the `stats` collection. */}
+    <ContentRenderer
+      query={query("stats").orderBy(sortByOrder())}
+      variant="StatsVariant"
+      id="why-us"
+      pretitle="Why Choose Us"
+      body={[
+        "We don't cut corners. Every job gets a thorough inspection, honest recommendations, and quality materials installed by a crew that treats your home like their own — no subs, no surprises.",
+        "From storm-damage repairs to full replacements, we back our work with a 25-year workmanship warranty and a satisfaction guarantee. If it's not right, we make it right.",
+      ]}
+      cta={{ text: "Our Story", href: "/#about" }}
+    >
+      <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
+        Roofs that last,
+        <span class="not-italic font-[family-name:var(--font-body)] text-accent"> done right, </span>
+        the first time.
+      </h2>
+    </ContentRenderer>
 
     {/* Services callout — red-gradient photo band with a numbered list.
         Only Roofing links (has a page); decking/siding are plain entries. */}

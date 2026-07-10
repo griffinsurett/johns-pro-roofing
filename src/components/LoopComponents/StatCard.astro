@@ -1,0 +1,19 @@
+---
+// src/components/LoopComponents/StatCard.astro
+/**
+ * Stat Card — a single headline proof-point.
+ * Big value on top (e.g. "500+"), uppercase label beneath (e.g. "Roofs
+ * Installed"). Consumes a prepared stats collection item (value, title).
+ */
+export interface Props {
+  value: string;
+  title: string;
+}
+
+const { value, title } = Astro.props as Props;
+---
+
+<div>
+  <div class="text-[clamp(28px,3vw,38px)] font-extrabold text-accent leading-none">{value}</div>
+  <div class="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] mt-2">{title}</div>
+</div>
