@@ -1,5 +1,8 @@
 ---
 title: "Emergency Roof Leak Repair"
+heading:
+  before: "Roof Emergency?"
+  text: "We Respond Fast."
 description: "Emergency roof leak repair in Somerset, NJ — fast response for active leaks and storm damage. We stop the water and protect your property."
 order: 5
 icon: "fa6:triangle-exclamation"
@@ -34,6 +37,15 @@ import PhoneLink from "@/components/PhoneLink.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+
+<ServiceLayout
+  eyebrow={frontmatter.title}
+  title={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={frontmatter.bannerImage}
+>
 
 <Bands>
 
@@ -78,3 +90,5 @@ We're a local New Jersey company, {businessData.insurance} (HIC #{businessData.n
 </Bands>
 
 <QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>

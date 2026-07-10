@@ -1,5 +1,9 @@
 ---
 title: "Commercial Roof Repair"
+heading:
+  before: "Stop the"
+  text: "Leak,"
+  after: "Protect Your Property."
 description: "Commercial roof repair in Somerset, NJ — flat-roof leaks, membrane and seam repairs, and coatings with minimal downtime. Free estimates."
 parent: "commercial-roofing"
 order: 1
@@ -30,6 +34,15 @@ import QuoteCta from "@/components/QuoteCta.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+
+<ServiceLayout
+  eyebrow={frontmatter.title}
+  title={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={frontmatter.bannerImage}
+>
 
 <Bands>
 
@@ -74,3 +87,5 @@ We're a New Jersey company that stands behind its work. Repairs are backed by {b
 </Bands>
 
 <QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>

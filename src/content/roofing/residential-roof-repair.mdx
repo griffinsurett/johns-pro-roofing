@@ -1,5 +1,9 @@
 ---
 title: "Residential Roof Repair"
+heading:
+  before: "Fast, Reliable"
+  text: "Repairs"
+  after: "Done Right."
 description: "Residential roof repair in Somerset, NJ — leaks, missing shingles, flashing, and storm damage fixed right the first time. Free estimates."
 parent: "residential-roofing"
 order: 1
@@ -30,6 +34,15 @@ import QuoteCta from "@/components/QuoteCta.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+
+<ServiceLayout
+  eyebrow={frontmatter.title}
+  title={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={frontmatter.bannerImage}
+>
 
 <Bands>
 
@@ -72,3 +85,5 @@ We're a New Jersey company that stands behind its work. Repairs are backed by {b
 </Bands>
 
 <QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>

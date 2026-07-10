@@ -10,11 +10,9 @@
  * - MDX content rendering
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import SecondaryHero from '@/layouts/SecondaryHero.astro';
-import { humanizeSlug } from '@/utils/string';
 import type { CollectionLayoutProps } from './types';
 
-const { 
+const {
   entry,
   collection,
   collectionMeta,
@@ -23,29 +21,17 @@ const {
   seoProps = {},
   ...extraProps
 } = Astro.props as CollectionLayoutProps;
-
-const data = entry?.data || {};
 ---
 <BaseLayout {...seoProps}>
   <main class="flex-1">
-    {/* Hero section - always displayed */}
-    <SecondaryHero
-      eyebrow={humanizeSlug(entry?.id ?? "")}
-      title={data.title}
-      heading={data.heading}
-      description={data.description}
-      image={data.bannerImage}
-      publishDate={data.publishDate}
-      author={data.author}
-      readingTime={data.readingTime}
-    />
-
-    {/* MDX content */}
+    {/*
+      Empty by design: no hero here. The hero lives in the MDX-level
+      ServiceLayout wrapper, which renders its `hero` slot (SecondaryHero by
+      default, or an overriding hero like FrontPageHero2) above the content.
+    */}
     {Content && (
       <article class="">
-        {/* <div class="prose prose-lg"> */}
-          <Content />
-        {/* </div> */}
+        <Content />
       </article>
     )}
   </main>

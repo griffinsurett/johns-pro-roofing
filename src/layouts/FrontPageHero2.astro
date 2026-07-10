@@ -15,9 +15,15 @@ import Video from "@/components/Video/Video.astro";
 import bgImage from "@/assets/images/service_roof_install.png";
 import personImage from "@/assets/john-pointing.png";
 
+type Heading = string | { before?: string; text?: string; after?: string };
+
 export interface Props {
   /** Small kicker above the headline. */
   eyebrow?: string;
+  /** Segmented headline: `{ before, text, after }` where `text` is the accent
+   *  emphasis. When provided, it drives the H1 (overriding titleTop/Bottom/After).
+   *  A plain string renders with no accent split. */
+  heading?: Heading;
   /** Headline lead-in (navy). */
   titleTop?: string;
   /** Headline emphasis (accent red). */
@@ -33,6 +39,8 @@ export interface Props {
   person?: ImageMetadata;
   personAlt?: string;
   primaryCTA?: { text: string; link: string };
+  /** Show the button row (primary CTA + phone). Set false to hide both. */
+  showButtons?: boolean;
   /** Show the Google rating trust row. */
   googleRating?: boolean;
   className?: string;
@@ -41,6 +49,7 @@ export interface Props {
 
 const {
   eyebrow,
+  heading,
   titleTop = "Your Roof,",
   titleBottom = "Done Right",
   titleAfter = "the First Time.",
@@ -50,10 +59,23 @@ const {
   person = personImage,
   personAlt = "John's Pro Roofing crew member pointing at a finished roof",
   primaryCTA = { text: "Get a Free Quote", link: "/contact-us" },
+  showButtons = true,
   googleRating = true,
   className = "",
   id = "hero",
 } = Astro.props;
+
+// A segmented `heading` (or plain string) overrides the titleTop/Bottom/After
+// props so a page can drive the headline from its frontmatter `heading` field.
+const headingObj =
+  heading && typeof heading === "object" ? heading : undefined;
+const headingStr = typeof heading === "string" ? heading : undefined;
+
+const h = {
+  before: headingObj?.before ?? (headingStr ? undefined : titleTop),
+  text: headingObj?.text ?? (headingStr ?? (headingObj ? undefined : titleBottom)),
+  after: headingObj?.after ?? (headingStr ? undefined : titleAfter),
+};
 ---
 
 <section
@@ -121,9 +143,9 @@ const {
       <h1
         class="font-display font-extrabold italic uppercase text-heading leading-[1] text-[clamp(42px,9vw,52px)] [text-wrap:balance]"
       >
-        <span>{titleTop} </span>
-        <span class="not-italic text-accent">{titleBottom}</span>
-        {titleAfter && <span> {titleAfter}</span>}
+        {h.before && <span>{h.before} </span>}
+        {h.text && <span class="not-italic text-accent">{h.text}</span>}
+        {h.after && <span> {h.after}</span>}
       </h1>
 
       {
@@ -134,16 +156,18 @@ const {
         )
       }
 
-      <div class="flex flex-wrap items-center gap-4 mt-1">
-        {
-          primaryCTA && (
-            <Button variant="primary" size="lg" href={primaryCTA.link}>
-              {primaryCTA.text}
-            </Button>
-          )
-        }
-        <PhoneLink variant="phone" tone="blue" size="lg" />
-      </div>
+      {
+        showButtons && (
+          <div class="flex flex-wrap items-center gap-4 mt-1">
+            {primaryCTA && (
+              <Button variant="primary" size="lg" href={primaryCTA.link}>
+                {primaryCTA.text}
+              </Button>
+            )}
+            <PhoneLink variant="phone" tone="blue" size="lg" />
+          </div>
+        )
+      }
 
       {googleRating && <GoogleRating tone="dark" />}
     </div>

@@ -1,0 +1,60 @@
+---
+// src/layouts/collections/ServiceLayout.astro
+/**
+ * ServiceLayout — MDX-level hero wrapper for service pages.
+ *
+ * The page-level CollectionLayout is empty (content only). Each service MDX
+ * wraps its own content in this layout, which renders a hero above it:
+ *
+ *   <ServiceLayout eyebrow="Roofing" title={frontmatter.title} ...>
+ *     ...bands / content...
+ *   </ServiceLayout>
+ *
+ * By default the `hero` slot falls back to the automatic SecondaryHero built
+ * from the props passed in. To lead with a different hero, a page passes its
+ * own into the `hero` slot:
+ *
+ *   <ServiceLayout ...>
+ *     <FrontPageHero2 slot="hero" ... />
+ *     ...content...
+ *   </ServiceLayout>
+ */
+import SecondaryHero from "@/layouts/SecondaryHero.astro";
+
+export interface Props {
+  eyebrow?: string;
+  title?: string;
+  heading?: any;
+  description?: string;
+  image?: any;
+  publishDate?: Date | string;
+  author?: string | { collection: string; id: string };
+  readingTime?: number;
+}
+
+const {
+  eyebrow,
+  title,
+  heading,
+  description,
+  image,
+  publishDate,
+  author,
+  readingTime,
+} = Astro.props as Props;
+---
+{/* Hero slot — override with `slot="hero"`, else the automatic SecondaryHero. */}
+<slot name="hero">
+  <SecondaryHero
+    eyebrow={eyebrow}
+    title={title}
+    heading={heading}
+    description={description}
+    image={image}
+    publishDate={publishDate}
+    author={author}
+    readingTime={readingTime}
+  />
+</slot>
+
+<slot />

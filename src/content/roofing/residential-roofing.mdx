@@ -1,5 +1,9 @@
 ---
 title: "Residential Roofing"
+heading:
+  before: "Roofing Built to"
+  text: "Protect"
+  after: "Your Home."
 description: "Residential roof replacement and new roof installation in Somerset, NJ — clean, code-compliant work backed by free estimates and 0% financing."
 order: 1
 icon: "fa6:house-chimney"
@@ -38,6 +42,20 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import { related } from "@/utils/query";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+
+<ServiceLayout>
+
+{/* Parent page leads with the full front-page hero instead of the secondary. */}
+<FrontPageHero2
+  slot="hero"
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  video="/residential-vid.mp4"
+  showButtons={false}
+/>
 
 <Bands>
 
@@ -122,3 +140,5 @@ We're a local New Jersey company, not a franchise — the same crew that quotes 
 </Band>
 
 </Bands>
+
+</ServiceLayout>

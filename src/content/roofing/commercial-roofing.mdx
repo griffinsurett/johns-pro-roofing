@@ -1,5 +1,9 @@
 ---
 title: "Commercial Roofing"
+heading:
+  before: "Roofing That Keeps Your"
+  text: "Business"
+  after: "Covered."
 description: "Commercial roofing in Somerset, NJ — flat-roof systems, replacements, and new installs for businesses and property managers. Free estimates."
 order: 2
 icon: "fa:building"
@@ -35,10 +39,24 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import { query, sortByOrder, related } from "@/utils/query";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
 
 export const certs = (await query("certifications").orderBy(sortByOrder()).all())
   .map((c) => c.data.title)
   .join(", ");
+
+<ServiceLayout>
+
+{/* Parent page leads with the full front-page hero instead of the secondary. */}
+<FrontPageHero2
+  slot="hero"
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  video="/commercial-vid.mp4"
+  showButtons={false}
+/>
 
 <Bands>
 
@@ -124,3 +142,5 @@ We're a New Jersey company you can hold accountable. Commercial work is backed b
 </Band>
 
 </Bands>
+
+</ServiceLayout>

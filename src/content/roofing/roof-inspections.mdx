@@ -1,5 +1,9 @@
 ---
 title: "Roof Inspections"
+heading:
+  before: "Know Your Roof's"
+  text: "True"
+  after: "Condition."
 description: "Roof inspections in Somerset, NJ — honest condition reports, storm-damage documentation, and insurance-claim support. Free estimates."
 order: 3
 icon: "fa6:magnifying-glass"
@@ -32,6 +36,15 @@ import QuoteCta from "@/components/QuoteCta.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+
+<ServiceLayout
+  eyebrow={frontmatter.title}
+  title={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={frontmatter.bannerImage}
+>
 
 <Bands>
 
@@ -74,3 +87,5 @@ We'll tell you the truth, even when it's "your roof is fine, come back in a few 
 </Bands>
 
 <QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>
