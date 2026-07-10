@@ -20,6 +20,10 @@ const quoteFormId =
   import.meta.env.PUBLIC_FORMSPREE_QUOTE_ID ||
   import.meta.env.PUBLIC_FORMSPREE_ID;
 
+// Record which page the quote was submitted from (gws-old pattern) so each
+// Formspree submission carries the source URL.
+const currentPageUrl = Astro.url.href;
+
 const handleSubmit = async () => {
   throw new Error(
     "Quote form is not configured. Set PUBLIC_FORMSPREE_QUOTE_ID or PUBLIC_FORMSPREE_ID."
@@ -41,6 +45,7 @@ const handleSubmit = async () => {
     className="w-full gap-0"
   >
     <input type="hidden" name="formName" value="Greastro Quote Form" />
+    <input type="hidden" name="pageUrl" value={currentPageUrl} />
 
     <div class="flex flex-col lg:flex-row justify-between gap-2 mb-4">
       <Input
@@ -111,6 +116,9 @@ const handleSubmit = async () => {
       >
         Privacy Policy
       </Button>
+      , and consent to John's Pro Roofing LLC contacting me by phone, text, or
+      email about my request. Consent is not a condition of purchase. Message
+      and data rates may apply; reply STOP to opt out.
     </Checkbox>
 
     <Button variant="primary" type="submit" className="w-full">

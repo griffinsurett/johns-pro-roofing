@@ -39,6 +39,9 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import bannerImage from "../../assets/images/service_roof_repair.png";
+import bandA from "../../assets/residential-working-2.webp";
+import bandB from "../../assets/commercial-2.webp";
+import bandC from "../../assets/john-on-roof-2.webp";
 
 <ServiceLayout
   eyebrow={frontmatter.title}
@@ -50,13 +53,13 @@ import bannerImage from "../../assets/images/service_roof_repair.png";
 
 <Bands>
 
-<Band>
+<Band image={bannerImage} imageAlt={frontmatter.title}>
 
 When a leak can't wait, we respond fast — containing the damage, stopping the water, and getting your roof watertight again. If water is coming into your home or building right now, **call us first**: <PhoneLink />. John's Pro Roofing handles emergency roof leaks across Somerset and throughout New Jersey.
 
 </Band>
 
-<Band>
+<Band image={bandA} imageAlt="Emergency roof leak being contained" reverse>
 
 ## What to do while you wait for us
 
@@ -67,7 +70,7 @@ When a leak can't wait, we respond fast — containing the damage, stopping the 
 
 </Band>
 
-<Band>
+<Band image={bandB} imageAlt="Crew responding to storm damage">
 
 ## How we respond
 
@@ -78,7 +81,7 @@ When a leak can't wait, we respond fast — containing the damage, stopping the 
 
 </Band>
 
-<Band>
+<Band image={bandC} imageAlt="Roof made watertight after emergency repair" reverse>
 
 ## After the emergency
 

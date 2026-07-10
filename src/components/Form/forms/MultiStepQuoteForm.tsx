@@ -190,6 +190,9 @@ export default function MultiStepQuoteForm() {
               >
                 Privacy Policy
               </Button>
+              , and consent to John's Pro Roofing LLC contacting me by phone,
+              text, or email about my request. Consent is not a condition of
+              purchase. Message and data rates may apply; reply STOP to opt out.
             </>
           }
           required

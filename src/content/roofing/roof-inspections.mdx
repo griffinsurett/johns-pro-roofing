@@ -38,6 +38,9 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import bannerImage from "../../assets/images/service_roof_install.png";
+import bandA from "../../assets/john-on-roof.webp";
+import bandB from "../../assets/roof-inspect.png";
+import bandC from "../../assets/john-w-client.webp";
 
 <ServiceLayout
   eyebrow={frontmatter.title}
@@ -49,13 +52,13 @@ import bannerImage from "../../assets/images/service_roof_install.png";
 
 <Bands>
 
-<Band>
+<Band image={bannerImage} imageAlt={frontmatter.title}>
 
 A detailed inspection is the smartest first step. We assess your roof's condition, document any damage, and give you honest, clear recommendations — no pressure to buy anything you don't need. John's Pro Roofing inspects roofs across Somerset and throughout New Jersey.
 
 </Band>
 
-<Band>
+<Band image={bandA} imageAlt="Roofer inspecting a roof" reverse>
 
 ## When to get a roof inspection
 
@@ -67,7 +70,7 @@ A detailed inspection is the smartest first step. We assess your roof's conditio
 
 </Band>
 
-<Band>
+<Band image={bandB} imageAlt="Close inspection of roof condition">
 
 ## What our inspection covers
 
@@ -75,7 +78,7 @@ We check the full roof system, not just the surface — shingles or membrane, fl
 
 </Band>
 
-<Band>
+<Band image={bandC} imageAlt="John reviewing findings with a homeowner" reverse>
 
 ## Honest recommendations
 

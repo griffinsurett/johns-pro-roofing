@@ -36,6 +36,9 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import bannerImage from "../../assets/images/service_roof_replace.png";
+import bandA from "../../assets/commercial-3.webp";
+import bandB from "../../assets/commercial-5.webp";
+import bandC from "../../assets/commercial-7.webp";
 
 <ServiceLayout
   eyebrow={frontmatter.title}
@@ -47,13 +50,13 @@ import bannerImage from "../../assets/images/service_roof_replace.png";
 
 <Bands>
 
-<Band>
+<Band image={bannerImage} imageAlt={frontmatter.title}>
 
 Commercial roof repairs that protect your building and your bottom line — quick response, quality materials, and minimal disruption to operations. John's Pro Roofing repairs commercial and flat roofs for businesses across Somerset and throughout New Jersey.
 
 </Band>
 
-<Band>
+<Band image={bandA} imageAlt="Commercial flat-roof repair" reverse>
 
 ## Repairs for flat and low-slope roofs
 
@@ -67,7 +70,7 @@ Most commercial leaks come from a handful of failure points, and finding the rea
 
 </Band>
 
-<Band>
+<Band image={bandB} imageAlt="Crew repairing a commercial roof membrane">
 
 ## Less downtime, less damage
 
@@ -75,7 +78,7 @@ A commercial leak puts inventory, equipment, and tenants at risk. We respond qui
 
 </Band>
 
-<Band>
+<Band image={bandC} imageAlt="Finished commercial roof" reverse>
 
 ## Accountable, local, and insured
 

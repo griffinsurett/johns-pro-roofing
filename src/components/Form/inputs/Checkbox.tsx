@@ -24,8 +24,9 @@ export default function Checkbox({
   children,
   required = false,
   containerClassName = "mb-4",
-  labelClassName = "flex items-center cursor-pointer",
-  checkboxClassName = "w-4 h-4 text-primary border-surface rounded",
+  // Top-align so the box sits next to the first line of longer consent text.
+  labelClassName = "flex items-start gap-2 cursor-pointer",
+  checkboxClassName = "w-4 h-4 shrink-0 mt-0.5 text-primary border-surface rounded",
   ...checkboxProps
 }: CheckboxProps) {
   const labelContent = children ?? label;
@@ -42,7 +43,7 @@ export default function Checkbox({
           {...checkboxProps}
         />
         {labelContent && (
-          <span className="ml-2 text-text">
+          <span className="text-sm leading-relaxed text-[var(--color-text-muted)]">
             {labelContent}
             {required && <span className="text-red-500 ml-1">*</span>}
           </span>

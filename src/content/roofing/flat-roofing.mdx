@@ -38,6 +38,9 @@ import { businessData } from "@/content/siteData";
 import { query, sortByOrder } from "@/utils/query";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import bannerImage from "../../assets/images/service_roof_repair.png";
+import bandA from "../../assets/commercial-4.webp";
+import bandB from "../../assets/commercial-6.webp";
+import bandC from "../../assets/commercial-8.webp";
 
 export const certs = (await query("certifications").orderBy(sortByOrder()).all())
   .map((c) => c.data.title)
@@ -53,13 +56,13 @@ export const certs = (await query("certifications").orderBy(sortByOrder()).all()
 
 <Bands>
 
-<Band>
+<Band image={bannerImage} imageAlt={frontmatter.title}>
 
 Flat roof systems require specialized knowledge. Our team provides expert installations, maintenance, and durable coatings for leak-free performance — for homes, additions, and commercial buildings across Somerset and throughout New Jersey.
 
 </Band>
 
-<Band>
+<Band image={bandA} imageAlt="Flat roof membrane installation" reverse>
 
 ## Flat-roof systems we install and service
 
@@ -70,7 +73,7 @@ Flat roof systems require specialized knowledge. Our team provides expert instal
 
 </Band>
 
-<Band>
+<Band image={bandB} imageAlt="Crew working on a flat roof system">
 
 ## Why flat roofs need a specialist
 
@@ -78,7 +81,7 @@ On a sloped roof, gravity moves water off. On a flat roof, water sits — so sea
 
 </Band>
 
-<Band>
+<Band image={bandC} imageAlt="Completed flat roof" reverse>
 
 ## Repairs and coatings, not just replacements
 

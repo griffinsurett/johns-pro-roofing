@@ -36,6 +36,9 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import bannerImage from "../../assets/images/service_roof_repair.png";
+import bandA from "../../assets/residential-working.webp";
+import bandB from "../../assets/john-on-roof.webp";
+import bandC from "../../assets/john-on-roof-2.webp";
 
 <ServiceLayout
   eyebrow={frontmatter.title}
@@ -47,13 +50,13 @@ import bannerImage from "../../assets/images/service_roof_repair.png";
 
 <Bands>
 
-<Band>
+<Band image={bannerImage} imageAlt={frontmatter.title}>
 
 Targeted residential roof repairs done right the first time — we find the source, fix it cleanly, and protect your home from further damage. John's Pro Roofing repairs roofs for homeowners across Somerset and throughout New Jersey, with a free estimate before any work begins.
 
 </Band>
 
-<Band>
+<Band image={bandA} imageAlt="Roof repair in progress on a home" reverse>
 
 ## Common repairs we handle
 
@@ -65,7 +68,7 @@ Targeted residential roof repairs done right the first time — we find the sour
 
 </Band>
 
-<Band>
+<Band image={bandB} imageAlt="John's Pro Roofing crew making a repair">
 
 ## We fix the cause, not just the symptom
 
@@ -73,7 +76,7 @@ A patch over the wrong spot just moves the problem. We inspect the roof, attic, 
 
 </Band>
 
-<Band>
+<Band image={bandC} imageAlt="Completed residential roof" reverse>
 
 ## Local, licensed, and accountable
 
