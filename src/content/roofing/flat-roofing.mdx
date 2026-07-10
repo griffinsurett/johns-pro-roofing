@@ -37,6 +37,7 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import { query, sortByOrder } from "@/utils/query";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import bannerImage from "../../assets/images/service_roof_repair.png";
 
 export const certs = (await query("certifications").orderBy(sortByOrder()).all())
   .map((c) => c.data.title)
@@ -47,7 +48,7 @@ export const certs = (await query("certifications").orderBy(sortByOrder()).all()
   title={frontmatter.title}
   heading={frontmatter.heading}
   description={frontmatter.description}
-  image={frontmatter.bannerImage}
+  image={bannerImage}
 >
 
 <Bands>

@@ -44,6 +44,10 @@ import { related } from "@/utils/query";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+import heroImage from "../../assets/residential-working.webp";
+import bandReplace from "../../assets/residential-working-2.webp";
+import bandIncludes from "../../assets/john-w-client.webp";
+import bandChoose from "../../assets/john-on-roof-2.webp";
 
 <ServiceLayout>
 
@@ -53,19 +57,24 @@ import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
   eyebrow={frontmatter.title}
   heading={frontmatter.heading}
   description={frontmatter.description}
+  image={heroImage}
   video="/residential-vid.mp4"
   showButtons={false}
 />
 
 <Bands>
 
-<Band>
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## Roofing homeowners trust
 
 Residential roofing built for long-term protection, clean installation, and reliable workmanship from start to finish. John's Pro Roofing replaces and installs roofs for homeowners across Somerset and throughout New Jersey — with free estimates and 0% financing available, so a new roof fits your home and your budget.
 
+Your roof is the biggest thing protecting your home and everything inside it, so it's not the place to cut corners. As a local, owner-operated company, we treat every home like our own — honest assessments, quality materials, and a crew that shows up on time, keeps you in the loop, and cleans up when the job's done.
+
 </Band>
 
-<Band>
+<Band image={bandReplace} imageAlt="Residential roof replacement in progress" reverse>
 
 ## When it's time to replace your roof
 
@@ -73,7 +82,7 @@ Most asphalt-shingle roofs in New Jersey last 20–25 years, but our weather spe
 
 </Band>
 
-<Band>
+<Band image={bandIncludes} imageAlt="John reviewing a completed roof with a homeowner">
 
 ## What a residential roof replacement includes
 
@@ -85,7 +94,7 @@ Most asphalt-shingle roofs in New Jersey last 20–25 years, but our weather spe
 
 </Band>
 
-<Band>
+<Band image={bandChoose} imageAlt="John on a completed residential roof" reverse>
 
 ## Why homeowners choose John's Pro Roofing
 

@@ -37,13 +37,14 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import bannerImage from "../../assets/images/service_roof_install.png";
 
 <ServiceLayout
   eyebrow={frontmatter.title}
   title={frontmatter.title}
   heading={frontmatter.heading}
   description={frontmatter.description}
-  image={frontmatter.bannerImage}
+  image={bannerImage}
 >
 
 <Bands>

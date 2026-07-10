@@ -41,6 +41,10 @@ import { query, sortByOrder, related } from "@/utils/query";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+import heroImage from "../../assets/commercial-working.webp";
+import bandBuilt from "../../assets/commercial-2.webp";
+import bandDowntime from "../../assets/commercial-4.webp";
+import bandLicensed from "../../assets/commercial-6.webp";
 
 export const certs = (await query("certifications").orderBy(sortByOrder()).all())
   .map((c) => c.data.title)
@@ -54,19 +58,24 @@ export const certs = (await query("certifications").orderBy(sortByOrder()).all()
   eyebrow={frontmatter.title}
   heading={frontmatter.heading}
   description={frontmatter.description}
+  image={heroImage}
   video="/commercial-vid.mp4"
   showButtons={false}
 />
 
 <Bands>
 
-<Band>
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## Roofing that protects your business
 
 Commercial roofing services designed to keep business properties protected with dependable materials and straightforward execution. John's Pro Roofing installs and replaces commercial roofs across Somerset and throughout New Jersey, working around your operating hours to keep disruption to a minimum.
 
+For a business, a roof problem is never just a roof problem — it's downtime, damaged inventory, and unhappy tenants. That's why we treat commercial work as a partnership: clear scopes, firm pricing, and schedules built around your operations, so you get one accountable local team that keeps your business running while we work.
+
 </Band>
 
-<Band>
+<Band image={bandBuilt} imageAlt="Commercial flat roof installation" reverse>
 
 ## Built for business properties
 
@@ -79,7 +88,7 @@ Commercial roofs are a different job than residential — most are low-slope or 
 
 </Band>
 
-<Band>
+<Band image={bandDowntime} imageAlt="Commercial roofing crew working on a business property">
 
 ## Minimal downtime, clear communication
 
@@ -87,7 +96,7 @@ A roof project shouldn't shut down your business. We schedule around your hours,
 
 </Band>
 
-<Band>
+<Band image={bandLicensed} imageAlt="Completed commercial roof by John's Pro Roofing" reverse>
 
 ## Licensed, insured, and local
 
