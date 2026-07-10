@@ -30,7 +30,8 @@ export default function Textarea({
   rows = 4,
   ...textareaProps
 }: TextareaProps) {
-  const placeholderClassName = "placeholder-white/80 placeholder:tracking-tight";
+  const placeholderClassName =
+    "placeholder:text-[var(--color-text-muted)] placeholder:tracking-tight";
   const combinedTextareaClassName = `${textareaClassName} ${placeholderClassName}`.trim();
 
   return (

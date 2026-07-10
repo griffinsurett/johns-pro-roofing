@@ -29,7 +29,8 @@ export default function Input({
   showLabel = true,
   ...inputProps
 }: InputProps) {
-  const placeholderClassName = "placeholder-white/80 placeholder:tracking-tight";
+  const placeholderClassName =
+    "placeholder:text-[var(--color-text-muted)] placeholder:tracking-tight";
   const combinedInputClassName = `${inputClassName} ${placeholderClassName}`.trim();
 
   return (
