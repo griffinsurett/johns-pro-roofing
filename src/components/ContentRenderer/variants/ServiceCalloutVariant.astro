@@ -68,7 +68,7 @@ const cycle = Math.max(slides.length, 1) * perSlide;
   </div>
 
   <div class="container relative z-10 py-[80px] lg:py-[100px]">
-    <div class="max-w-[640px] text-bg">
+    <div class="max-w-[760px] text-bg">
       {pretitle && <span class="section-pretitle !text-bg">{pretitle}</span>}
       {title && (
         <h2 class="section-title !text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] mb-4">
@@ -80,7 +80,7 @@ const cycle = Math.max(slides.length, 1) * perSlide;
       )}
 
       {safeItems.length > 0 && (
-        <ul class="flex flex-col gap-5 mb-10 list-none">
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 mb-10 list-none">
           {safeItems.map((item, i) => (
             <li class="flex items-center gap-4">
               <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">

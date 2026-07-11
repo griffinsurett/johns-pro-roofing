@@ -42,21 +42,15 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
 import heroImage from "../../assets/commercial-8.webp";
 import bandWhat from "../../assets/commercial-2.webp";
 
-<ServiceLayout>
-
-<FrontPageHero2
-  slot="hero"
+<ServiceLayout
   eyebrow={frontmatter.title}
   heading={frontmatter.heading}
   description={frontmatter.description}
   image={heroImage}
-  video="/commercial-vid.mp4"
-  showButtons={false}
-/>
+>
 
 <Bands>
 

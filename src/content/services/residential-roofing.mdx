@@ -1,0 +1,93 @@
+---
+title: "Residential Roofing"
+heading:
+  before: "Roofing Built to"
+  text: "Protect"
+  after: "Your Home."
+description: "Residential roof repair and replacement in New Jersey — clean installs, quality materials, and honest recommendations backed by a workmanship warranty. Free estimates."
+order: 8
+category: "Residential Roofing"
+icon: "fa6:house-chimney"
+cardSize: "small"
+cardCta: "Learn More"
+cardBlurb: "Roof repairs and replacements for homeowners — clean installs, quality materials, and honest recommendations."
+price: "Free estimates available"
+bannerImage: "../../assets/residential-working.webp"
+featuredImage: "../../assets/john-w-client.webp"
+seo:
+  metaTitle: "Residential Roofing in NJ | John's Pro Roofing"
+  metaDescription: "Residential roof repair and replacement in New Jersey — clean installs, quality materials, and honest recommendations. Free estimate. Call 732-351-3518."
+  keywords:
+    - "residential roofing nj"
+    - "roof replacement nj"
+    - "roof repair nj"
+    - "residential roofers near me"
+features:
+  - "Roof repairs"
+  - "Full replacements"
+  - "Storm damage restoration"
+  - "Free inspections"
+cta:
+  title: "Ready for a"
+  accent: "new"
+  titleAfter: "roof?"
+  description: "Free estimates on residential roof repair and replacement across New Jersey."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import heroImage from "../../assets/residential-working.webp";
+import bandReplace from "../../assets/residential-working-2.webp";
+import bandChoose from "../../assets/john-on-roof-2.webp";
+
+<ServiceLayout
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+>
+
+<Bands>
+
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## Roofing homeowners trust
+
+While we specialize in commercial work, John's Pro Roofing also takes care of homeowners across New Jersey — with the same crew, the same standards, and the same straightforward service. Whether it's a few missing shingles after a storm or a full replacement, we handle it start to finish and leave your property clean.
+
+As a local, owner-operated company, we treat every home like our own: honest assessments, quality materials, and a crew that shows up on time, keeps you in the loop, and cleans up when the job's done.
+
+</Band>
+
+<Band image={bandReplace} imageAlt="Residential roof replacement in progress" reverse>
+
+## Repairs and replacements
+
+- **Roof repairs** — leaks, missing or damaged shingles, flashing, and storm damage
+- **Full replacements** — complete tear-off, deck repair, new underlayment, and clean shingle installation
+- **Storm damage restoration** — fast assessment and repair after wind and hail
+- **Free inspections** — an honest answer on whether you need a repair or a replacement
+
+Not sure which you need? We'll take a look and tell you straight — no pressure, no surprise costs.
+
+</Band>
+
+<Band image={bandChoose} imageAlt="John on a completed residential roof">
+
+## Why homeowners choose John's Pro Roofing
+
+We're a local New Jersey company, not a franchise — the same crew that quotes your roof is the one that installs it. Every job is backed by {businessData.warranty}, and we're {businessData.insurance} in NJ. See what your neighbors say on our [reviews](/#testimonials).
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form. */}
+<QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>
