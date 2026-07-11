@@ -1,0 +1,107 @@
+---
+title: "Parking Lot Repairs"
+heading:
+  before: "Fix the"
+  text: "Failing"
+  after: "Spots."
+description: "Commercial parking lot repairs in New Jersey — pothole patching, failed-section replacement, and pavement repairs that keep your property safe and accessible."
+order: 7
+category: "Asphalt Paving"
+icon: "fa6:screwdriver-wrench"
+cardSize: "small"
+cardCta: "Learn More"
+cardBlurb: "Pothole patching and failed-section repairs that restore a safe, accessible surface without a full repave."
+price: "Free estimates available"
+bannerImage: "../../assets/commercial-8.webp"
+featuredImage: "../../assets/commercial-8.webp"
+seo:
+  metaTitle: "Parking Lot Repairs in NJ | John's Pro Roofing"
+  metaDescription: "Commercial parking lot repairs in New Jersey — pothole patching, failed-section replacement, and pavement repairs. Free estimate. Call 732-351-3518."
+  keywords:
+    - "parking lot repair nj"
+    - "pothole repair nj"
+    - "asphalt patching nj"
+    - "commercial pavement repair nj"
+features:
+  - "Pothole patching"
+  - "Failed-section replacement"
+  - "Trip-hazard repair"
+  - "Drainage corrections"
+cta:
+  title: "Make your lot"
+  accent: "safe"
+  titleAfter: "again."
+  description: "Request a free estimate for pothole and pavement repairs across your property."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import ServiceCallout from "@/components/RepairCallout.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+import heroImage from "../../assets/commercial-8.webp";
+import bandWhat from "../../assets/commercial-2.webp";
+
+<ServiceLayout>
+
+<FrontPageHero2
+  slot="hero"
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  video="/commercial-vid.mp4"
+  showButtons={false}
+/>
+
+<Bands>
+
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## Repairs that keep your property safe
+
+Potholes and broken pavement aren't just an eyesore — they're a liability. A failing surface risks vehicle damage, trip-and-fall claims, and a bad first impression for everyone who visits your property. John's Pro Roofing repairs parking lots and drive lanes across New Jersey, restoring a safe, accessible surface without the cost of a full repave.
+
+We work with property managers, facility managers, and building owners to prioritize the spots that matter most and keep your lot open while we work.
+
+</Band>
+
+<Band image={bandWhat} imageAlt="Parking lot pothole repair in progress" reverse>
+
+## What we repair
+
+- **Pothole patching** with proper prep and compaction so it lasts
+- **Failed-section replacement** where the surface has broken down
+- **Trip-hazard and settlement repair** to reduce liability
+- **Drainage corrections** that stop the water causing the damage
+- **Transitions and edges** re-cut and re-set for a clean finish
+
+Fast, scheduled around your operations. Backed by {businessData.warranty} and {businessData.insurance} in NJ.
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form first. */}
+<QuoteCta cta={frontmatter.cta} />
+
+<Bands>
+
+<Band>
+
+<ServiceCallout
+  target="parking-lot-sealcoating"
+  bare
+  heading="Keep it from happening again"
+  description="Once repairs are done, sealcoating and crack filling on a regular cycle keep water out and protect the surface for years."
+/>
+
+</Band>
+
+</Bands>
+
+</ServiceLayout>

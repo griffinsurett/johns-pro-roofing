@@ -1,0 +1,90 @@
+---
+title: "Parking Lot Sealcoating"
+heading:
+  before: "Seal It Now,"
+  text: "Save"
+  after: "Later."
+description: "Commercial parking lot sealcoating in New Jersey — protect asphalt from water, UV, and chemicals, extend its life, and keep your property looking sharp. Free estimates."
+order: 5
+category: "Asphalt Paving"
+icon: "fa6:brush"
+cardSize: "small"
+cardCta: "Learn More"
+cardBlurb: "Protective sealcoating that blocks water, UV, and chemicals — extending asphalt life and restoring a clean black finish."
+price: "Free estimates available"
+bannerImage: "../../assets/commercial-4.webp"
+featuredImage: "../../assets/commercial-4.webp"
+seo:
+  metaTitle: "Parking Lot Sealcoating in NJ | John's Pro Roofing"
+  metaDescription: "Commercial parking lot sealcoating in New Jersey — protect asphalt, extend its life, and restore a clean finish. Free estimate. Call 732-351-3518."
+  keywords:
+    - "parking lot sealcoating nj"
+    - "asphalt sealcoating nj"
+    - "commercial sealcoating nj"
+    - "seal coating contractor nj"
+features:
+  - "Protective seal coat"
+  - "Restores black finish"
+  - "Extends asphalt life"
+  - "Line striping available"
+cta:
+  title: "Extend the life of your"
+  accent: "asphalt."
+  description: "Ask about a sealcoating cycle that keeps your lot protected year after year."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+import heroImage from "../../assets/commercial-4.webp";
+import bandWhy from "../../assets/commercial-6.webp";
+
+<ServiceLayout>
+
+<FrontPageHero2
+  slot="hero"
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  video="/commercial-vid.mp4"
+  showButtons={false}
+/>
+
+<Bands>
+
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## The cheapest way to protect your lot
+
+Sealcoating is the single most cost-effective thing you can do for a commercial parking lot. A thin protective coat blocks the water, UV, and oil that break asphalt down — so instead of resurfacing every few years, you get a lot that lasts and looks freshly paved.
+
+For property managers watching a maintenance budget, a sealcoating cycle is easy math: a small recurring cost that pushes major paving expenses years down the road.
+
+</Band>
+
+<Band image={bandWhy} imageAlt="Freshly sealcoated parking lot" reverse>
+
+## What sealcoating does
+
+- **Blocks water** from seeping into cracks and undermining the base
+- **Shields against UV and oxidation** that turn asphalt gray and brittle
+- **Resists oil, gas, and chemicals** that soften the surface
+- **Restores a clean, uniform black finish** that signals a well-kept property
+- **Pairs with line striping** for a full refresh of your lot
+
+We schedule around your operations and keep the lot accessible where possible. Backed by {businessData.warranty} and {businessData.insurance} in NJ.
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form first. */}
+<QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>

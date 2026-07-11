@@ -18,7 +18,7 @@ interface Props {
   titleAfter?: string; // text after the accent phrase
   description?: string;
   image?: ImageMetadata;
-  video?: string; // public path to a video; when set, plays in the blob instead of the image
+  video?: string | null; // public path to a video; when set, plays in the blob instead of the image. Pass null to force the image.
   imageAlt?: string;
   reverse?: boolean; // image on the left, text on the right (desktop)
   class?: string;
@@ -29,7 +29,7 @@ const {
   title = "A higher standard",
   accentTitle = "for the roofs",
   titleAfter = "we work on.",
-  description = "No job is too big or too small. John's Pro Roofing LLC serves homeowners across New Jersey and Pennsylvania with residential roofing, commercial roofing, and deck work — straightforward service, honest communication, and dependable results, all backed by our workmanship warranty.",
+  description = "No job is too big or too small. John's Pro Roofing LLC works with property managers, facility managers, and building owners across New Jersey on commercial roofing and asphalt paving — straightforward service, honest communication, and dependable results, all backed by our workmanship warranty.",
   image = heroWorker,
   video = "/john-commercial.mp4",
   imageAlt = "John's Pro Roofing crew on site",

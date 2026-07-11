@@ -59,12 +59,12 @@ const {
 // pipeline the rest of the site uses (canonical URL, etc.). `target` wins if
 // both are given. children()/byItemKeys() are typed against the broad
 // CollectionKey union; narrow back to roofing so prepareCollectionEntries lines up.
-const meta = getCollectionMeta("roofing");
+const meta = getCollectionMeta("services");
 const queryBuilder = target
-  ? byItemKeys("roofing", target)
-  : children("roofing", parent ?? "");
-const entries = (await queryBuilder.all()) as CollectionEntry<"roofing">[];
-const [repair] = await prepareCollectionEntries(entries, "roofing", meta);
+  ? byItemKeys("services", target)
+  : children("services", parent ?? "");
+const entries = (await queryBuilder.all()) as CollectionEntry<"services">[];
+const [repair] = await prepareCollectionEntries(entries, "services", meta);
 ---
 
 {

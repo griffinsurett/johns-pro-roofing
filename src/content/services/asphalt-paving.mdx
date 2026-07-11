@@ -1,0 +1,117 @@
+---
+title: "Asphalt Paving"
+heading:
+  before: "Paving Built to"
+  text: "Handle"
+  after: "the Traffic."
+description: "Commercial asphalt paving in New Jersey — new installs, resurfacing, and full-depth reconstruction for parking lots, drive lanes, and access roads. Free estimates."
+order: 4
+category: "Asphalt Paving"
+icon: "fa6:road"
+cardSize: "large"
+cardCta: "Learn More"
+cardBlurb: "New asphalt installs, resurfacing, and reconstruction for parking lots, drive lanes, and access roads."
+price: "Free estimates available"
+bannerImage: "../../assets/commercial-2.webp"
+featuredImage: "../../assets/commercial-2.webp"
+seo:
+  metaTitle: "Commercial Asphalt Paving in NJ | John's Pro Roofing"
+  metaDescription: "Commercial asphalt paving in New Jersey — parking lots, drive lanes, and access roads. New installs, resurfacing, and reconstruction. Call 732-351-3518."
+  keywords:
+    - "commercial asphalt paving nj"
+    - "parking lot paving nj"
+    - "asphalt resurfacing nj"
+    - "commercial paving contractor nj"
+features:
+  - "New asphalt installation"
+  - "Resurfacing & overlays"
+  - "Full-depth reconstruction"
+  - "ADA-compliant grading"
+cta:
+  title: "Give your property a"
+  accent: "first"
+  titleAfter: "impression that lasts."
+  description: "Request a free asphalt paving estimate for your parking lot or drive lanes."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import ServiceCallout from "@/components/RepairCallout.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+import heroImage from "../../assets/commercial-2.webp";
+import bandServices from "../../assets/commercial-5.webp";
+import bandWhy from "../../assets/commercial-8.webp";
+
+<ServiceLayout>
+
+<FrontPageHero2
+  slot="hero"
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  video="/commercial-vid.mp4"
+  showButtons={false}
+/>
+
+<Bands>
+
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## Paving that protects your investment
+
+Your parking lot is the first thing customers, tenants, and inspectors see — and the surface everyone drives, walks, and parks on every day. John's Pro Roofing installs and rebuilds commercial asphalt for property managers, facility managers, and building owners across New Jersey, with clean grading, proper compaction, and drainage that actually works.
+
+From a fresh lot on a new build to a full-depth reconstruction of a failing surface, we scope the job to the traffic your property sees and the budget you're working with.
+
+</Band>
+
+<Band image={bandServices} imageAlt="Commercial asphalt paving in progress" reverse>
+
+## What we handle
+
+- **New asphalt installation** for parking lots, drive lanes, and access roads
+- **Resurfacing and overlays** to renew a worn surface without a full tear-out
+- **Full-depth reconstruction** where the base has failed
+- **Grading and drainage** to stop water pooling and premature cracking
+- **ADA-compliant layouts** for accessible parking and access
+
+</Band>
+
+<Band image={bandWhy} imageAlt="Finished commercial parking lot">
+
+## Scheduled around your operations
+
+A paving project shouldn't shut down your property. We phase the work to keep entrances, parking, and access open where possible, and we communicate the schedule up front. You'll know the scope and the cost before we start — and estimates are free.
+
+We're a New Jersey company you can hold accountable, backed by {businessData.warranty} and {businessData.insurance} in NJ.
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form first. */}
+<QuoteCta cta={frontmatter.cta} />
+
+{/* Secondary path: sealcoating protects the new surface. */}
+<Bands>
+
+<Band>
+
+<ServiceCallout
+  target="parking-lot-sealcoating"
+  bare
+  heading="Protect your new asphalt"
+  description="Fresh asphalt lasts far longer with sealcoating on a regular cycle — it blocks water, UV, and chemicals that break the surface down."
+/>
+
+</Band>
+
+</Bands>
+
+</ServiceLayout>

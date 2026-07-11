@@ -8,7 +8,24 @@ import Button from "@/components/Button/Button";
 import AboutIntro from "@/components/AboutIntro.astro";
 import CtaBanner from "@/components/CtaBanner.astro";
 import { getServiceAreaNames } from "@/utils/serviceAreas";
-import aboutImage from "@/assets/john-w-client.webp";
+import aboutImage from "@/assets/john-on-roof.webp";
+import heroImage from "@/assets/commercial-7.webp";
+import ServiceCalloutVariant from "@/components/ContentRenderer/variants/ServiceCalloutVariant.astro";
+import whoWeServeBg from "@/assets/commercial-3.webp";
+
+// Commercial audiences for the "Who We Serve" band. Every item shares the same
+// background image so the red-gradient callout renders without a slideshow.
+const whoWeServe = [
+  "Property Managers",
+  "Facility Managers",
+  "Building Owners",
+  "Warehouse Owners",
+  "Industrial Parks",
+  "Shopping Centers",
+  "HOAs",
+  "Churches",
+  "Medical Buildings",
+].map((title) => ({ title, featuredImage: whoWeServeBg }));
 
 // Service-area states (single source of truth) → full-name label for copy.
 const serviceAreaLabel = await getServiceAreaNames();
@@ -17,7 +34,7 @@ const serviceAreaLabel = await getServiceAreaNames();
 
 <BaseLayout
   title="Professional Roofing Services"
-  description="Professional roofing services in Somerset, New Jersey. Free estimates, 0% financing available, roof repairs, replacements, and commercial roofing."
+  description="Commercial roofing services in Somerset, New Jersey. Flat-roof systems, repairs, and replacements for businesses and property managers. Free estimates and financing available."
 >
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,12 +47,11 @@ const serviceAreaLabel = await getServiceAreaNames();
 
   <main class="flex-1">
     <FrontPageHero2
-      titleTop="Your Roof,"
-      titleBottom="Done Right"
-      titleAfter="the First Time."
-      description="Dependable roofing and custom decks, backed by a lifetime warranty and 0% down financing. Free estimates — from a local team you can count on."
+      heading={{ before: "Roofing That Keeps Your", text: "Business", after: "Covered." }}
+      description="Commercial roofing that protects your business — flat-roof systems, replacements, and repairs scheduled around your operations. Free estimates and financing, from a local team you can count on."
       primaryCTA={{ text: "Get a Free Quote", link: "/contact-us" }}
-      video="/home-vid.mp4"
+      image={heroImage}
+      video="/commercial-vid.mp4"
       personAlt="John's Pro Roofing crew member pointing at a finished roof"
     />
 
@@ -51,9 +67,20 @@ const serviceAreaLabel = await getServiceAreaNames();
           video={null}
           image={aboutImage}
           imageAlt="John with a satisfied John's Pro Roofing customer"
+          description="No job is too big or too small. John's Pro Roofing LLC works with property managers, facility managers, and building owners across New Jersey on commercial roofing and asphalt paving — straightforward service, honest communication, and dependable results, all backed by our workmanship warranty."
         />
       </div>
     </section>
+
+    {/* Who we serve — red-gradient photo band with a numbered list of the
+        commercial audiences John's Pro Roofing works with. */}
+    <ServiceCalloutVariant
+      id="who-we-serve"
+      pretitle="Who We Serve"
+      title="Built for Commercial Properties"
+      description="We work with the teams responsible for keeping commercial buildings and grounds in top shape across New Jersey."
+      items={whoWeServe}
+    />
 
     {/* Roofing pointers — heading left, copy + stats right (Axel's-style).
         Stats are driven by the `stats` collection. */}
@@ -63,7 +90,7 @@ const serviceAreaLabel = await getServiceAreaNames();
       id="why-us"
       pretitle="Why Choose Us"
       body={[
-        "We don't cut corners. Every job gets a thorough inspection, honest recommendations, and quality materials installed by a crew that treats your home like their own — no subs, no surprises.",
+        "We don't cut corners. Every job gets a thorough inspection, honest recommendations, and quality materials installed by a crew that treats your property like their own — no subs, no surprises.",
         "From storm-damage repairs to full replacements, we back our work with a 25-year workmanship warranty and a satisfaction guarantee. If it's not right, we make it right.",
       ]}
       cta={{ text: "Our Story", href: "/#about" }}
@@ -75,26 +102,15 @@ const serviceAreaLabel = await getServiceAreaNames();
       </h2>
     </ContentRenderer>
 
-    {/* Services callout — red-gradient photo band with a numbered list.
-        Only Roofing links (has a page); decking/siding are plain entries. */}
+    {/* Full services list (rows with arrow CTAs). */}
     <ContentRenderer
-      query={query("services").orderBy(sortByOrder())}
-      variant="ServiceCalloutVariant"
-      pretitle="Our Services"
-      title="Built to Protect Your Home"
-      description="Full-service exterior work done right the first time — quality materials, honest pricing, and a crew that treats your property like its own."
-      id="services"
-    />
-
-    {/* Full roofing services list (rows with arrow CTAs). */}
-    <ContentRenderer
-      query={query("roofing")
+      query={query("services")
         .where((entry) => Boolean(entry.data.cardSize))
         .orderBy(sortByOrder())}
       variant="ServiceListVariant"
-      title="Roofing Services"
+      title="Our Services"
       className="!border-t-0"
-      id="roofing-services"
+      id="services-list"
     />
 
     <section id="projects">
@@ -104,9 +120,9 @@ const serviceAreaLabel = await getServiceAreaNames();
           .orderBy(sortByOrder())}
         variant="BeforeAfterVariant"
         pretitle="Recent Projects"
-        title="Real Homes."
+        title="Real Properties."
         accentTitle="Real Work."
-        description={`A look at recent roofing transformations across ${serviceAreaLabel}.`}
+        description={`A look at recent commercial roofing transformations across ${serviceAreaLabel}.`}
         dark={true}
         columns={2}
         showButtonSection={false}

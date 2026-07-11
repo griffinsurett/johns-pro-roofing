@@ -1,0 +1,100 @@
+---
+title: "Commercial Roof Maintenance"
+heading:
+  before: "Protect Your Roof"
+  text: "Before"
+  after: "It Fails."
+description: "Preventive commercial roof maintenance programs in New Jersey — scheduled inspections, minor repairs, and reporting that extend roof life and prevent emergencies."
+order: 3
+category: "Commercial Roofing"
+icon: "fa6:clipboard-check"
+cardSize: "large"
+cardCta: "Learn More"
+cardBlurb: "Scheduled inspections and upkeep that extend roof life, protect your warranty, and head off costly emergencies."
+price: "Custom plans available"
+bannerImage: "../../assets/commercial-6.webp"
+featuredImage: "../../assets/commercial-6.webp"
+seo:
+  metaTitle: "Commercial Roof Maintenance in NJ | John's Pro Roofing"
+  metaDescription: "Preventive commercial roof maintenance programs in New Jersey — scheduled inspections, minor repairs, and reporting. Extend roof life. Call 732-351-3518."
+  keywords:
+    - "commercial roof maintenance nj"
+    - "roof maintenance program nj"
+    - "preventive roof maintenance nj"
+    - "commercial roof inspection nj"
+features:
+  - "Scheduled inspections"
+  - "Minor repairs & upkeep"
+  - "Condition reporting"
+  - "Warranty compliance"
+cta:
+  title: "Get ahead of the"
+  accent: "next"
+  titleAfter: "leak."
+  description: "Ask about a maintenance plan built around your building and budget."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+import heroImage from "../../assets/commercial-6.webp";
+import bandCovers from "../../assets/commercial-8.webp";
+import bandWho from "../../assets/commercial-4.webp";
+
+<ServiceLayout>
+
+<FrontPageHero2
+  slot="hero"
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  video="/commercial-vid.mp4"
+  showButtons={false}
+/>
+
+<Bands>
+
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## Maintenance that pays for itself
+
+The most expensive roof problems are the ones nobody caught in time. A maintenance program puts your roof on a schedule — regular inspections, minor repairs, and clear reporting — so small issues get fixed for a few dollars instead of turning into five-figure emergencies and interior damage.
+
+For property managers and facility managers juggling multiple buildings, it's one less thing to worry about: we track the condition, flag what needs attention, and keep the paperwork your warranty requires.
+
+</Band>
+
+<Band image={bandCovers} imageAlt="Roofer inspecting a commercial roof" reverse>
+
+## What a maintenance program covers
+
+- **Scheduled inspections** of the membrane, seams, flashing, and drains
+- **Minor repairs and upkeep** handled on the spot
+- **Debris and drain clearing** to prevent ponding
+- **Condition reporting** with photos so you can plan budgets
+- **Warranty compliance** — many manufacturer warranties require documented maintenance
+
+</Band>
+
+<Band image={bandWho} imageAlt="Commercial building rooftop">
+
+## Built for portfolios of any size
+
+Whether you manage a single medical building or a full industrial park, we'll build a plan around your buildings and budget. Consistent upkeep extends roof life, protects your warranty, and keeps you off the emergency-call list.
+
+Every plan is backed by {businessData.warranty}, and we're {businessData.insurance} in NJ.
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form first. */}
+<QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>

@@ -1,0 +1,116 @@
+---
+title: "Flat Roofing"
+heading:
+  before: "Flat Roof Systems Built to"
+  text: "Last."
+description: "TPO, EPDM, and modified-bitumen flat-roof systems installed for commercial and industrial buildings across New Jersey. Free estimates."
+order: 1
+category: "Commercial Roofing"
+icon: "fa6:layer-group"
+cardSize: "large"
+cardCta: "Learn More"
+cardBlurb: "New and replacement flat-roof systems — TPO, EPDM, and modified bitumen — for commercial and industrial properties."
+price: "Free estimates available"
+bannerImage: "../../assets/commercial-working.webp"
+featuredImage: "../../assets/commercial-working.webp"
+seo:
+  metaTitle: "Commercial Flat Roof Systems in NJ | John's Pro Roofing"
+  metaDescription: "TPO, EPDM & modified-bitumen flat-roof installation and replacement for commercial buildings in New Jersey. Minimal downtime, free estimate. Call 732-351-3518."
+  keywords:
+    - "commercial flat roof nj"
+    - "tpo roofing nj"
+    - "epdm roofing nj"
+    - "flat roof installation nj"
+features:
+  - "TPO & EPDM single-ply"
+  - "Modified bitumen"
+  - "Full replacements & re-roofs"
+  - "New-construction roofing"
+cta:
+  title: "Protect your"
+  accent: "building"
+  titleAfter: "with the right system."
+  description: "Request a free commercial flat-roof estimate scheduled around your operations."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import ServiceCallout from "@/components/RepairCallout.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+import heroImage from "../../assets/commercial-working.webp";
+import bandSystems from "../../assets/commercial-2.webp";
+import bandWhy from "../../assets/commercial-4.webp";
+
+<ServiceLayout>
+
+<FrontPageHero2
+  slot="hero"
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  video="/commercial-vid.mp4"
+  showButtons={false}
+/>
+
+<Bands>
+
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## Flat-roof systems for commercial buildings
+
+Most commercial and industrial buildings run on low-slope or flat roofs — and those systems live or die on the membrane, the detailing, and a crew that understands how water actually moves on a flat surface. John's Pro Roofing installs and replaces flat-roof systems for property managers, facility managers, and building owners across New Jersey, scheduled around your operations to keep disruption to a minimum.
+
+Whether you're managing a warehouse, a shopping center, a medical building, or an industrial park, we spec the system to the building — not the other way around — so you get a roof that performs for the long haul.
+
+</Band>
+
+<Band image={bandSystems} imageAlt="Commercial flat roof membrane installation" reverse>
+
+## Systems we install and service
+
+- **TPO** — reflective single-ply that cuts cooling costs on large, sun-exposed roofs
+- **EPDM** — durable rubber membrane proven across decades of commercial use
+- **Modified bitumen** — multi-ply resilience for high-traffic and mechanical-heavy roofs
+- **Full replacements and re-roofs** — tear-off, deck repair, and a clean new system
+- **New-construction and addition roofing** — coordinated with your build schedule
+
+</Band>
+
+<Band image={bandWhy} imageAlt="Crew working on a commercial flat roof">
+
+## Minimal downtime, clear communication
+
+A roof project shouldn't shut down your building. We schedule around your hours, stage the work to keep entrances and operations accessible, and keep a clean, safe site throughout. You'll know the scope and the cost before we start — and estimates are free.
+
+We're a New Jersey company you can hold accountable, backed by {businessData.warranty} and {businessData.insurance} in NJ.
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form first. */}
+<QuoteCta cta={frontmatter.cta} />
+
+{/* Secondary path: routine maintenance keeps a new system under warranty. */}
+<Bands>
+
+<Band>
+
+<ServiceCallout
+  target="commercial-roof-maintenance"
+  bare
+  heading="Keep it under warranty"
+  description="A new roof is a major investment — a maintenance plan catches small issues before they become claims and keeps your system performing for its full service life."
+/>
+
+</Band>
+
+</Bands>
+
+</ServiceLayout>

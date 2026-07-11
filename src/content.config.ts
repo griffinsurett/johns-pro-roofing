@@ -101,35 +101,24 @@ export const collections = {
       }),
   }),
 
-  // Roofing services — a single collection with a parent/child hierarchy
-  // (e.g. Residential Roofing → Residential Roof Repair).
-  "roofing": defineCollection({
-    loader: GlobLoad("roofing"),
+  // Services — a single collection grouped by `category` into two families:
+  // "Commercial Roofing" and "Asphalt Paving". Each entry gets its own page
+  // (e.g. /services/asphalt-paving) with a ServiceLayout hero.
+  "services": defineCollection({
+    loader: GlobLoad("services"),
     schema: ({ image }) =>
       baseSchema({ image }).extend({
+        category: z.string().optional(),
         price: z.string().optional(),
         features: z.array(z.string()).default([]),
+        // Optional explicit link target (external or custom page).
+        url: z.string().optional(),
         // Homepage service-grid presentation overrides
         cardSize: z.enum(["large", "small"]).optional(),
         cardTitle: z.string().optional(),
         cardCta: z.string().optional(),
         cardBlurb: z.string().optional(),
         badge: z.string().optional(),
-      }),
-  }),
-
-  // Top-level services shown as cards on the homepage: roofing, decking,
-  // siding. Only roofing has a page (links to the roofing collection index);
-  // decking/siding are page-less and render as non-linking cards.
-  "services": defineCollection({
-    loader: GlobLoad("services"),
-    schema: ({ image }) =>
-      baseSchema({ image }).extend({
-        // Explicit link target (e.g. roofing → /roofing). Page-less services
-        // (decking, siding) omit this and render as non-linking cards.
-        url: z.string().optional(),
-        price: z.string().optional(),
-        features: z.array(z.string()).default([]),
       }),
   }),
 
@@ -154,9 +143,9 @@ export const collections = {
         projectUrl: z.string().url().optional(),
         technologies: z.array(z.string()).default([]),
         category: z.string(),
-        // Residential vs. commercial — references the matching roofing
-        // collection entry (residential-roofing / commercial-roofing).
-        roofing: refSchema("roofing"),
+        // References the matching services collection entry (e.g.
+        // flat-roofing).
+        service: refSchema("services"),
         beforeImage: imageInputSchema({ image }),
         afterImage: imageInputSchema({ image }),
       }),

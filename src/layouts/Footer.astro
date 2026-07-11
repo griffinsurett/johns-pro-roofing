@@ -66,10 +66,10 @@ const contactLinks = await getContactLinks();
 
       {/* Column 2: Roofing Services */}
       <div class="flex flex-col gap-6">
-        <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Roofing Services</h3>
+        <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Our Services</h3>
         <div class="text-sm text-bg/80">
           <ContentRenderer
-            query={query("roofing")
+            query={query("services")
               .where((entry) => Boolean(entry.data.cardSize))
               .orderBy(sortByOrder())}
             variant="ListVariant"

@@ -1,0 +1,107 @@
+---
+title: "Crack Filling"
+heading:
+  before: "Stop Cracks"
+  text: "Before"
+  after: "They Spread."
+description: "Commercial asphalt crack filling in New Jersey — seal cracks before water gets in and turns them into potholes. Fast, affordable, and scheduled around you."
+order: 6
+category: "Asphalt Paving"
+icon: "fa6:bandage"
+cardSize: "small"
+cardCta: "Learn More"
+cardBlurb: "Hot-pour crack sealing that keeps water out and stops small cracks from becoming potholes."
+price: "Free estimates available"
+bannerImage: "../../assets/commercial-5.webp"
+featuredImage: "../../assets/commercial-5.webp"
+seo:
+  metaTitle: "Asphalt Crack Filling in NJ | John's Pro Roofing"
+  metaDescription: "Commercial asphalt crack filling and sealing in New Jersey — stop water intrusion and prevent potholes. Fast, affordable. Call 732-351-3518."
+  keywords:
+    - "asphalt crack filling nj"
+    - "crack sealing nj"
+    - "parking lot crack repair nj"
+    - "commercial crack filling nj"
+features:
+  - "Hot-pour crack sealing"
+  - "Stops water intrusion"
+  - "Prevents potholes"
+  - "Fast turnaround"
+cta:
+  title: "Seal the cracks,"
+  accent: "skip"
+  titleAfter: "the potholes."
+  description: "Get a fast, affordable estimate to seal the cracks in your lot."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import ServiceCallout from "@/components/RepairCallout.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+import heroImage from "../../assets/commercial-5.webp";
+import bandWhy from "../../assets/commercial-7.webp";
+
+<ServiceLayout>
+
+<FrontPageHero2
+  slot="hero"
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  video="/commercial-vid.mp4"
+  showButtons={false}
+/>
+
+<Bands>
+
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## Small cracks, big consequences
+
+Every crack in your asphalt is a doorway for water. Once water gets under the surface and freezes, it lifts and breaks the pavement apart — and a hairline crack you could have sealed for a little becomes a pothole that costs a lot. Crack filling is the cheapest, fastest way to protect the paving you already have.
+
+John's Pro Roofing seals cracks for parking lots and drive lanes across New Jersey, keeping your surface intact and your property safe for the people using it.
+
+</Band>
+
+<Band image={bandWhy} imageAlt="Crack sealing on a commercial parking lot" reverse>
+
+## Why crack filling matters
+
+- **Keeps water out** of the base layer, where it does the most damage
+- **Stops freeze-thaw damage** that turns cracks into potholes
+- **Extends the life** of your existing asphalt for a fraction of repaving
+- **Reduces trip and vehicle hazards** across your lot
+- **Pairs perfectly with sealcoating** for a complete surface refresh
+
+Fast turnaround, scheduled around your operations. Backed by {businessData.warranty} and {businessData.insurance} in NJ.
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form first. */}
+<QuoteCta cta={frontmatter.cta} />
+
+<Bands>
+
+<Band>
+
+<ServiceCallout
+  target="parking-lot-repairs"
+  bare
+  heading="Already have potholes?"
+  description="If cracks have already broken through into potholes or failed sections, we handle patching and full parking-lot repairs too."
+/>
+
+</Band>
+
+</Bands>
+
+</ServiceLayout>

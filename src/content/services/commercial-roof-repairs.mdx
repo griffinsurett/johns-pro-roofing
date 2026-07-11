@@ -1,0 +1,116 @@
+---
+title: "Commercial Roof Repairs"
+heading:
+  before: "Stop the"
+  text: "Leak,"
+  after: "Protect Your Property."
+description: "Commercial roof repair in New Jersey — flat-roof leaks, membrane and seam repairs, and coatings with minimal downtime. Free estimates."
+order: 2
+category: "Commercial Roofing"
+icon: "fa6:building-shield"
+cardSize: "large"
+cardCta: "Learn More"
+cardBlurb: "Fast, lasting repairs for flat-roof leaks, membrane punctures, failed seams, and storm damage."
+price: "Free estimates available"
+bannerImage: "../../assets/commercial-3.webp"
+featuredImage: "../../assets/commercial-3.webp"
+seo:
+  metaTitle: "Commercial Roof Repair in NJ | John's Pro Roofing"
+  metaDescription: "Flat-roof leaks, membrane & seam repairs for NJ businesses. Fast response, minimal downtime, free estimate. Call 732-351-3518."
+  keywords:
+    - "commercial roof repair nj"
+    - "flat roof leak repair nj"
+    - "membrane roof repair nj"
+    - "commercial roof leak nj"
+features:
+  - "Membrane & seam repairs"
+  - "Leak detection"
+  - "Coating & resealing"
+  - "Storm damage repair"
+cta:
+  title: "Stop the"
+  accent: "leak"
+  titleAfter: "fast."
+  description: "Tell us what's happening on your roof and we'll schedule a free assessment around your operations."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import ServiceCallout from "@/components/RepairCallout.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import FrontPageHero2 from "@/layouts/FrontPageHero2.astro";
+import heroImage from "../../assets/commercial-3.webp";
+import bandRepairs from "../../assets/commercial-5.webp";
+import bandDowntime from "../../assets/commercial-7.webp";
+
+<ServiceLayout>
+
+<FrontPageHero2
+  slot="hero"
+  eyebrow={frontmatter.title}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  video="/commercial-vid.mp4"
+  showButtons={false}
+/>
+
+<Bands>
+
+<Band image={heroImage} imageAlt={frontmatter.title}>
+
+## Repairs that protect your bottom line
+
+A commercial roof problem is never just a roof problem — it's downtime, damaged inventory, and unhappy tenants. John's Pro Roofing finds the source of the leak and makes a lasting repair, scheduled around your operations so your building keeps running while we work.
+
+We repair flat and low-slope roofs for property managers, facility managers, and building owners across New Jersey — from a single failed seam to widespread membrane damage after a storm.
+
+</Band>
+
+<Band image={bandRepairs} imageAlt="Crew repairing a commercial roof membrane" reverse>
+
+## Repairs for flat and low-slope roofs
+
+- **Membrane punctures and tears** patched to manufacturer spec
+- **Failed seams and flashing** re-detailed to stop recurring leaks
+- **Ponding and drainage issues** corrected before they cause structural damage
+- **Coatings and resealing** to extend the life of an aging roof
+- **Storm and wind damage** assessed and repaired fast
+
+</Band>
+
+<Band image={bandDowntime} imageAlt="Commercial roofing crew working on a business property">
+
+## Less downtime, less damage
+
+We respond quickly, contain the problem, and give you a clear scope and cost before we start. Where a repair makes sense, we repair — and where a roof is past saving, we'll tell you straight and show you the replacement options.
+
+Every repair is backed by {businessData.warranty}, and we're {businessData.insurance} in NJ.
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form first. */}
+<QuoteCta cta={frontmatter.cta} />
+
+<Bands>
+
+<Band>
+
+<ServiceCallout
+  target="commercial-roof-maintenance"
+  bare
+  heading="Stop chasing repairs"
+  description="If you're patching the same roof year after year, a maintenance plan finds and fixes issues on a schedule — before they turn into emergencies."
+/>
+
+</Band>
+
+</Bands>
+
+</ServiceLayout>

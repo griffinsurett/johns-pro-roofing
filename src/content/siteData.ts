@@ -4,8 +4,8 @@ import { SITE_DOMAIN, SITE_URL } from "./siteDomain.js";
 export const siteData = {
   title: "John's Pro Roofing",
   legalName: "John's Pro Roofing LLC",
-  tagline: "Professional roofing services built on dependable workmanship.",
-  description: "Professional roofing services in Somerset, New Jersey. Free estimates, 0% financing available, roof repairs, replacements, and commercial roofing.",
+  tagline: "Commercial Roofing & Asphalt Paving built on dependable workmanship.",
+  description: "Commercial roofing and asphalt paving in New Jersey — flat-roof systems, repairs, maintenance, paving, sealcoating, and parking lot repairs for property managers, facility managers, and building owners. Free estimates.",
   domain: SITE_DOMAIN,
   url: SITE_URL,
   location: "New Jersey, USA",
