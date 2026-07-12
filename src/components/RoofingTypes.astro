@@ -1,0 +1,42 @@
+---
+// src/components/RoofingTypes.astro
+/**
+ * RoofingTypes — image-card band of the roofing systems we install, driven by
+ * the `roofing-types` content collection. Reused on the homepage and on each
+ * roofing service page, with a page-specific headline passed in.
+ */
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder } from "@/utils/query";
+
+interface Props {
+  id?: string;
+  pretitle?: string;
+  title?: string;
+  accentTitle?: string;
+  description?: string;
+  columns?: 2 | 3 | 4;
+  /** Card order by `order` field; "desc" reverses (matches the homepage). */
+  direction?: "asc" | "desc";
+}
+
+const {
+  id = "roofing-types",
+  pretitle = "Systems We Install",
+  title = "The Right Roofing System",
+  accentTitle = "for Every Building",
+  description = "From commercial flat-roof membranes to residential shingles, we install and service the systems that fit your building and budget.",
+  columns = 3,
+  direction = "desc",
+} = Astro.props as Props;
+---
+
+<ContentRenderer
+  query={query("roofing-types").orderBy(sortByOrder(direction))}
+  variant="ImageCardVariant"
+  id={id}
+  pretitle={pretitle}
+  title={title}
+  accentTitle={accentTitle}
+  description={description}
+  columns={columns}
+/>

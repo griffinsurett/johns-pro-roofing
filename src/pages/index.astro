@@ -11,6 +11,7 @@ import { getServiceAreaNames } from "@/utils/serviceAreas";
 import aboutImage from "@/assets/john-on-roof.webp";
 import heroImage from "@/assets/commercial-7.webp";
 import WhoWeServe from "@/components/WhoWeServe.astro";
+import RoofingTypes from "@/components/RoofingTypes.astro";
 
 // Service-area states (single source of truth) → full-name label for copy.
 const serviceAreaLabel = await getServiceAreaNames();
@@ -58,16 +59,7 @@ const serviceAreaLabel = await getServiceAreaNames();
     </section>
 
     {/* Roofing systems we install — image cards from the roofing-types collection. */}
-    <ContentRenderer
-      query={query("roofing-types").orderBy(sortByOrder("desc"))}
-      variant="ImageCardVariant"
-      id="roofing-types"
-      pretitle="Systems We Install"
-      title="The Right Roofing System"
-      accentTitle="for Every Building"
-      description="From commercial flat-roof membranes to residential shingles, we install and service the systems that fit your building and budget."
-      columns={3}
-    />
+    <RoofingTypes />
 
     {/* Who we serve — red-gradient photo band with a numbered list of the
         commercial audiences John's Pro Roofing works with. */}

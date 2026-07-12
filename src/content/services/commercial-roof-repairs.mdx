@@ -43,6 +43,7 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
+import RoofingTypes from "@/components/RoofingTypes.astro";
 import heroImage from "../../assets/commercial-3.webp";
 import bandRepairs from "../../assets/commercial-5.webp";
 import bandDowntime from "../../assets/commercial-7.webp";
@@ -109,6 +110,12 @@ Every repair is backed by {businessData.warranty}, and we're {businessData.insur
 
 </Bands>
 
+<RoofingTypes
+  pretitle="Systems We Repair"
+  title="Repairs for Every"
+  accentTitle="Roofing System"
+  description="TPO, EPDM, modified bitumen, built-up, and metal — whatever system is on your building, we find the leak and fix it right."
+/>
 
 <WhoWeServe />
 
