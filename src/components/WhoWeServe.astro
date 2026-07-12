@@ -1,0 +1,38 @@
+---
+// src/components/WhoWeServe.astro
+/**
+ * Who We Serve — red-gradient photo band listing the commercial audiences
+ * John's Pro Roofing works with. Reused on the homepage and on service pages.
+ *
+ * The audience list is the `who-we-serve` content collection, rendered through
+ * ContentRenderer + ServiceCalloutVariant. The shared band background is passed
+ * as `backgroundImage` (presentational — not stored per-item in the content).
+ */
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder } from "@/utils/query";
+import whoWeServeBg from "@/assets/commercial-3.webp";
+
+interface Props {
+  id?: string;
+  pretitle?: string;
+  title?: string;
+  description?: string;
+}
+
+const {
+  id = "who-we-serve",
+  pretitle = "Who We Serve",
+  title = "Built for Commercial Properties",
+  description = "We work with the teams responsible for keeping commercial buildings and grounds in top shape across New Jersey.",
+} = Astro.props as Props;
+---
+
+<ContentRenderer
+  query={query("who-we-serve").orderBy(sortByOrder())}
+  variant="ServiceCalloutVariant"
+  id={id}
+  pretitle={pretitle}
+  title={title}
+  description={description}
+  backgroundImage={whoWeServeBg}
+/>

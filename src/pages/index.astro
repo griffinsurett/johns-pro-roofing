@@ -10,22 +10,7 @@ import CtaBanner from "@/components/CtaBanner.astro";
 import { getServiceAreaNames } from "@/utils/serviceAreas";
 import aboutImage from "@/assets/john-on-roof.webp";
 import heroImage from "@/assets/commercial-7.webp";
-import ServiceCalloutVariant from "@/components/ContentRenderer/variants/ServiceCalloutVariant.astro";
-import whoWeServeBg from "@/assets/commercial-3.webp";
-
-// Commercial audiences for the "Who We Serve" band. Every item shares the same
-// background image so the red-gradient callout renders without a slideshow.
-const whoWeServe = [
-  "Property Managers",
-  "Facility Managers",
-  "Building Owners",
-  "Warehouse Owners",
-  "Industrial Parks",
-  "Shopping Centers",
-  "HOAs",
-  "Churches",
-  "Medical Buildings",
-].map((title) => ({ title, featuredImage: whoWeServeBg }));
+import WhoWeServe from "@/components/WhoWeServe.astro";
 
 // Service-area states (single source of truth) → full-name label for copy.
 const serviceAreaLabel = await getServiceAreaNames();
@@ -72,15 +57,21 @@ const serviceAreaLabel = await getServiceAreaNames();
       </div>
     </section>
 
+    {/* Roofing systems we install — image cards from the roofing-types collection. */}
+    <ContentRenderer
+      query={query("roofing-types").orderBy(sortByOrder("desc"))}
+      variant="ImageCardVariant"
+      id="roofing-types"
+      pretitle="Systems We Install"
+      title="The Right Roofing System"
+      accentTitle="for Every Building"
+      description="From commercial flat-roof membranes to residential shingles, we install and service the systems that fit your building and budget."
+      columns={3}
+    />
+
     {/* Who we serve — red-gradient photo band with a numbered list of the
         commercial audiences John's Pro Roofing works with. */}
-    <ServiceCalloutVariant
-      id="who-we-serve"
-      pretitle="Who We Serve"
-      title="Built for Commercial Properties"
-      description="We work with the teams responsible for keeping commercial buildings and grounds in top shape across New Jersey."
-      items={whoWeServe}
-    />
+    <WhoWeServe />
 
     {/* Roofing pointers — heading left, copy + stats right (Axel's-style).
         Stats are driven by the `stats` collection. */}
@@ -116,7 +107,10 @@ const serviceAreaLabel = await getServiceAreaNames();
     <section id="projects">
       <ContentRenderer
         query={query("projects")
-          .where((entry) => Boolean(entry.data.beforeImage && entry.data.afterImage))
+          .where((entry) =>
+            entry.data.tags?.includes("featured") &&
+            Boolean(entry.data.beforeImage && entry.data.afterImage)
+          )
           .orderBy(sortByOrder())}
         variant="BeforeAfterVariant"
         pretitle="Recent Projects"

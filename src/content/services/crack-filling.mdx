@@ -42,6 +42,7 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import WhoWeServe from "@/components/WhoWeServe.astro";
 import heroImage from "../../assets/commercial-5.webp";
 import bandWhy from "../../assets/commercial-7.webp";
 
@@ -50,6 +51,7 @@ import bandWhy from "../../assets/commercial-7.webp";
   heading={frontmatter.heading}
   description={frontmatter.description}
   image={heroImage}
+  category={frontmatter.category}
 >
 
 <Bands>
@@ -97,5 +99,8 @@ Fast turnaround, scheduled around your operations. Backed by {businessData.warra
 </Band>
 
 </Bands>
+
+
+<WhoWeServe />
 
 </ServiceLayout>

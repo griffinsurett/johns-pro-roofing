@@ -18,6 +18,10 @@ interface Props extends BaseVariantProps {
   /** Optional CTA button under the list. */
   ctaText?: string;
   ctaLink?: string;
+  /** Shared background image. When set, it renders as a single static band
+   *  instead of a per-item slideshow — use when the items carry no images of
+   *  their own (e.g. the "Who We Serve" audience list). */
+  backgroundImage?: any;
 }
 
 const {
@@ -28,6 +32,7 @@ const {
   className = "",
   ctaText,
   ctaLink,
+  backgroundImage,
   id,
 } = Astro.props as Props;
 
@@ -40,7 +45,11 @@ function imgSrc(featuredImage: any): string {
     : (featuredImage?.src?.src ?? featuredImage?.src ?? "");
 }
 
-const slides = safeItems.map((i) => imgSrc(i.featuredImage)).filter(Boolean);
+// A shared backgroundImage renders one static frame; otherwise each item's
+// featuredImage becomes a cross-fading slide.
+const slides = backgroundImage
+  ? [imgSrc(backgroundImage)].filter(Boolean)
+  : safeItems.map((i) => imgSrc(i.featuredImage)).filter(Boolean);
 // One full cycle = N slides × time-per-slide; used to stagger each layer's delay.
 const perSlide = 5; // seconds each image is featured
 const cycle = Math.max(slides.length, 1) * perSlide;

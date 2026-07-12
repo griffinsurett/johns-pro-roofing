@@ -142,9 +142,9 @@ export const collections = {
         location: z.string().optional(),
         projectUrl: z.string().url().optional(),
         technologies: z.array(z.string()).default([]),
-        category: z.string(),
-        // References the matching services collection entry (e.g.
-        // flat-roofing).
+        // One or more service references. A project's category/portfolio
+        // placement is derived from its referenced service(s) — see
+        // ServiceLayout and ProjectsIndexLayout.
         service: refSchema("services"),
         beforeImage: imageInputSchema({ image }),
         afterImage: imageInputSchema({ image }),
@@ -176,6 +176,27 @@ export const collections = {
   // `title` is the displayed text; `order` controls sequence.
   "selling-points": defineCollection({
     loader: FileLoad("selling-points", "selling-points.json"),
+    schema: ({ image }) =>
+      baseSchema({ image }),
+  }),
+
+  // ── roofing-types ───────────────────────────────────────
+  // Roofing systems/materials we install (TPO, EPDM, Metal, etc.), rendered as
+  // image cards. MDX-backed so each type can grow into its own page later;
+  // `_meta.mdx` sets itemsHasPage:false for now.
+  "roofing-types": defineCollection({
+    loader: GlobLoad("roofing-types"),
+    schema: ({ image }) =>
+      baseSchema({ image }),
+  }),
+
+  // ── who-we-serve ────────────────────────────────────────
+  // Commercial audiences (Property Managers, HOAs, etc.) listed in the
+  // red-gradient "Who We Serve" callout band. MDX-backed so each audience can
+  // grow into its own page later; `_meta.mdx` sets itemsHasPage:false for now.
+  // `title` is the label; `order` controls sequence.
+  "who-we-serve": defineCollection({
+    loader: GlobLoad("who-we-serve"),
     schema: ({ image }) =>
       baseSchema({ image }),
   }),

@@ -9,6 +9,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import SecondaryHero from "@/layouts/SecondaryHero.astro";
 import Icon from "@/components/Icon";
 import { getPublishedCollection } from "@/utils/collections/core";
+import { normalizeReference } from "@/utils/query";
+import { getEntry } from "astro:content";
 
 export interface Props {
   Content?: any;
@@ -22,6 +24,20 @@ const { seoProps, collectionMeta } = Astro.props;
 
 const projects = await getPublishedCollection("projects");
 const sortedProjects = projects.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+
+// A project's display category is derived from its first referenced service.
+// Projects no longer carry their own `category` — the service link is the
+// single source of truth.
+const projectCategories = new Map<string, string>();
+await Promise.all(
+  sortedProjects.map(async (project) => {
+    const [ref] = normalizeReference((project.data as any).service);
+    if (!ref) return;
+    const svc = await getEntry(ref.collection as any, ref.id);
+    const cat = (svc as any)?.data?.category;
+    if (cat) projectCategories.set(project.id, cat);
+  })
+);
 
 // Map service images as fallbacks
 const categoryImages: Record<string, string> = {
@@ -58,7 +74,7 @@ const categoryImages: Record<string, string> = {
           <div class="projects-index-grid">
             {sortedProjects.map((project) => {
               const img = project.data.featuredImage;
-              const category = (project.data as any).category || "Roofing";
+              const category = projectCategories.get(project.id) || "Roofing";
               const location = (project.data as any).location || "New Jersey";
               const fallbackKey = Object.keys(categoryImages).find(k =>
                 category.toLowerCase().includes(k)

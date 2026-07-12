@@ -10,12 +10,15 @@ import ImageCard from "@/components/LoopComponents/ImageCard.astro";
 
 interface Props extends BaseVariantProps {
   pretitle?: string;
+  /** Red accent phrase appended after the title (matches the site's heading style). */
+  accentTitle?: string;
   columns?: 2 | 3 | 4;
 }
 
 const {
   items = [],
   title,
+  accentTitle,
   description,
   pretitle,
   className = "",
@@ -36,7 +39,14 @@ const columnClasses = {
       (pretitle || title || description) && (
         <div class="section-header">
           {pretitle && <span class="section-pretitle">{pretitle}</span>}
-          {title && <h2 class="section-title">{title}</h2>}
+          {title && (
+            <h2 class="section-title">
+              {title}
+              {accentTitle && (
+                <span class="not-italic font-[family-name:var(--font-body)] text-accent"> {accentTitle}</span>
+              )}
+            </h2>
+          )}
           {description && <p class="section-description">{description}</p>}
         </div>
       )

@@ -40,6 +40,7 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import WhoWeServe from "@/components/WhoWeServe.astro";
 import heroImage from "../../assets/commercial-4.webp";
 import bandWhy from "../../assets/commercial-6.webp";
 
@@ -48,6 +49,7 @@ import bandWhy from "../../assets/commercial-6.webp";
   heading={frontmatter.heading}
   description={frontmatter.description}
   image={heroImage}
+  category={frontmatter.category}
 >
 
 <Bands>
@@ -80,5 +82,8 @@ We schedule around your operations and keep the lot accessible where possible. B
 
 {/* Primary conversion: quote form first. */}
 <QuoteCta cta={frontmatter.cta} />
+
+
+<WhoWeServe />
 
 </ServiceLayout>

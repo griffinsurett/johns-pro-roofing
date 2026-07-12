@@ -20,6 +20,9 @@
  *   </ServiceLayout>
  */
 import SecondaryHero from "@/layouts/SecondaryHero.astro";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder, normalizeReference } from "@/utils/query";
+import { getEntry } from "astro:content";
 
 export interface Props {
   eyebrow?: string;
@@ -30,6 +33,9 @@ export interface Props {
   publishDate?: Date | string;
   author?: string | { collection: string; id: string };
   readingTime?: number;
+  /** Service category (e.g. "Commercial Roofing"). When set, a portfolio band
+   *  of before/after projects in the same category renders below the content. */
+  category?: string;
 }
 
 const {
@@ -41,7 +47,42 @@ const {
   publishDate,
   author,
   readingTime,
+  category,
 } = Astro.props as Props;
+
+// Portfolio band: projects whose referenced service shares this page's
+// category, and which have a before/after pair. Resolving each project's
+// `service` reference to its category lets one project (e.g. referencing
+// flat-roofing) appear on every page in the "Commercial Roofing" family.
+// We collect the matching ids here, then hand ContentRenderer a query so it
+// runs its normal prepare pipeline (image resolution, URLs, etc.).
+let portfolioIds: string[] = [];
+if (category) {
+  const allProjects = await query("projects")
+    .where((e: any) => Boolean(e.data.beforeImage && e.data.afterImage))
+    .all();
+
+  const matches = await Promise.all(
+    allProjects.map(async (p: any) => {
+      const refs = normalizeReference(p.data.service);
+      if (!refs.length) return null;
+      const svcs = await Promise.all(
+        refs.map((ref: any) => getEntry(ref.collection as any, ref.id))
+      );
+      const inCategory = svcs.some(
+        (svc: any) => svc?.data?.category === category
+      );
+      return inCategory ? p.id : null;
+    })
+  );
+  portfolioIds = matches.filter(Boolean) as string[];
+}
+
+const portfolioQuery = portfolioIds.length
+  ? query("projects")
+      .where((e: any) => portfolioIds.includes(e.id))
+      .orderBy(sortByOrder())
+  : null;
 ---
 {/* Hero slot — override with `slot="hero"`, else the automatic SecondaryHero. */}
 <slot name="hero">
@@ -58,3 +99,19 @@ const {
 </slot>
 
 <slot />
+
+{
+  portfolioQuery && (
+    <ContentRenderer
+      query={portfolioQuery}
+      variant="BeforeAfterVariant"
+      pretitle="Recent Projects"
+      title="Recent"
+      accentTitle="Work."
+      description={`A look at recent ${(category ?? "").toLowerCase()} projects.`}
+      dark={true}
+      columns={2}
+      showButtonSection={false}
+    />
+  )
+}
