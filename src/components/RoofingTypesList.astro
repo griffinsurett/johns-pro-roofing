@@ -1,0 +1,45 @@
+---
+// src/components/RoofingTypesList.astro
+/**
+ * RoofingTypesList — the roofing systems for a service rendered as an in-content
+ * <Band>: a heading + a bulleted "**Title** — description" list beside an image,
+ * matching the "Systems we install and service" band. Data-driven from the
+ * roofing-types collection (filtered by `service`) instead of a static list.
+ */
+import Band from "@/components/Bands/Band.astro";
+import { getRoofingTypes } from "@/utils/roofingTypes";
+
+interface Props {
+  /** Service id to filter by (e.g. "flat-roofing"). */
+  service: string;
+  /** Band heading. */
+  heading?: string;
+  /** Image asset for the band's media side. */
+  image?: ImageMetadata | string;
+  imageAlt?: string;
+  /** Image on the right (matches the original band). */
+  reverse?: boolean;
+}
+
+const {
+  service,
+  heading = "Systems we install and service",
+  image,
+  imageAlt = "",
+  reverse = false,
+} = Astro.props as Props;
+
+const types = await getRoofingTypes({ service });
+---
+
+<Band image={image} imageAlt={imageAlt} reverse={reverse}>
+  <h2>{heading}</h2>
+  <ul>
+    {types.map((t: any) => (
+      <li>
+        <strong>{t.data.title}</strong>
+        {t.data.description && <> — {t.data.description}</>}
+      </li>
+    ))}
+  </ul>
+</Band>

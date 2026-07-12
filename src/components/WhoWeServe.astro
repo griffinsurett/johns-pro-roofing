@@ -5,8 +5,10 @@
  * John's Pro Roofing works with. Reused on the homepage and on service pages.
  *
  * The audience list is the `who-we-serve` content collection, rendered through
- * ContentRenderer + ServiceCalloutVariant. The shared band background is passed
- * as `backgroundImage` (presentational — not stored per-item in the content).
+ * ContentRenderer + ServiceCalloutVariant. The band background is passed as
+ * `backgroundImage` (presentational — not stored per-item in the content):
+ * pass a single image for a static band, or an array to cross-fade them as a
+ * slideshow (e.g. the paving pages pass the paving photos).
  */
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, sortByOrder } from "@/utils/query";
@@ -17,6 +19,9 @@ interface Props {
   pretitle?: string;
   title?: string;
   description?: string;
+  /** Band background — a single image or an array to cross-fade as a slideshow.
+   *  Defaults to the shared commercial roofing photo. */
+  backgroundImage?: ImageMetadata | string | (ImageMetadata | string)[];
 }
 
 const {
@@ -24,6 +29,7 @@ const {
   pretitle = "Who We Serve",
   title = "Built for Commercial Properties",
   description = "We work with the teams responsible for keeping commercial buildings and grounds in top shape across New Jersey.",
+  backgroundImage = whoWeServeBg,
 } = Astro.props as Props;
 ---
 
@@ -34,5 +40,5 @@ const {
   pretitle={pretitle}
   title={title}
   description={description}
-  backgroundImage={whoWeServeBg}
+  backgroundImage={backgroundImage}
 />

@@ -18,9 +18,10 @@ interface Props extends BaseVariantProps {
   /** Optional CTA button under the list. */
   ctaText?: string;
   ctaLink?: string;
-  /** Shared background image. When set, it renders as a single static band
-   *  instead of a per-item slideshow — use when the items carry no images of
-   *  their own (e.g. the "Who We Serve" audience list). */
+  /** Shared background image(s). When set, these render as the band background
+   *  instead of the items' own featuredImages — use when the items carry no
+   *  images of their own (e.g. the "Who We Serve" audience list). Pass a single
+   *  image for a static band, or an array to cross-fade them as a slideshow. */
   backgroundImage?: any;
 }
 
@@ -45,10 +46,12 @@ function imgSrc(featuredImage: any): string {
     : (featuredImage?.src?.src ?? featuredImage?.src ?? "");
 }
 
-// A shared backgroundImage renders one static frame; otherwise each item's
-// featuredImage becomes a cross-fading slide.
+// A shared backgroundImage (single or array) renders as the background frame(s);
+// otherwise each item's featuredImage becomes a cross-fading slide.
 const slides = backgroundImage
-  ? [imgSrc(backgroundImage)].filter(Boolean)
+  ? (Array.isArray(backgroundImage) ? backgroundImage : [backgroundImage])
+      .map(imgSrc)
+      .filter(Boolean)
   : safeItems.map((i) => imgSrc(i.featuredImage)).filter(Boolean);
 // One full cycle = N slides × time-per-slide; used to stagger each layer's delay.
 const perSlide = 5; // seconds each image is featured

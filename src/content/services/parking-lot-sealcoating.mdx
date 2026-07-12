@@ -13,7 +13,7 @@ cardCta: "Learn More"
 cardBlurb: "Protective sealcoating that blocks water, UV, and chemicals — extending asphalt life and restoring a clean black finish."
 price: "Free estimates available"
 bannerImage: "../../assets/commercial-4.webp"
-featuredImage: "../../assets/commercial-4.webp"
+featuredImage: "../../assets/paving-asphault/seal-1.png"
 seo:
   metaTitle: "Parking Lot Sealcoating in NJ | John's Pro Roofing"
   metaDescription: "Commercial parking lot sealcoating in New Jersey — protect asphalt, extend its life, and restore a clean finish. Free estimate. Call 732-351-3518."
@@ -41,8 +41,10 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
-import heroImage from "../../assets/commercial-4.webp";
-import bandWhy from "../../assets/commercial-6.webp";
+import seal1 from "../../assets/paving-asphault/seal-1.png";
+import seal2 from "../../assets/paving-asphault/seal-2.png";
+import seal3 from "../../assets/paving-asphault/seal-3.png";
+export const heroImage = seal3;
 
 <ServiceLayout
   eyebrow={frontmatter.title}
@@ -54,7 +56,7 @@ import bandWhy from "../../assets/commercial-6.webp";
 
 <Bands>
 
-<Band image={heroImage} imageAlt={frontmatter.title}>
+<Band image={seal1} imageAlt="Applying sealcoat to a commercial parking lot">
 
 ## The cheapest way to protect your lot
 
@@ -64,7 +66,7 @@ For property managers watching a maintenance budget, a sealcoating cycle is easy
 
 </Band>
 
-<Band image={bandWhy} imageAlt="Freshly sealcoated parking lot" reverse>
+<Band image={seal2} imageAlt="Freshly sealcoated parking lot" reverse>
 
 ## What sealcoating does
 
@@ -80,10 +82,9 @@ We schedule around your operations and keep the lot accessible where possible. B
 
 </Bands>
 
+<WhoWeServe backgroundImage={[seal1, seal2, seal3]} />
+
 {/* Primary conversion: quote form first. */}
 <QuoteCta cta={frontmatter.cta} />
-
-
-<WhoWeServe />
 
 </ServiceLayout>

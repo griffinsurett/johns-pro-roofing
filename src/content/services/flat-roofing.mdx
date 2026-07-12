@@ -43,6 +43,7 @@ import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
 import RoofingTypes from "@/components/RoofingTypes.astro";
+import RoofingTypesList from "@/components/RoofingTypesList.astro";
 import heroImage from "../../assets/commercial-working.webp";
 import bandSystems from "../../assets/commercial-2.webp";
 import bandWhy from "../../assets/commercial-4.webp";
@@ -67,17 +68,13 @@ Whether you're managing a warehouse, a shopping center, a medical building, or a
 
 </Band>
 
-<Band image={bandSystems} imageAlt="Commercial flat roof membrane installation" reverse>
-
-## Systems we install and service
-
-- **TPO** — reflective single-ply that cuts cooling costs on large, sun-exposed roofs
-- **EPDM** — durable rubber membrane proven across decades of commercial use
-- **Modified bitumen** — multi-ply resilience for high-traffic and mechanical-heavy roofs
-- **Full replacements and re-roofs** — tear-off, deck repair, and a clean new system
-- **New-construction and addition roofing** — coordinated with your build schedule
-
-</Band>
+<RoofingTypesList
+  service="flat-roofing"
+  heading="Systems we install and service"
+  image={bandSystems}
+  imageAlt="Commercial flat roof membrane installation"
+  reverse
+/>
 
 <Band image={bandWhy} imageAlt="Crew working on a commercial flat roof">
 
@@ -111,6 +108,7 @@ We're a New Jersey company you can hold accountable, backed by {businessData.war
 </Bands>
 
 <RoofingTypes
+  service="flat-roofing"
   pretitle="Systems We Install"
   title="Flat-Roof Systems"
   accentTitle="Built for Your Building"

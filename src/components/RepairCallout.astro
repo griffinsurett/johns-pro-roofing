@@ -25,8 +25,15 @@ import type { CollectionEntry } from "astro:content";
 import Button from "@/components/Button/Button";
 import { children, byItemKeys } from "@/utils/query/snippets";
 import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
-// TODO: swap for a dedicated repair-callout image once assets are ready.
+// Fallback only — used when the destination service carries no image of its own.
 import placeholderImage from "@/assets/images/service_roof_repair.png";
+
+/** Resolve a prepared entry's image (Astro image object or string) to a src. */
+function imgSrc(image: any): string {
+  return typeof image === "string"
+    ? image
+    : (image?.src?.src ?? image?.src ?? "");
+}
 
 interface Props {
   /** Parent roofing slug whose repair child this links to. */
@@ -65,6 +72,12 @@ const queryBuilder = target
   : children("services", parent ?? "");
 const entries = (await queryBuilder.all()) as CollectionEntry<"services">[];
 const [repair] = await prepareCollectionEntries(entries, "services", meta);
+
+// Image comes from the destination service itself (single source of truth), so
+// the CTA shows that service's own photo — not a hardcoded roofing placeholder.
+const calloutImage =
+  imgSrc((repair as any)?.featuredImage ?? (repair as any)?.bannerImage) ||
+  placeholderImage.src;
 ---
 
 {
@@ -72,10 +85,10 @@ const [repair] = await prepareCollectionEntries(entries, "services", meta);
     <div class:list={["repair-callout", { "repair-callout--standalone": !bare }]}>
       <div class={bare ? "" : "container py-16 md:py-20"}>
         <div class="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
-          {/* Placeholder image (landscape) */}
+          {/* Destination service's own image (landscape) */}
           <div class={`overflow-hidden rounded-2xl ${reverse ? "md:order-2" : ""}`}>
             <img
-              src={placeholderImage.src}
+              src={calloutImage}
               alt=""
               aria-hidden="true"
               class="aspect-video w-full object-cover"

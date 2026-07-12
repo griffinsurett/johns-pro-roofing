@@ -41,7 +41,6 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import RoofingTypes from "@/components/RoofingTypes.astro";
 import heroImage from "../../assets/residential-working.webp";
 import bandReplace from "../../assets/residential-working-2.webp";
 import bandChoose from "../../assets/john-on-roof-2.webp";
@@ -91,12 +90,5 @@ We're a local New Jersey company, not a franchise — the same crew that quotes 
 
 {/* Primary conversion: quote form. */}
 <QuoteCta cta={frontmatter.cta} />
-
-<RoofingTypes
-  pretitle="Materials We Install"
-  title="Roofing Materials"
-  accentTitle="for Your Home"
-  description="Architectural asphalt shingles, metal, and more — we help you choose the material that fits your home, your look, and your budget."
-/>
 
 </ServiceLayout>

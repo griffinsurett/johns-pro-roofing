@@ -2,11 +2,16 @@
 // src/components/RoofingTypes.astro
 /**
  * RoofingTypes — image-card band of the roofing systems we install, driven by
- * the `roofing-types` content collection. Reused on the homepage and on each
- * roofing service page, with a page-specific headline passed in.
+ * the `roofing-types` content collection. Reused on the homepage (all types)
+ * and on each service page (only the types that reference that service).
+ *
+ * Pass `service` (a service id, e.g. "flat-roofing") to filter to the roofing
+ * types whose `service` reference includes it — the reverse of the
+ * roofing-type → service reference. Omit it to show every type.
  */
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, sortByOrder } from "@/utils/query";
+import { getRoofingTypes } from "@/utils/roofingTypes";
 
 interface Props {
   id?: string;
@@ -17,6 +22,8 @@ interface Props {
   columns?: 2 | 3 | 4;
   /** Card order by `order` field; "desc" reverses (matches the homepage). */
   direction?: "asc" | "desc";
+  /** Service id to filter by (e.g. "flat-roofing"). Omit to show all types. */
+  service?: string;
 }
 
 const {
@@ -27,11 +34,18 @@ const {
   description = "From commercial flat-roof membranes to residential shingles, we install and service the systems that fit your building and budget.",
   columns = 3,
   direction = "desc",
+  service,
 } = Astro.props as Props;
+
+// Filter to the roofing types for this service (all types when unscoped), then
+// hand ContentRenderer a query over those ids so it runs its normal prepare
+// pipeline (image resolution, urls, etc.).
+const ids = (await getRoofingTypes({ service })).map((t: any) => t.id);
+const typeQuery = query("roofing-types").where((e: any) => ids.includes(e.id));
 ---
 
 <ContentRenderer
-  query={query("roofing-types").orderBy(sortByOrder(direction))}
+  query={typeQuery.orderBy(sortByOrder(direction))}
   variant="ImageCardVariant"
   id={id}
   pretitle={pretitle}

@@ -187,7 +187,11 @@ export const collections = {
   "roofing-types": defineCollection({
     loader: GlobLoad("roofing-types"),
     schema: ({ image }) =>
-      baseSchema({ image }),
+      baseSchema({ image }).extend({
+        // The service(s) this roofing system is installed/serviced under
+        // (e.g. TPO → flat-roofing). Mirrors the projects → services pattern.
+        service: refSchema("services"),
+      }),
   }),
 
   // ── who-we-serve ────────────────────────────────────────

@@ -43,8 +43,10 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
-import heroImage from "../../assets/commercial-5.webp";
-import bandWhy from "../../assets/commercial-7.webp";
+import crack1 from "../../assets/paving-asphault/crack-1.png";
+import crack2 from "../../assets/paving-asphault/crack-2.png";
+import crack3 from "../../assets/paving-asphault/crack-3.png";
+export const heroImage = crack3;
 
 <ServiceLayout
   eyebrow={frontmatter.title}
@@ -56,7 +58,7 @@ import bandWhy from "../../assets/commercial-7.webp";
 
 <Bands>
 
-<Band image={heroImage} imageAlt={frontmatter.title}>
+<Band image={crack1} imageAlt="Cracked commercial asphalt before sealing">
 
 ## Small cracks, big consequences
 
@@ -66,7 +68,7 @@ John's Pro Roofing seals cracks for parking lots and drive lanes across New Jers
 
 </Band>
 
-<Band image={bandWhy} imageAlt="Crack sealing on a commercial parking lot" reverse>
+<Band image={crack2} imageAlt="Crack sealing on a commercial parking lot" reverse>
 
 ## Why crack filling matters
 
@@ -81,6 +83,8 @@ Fast turnaround, scheduled around your operations. Backed by {businessData.warra
 </Band>
 
 </Bands>
+
+<WhoWeServe backgroundImage={[crack1, crack2, crack3]} />
 
 {/* Primary conversion: quote form first. */}
 <QuoteCta cta={frontmatter.cta} />
@@ -99,8 +103,5 @@ Fast turnaround, scheduled around your operations. Backed by {businessData.warra
 </Band>
 
 </Bands>
-
-
-<WhoWeServe />
 
 </ServiceLayout>
