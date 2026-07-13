@@ -186,6 +186,10 @@ body {
 
   html {
     scroll-behavior: smooth;
+    /* Clip horizontal overflow at the top-level scroller. overflow-x:hidden on
+       body alone doesn't contain it — html stays wider than the viewport and
+       the page shifts, leaving a gutter. Both must clip. */
+    overflow-x: hidden;
   }
 
   body {

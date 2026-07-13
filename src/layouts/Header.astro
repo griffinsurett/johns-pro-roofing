@@ -71,31 +71,18 @@ import TopBar from "@/layouts/TopBar.astro";
 </header>
 
 <style is:global>
-  /* Logo shrinks on scroll (see the compact script below). Height is the
-     driver — width stays auto so the logo keeps its aspect ratio.
-     Global so #site-top-bar (rendered by the separate TopBar component) is
-     reachable from these #site-header selectors. */
+  /* On scroll, only the logo shrinks (height is the driver; width stays auto so
+     the aspect ratio holds). The TopBar stays put — collapsing an element above
+     a top-pinned sticky header pushes the nav row off-screen and clips it. */
   .header-logo-img {
     transition: height 420ms ease;
   }
   #site-header[data-compact="true"] .header-logo-img {
     height: 64px;
   }
-  /* Collapse the utility strip once scrolled to reclaim the space. */
-  #site-top-bar {
-    overflow: hidden;
-    transition: max-height 420ms ease, padding 420ms ease, opacity 300ms ease;
-    max-height: 60px;
-  }
-  #site-header[data-compact="true"] #site-top-bar {
-    max-height: 0;
-    padding-block: 0;
-    opacity: 0;
-  }
 
   @media (prefers-reduced-motion: reduce) {
-    .header-logo-img,
-    #site-top-bar {
+    .header-logo-img {
       transition: none;
     }
   }
@@ -107,11 +94,22 @@ import TopBar from "@/layouts/TopBar.astro";
     const header = document.getElementById("site-header");
     if (!header) return;
 
+    // Hysteresis: enter compact only after scrolling well past the header's
+    // shrink delta, and exit only near the very top. The gap between the two
+    // thresholds prevents the flip-flop where shrinking the sticky header pulls
+    // the scroll position back across a single threshold and it oscillates.
+    const ENTER = 120; // px scrolled down → shrink
+    const EXIT = 40;   // px scrolled back up → grow
+    let compact = false;
     let ticking = false;
+
     const update = () => {
-      if (window.scrollY > 8) {
+      const y = window.scrollY;
+      if (!compact && y > ENTER) {
+        compact = true;
         header.setAttribute("data-compact", "true");
-      } else {
+      } else if (compact && y < EXIT) {
+        compact = false;
         header.removeAttribute("data-compact");
       }
       ticking = false;
