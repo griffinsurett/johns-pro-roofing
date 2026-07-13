@@ -8,6 +8,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import MobileMenuItem from "@/components/LoopComponents/Menu/MobileMenuItem";
 import HamburgerButton from "./HamburgerButton";
 
@@ -26,15 +27,24 @@ export default function MobileMenuDrawer({
 }: MobileMenuDrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [menuTop, setMenuTop] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Portal target only exists in the browser.
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!isOpen) return;
 
     const handleOutsideClick = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node | null;
-      if (!target || !containerRef.current) return;
-      if (!containerRef.current.contains(target)) {
+      if (!target) return;
+      // The panel is portaled to <body>, so it's outside containerRef — check
+      // both the hamburger container and the panel before closing.
+      const inContainer = containerRef.current?.contains(target);
+      const inPanel = panelRef.current?.contains(target);
+      if (!inContainer && !inPanel) {
         setIsOpen(false);
       }
     };
@@ -95,58 +105,64 @@ export default function MobileMenuDrawer({
         id="mobile-menu-toggle"
       />
 
-      <div
-        className={`fixed left-0 right-0 z-50 transform transition-all duration-200 ${
-          isOpen
-            ? "pointer-events-auto translate-y-0 opacity-100"
-            : "pointer-events-none -translate-y-2 opacity-0"
-        }`}
-        style={{ top: `${menuTop}px` }}
-        aria-hidden={!isOpen}
-      >
-        <div className="bg-bg shadow-xl border-t border-text/10">
-          {closeButton && (
-            <div className="flex items-center justify-end bg-primary text-bg px-6 py-4">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-bg/90 hover:text-bg transition-colors"
-                aria-label="Close menu"
-                type="button"
-              >
-                <svg
-                  className="w-6 h-6"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M18 6L6 18M6 6l12 12"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-          )}
-
-          <nav
-            className={`${className} max-h-[70vh] overflow-y-auto py-2`}
-            aria-label="Mobile navigation"
+      {mounted &&
+        createPortal(
+          <div
+            ref={panelRef}
+            className={`fixed left-0 right-0 z-[55] transform transition-all duration-200 ${
+              isOpen
+                ? "pointer-events-auto translate-y-0 opacity-100"
+                : "pointer-events-none -translate-y-2 opacity-0"
+            }`}
+            style={{ top: `${menuTop}px` }}
+            aria-hidden={!isOpen}
           >
-            <ul className="space-y-1">
-              {items.map((item) => (
-                <MobileMenuItem
-                  key={item.slug || item.id}
-                  {...item}
-                  onNavigate={handleNavigate}
-                />
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </div>
+            {/* Content-height dropdown card, directly under the header. */}
+            <div className="bg-bg shadow-xl border-t border-text/10">
+              {closeButton && (
+                <div className="flex items-center justify-end bg-primary text-bg px-6 py-4">
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="text-bg/90 hover:text-bg transition-colors"
+                    aria-label="Close menu"
+                    type="button"
+                  >
+                    <svg
+                      className="w-6 h-6"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M18 6L6 18M6 6l12 12"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              )}
+
+              <nav
+                className={`${className} max-h-[70vh] overflow-y-auto py-2`}
+                aria-label="Mobile navigation"
+              >
+                <ul className="space-y-1">
+                  {items.map((item) => (
+                    <MobileMenuItem
+                      key={item.slug || item.id}
+                      {...item}
+                      onNavigate={handleNavigate}
+                    />
+                  ))}
+                </ul>
+              </nav>
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
