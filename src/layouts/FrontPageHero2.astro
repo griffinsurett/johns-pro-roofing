@@ -83,9 +83,11 @@ const h = {
   class={`relative overflow-hidden bg-surface xl:min-h-[clamp(560px,85vh,900px)] ${className}`}
 >
   {/* ── Background image + white overlay. Covers the full section on desktop;
-        on mobile it only fills the tall top text panel (the video stacks
-        below it, off the initial frame). Height matches the panel's min-h. ── */}
-  <div class="absolute inset-x-0 top-0 h-[72vh] xl:h-auto xl:inset-0">
+        on mobile it fills the top text panel. Anchored top+bottom (inset-y-0)
+        so it stretches to the actual text-panel height instead of a fixed vh —
+        otherwise long copy grows past the image and leaves a gap. The mobile
+        video banner sits below the text panel and isn't covered. ── */}
+  <div class="absolute inset-x-0 top-0 bottom-[var(--fph2-media-h,56.25vw)] xl:bottom-0 xl:inset-0">
     <Image
       src={image}
       alt=""
