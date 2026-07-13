@@ -42,7 +42,7 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
-import RoofingTypes from "@/components/RoofingTypes.astro";
+import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
 import heroImage from "../../assets/commercial-6.webp";
 import bandCovers from "../../assets/commercial-8.webp";
 import bandWho from "../../assets/commercial-4.webp";
@@ -89,18 +89,15 @@ Every plan is backed by {businessData.warranty}, and we're {businessData.insuran
 
 </Band>
 
+<RoofingTypesShowcase
+  service="commercial-roof-maintenance"
+  heading="Maintenance for every roofing system"
+/>
+
 </Bands>
 
 {/* Primary conversion: quote form first. */}
 <QuoteCta cta={frontmatter.cta} />
-
-<RoofingTypes
-  service="commercial-roof-maintenance"
-  pretitle="Systems We Maintain"
-  title="Maintenance for Every"
-  accentTitle="Roofing System"
-  description="TPO, EPDM, modified bitumen, built-up, and metal — we build a maintenance plan around the system on your roof to extend its life and protect your warranty."
-/>
 
 <WhoWeServe />
 

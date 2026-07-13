@@ -1,0 +1,49 @@
+---
+// src/components/RoofingTypesShowcase.astro
+/**
+ * RoofingTypesShowcase — the roofing systems for a service shown as an image
+ * slideshow paired with a selectable list (the active type is underlined).
+ * Auto-advances and is clickable. Renders as a <Band> so it joins the page's
+ * alternating banded layout. Data-driven from the roofing-types collection,
+ * filtered by `service` (same source as the card/list variants).
+ */
+import Band from "@/components/Bands/Band.astro";
+import RoofingTypesShowcaseClient from "@/components/RoofingTypesShowcase.tsx";
+import { getRoofingTypes } from "@/utils/roofingTypes";
+
+interface Props {
+  /** Service id to filter by (e.g. "commercial-roof-repairs"). */
+  service: string;
+  heading?: string;
+  /** Image on the right instead of the left (desktop). */
+  reverse?: boolean;
+}
+
+const { service, heading, reverse = false } = Astro.props as Props;
+
+/** Resolve a prepared item's image (Astro image object or string) to a src. */
+function imgSrc(image: any): string {
+  return typeof image === "string"
+    ? image
+    : (image?.src?.src ?? image?.src ?? "");
+}
+
+const types = await getRoofingTypes({ service });
+const items = types.map((t: any) => ({
+  title: t.data.title,
+  description: t.data.description,
+  image: imgSrc(t.data.featuredImage),
+}));
+---
+
+<Band class="roofing-showcase-band">
+  {heading && <h2>{heading}</h2>}
+  <RoofingTypesShowcaseClient client:visible items={items} reverse={reverse} />
+</Band>
+
+<style is:global>
+  /* Give the heading some breathing room above the showcase. */
+  .roofing-showcase-band h2 {
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+</style>

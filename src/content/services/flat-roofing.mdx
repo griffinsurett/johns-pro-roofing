@@ -42,11 +42,11 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
-import RoofingTypes from "@/components/RoofingTypes.astro";
-import RoofingTypesList from "@/components/RoofingTypesList.astro";
+import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
 import heroImage from "../../assets/commercial-working.webp";
-import bandSystems from "../../assets/commercial-2.webp";
 import bandWhy from "../../assets/commercial-4.webp";
+import bandTearoff from "../../assets/flat-roof-repairs/2.jpg";
+import bandMembrane from "../../assets/flat-roof-repairs/5.jpg";
 
 <ServiceLayout
   eyebrow={frontmatter.title}
@@ -68,11 +68,9 @@ Whether you're managing a warehouse, a shopping center, a medical building, or a
 
 </Band>
 
-<RoofingTypesList
+<RoofingTypesShowcase
   service="flat-roofing"
   heading="Systems we install and service"
-  image={bandSystems}
-  imageAlt="Commercial flat roof membrane installation"
   reverse
 />
 
@@ -83,6 +81,26 @@ Whether you're managing a warehouse, a shopping center, a medical building, or a
 A roof project shouldn't shut down your building. We schedule around your hours, stage the work to keep entrances and operations accessible, and keep a clean, safe site throughout. You'll know the scope and the cost before we start — and estimates are free.
 
 We're a New Jersey company you can hold accountable, backed by {businessData.warranty} and {businessData.insurance} in NJ.
+
+</Band>
+
+<Band image={bandTearoff} imageAlt="Old flat roof torn off and new decking installed" reverse>
+
+## A clean tear-off and a solid deck
+
+A flat-roof system is only as good as what's under it. On a full replacement we tear off the old, waterlogged membrane, inspect the deck, and replace any sheathing that's soft or rotted — so the new roof starts on a sound, dry surface instead of sealing problems in.
+
+Getting the base right is what separates a roof that lasts decades from one that leaks again in a few years.
+
+</Band>
+
+<Band image={bandMembrane} imageAlt="Fresh flat-roof membrane installed and sealed">
+
+## A membrane sealed for the long haul
+
+With the deck prepped, we lay the new membrane and detail every seam, edge, and penetration to manufacturer spec. Proper detailing at the transitions is where flat roofs win or lose — so we take the time to get the flashing, drains, and terminations watertight.
+
+The finished surface sheds water cleanly and is built to carry your building through New Jersey's freeze-thaw cycles, backed by {businessData.warranty}.
 
 </Band>
 
@@ -106,14 +124,6 @@ We're a New Jersey company you can hold accountable, backed by {businessData.war
 </Band>
 
 </Bands>
-
-<RoofingTypes
-  service="flat-roofing"
-  pretitle="Systems We Install"
-  title="Flat-Roof Systems"
-  accentTitle="Built for Your Building"
-  description="TPO, EPDM, modified bitumen, and built-up roofing — we spec the flat-roof system to your building, not the other way around."
-/>
 
 <WhoWeServe />
 

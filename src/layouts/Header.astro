@@ -4,24 +4,32 @@
  * Site Header with Navigation
  *
  * Desktop (xl+): nav left · logo centered · CTA right.
- * Mobile (<xl):  hamburger left · logo absolutely centered · two-button action row below.
+ * Mobile (<xl):  hamburger left · logo centered (in normal flow, so its height
+ *                drives the header) · two-button action row below.
  */
-import headerLogo from "@/assets/images/logo.png";
+import headerLogo from "@/assets/logo.png";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { related } from "@/utils/query";
 import { siteData } from "@/content/siteData";
 import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
+import TopBar from "@/layouts/TopBar.astro";
 ---
 
-<header class="sticky top-0 py-1 bg-bg backdrop-blur-md space-y-2 xl:py-0 z-[60]">
-  <div class="">
+<header id="site-header" class="sticky top-0 z-[60]">
+  {/* Utility strip — pinned along with the nav (whole header is sticky). */}
+  <TopBar />
+
+  {/* Nav row. */}
+  <div class="py-0 bg-bg backdrop-blur-md space-y-2 xl:py-0">
     <div
       data-menu-anchor
-      class="relative w-full max-w-[1600px] mx-auto px-6 xl:px-12 flex items-center justify-start xl:justify-between gap-6 min-h-[80px] py-1"
+      class="relative w-full max-w-[1600px] mx-auto px-6 xl:px-12 flex items-center justify-start xl:justify-between gap-6 py-1"
     >
-      {/* Nav: desktop inline menu + mobile hamburger (hamburger sits left on mobile) */}
-      <div class="order-1 z-[2] flex items-center justify-start flex-none xl:flex-1">
+      {/* Nav: desktop inline menu + mobile hamburger. On mobile the hamburger is
+          absolutely pinned left (out of flow) so the in-flow logo can center and
+          drive the header height; on xl it returns to the normal flex column. */}
+      <div class="order-1 z-[2] flex items-center justify-start absolute left-6 top-1/2 -translate-y-1/2 xl:static xl:translate-y-0 xl:flex-1">
         <ContentRenderer
           query={related("menu-items", "menu", "main-menu")}
           variant="MenuVariant"
@@ -34,13 +42,13 @@ import PhoneLink from "@/components/PhoneLink.astro";
 
       <a
         href="/"
-        class="order-2 inline-flex items-center flex-shrink-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 xl:static xl:translate-x-0 xl:translate-y-0"
+        class="order-2 inline-flex items-center flex-shrink-0 mx-auto xl:mx-0"
         aria-label={siteData.title}
       >
         <img
           src={headerLogo.src}
           alt={`${siteData.title} logo`}
-          class="block w-auto object-contain h-20 xl:h-[80px]"
+          class="header-logo-img block w-auto object-contain h-40 xl:h-[110px]"
         />
       </a>
 
@@ -50,7 +58,7 @@ import PhoneLink from "@/components/PhoneLink.astro";
         </Button>
       </div>
     </div>
-  </div>
+
 
   {/* Mobile-only action row — red estimate + blue phone, full width */}
   <div class="flex xl:hidden gap-3 px-6 bg-bg [&>*]:flex-1 [&_.btn-base]:w-full [&_.btn-base]:justify-center">
@@ -59,4 +67,61 @@ import PhoneLink from "@/components/PhoneLink.astro";
     </Button>
     <PhoneLink variant="phone" tone="blue" class="mobile-action-btn" />
   </div>
+  </div>
 </header>
+
+<style is:global>
+  /* Logo shrinks on scroll (see the compact script below). Height is the
+     driver — width stays auto so the logo keeps its aspect ratio.
+     Global so #site-top-bar (rendered by the separate TopBar component) is
+     reachable from these #site-header selectors. */
+  .header-logo-img {
+    transition: height 420ms ease;
+  }
+  #site-header[data-compact="true"] .header-logo-img {
+    height: 64px;
+  }
+  /* Collapse the utility strip once scrolled to reclaim the space. */
+  #site-top-bar {
+    overflow: hidden;
+    transition: max-height 420ms ease, padding 420ms ease, opacity 300ms ease;
+    max-height: 60px;
+  }
+  #site-header[data-compact="true"] #site-top-bar {
+    max-height: 0;
+    padding-block: 0;
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header-logo-img,
+    #site-top-bar {
+      transition: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function initHeaderCompact() {
+    if (typeof window === "undefined") return;
+    const header = document.getElementById("site-header");
+    if (!header) return;
+
+    let ticking = false;
+    const update = () => {
+      if (window.scrollY > 8) {
+        header.setAttribute("data-compact", "true");
+      } else {
+        header.removeAttribute("data-compact");
+      }
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+  })();
+</script>

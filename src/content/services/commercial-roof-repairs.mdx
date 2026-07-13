@@ -43,10 +43,12 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
-import RoofingTypes from "@/components/RoofingTypes.astro";
+import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
 import heroImage from "../../assets/commercial-3.webp";
 import bandRepairs from "../../assets/commercial-5.webp";
 import bandDowntime from "../../assets/commercial-7.webp";
+import bandDeck from "../../assets/flat-roof-repairs/1.jpg";
+import bandRebuild from "../../assets/flat-roof-repairs/3.jpg";
 
 <ServiceLayout
   eyebrow={frontmatter.title}
@@ -90,6 +92,26 @@ Every repair is backed by {businessData.warranty}, and we're {businessData.insur
 
 </Band>
 
+<Band image={bandDeck} imageAlt="Failed roof membrane torn back to expose rotted decking" reverse>
+
+## We fix the deck, not just the surface
+
+A leak that's been running for a while rarely stops at the membrane — water gets underneath and rots the decking below. Patching over soft, damaged deck just traps the problem and guarantees the leak comes back.
+
+We open up the failed area, remove the wet membrane, and inspect the deck underneath. Where the wood is compromised, we cut it out and replace it — so the repair is built on a solid, dry surface instead of hiding the real damage.
+
+</Band>
+
+<Band image={bandRebuild} imageAlt="New decking and fresh membrane installed on a commercial flat roof">
+
+## Rebuilt to last
+
+Once the deck is sound, we rebuild the roof the right way: new sheathing fastened down, then a fresh membrane installed and sealed to manufacturer spec so it ties cleanly into the surrounding roof.
+
+The result is a repair that's watertight and disappears into the existing surface — not a visible patch waiting to fail. You get a section that's as strong as a new roof, at a fraction of a full replacement.
+
+</Band>
+
 </Bands>
 
 {/* Primary conversion: quote form first. */}
@@ -108,15 +130,12 @@ Every repair is backed by {businessData.warranty}, and we're {businessData.insur
 
 </Band>
 
-</Bands>
-
-<RoofingTypes
+<RoofingTypesShowcase
   service="commercial-roof-repairs"
-  pretitle="Systems We Repair"
-  title="Repairs for Every"
-  accentTitle="Roofing System"
-  description="TPO, EPDM, modified bitumen, built-up, and metal — whatever system is on your building, we find the leak and fix it right."
+  heading="Repairs for every roofing system"
 />
+
+</Bands>
 
 <WhoWeServe />
 
