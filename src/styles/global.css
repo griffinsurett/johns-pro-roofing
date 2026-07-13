@@ -88,7 +88,9 @@
 }
 
 body {
-  @apply overflow-x-hidden;
+  /* clip, not hidden — see the note on the body rule below; hidden makes body a
+     scroll container and breaks the sticky header. */
+  overflow-x: clip;
 }
 
 @layer components {
@@ -186,10 +188,11 @@ body {
 
   html {
     scroll-behavior: smooth;
-    /* Clip horizontal overflow at the top-level scroller. overflow-x:hidden on
-       body alone doesn't contain it — html stays wider than the viewport and
-       the page shifts, leaving a gutter. Both must clip. */
-    overflow-x: hidden;
+    /* NOTE: do NOT set overflow-x here. Any overflow value other than visible
+       makes <html> a scroll container, which breaks `position: sticky` on the
+       header (it sticks to html instead of the viewport). Horizontal overflow
+       is clipped on <body> below; stray-wide elements are fixed at the source
+       (e.g. the menu drawer no longer uses w-screen/100vw). */
   }
 
   body {
@@ -199,7 +202,10 @@ body {
     line-height: 1.6;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    /* `clip` (not `hidden`) contains horizontal overflow WITHOUT making body a
+       scroll container — so it can't break the header's position: sticky the
+       way overflow-x: hidden does. */
+    overflow-x: clip;
   }
 
   /* Typography Defaults */
