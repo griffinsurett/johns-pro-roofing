@@ -4,7 +4,7 @@
  *
  * Client-side video player with lazy loading support.
  */
-import { useRef, useEffect, forwardRef, useState, useCallback } from "react";
+import { useRef, useEffect, forwardRef, useState } from "react";
 import type {
   VideoHTMLAttributes,
   ReactNode,
@@ -19,9 +19,23 @@ interface VideoProps extends VideoHTMLAttributes<HTMLVideoElement> {
   clientPosterSrc?: string;
   clientPlaceholderSrc?: string;
   wrapperClass?: string;
-  /** Show a play/pause control that appears on hover (desktop) / tap (touch). */
-  hoverControls?: boolean;
 }
+
+const isLocalVideo = (videoSrc: unknown): videoSrc is string => {
+  return typeof videoSrc === "string" && videoSrc.startsWith("/");
+};
+
+const getGeneratedPosterPath = (videoSrc?: string): string | undefined => {
+  if (!isLocalVideo(videoSrc)) return undefined;
+
+  const baseName = videoSrc.replace(/^\/+/, "").split("?")[0].split("/").pop();
+  if (!baseName) return undefined;
+
+  const stem = baseName.replace(/\.[^/.]+$/, "");
+  if (!stem) return undefined;
+
+  return `/__video-thumbnails/${stem}-poster.webp`;
+};
 
 export const Video = forwardRef<HTMLVideoElement, VideoProps>(
   (
@@ -30,7 +44,7 @@ export const Video = forwardRef<HTMLVideoElement, VideoProps>(
       poster,
       className = "",
       autoPlay = true,
-      muted = true,
+      muted = false,
       loop = true,
       controls = false,
       playsInline = true,
@@ -42,19 +56,18 @@ export const Video = forwardRef<HTMLVideoElement, VideoProps>(
       clientPosterSrc,
       clientPlaceholderSrc,
       wrapperClass = "",
-      hoverControls = false,
+      onPlay,
       ...rest
     },
     ref,
   ) => {
     const internalRef = useRef<HTMLVideoElement | null>(null);
-    const [isPlaying, setIsPlaying] = useState<boolean>(autoPlay);
-    const [resolvedPoster, setResolvedPoster] = useState<string | undefined>(
-      poster,
-    );
+    const fallbackPoster = getGeneratedPosterPath(src);
+    const [resolvedPoster, setResolvedPoster] = useState<string | undefined>(poster ?? fallbackPoster);
     const [resolvedPlaceholderSrc, setResolvedPlaceholderSrc] = useState<
       string | undefined
     >(placeholderSrc);
+    const [hasStartedPlayback, setHasStartedPlayback] = useState(false);
 
     const assignRef = (node: HTMLVideoElement | null) => {
       internalRef.current = node;
@@ -74,12 +87,19 @@ export const Video = forwardRef<HTMLVideoElement, VideoProps>(
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               const dataSrc = video.dataset.videoSrc;
-              if (dataSrc && video.src !== dataSrc) {
+              if (dataSrc && !video.getAttribute("src")) {
                 video.src = dataSrc;
+              }
+              // Promote network loading once near viewport while keeping
+              // an iOS-safe poster render path from initial SSR markup.
+              if (video.preload === "none") {
+                video.preload = "metadata";
+              }
+              if (video.getAttribute("src")) {
                 video.load();
-                if (autoPlay) {
-                  video.play().catch(() => {});
-                }
+              }
+              if (autoPlay) {
+                video.play().catch(() => {});
               }
               observer.disconnect();
             }
@@ -97,31 +117,62 @@ export const Video = forwardRef<HTMLVideoElement, VideoProps>(
         setResolvedPoster(clientPosterSrc);
         return;
       }
-      setResolvedPoster(poster);
-    }, [clientLoadPlaceholder, clientPosterSrc, poster]);
+      setResolvedPoster(poster ?? fallbackPoster);
+    }, [clientLoadPlaceholder, clientPosterSrc, poster, fallbackPoster]);
 
     useEffect(() => {
-      if (clientLoadPlaceholder && clientPlaceholderSrc) {
-        setResolvedPlaceholderSrc(clientPlaceholderSrc);
+      if (clientLoadPlaceholder) {
+        setResolvedPlaceholderSrc(
+          clientPosterSrc ??
+            clientPlaceholderSrc ??
+            placeholderSrc ??
+            poster ??
+            fallbackPoster,
+        );
         return;
       }
-      setResolvedPlaceholderSrc(placeholderSrc);
-    }, [clientLoadPlaceholder, clientPlaceholderSrc, placeholderSrc]);
+      setResolvedPlaceholderSrc(placeholderSrc ?? poster ?? fallbackPoster);
+    }, [
+      clientLoadPlaceholder,
+      clientPosterSrc,
+      clientPlaceholderSrc,
+      placeholderSrc,
+      poster,
+      fallbackPoster,
+    ]);
+
+    useEffect(() => {
+      setHasStartedPlayback(false);
+    }, [src, resolvedPoster, resolvedPlaceholderSrc]);
 
     const wrapperClasses = `relative grid w-full h-full ${wrapperClass ?? ""}`.trim();
     const mediaClasses = `w-full h-full object-cover ${className ?? ""}`.trim();
     const stackClasses = "col-start-1 col-end-2 row-start-1 row-end-2";
+    const overlaySrc = resolvedPlaceholderSrc ?? resolvedPoster;
+    const showOverlay = Boolean(overlaySrc) && !hasStartedPlayback;
+
+    const handlePlay: NonNullable<VideoHTMLAttributes<HTMLVideoElement>["onPlay"]> = (event) => {
+      setHasStartedPlayback(true);
+      onPlay?.(event);
+    };
 
     return (
       <div className={wrapperClasses}>
-        {resolvedPlaceholderSrc && (
+        {overlaySrc && (
           <img
-            src={resolvedPlaceholderSrc}
-            alt="Video placeholder"
+            src={overlaySrc}
+            alt=""
+            aria-hidden="true"
             className={`${mediaClasses} ${stackClasses}`.trim()}
-            loading="eager"
+            loading={lazy ? "lazy" : "eager"}
             decoding="async"
-            style={{ zIndex: 0 }}
+            fetchPriority={lazy ? "auto" : "high"}
+            style={{
+              zIndex: 2,
+              opacity: showOverlay ? 1 : 0,
+              pointerEvents: "none",
+              transition: "opacity 180ms ease",
+            }}
           />
         )}
         <video
@@ -133,16 +184,16 @@ export const Video = forwardRef<HTMLVideoElement, VideoProps>(
           loop={loop}
           controls={controls}
           playsInline={playsInline}
-          preload={lazy ? "metadata" : "auto"}
+          preload={lazy ? "none" : "auto"}
           data-video-src={lazy ? src : undefined}
-          src={!lazy ? src : undefined}
+          src={lazy ? undefined : src}
           style={{ zIndex: 1 }}
           {...rest}
+          onPlay={handlePlay}
         >
-          {src && (
+          {!lazy && src && (
             <source
-              src={!lazy ? src : undefined}
-              data-video-src={lazy ? src : undefined}
+              src={src}
               type={sourceType}
             />
           )}

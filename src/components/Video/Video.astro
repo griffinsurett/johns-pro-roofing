@@ -34,7 +34,7 @@ const {
   autoplay = true,
   muted = true,
   loop = true,
-  controls = false,
+  controls = true,
   playsinline = true,
   lazy = true,
   timecodeSeconds = 0,
@@ -42,10 +42,12 @@ const {
   ...rest
 } = Astro.props;
 
-// Generate poster from video if not provided
+const isRemote = typeof src === "string" && /^https?:\/\//i.test(src);
+
+// Generate poster from video if not provided (local files only)
 let posterUrl = manualPoster;
 let placeholderUrl: string | undefined;
-if (!posterUrl && src) {
+if (!posterUrl && src && !isRemote) {
   const generated = await generateVideoPoster(src, { timecodeSeconds });
   posterUrl = generated.src;
   placeholderUrl = generated.placeholderSrc;
