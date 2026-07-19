@@ -1,9 +1,8 @@
 ---
-title: "Customer Reviews"
-description: "See what our customers are saying about John's Pro Roofing LLC"
+title: "What Our Customers Say"
+description: "John's Pro Roofing LLC is trusted for responsive service, clean workmanship, and roofing projects completed the right way."
 hasPage: true
 itemsHasPage: false
-indexLayout: "../layouts/collections/TestimonialsIndexLayout.astro"
 addToMenu:
   - menu: "main-menu"
     parent: "resources"
@@ -14,3 +13,14 @@ seo:
   metaDescription: "Read real customer reviews for John's Pro Roofing LLC — trusted roofing and solar services in New Jersey."
   keywords: ["roofing reviews", "John's Pro Roofing reviews", "NJ roofing company", "roofing testimonials"]
 ---
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder } from "@/utils/query";
+
+{/* Reviews grid. The default layout renders the hero above this from the
+    frontmatter title/description. */}
+<ContentRenderer
+  query={query("testimonials").orderBy(sortByOrder())}
+  variant="TestimonialVariant"
+  columns={3}
+  showButtonSection={false}
+/>

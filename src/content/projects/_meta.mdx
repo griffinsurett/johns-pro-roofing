@@ -3,7 +3,6 @@ title: "Our Projects"
 description: "A look at some of our completed roofing and solar installations across New Jersey"
 hasPage: true
 itemsHasPage: false
-indexLayout: "../layouts/collections/ProjectsIndexLayout.astro"
 addToMenu:
   - menu: "main-menu"
     parent: "resources"
@@ -14,3 +13,15 @@ seo:
   metaDescription: "See completed commercial roofing and paving projects by John's Pro Roofing LLC across New Jersey."
   keywords: ["roofing projects NJ", "roof replacement New Jersey", "solar installation NJ"]
 ---
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder } from "@/utils/query";
+
+{/* Before/after project grid — max 2 columns. The default layout already
+    renders the hero above this from the frontmatter title/description. */}
+<ContentRenderer
+  query={query("projects").orderBy(sortByOrder())}
+  variant="BeforeAfterVariant"
+  columns={2}
+  grid={true}
+  showButtonSection={false}
+/>

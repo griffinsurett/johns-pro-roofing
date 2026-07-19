@@ -144,7 +144,7 @@ export const collections = {
         technologies: z.array(z.string()).default([]),
         // One or more service references. A project's category/portfolio
         // placement is derived from its referenced service(s) — see
-        // ServiceLayout and ProjectsIndexLayout.
+        // ServiceLayout.
         service: refSchema("services"),
         beforeImage: imageInputSchema({ image }),
         afterImage: imageInputSchema({ image }),

@@ -15,6 +15,9 @@ interface Props extends BaseVariantProps {
   pretitle?: string;
   accentTitle?: string; // italic accent second line
   dark?: boolean;
+  /** Force a static grid of every item instead of the >2-item carousel.
+   *  Use on index pages that want the full gallery laid out at once. */
+  grid?: boolean;
 }
 
 const {
@@ -29,6 +32,7 @@ const {
   pretitle = "Recent Projects",
   accentTitle,
   dark = false,
+  grid = false,
   id,
 } = Astro.props as Props;
 
@@ -41,9 +45,10 @@ const columnClasses = {
   4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
 };
 
-// More than two projects → carousel with prev/next arrows; otherwise a
-// static grid. `columns` still controls how many cards are visible at once.
-const isCarousel = safeItems.length > 2;
+// More than two projects → carousel with prev/next arrows; otherwise a static
+// grid. Pass `grid` to always lay every item out in the static grid (no
+// carousel), e.g. on the projects index page. `columns` sets the grid width.
+const isCarousel = !grid && safeItems.length > 2;
 const carouselCols = Math.min(columns, 2) as 1 | 2;
 const itemBasis = {
   1: "basis-full",

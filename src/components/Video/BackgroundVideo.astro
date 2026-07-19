@@ -1,0 +1,105 @@
+---
+// src/components/Video/BackgroundVideo.astro
+/**
+ * BackgroundVideo — the ambient background-video pattern packaged up, the way
+ * VideoCard packages click-to-play.
+ *
+ * Renders the optimized <Video> with background defaults baked in (autoplay,
+ * muted, loop, object-cover, eager load, NO native controls), an optional tint
+ * overlay, and an optional pause/play button that fades in on hover. All the
+ * pointer-events and z-index handling lives here so consumers just drop it in:
+ *
+ *   <BackgroundVideo src="/hero.mp4" tintClass="bg-primary/15" hoverControls />
+ *
+ * Fills its positioned parent (absolute inset-0), so wrap it in a relatively/
+ * absolutely-positioned container that defines the area.
+ */
+import Video from "@/components/Video/Video.astro";
+
+interface Props {
+  /** Public path to the video (e.g. "/hero.mp4"). */
+  src: string;
+  /** Tailwind class for the tint overlay (e.g. "bg-primary/15"). Omit for none. */
+  tintClass?: string;
+  /** Fade-in pause/play button on hover. For ambient clips (no native bar). */
+  hoverControls?: boolean;
+  /** Lazy-load. Default false — background video is usually above the fold. */
+  lazy?: boolean;
+  class?: string;
+}
+
+const {
+  src,
+  tintClass,
+  hoverControls = false,
+  lazy = false,
+  class: className = "",
+} = Astro.props as Props;
+---
+
+<div class:list={["bg-video absolute inset-0", className]} data-bg-video>
+  <Video
+    src={src}
+    alt=""
+    lazy={lazy}
+    controls={false}
+    muted={true}
+    autoplay={true}
+    loop={true}
+    wrapperClass="absolute inset-0"
+    class="object-cover"
+  />
+
+  {tintClass && <div class:list={["absolute inset-0 z-[2] pointer-events-none", tintClass]} />}
+
+  {
+    hoverControls && (
+      <button
+        type="button"
+        class="bg-video__toggle group absolute inset-0 z-[3] flex items-center justify-center border-0 bg-transparent cursor-pointer appearance-none"
+        aria-label="Pause video"
+        data-playing
+      >
+        <span class="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-[0_4px_15px_rgba(0,0,0,0.3)] opacity-0 transition-all duration-200 group-hover:scale-105 group-hover:opacity-100 group-focus-visible:opacity-100">
+          {/* pause bars (shown while playing) */}
+          <span class="bg-video__pause flex gap-[5px]">
+            <span class="block h-4 w-[5px] rounded-sm bg-accent" />
+            <span class="block h-4 w-[5px] rounded-sm bg-accent" />
+          </span>
+          {/* play triangle (shown while paused) */}
+          <span
+            class="bg-video__play ml-1 hidden h-0 w-0"
+            style="border-left:16px solid var(--color-accent); border-top:10px solid transparent; border-bottom:10px solid transparent;"
+          />
+        </span>
+      </button>
+    )
+  }
+</div>
+
+<script>
+  // Wire each BackgroundVideo's hover pause button to its own <video>.
+  document.querySelectorAll<HTMLElement>("[data-bg-video]").forEach((root) => {
+    const btn = root.querySelector<HTMLButtonElement>(".bg-video__toggle");
+    const video = root.querySelector("video");
+    if (!btn || !video) return;
+
+    const pauseGlyph = btn.querySelector<HTMLElement>(".bg-video__pause");
+    const playGlyph = btn.querySelector<HTMLElement>(".bg-video__play");
+
+    const sync = () => {
+      const paused = video.paused;
+      btn.setAttribute("aria-label", paused ? "Play video" : "Pause video");
+      if (pauseGlyph) pauseGlyph.classList.toggle("hidden", paused);
+      if (playGlyph) playGlyph.classList.toggle("hidden", !paused);
+    };
+
+    btn.addEventListener("click", () => {
+      if (video.paused) video.play().catch(() => {});
+      else video.pause();
+    });
+    video.addEventListener("play", sync);
+    video.addEventListener("pause", sync);
+    sync();
+  });
+</script>

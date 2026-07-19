@@ -2,7 +2,7 @@
 // Do not edit manually. Run "npm run generate:icons" (or node src/integrations/icons/utils/generate-icon-map.mjs) to regenerate.
 
 import type { IconType } from 'react-icons';
-import { FaArrowRightLong, FaArrowsUpDownLeftRight, FaBandage, FaBrush, FaBuildingShield, FaBullseye, FaClipboardCheck, FaClockRotateLeft, FaCompass, FaEye, FaFeather, FaFileLines, FaHeadset, FaHouseChimney, FaLayerGroup, FaLifeRing, FaLink, FaLocationDot, FaPalette, FaPhone, FaRoad, FaRobot, FaRotateLeft, FaScaleBalanced, FaScrewdriverWrench, FaShieldHalved, FaStar, FaUniversalAccess, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
+import { FaArrowRightLong, FaArrowsUpDownLeftRight, FaBandage, FaBrush, FaBuildingShield, FaBullseye, FaClipboardCheck, FaClockRotateLeft, FaCompass, FaEye, FaFeather, FaFileLines, FaHeadset, FaHouseChimney, FaLayerGroup, FaLifeRing, FaLink, FaPalette, FaPhone, FaRoad, FaRobot, FaRotateLeft, FaScaleBalanced, FaScrewdriverWrench, FaShieldHalved, FaStar, FaUniversalAccess, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
 import { LuArrowRight, LuArrowUpRight, LuBookOpen, LuChevronLeft, LuChevronRight, LuContact, LuGlobe, LuImage, LuMail, LuMapPin, LuPhone, LuSettings } from 'react-icons/lu';
 import { SiFacebook, SiInstagram, SiYoutube } from 'react-icons/si';
 
@@ -24,7 +24,6 @@ export const iconMap = {
   'fa6:layer-group': FaLayerGroup,
   'fa6:life-ring': FaLifeRing,
   'fa6:link': FaLink,
-  'fa6:location-dot': FaLocationDot,
   'fa6:palette': FaPalette,
   'fa6:phone': FaPhone,
   'fa6:road': FaRoad,
