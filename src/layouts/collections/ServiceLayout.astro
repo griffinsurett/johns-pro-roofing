@@ -36,6 +36,9 @@ export interface Props {
   /** Service category (e.g. "Commercial Roofing"). When set, a portfolio band
    *  of before/after projects in the same category renders below the content. */
   category?: string;
+  /** This service's collection id (e.g. "commercial-roof-repairs"). Used to
+   *  pull the service's own FAQs. Falls back to the last URL segment. */
+  serviceId?: string;
 }
 
 const {
@@ -48,7 +51,25 @@ const {
   author,
   readingTime,
   category,
+  serviceId,
 } = Astro.props as Props;
+
+// Resolve the current service id (prop → last URL segment) so we can pull this
+// service's FAQs.
+const currentServiceId =
+  serviceId ??
+  Astro.url.pathname.replace(/\/$/, "").split("/").pop();
+
+// FAQ band: FAQs whose `service` reference points at this service.
+const faqQuery = currentServiceId
+  ? query("faq")
+      .where((e: any) => {
+        const refs = normalizeReference(e.data.service);
+        return refs.some((r: any) => r.id === currentServiceId);
+      })
+      .orderBy(sortByOrder())
+  : null;
+const faqCount = faqQuery ? (await faqQuery.all()).length : 0;
 
 // Portfolio band: projects whose referenced service shares this page's
 // category, and which have a before/after pair. Resolving each project's
@@ -113,5 +134,21 @@ const portfolioQuery = portfolioIds.length
       columns={2}
       showButtonSection={false}
     />
+  )
+}
+
+{
+  faqQuery && faqCount > 0 && (
+    <section class="py-[80px] lg:py-[100px]">
+      <div class="container">
+        <ContentRenderer
+          query={faqQuery}
+          variant="AccordionVariant"
+          pretitle="FAQ"
+          title="Frequently Asked Questions"
+          description={`Common questions about ${(title ?? "this service").toLowerCase()}.`}
+        />
+      </div>
+    </section>
   )
 }

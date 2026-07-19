@@ -156,6 +156,10 @@ export const collections = {
     schema: ({ image }) =>
       baseSchema({ image }).extend({
         category: z.string().optional(),
+        // Optional service reference. Service-specific FAQs link to their
+        // service so each service page can render its own set; general FAQs
+        // omit this and only appear on the main /faq page.
+        service: refSchema("services"),
       }),
   }),
 

@@ -11,16 +11,19 @@ import type { BaseVariantProps } from "../ContentRenderer.types";
 import ContentBridge from "../ContentBridge/ContentBridge.astro";
 import Accordion from "@/components/LoopTemplates/Accordion";
 import Button from "@/components/Button/Button";
+import SectionHeading from "@/components/SectionHeading.astro";
 import { shouldShowCollectionCTA } from "../utils/helpers";
 
 interface Props extends BaseVariantProps {
   allowMultiple?: boolean;
+  pretitle?: string;
 }
 
 const {
   items = [],
   title,
   description,
+  pretitle,
   className = "",
   allowMultiple = false,
   collectionUrl,
@@ -35,13 +38,8 @@ const bridgeId = id || "accordion";
 <section id={id} class={`py-16 ${className}`}>
   {/* Header Section */}
   {
-    (title || description) && (
-      <div class="mb-12">
-        {title && <h2 class="text-4xl font-bold mb-4">{title}</h2>}
-        {description && (
-          <p class="text-lg text-text max-w-3xl">{description}</p>
-        )}
-      </div>
+    (pretitle || title || description) && (
+      <SectionHeading pretitle={pretitle} title={title} description={description} />
     )
   }
 
