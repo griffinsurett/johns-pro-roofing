@@ -56,18 +56,22 @@ const slides = backgroundImage
 // One full cycle = N slides × time-per-slide; used to stagger each layer's delay.
 const perSlide = 5; // seconds each image is featured
 const cycle = Math.max(slides.length, 1) * perSlide;
+// Only cross-fade when there's more than one image; a single image renders as a
+// plain static background (no pulsing animation).
+const isSlideshow = slides.length > 1;
 ---
 
 <section id={id} class={`relative overflow-hidden ${className}`}>
-  {/* Background slideshow: stacked images cross-fading on a loop */}
+  {/* Background: a cross-fading slideshow when multiple images are passed,
+      otherwise a single static image. */}
   {slides.length > 0 && (
     <div class="absolute inset-0" aria-hidden="true">
       {slides.map((src, i) => (
         <img
           src={src}
           alt=""
-          class="svc-slide absolute inset-0 w-full h-full object-cover"
-          style={`animation-duration:${cycle}s; animation-delay:${i * perSlide}s;`}
+          class={`absolute inset-0 w-full h-full object-cover ${isSlideshow ? "svc-slide" : ""}`}
+          style={isSlideshow ? `animation-duration:${cycle}s; animation-delay:${i * perSlide}s;` : undefined}
         />
       ))}
     </div>
