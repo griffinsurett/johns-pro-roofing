@@ -101,7 +101,7 @@ const VideoCard = ({
   const handleVideoEnd = () => setIsPlaying(false);
 
   const cardClasses = [
-    'group relative overflow-hidden rounded-[28px] border border-slate-100/60 shadow-lg cursor-pointer bg-slate-900',
+    'video-card group relative overflow-hidden rounded-[28px] border border-slate-100/60 shadow-lg cursor-pointer bg-slate-900',
     ASPECT_CLASSES[videoAspect],
     spanColumns ? 'col-span-2' : '',
     spanRows ? 'row-span-2' : '',
