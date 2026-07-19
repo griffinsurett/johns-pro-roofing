@@ -76,11 +76,10 @@ const serviceAreaLabel = await getServiceAreaNames();
         "We don't cut corners. Every job gets a thorough inspection, honest recommendations, and quality materials installed by a crew that treats your property like their own — no subs, no surprises.",
         "From storm-damage repairs to full replacements, we back our work with a 25-year workmanship warranty and a satisfaction guarantee. If it's not right, we make it right.",
       ]}
-      cta={{ text: "Our Story", href: "/#about" }}
     >
       <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
         Roofs that last,
-        <span class="not-italic font-[family-name:var(--font-body)] text-accent"> done right, </span>
+        <span class="italic text-accent"> done right, </span>
         the first time.
       </h2>
     </ContentRenderer>
@@ -91,7 +90,6 @@ const serviceAreaLabel = await getServiceAreaNames();
         .where((entry) => Boolean(entry.data.cardSize))
         .orderBy(sortByOrder())}
       variant="ServiceListVariant"
-      title="Our Services"
       className="!border-t-0"
       id="services-list"
     />

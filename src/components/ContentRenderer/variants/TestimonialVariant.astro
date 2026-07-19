@@ -10,6 +10,7 @@ import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
 import Button from "@/components/Button/Button";
 import { shouldShowCollectionCTA } from "../utils/helpers";
 import GoogleRating from "@/components/GoogleRating.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
 
 interface Props extends BaseVariantProps {
   columns?: 1 | 2 | 3 | 4;
@@ -41,11 +42,7 @@ const columnClasses = {
   <div class="container">
     {
       (title || description) && (
-        <div class="section-header">
-          <span class="section-pretitle">Reviews</span>
-          {title && <h2 class="section-title">{title}</h2>}
-          {description && <p class="section-description">{description}</p>}
-        </div>
+        <SectionHeading pretitle="Reviews" title={title} description={description} />
       )
     }
 

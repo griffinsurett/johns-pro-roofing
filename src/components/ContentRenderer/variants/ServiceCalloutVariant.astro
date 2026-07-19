@@ -12,6 +12,7 @@
  */
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import Button from "@/components/Button/Button";
+import SectionHeading from "@/components/SectionHeading.astro";
 
 interface Props extends BaseVariantProps {
   pretitle?: string;
@@ -85,15 +86,15 @@ const isSlideshow = slides.length > 1;
 
   <div class="container relative z-10 py-[80px] lg:py-[100px]">
     <div class="max-w-[760px] text-bg">
-      {pretitle && <span class="section-pretitle !text-bg">{pretitle}</span>}
-      {title && (
-        <h2 class="section-title !text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] mb-4">
-          {title}
-        </h2>
-      )}
-      {description && (
-        <p class="text-bg/90 text-lg leading-relaxed mb-8 max-w-[480px]">{description}</p>
-      )}
+      <SectionHeading
+        align="left"
+        pretitle={pretitle}
+        title={title}
+        description={description}
+        pretitleClass="!text-bg"
+        headingClass="!text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] !mb-4"
+        descriptionClass="!text-bg/90 !text-lg !mb-8 max-w-[480px]"
+      />
 
       {safeItems.length > 0 && (
         <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 mb-10 list-none">

@@ -14,11 +14,14 @@
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import StatCard from "@/components/LoopComponents/StatCard.astro";
 import Button from "@/components/Button/Button";
+import GalleryMarquee from "@/components/GalleryMarquee.astro";
 
 interface Props extends BaseVariantProps {
   pretitle?: string;
   body?: string[];
   cta?: { text: string; href: string };
+  /** Show the auto-scrolling gallery marquee below the stats (default true). */
+  gallery?: boolean;
 }
 
 const {
@@ -26,6 +29,7 @@ const {
   pretitle,
   body = [],
   cta,
+  gallery = true,
   className = "",
   id,
 } = Astro.props as Props;
@@ -74,4 +78,8 @@ const {
       </div>
     </div>
   </div>
+
+  {/* Auto-scrolling gallery marquee — a visual prelude filling out the band.
+      Full-bleed (outside the container) so it runs edge to edge. */}
+  {gallery && <GalleryMarquee class="mt-12 lg:mt-16" />}
 </section>

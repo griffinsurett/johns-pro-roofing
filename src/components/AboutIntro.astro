@@ -9,6 +9,7 @@
  */
 import Button from "@/components/Button/Button";
 import Video from "@/components/Video/Video.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
 import heroWorker from "@/assets/images/hero_worker.png";
 
 interface Props {
@@ -21,6 +22,10 @@ interface Props {
   video?: string | null; // public path to a video; when set, plays in the blob instead of the image. Pass null to force the image.
   imageAlt?: string;
   reverse?: boolean; // image on the left, text on the right (desktop)
+  /** Primary (red) button. Defaults to the homepage "About Us" link. */
+  primaryButton?: { text: string; href: string };
+  /** Secondary (outline) button. Defaults to "See Our Work". */
+  secondaryButton?: { text: string; href: string };
   class?: string;
 }
 
@@ -34,6 +39,8 @@ const {
   video = "/john-commercial.mp4",
   imageAlt = "John's Pro Roofing crew on site",
   reverse = false,
+  primaryButton = { text: "About Us", href: "/about-us" },
+  secondaryButton = { text: "See Our Work", href: "#projects" },
   class: className = "",
 } = Astro.props as Props;
 ---
@@ -41,18 +48,19 @@ const {
 <div class={`grid lg:grid-cols-2 gap-12 lg:gap-16 items-center ${className}`}>
   {/* Text */}
   <div class={reverse ? "lg:order-2" : ""}>
-    {pretitle && <span class="section-pretitle">{pretitle}</span>}
-    <h2 class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
-      {title}{accentTitle && (
-        <span class="not-italic font-[family-name:var(--font-body)] text-accent"> {accentTitle} </span>
-      )}{titleAfter}
-    </h2>
+    <SectionHeading
+      align="left"
+      class="!mb-0"
+      pretitle={pretitle}
+      heading={{ before: title, text: accentTitle, after: titleAfter }}
+      headingClass="!text-[clamp(36px,5vw,56px)] leading-[1.05] !mb-5"
+    />
     <p class="text-[var(--color-text-body)] text-base leading-[1.8] mb-8 max-w-[560px]">
       {description}
     </p>
     <div class="flex flex-wrap gap-4">
-      <Button variant="primary" size="lg" href="/#about">About Us</Button>
-      <Button variant="secondary" size="lg" href="#projects">See Our Work</Button>
+      <Button variant="primary" size="lg" href={primaryButton.href}>{primaryButton.text}</Button>
+      <Button variant="secondary" size="lg" href={secondaryButton.href}>{secondaryButton.text}</Button>
     </div>
   </div>
 

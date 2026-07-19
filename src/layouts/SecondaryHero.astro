@@ -15,7 +15,8 @@
 
 import { Image } from "astro:assets";
 import { getAuthorName } from "@/layouts/collections/helpers/layoutHelpers";
-import defaultImage from "@/assets/images/service_roof_install.png";
+import SectionHeading from "@/components/SectionHeading.astro";
+import defaultImage from "@/assets/john-on-roof.webp";
 
 type Heading = string | { before?: string; text?: string; after?: string };
 
@@ -97,25 +98,14 @@ const headingStr =
     class="relative z-10 container flex flex-col justify-center items-start gap-4 py-16 lg:py-20"
     style={`min-height: ${minHeight}`}
   >
-    {eyebrow && <span class="section-pretitle">{eyebrow}</span>}
-
-    <h1
-      class="section-title !mb-0 !text-[clamp(36px,6vw,56px)] leading-[1.05] [text-wrap:balance]"
-    >
-      {
-        headingObj ? (
-          <>
-            {headingObj.before && <span>{headingObj.before} </span>}
-            {headingObj.text && (
-              <span class="not-italic text-accent">{headingObj.text}</span>
-            )}
-            {headingObj.after && <span> {headingObj.after}</span>}
-          </>
-        ) : (
-          headingStr ?? title
-        )
-      }
-    </h1>
+    <SectionHeading
+      align="left"
+      class="!mb-0"
+      headingTag="h1"
+      pretitle={eyebrow}
+      heading={headingObj ?? (headingStr ?? title)}
+      headingClass="!mb-0 !text-[clamp(36px,6vw,56px)] leading-[1.05] [text-wrap:balance]"
+    />
 
     {
       description && (

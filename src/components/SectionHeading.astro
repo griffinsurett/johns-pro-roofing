@@ -1,0 +1,98 @@
+---
+// src/components/SectionHeading.astro
+/**
+ * SectionHeading — the ONE "top of section" header: eyebrow (pretitle) +
+ * heading + description. Every section and every ContentRenderer variant
+ * renders its header through this, so the whole site's heading treatment lives
+ * in one place. Change it here → it changes everywhere.
+ *
+ * The site heading convention: regular words upright, the EMPHASIZED word red +
+ * italic (`italic text-accent`). That emphasis lives only in `emphasisClass`
+ * below — nothing else needs to know about it.
+ *
+ * Heading content, in priority order:
+ *   1. `heading={{ before, text, after }}` — segmented; `text` is emphasized.
+ *   2. `title` + optional `accentTitle` — plain title with an emphasized word
+ *      appended (the pattern most variants already use).
+ *   3. `title` alone — plain heading.
+ *
+ * Class overrides (pretitleClass / headingClass / descriptionClass) let dark
+ * bands recolor without forking the structure (e.g. `!text-bg`).
+ */
+type Segmented = { before?: string; text?: string; after?: string };
+
+interface Props {
+  /** Small uppercase eyebrow above the heading. */
+  pretitle?: string;
+  /** Plain heading text (used when `heading` isn't given). */
+  title?: string;
+  /** Emphasized word appended after `title` (red + italic). */
+  accentTitle?: string;
+  /** Segmented heading — `text` is the emphasized (red + italic) word. */
+  heading?: Segmented | string | null;
+  /** Sub-copy below the heading. */
+  description?: string;
+  /** Heading element (default h2). */
+  headingTag?: "h1" | "h2" | "h3";
+  /** Wrapper / element class overrides. */
+  class?: string;
+  pretitleClass?: string;
+  headingClass?: string;
+  emphasisClass?: string;
+  descriptionClass?: string;
+  /** Center the header (default) or left-align. */
+  align?: "center" | "left";
+}
+
+const {
+  pretitle,
+  title,
+  accentTitle,
+  heading,
+  description,
+  headingTag = "h2",
+  class: className = "",
+  pretitleClass = "",
+  headingClass = "",
+  emphasisClass = "italic text-accent",
+  descriptionClass = "",
+  align = "center",
+} = Astro.props as Props;
+
+const HeadingTag = headingTag;
+
+// Normalize to a segmented shape so one branch renders everything.
+const seg: Segmented | undefined =
+  heading && typeof heading === "object"
+    ? heading
+    : typeof heading === "string"
+      ? { before: heading }
+      : title !== undefined
+        ? { before: title, text: accentTitle }
+        : undefined;
+
+const hasHeader = Boolean(pretitle || seg || description);
+// Left align also drops the centered layout constraints from `.section-header`
+// (text-center + mx-auto + max-width) so the header flows with its container.
+const alignClass = align === "left" ? "!text-left !mx-0 !max-w-none" : "";
+---
+
+{
+  hasHeader && (
+    <div class={`section-header ${alignClass} ${className}`.trim()}>
+      {pretitle && <span class={`section-pretitle ${pretitleClass}`.trim()}>{pretitle}</span>}
+
+      {seg && (
+        <HeadingTag class={`section-title ${headingClass}`.trim()}>
+          {seg.before !== undefined && <span>{seg.before}</span>}
+          {seg.before !== undefined && seg.text !== undefined && <Fragment>{" "}</Fragment>}
+          {seg.text !== undefined && <span class={emphasisClass}>{seg.text}</span>}
+          {seg.text !== undefined && seg.after !== undefined && <Fragment>{" "}</Fragment>}
+          {seg.after !== undefined && <span>{seg.after}</span>}
+        </HeadingTag>
+      )}
+
+      {description && <p class={`section-description ${descriptionClass}`.trim()}>{description}</p>}
+    </div>
+  )
+}

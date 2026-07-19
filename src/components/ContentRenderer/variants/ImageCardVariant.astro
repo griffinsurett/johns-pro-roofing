@@ -7,6 +7,7 @@
  */
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import ImageCard from "@/components/LoopComponents/ImageCard.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
 
 interface Props extends BaseVariantProps {
   pretitle?: string;
@@ -35,22 +36,12 @@ const columnClasses = {
 
 <section id={id} class={`py-[100px] border-t border-border ${className}`}>
   <div class="container">
-    {
-      (pretitle || title || description) && (
-        <div class="section-header">
-          {pretitle && <span class="section-pretitle">{pretitle}</span>}
-          {title && (
-            <h2 class="section-title">
-              {title}
-              {accentTitle && (
-                <span class="not-italic font-[family-name:var(--font-body)] text-accent"> {accentTitle}</span>
-              )}
-            </h2>
-          )}
-          {description && <p class="section-description">{description}</p>}
-        </div>
-      )
-    }
+    <SectionHeading
+      pretitle={pretitle}
+      title={title}
+      accentTitle={accentTitle}
+      description={description}
+    />
 
     {
       items.length > 0 && (

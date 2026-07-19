@@ -12,9 +12,10 @@
 import { query, sortByOrder } from "@/utils/query";
 import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
 import { ctaData } from "@/content/siteData";
 import type { CTAData } from "@/content/schema";
-import serviceRoofRepair from "@/assets/images/service_roof_repair.png";
+import serviceRoofRepair from "@/assets/commercial-working.webp";
 
 interface Props {
   id?: string;
@@ -64,11 +65,13 @@ const secondary = cta?.secondary;
 
   <div class="container relative z-10 py-[100px]">
     <div class="max-w-[640px] text-bg">
-      <h2 class="section-title !text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] mb-4">
-        {title}
-        <span class="not-italic font-[family-name:var(--font-body)]"> {accent} </span>
-        {titleAfter}
-      </h2>
+      <SectionHeading
+        align="left"
+        class="!mb-0"
+        heading={{ before: title, text: accent, after: titleAfter }}
+        headingClass="!text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] !mb-4"
+        emphasisClass="italic"
+      />
       <p class="text-bg/90 text-lg leading-relaxed mb-8 max-w-[480px]">
         {description}
       </p>

@@ -9,6 +9,7 @@
  * `cta` frontmatter shape, so a page's existing `cta:` block drives the copy.
  */
 import PhoneLink from "@/components/PhoneLink.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
 import QuoteForm from "@/components/Form/forms/QuoteForm.astro";
 import ContactForm from "@/components/Form/forms/ContactForm.astro";
 import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
@@ -16,7 +17,7 @@ import { query, sortByOrder } from "@/utils/query";
 import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
 import type { CollectionEntry } from "astro:content";
 import type { CTAData } from "@/content/schema";
-import serviceRoofRepair from "@/assets/images/service_roof_repair.png";
+import serviceRoofRepair from "@/assets/commercial-working.webp";
 
 interface Props {
   id?: string;
@@ -79,11 +80,13 @@ const loopTestimonials = [...testimonials, ...testimonials];
     <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
       {/* Pitch */}
       <div class="text-bg">
-        <h2 class="section-title !text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] mb-4">
-          {title}
-          <span class="not-italic font-[family-name:var(--font-body)]"> {accent} </span>
-          {titleAfter}
-        </h2>
+        <SectionHeading
+          align="left"
+          class="!mb-0"
+          heading={{ before: title, text: accent, after: titleAfter }}
+          headingClass="!text-bg !text-[clamp(32px,4.5vw,52px)] leading-[1.05] !mb-4"
+          emphasisClass="italic"
+        />
         <p class="text-bg/90 text-lg leading-relaxed mb-8 max-w-[480px]">
           {description}
         </p>

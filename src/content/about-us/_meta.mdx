@@ -1,33 +1,29 @@
 ---
 title: "About"
-description: "Learn about our mission, values, and commitment to our customers"
-hasPage: false
+description: "John's Pro Roofing is a local New Jersey company dedicated to straightforward service, honest communication, and commercial roofing and paving projects completed the right way."
+hasPage: true
 itemsHasPage: false
+heading:
+  before: "We do the work, but we"
+  text: "stand"
+  after: "on trust."
 addToMenu:
   - menu: "main-menu"
     parent: "resources"
     order: 1
-    url: "/#about"
   - menu: "footer-menu"
-    url: "/#about"
+redirectFrom: ["/about"]
 ---
-import Button from "@/components/Button/Button";
 import AboutIntro from "@/components/AboutIntro.astro";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import CtaBanner from "@/components/CtaBanner.astro";
+import { query, sortByOrder } from "@/utils/query";
+import { ctaData } from "@/content/siteData";
+import differenceBg from "@/assets/commercial-6.webp";
 
-import heroWorker from "@/assets/images/hero_worker.png";
-
-<section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-[url('../assets/images/hero_worker.png')] bg-cover bg-center">
-  <div class="absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(11,37,69,0.4)_0%,rgba(11,37,69,0.7)_60%,var(--color-canvas-primary)_100%)]"></div>
-  <div class="premium-hero-content">
-    <div class="inline-flex items-center gap-2 bg-[rgba(200,16,46,0.9)] text-white py-2 px-5 rounded-[100px] text-sm font-bold uppercase tracking-[0.1em] mb-[30px]">Licensed & Insured in NJ</div>
-    <h1 class="text-[clamp(48px,6vw,72px)] font-extrabold text-white leading-[1.1] tracking-[-0.02em] mb-6">We do the work, but we stand on trust.</h1>
-    <p class="text-xl text-white/85 font-light max-w-[600px] mx-auto">
-      John's Pro Roofing is a local New Jersey company dedicated to straightforward service, honest communication, and commercial roofing and paving projects completed the right way.
-    </p>
-  </div>
-</section>
-
-<section class="pt-[80px] pb-[140px] relative bg-[var(--color-canvas-primary)]">
+{/* Intro — same block as the homepage, but the primary button is the main
+    CTA (not a self-link back to About) with "See Our Work" as the secondary. */}
+<section class="pt-[80px] pb-[120px] relative bg-[var(--color-canvas-primary)]">
   <div class="container">
     <AboutIntro
       pretitle="Local. Family Run."
@@ -35,84 +31,50 @@ import heroWorker from "@/assets/images/hero_worker.png";
       accentTitle="Roofed"
       titleAfter="for life."
       description="John's Pro Roofing LLC was founded on a simple belief: every property manager and building owner deserves a contractor they can actually trust. We're a local New Jersey company — not a franchise, not a chain — just a dedicated crew that shows up on time, does the job right, and stands behind every job we complete. From a single roof repair to a full flat-roof system or a parking lot repave, we treat every project with the same care and precision."
+      primaryButton={{ text: ctaData.text, href: "/contact-us" }}
+      secondaryButton={{ text: "See Our Work", href: "/projects" }}
     />
   </div>
 </section>
 
-<section class="bg-[var(--color-brand-navy)] py-5 relative overflow-hidden">
-  <div class="container">
-    <div class="premium-stats-grid">
-      <div class="premium-stat">
-        <div class="premium-stat-num">500+</div>
-        <div class="premium-stat-label">Projects Completed</div>
-      </div>
-      <div class="premium-stat">
-        <div class="premium-stat-num">10+</div>
-        <div class="premium-stat-label">Years Experience</div>
-      </div>
-      <div class="premium-stat">
-        <div class="premium-stat-num">0%</div>
-        <div class="premium-stat-label">Financing</div>
-      </div>
-      <div class="premium-stat">
-        <div class="premium-stat-num">NJ</div>
-        <div class="premium-stat-label">Licensed & Insured</div>
-      </div>
-    </div>
-  </div>
-</section>
+{/* Stats — driven by the `stats` collection (same StatsVariant as the homepage). */}
+<ContentRenderer
+  query={query("stats").orderBy(sortByOrder())}
+  variant="StatsVariant"
+  pretitle="By the Numbers"
+  body={[
+    "We're a local New Jersey company you can hold accountable — no franchise, no call center, just a crew that answers the phone and stands behind its work.",
+  ]}
+>
+  <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
+    Built on results,
+    <span class="italic text-accent"> backed </span>
+    by our warranty.
+  </h2>
+</ContentRenderer>
 
-<section class="py-[160px] bg-[var(--color-canvas-primary)]">
-  <div class="container">
-    <div class="premium-timeline-header">
-      <h2>The John's Pro Roofing Difference</h2>
-    </div>
-    <div class="flex flex-col gap-[120px]">
-      <div class="premium-timeline-item">
-        <div class="premium-timeline-num">01</div>
-        <div class="premium-timeline-content">
-          <h3>Same-Day Response</h3>
-          <p>We pick up the phone and respond to estimates fast — because your time matters. Don't wait weeks just for a callback.</p>
-        </div>
-        <div class="premium-timeline-visual"></div>
-      </div>
-      
-      <div class="premium-timeline-item">
-        <div class="premium-timeline-num">02</div>
-        <div class="premium-timeline-content">
-          <h3>Transparent Pricing</h3>
-          <p>No hidden fees, no surprises. You know the full cost before we pick up a tool, allowing you to make confident decisions for your property.</p>
-        </div>
-        <div class="premium-timeline-visual"></div>
-      </div>
+{/* The Difference — driven by the `selling-points` collection, rendered as the
+    red numbered callout band (same ServiceCalloutVariant as "Who We Serve"). */}
+<ContentRenderer
+  query={query("selling-points").orderBy(sortByOrder())}
+  variant="ServiceCalloutVariant"
+  pretitle="Why Choose Us"
+  title="The John's Pro Roofing difference"
+  description="What sets us apart on every commercial roofing and paving project across New Jersey."
+  backgroundImage={differenceBg}
+  ctaText={ctaData.text}
+  ctaLink="/contact-us"
+/>
 
-      <div class="premium-timeline-item">
-        <div class="premium-timeline-num">03</div>
-        <div class="premium-timeline-content">
-          <h3>25-Year Warranty</h3>
-          <p>Our installations are backed by a 25-year workmanship warranty. We stand by our work long after the crew leaves the site.</p>
-        </div>
-        <div class="premium-timeline-visual"></div>
-      </div>
-    </div>
-  </div>
-</section>
+{/* Mission / Vision / Promise — image cards driven by the `about-us` collection. */}
+<ContentRenderer
+  query={query("about-us").orderBy(sortByOrder())}
+  variant="ImageCardVariant"
+  columns={3}
+  pretitle="What Drives Us"
+  title="Our mission, vision, and promise"
+  description="The principles behind every roof we install and every lot we pave."
+/>
 
-<section class="py-[120px] bg-[var(--color-brand-navy)] text-white border-t border-white/5">
-  <div class="container">
-    <div class="premium-values-flex">
-      <div class="premium-value-item">
-        <h4>Integrity First</h4>
-        <p>We never sell you what you don't need. Our recommendations are based purely on protecting your property.</p>
-      </div>
-      <div class="premium-value-item">
-        <h4>Clean Job Sites</h4>
-        <p>We leave your property cleaner than we found it. No debris, no mess, no excuses.</p>
-      </div>
-      <div class="premium-value-item">
-        <h4>Master Craftsmanship</h4>
-        <p>Every detail is executed with precision. We don't cut corners, ensuring work that lasts for years.</p>
-      </div>
-    </div>
-  </div>
-</section>
+{/* Close with the main CTA. */}
+<CtaBanner />

@@ -13,7 +13,7 @@ import PhoneLink from "@/components/PhoneLink.astro";
 import GoogleRating from "@/components/GoogleRating.astro";
 import Video from "@/components/Video/Video.astro";
 import BackgroundVideo from "@/components/Video/BackgroundVideo.astro";
-import bgImage from "@/assets/images/service_roof_install.png";
+import bgImage from "@/assets/john-on-roof.webp";
 import personImage from "@/assets/john-pointing.png";
 
 type Heading = string | { before?: string; text?: string; after?: string };
@@ -140,10 +140,10 @@ const h = {
       }
 
       <h1
-        class="font-display font-extrabold italic uppercase text-heading leading-[1] text-[clamp(42px,9vw,52px)] [text-wrap:balance]"
+        class="font-display font-extrabold uppercase text-heading leading-[1] text-[clamp(42px,9vw,52px)] [text-wrap:balance]"
       >
         {h.before && <span>{h.before} </span>}
-        {h.text && <span class="not-italic text-accent">{h.text}</span>}
+        {h.text && <span class="italic text-accent">{h.text}</span>}
         {h.after && <span> {h.after}</span>}
       </h1>
 

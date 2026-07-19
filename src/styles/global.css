@@ -13,7 +13,7 @@
 
 @theme {
   /* ───── PRIMARY – change ONLY this one line for the brand ───── */
-  --color-primary: #05295c;   /* John's Pro Roofing brand navy (logo lightest) */
+  --color-primary: #001c46;   /* John's Pro Roofing brand navy (logo lightest) */
   /* ───── ACCENT – secondary / interactive ───── */
   --color-accent: #c8102e;    /* patriotic bold red */
 
@@ -409,7 +409,7 @@ body {
   }
 
   .section-title {
-    @apply text-[40px] font-extrabold uppercase italic mb-5 max-md:text-[30px];
+    @apply text-[40px] font-extrabold uppercase mb-5 max-md:text-[30px];
   }
 
   .section-description {

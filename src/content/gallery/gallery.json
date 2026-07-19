@@ -1,0 +1,86 @@
+[
+  {
+    "id": "flat-roof-install",
+    "title": "Commercial flat-roof installation in progress",
+    "featuredImage": "../../assets/john-on-roof.webp",
+    "order": 1
+  },
+  {
+    "id": "finished-white-membrane",
+    "title": "Finished white reflective roof membrane",
+    "featuredImage": "../../assets/commercial-8.webp",
+    "order": 2
+  },
+  {
+    "id": "happy-customer",
+    "title": "A satisfied John's Pro Roofing customer",
+    "featuredImage": "../../assets/john-w-client.webp",
+    "order": 3
+  },
+  {
+    "id": "metal-roof-restored",
+    "title": "Restored standing-seam metal roof",
+    "featuredImage": "../../assets/projects/metal/metal-after.jpeg",
+    "order": 4
+  },
+  {
+    "id": "roof-coating-detail",
+    "title": "Sealed roof penetrations and coating detail",
+    "featuredImage": "../../assets/john-on-roof-2.webp",
+    "order": 5
+  },
+  {
+    "id": "aerial-replacement",
+    "title": "Commercial roof replacement, aerial view",
+    "featuredImage": "../../assets/projects/aerial-roof-replacement/project_1_after.png",
+    "order": 6
+  },
+  {
+    "id": "residential-shingle",
+    "title": "Residential shingle roof replacement",
+    "featuredImage": "../../assets/projects/residential-brown-shingle-replacement/project_2_after.jpg",
+    "order": 7
+  },
+  {
+    "id": "parking-lot-paving",
+    "title": "Commercial parking-lot paving",
+    "featuredImage": "../../assets/projects/paving/after.PNG",
+    "order": 8
+  },
+  {
+    "id": "aerial-roof-inspection",
+    "title": "Aerial inspection of a large commercial roof",
+    "featuredImage": "../../assets/roof-inspect.png",
+    "order": 9
+  },
+  {
+    "id": "tiny-bubbles-reroof",
+    "title": "Finished commercial roof over a laundromat",
+    "featuredImage": "../../assets/projects/tiny-bubbles/after.jpeg",
+    "order": 10
+  },
+  {
+    "id": "historic-reroof",
+    "title": "Historic home roof replacement",
+    "featuredImage": "../../assets/projects/historic/historic-after.jpeg",
+    "order": 11
+  },
+  {
+    "id": "forest-flat-repair",
+    "title": "Flat-roof cleanup and repair",
+    "featuredImage": "../../assets/projects/forest-flat/after.jpg",
+    "order": 12
+  },
+  {
+    "id": "storm-damage-aerial",
+    "title": "Storm-damaged commercial roof, aerial view",
+    "featuredImage": "../../assets/commercial-working.webp",
+    "order": 13
+  },
+  {
+    "id": "flat-roof-repair-progress",
+    "title": "Flat-roof repair in progress",
+    "featuredImage": "../../assets/flat-roof-repairs/1.jpg",
+    "order": 14
+  }
+]

@@ -7,30 +7,36 @@
  */
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import ServiceRow from "@/components/LoopComponents/ServiceRow.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
 
 interface Props extends BaseVariantProps {
   pretitle?: string;
+  /** Section headline. Falls back to `title` when not set (e.g. the collection
+   *  `_meta.heading`). When both exist, `title` becomes the eyebrow. */
+  heading?: string;
 }
 
 const {
   items = [],
   title,
+  heading,
   description,
   pretitle,
   className = "",
   id,
 } = Astro.props as Props;
+
+// Match the site convention: eyebrow = pretitle or the collection title;
+// the big headline = heading (falls back to title when no heading is given).
+const eyebrow = pretitle ?? (heading ? title : undefined);
+const headingText = heading ?? title;
 ---
 
 <section id={id} class={`py-[100px] border-t border-border ${className}`}>
   <div class="container">
     {
-      (pretitle || title || description) && (
-        <div class="section-header">
-          {pretitle && <span class="section-pretitle">{pretitle}</span>}
-          {title && <h2 class="section-title">{title}</h2>}
-          {description && <p class="section-description">{description}</p>}
-        </div>
+      (eyebrow || headingText || description) && (
+        <SectionHeading pretitle={eyebrow} title={headingText} description={description} />
       )
     }
 

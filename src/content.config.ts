@@ -227,4 +227,15 @@ export const collections = {
         url: z.string().optional(),
       }),
   }),
+
+  // ── gallery ─────────────────────────────────────────────
+  // A curated set of project + recurring photos used across the site, shown as
+  // an auto-scrolling marquee (GalleryMarquee, embedded in the StatsVariant
+  // "Why Choose Us" band) — a visual prelude, not a projects section. No pages:
+  // display-only. `featuredImage` is the tile, `title` the alt text.
+  "gallery": defineCollection({
+    loader: FileLoad("gallery", "gallery.json"),
+    schema: ({ image }) =>
+      baseSchema({ image }),
+  }),
 };

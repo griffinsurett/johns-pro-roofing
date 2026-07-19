@@ -14,6 +14,7 @@ import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
 import Button from "@/components/Button/Button";
 import ReviewButton from "@/components/ReviewButton.astro";
 import { shouldShowCollectionCTA } from "../utils/helpers";
+import SectionHeading from "@/components/SectionHeading.astro";
 
 interface Props extends BaseVariantProps {
   /** Seconds for one full loop (lower = faster). */
@@ -40,11 +41,7 @@ const loopItems = [...safeItems, ...safeItems];
 <section id={id} class={`testimonials-section overflow-hidden ${className}`}>
   <div class="container">
     {(title || description) && (
-      <div class="section-header">
-        <span class="section-pretitle">Reviews</span>
-        {title && <h2 class="section-title">{title}</h2>}
-        {description && <p class="section-description">{description}</p>}
-      </div>
+      <SectionHeading pretitle="Reviews" title={title} description={description} />
     )}
   </div>
 

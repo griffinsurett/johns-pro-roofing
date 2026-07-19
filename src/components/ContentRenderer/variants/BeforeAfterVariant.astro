@@ -9,6 +9,7 @@ import BeforeAfterCard from "@/components/LoopComponents/BeforeAfterCard.astro";
 import Button from "@/components/Button/Button";
 import Icon from "@/components/Icon";
 import { shouldShowCollectionCTA } from "../utils/helpers";
+import SectionHeading from "@/components/SectionHeading.astro";
 
 interface Props extends BaseVariantProps {
   columns?: 1 | 2 | 3 | 4;
@@ -59,19 +60,15 @@ const itemBasis = {
 <section id={id} class={`py-[100px] ${dark ? "bg-brand-gradient" : ""} ${className}`}>
   <div class="container">
     {(title || description) && (
-      <div class="section-header">
-        {pretitle && <span class={`section-pretitle ${dark ? "!text-bg" : ""}`}>{pretitle}</span>}
-        {title && (
-          <h2 class={`section-title ${dark ? "!text-bg" : ""}`}>
-            {title}{accentTitle && (
-              <span class="not-italic font-[family-name:var(--font-body)] text-accent"> {accentTitle}</span>
-            )}
-          </h2>
-        )}
-        {description && (
-          <p class={`section-description ${dark ? "!text-white/70" : ""}`}>{description}</p>
-        )}
-      </div>
+      <SectionHeading
+        pretitle={pretitle}
+        title={title}
+        accentTitle={accentTitle}
+        description={description}
+        pretitleClass={dark ? "!text-bg" : ""}
+        headingClass={dark ? "!text-bg" : ""}
+        descriptionClass={dark ? "!text-white/70" : ""}
+      />
     )}
 
     {safeItems.length > 0 && !isCarousel && (
