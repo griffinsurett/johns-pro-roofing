@@ -14,6 +14,7 @@ import { siteData } from "@/content/siteData";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, related, sortByOrder } from "@/utils/query";
 import PreferencesLayout from "./PreferencesLayout.astro";
+import CookiePreferencesButton from "@/integrations/preferences/consent/ui/CookiePreferencesButton";
 import { getContactLinks } from "@/utils/contactLinks";
 import Icon from "@/components/Icon";
 import ReviewButton from "@/components/ReviewButton.astro";
@@ -95,7 +96,8 @@ const contactLinks = await getContactLinks();
         </div>
       </div>
 
-      {/* Column 4: Legal & Support */}
+      {/* Column 4: Legal & Support — legal links plus the cookie-preferences
+          control (rendered inline as the last legal item, vertical). */}
       <div class="flex flex-col gap-6">
         <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Legal</h3>
         <div class="text-sm text-bg/80">
@@ -105,6 +107,10 @@ const contactLinks = await getContactLinks();
             title=""
             description=""
             className="py-0 [&_nav]:flex-col [&_nav]:items-start [&_nav]:gap-3"
+          />
+          <CookiePreferencesButton
+            client:visible
+            className="link-base link-md p-0 mt-3 !text-bg/80 hover:!text-bg transition-colors"
           />
         </div>
       </div>
@@ -116,8 +122,8 @@ const contactLinks = await getContactLinks();
   {/* Bottom Bar — full-width red band: copyright + credit (left), preferences row (right) */}
   <div class="relative z-10 bg-accent mt-12">
     <div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12 py-4">
-      <div class="flex flex-col gap-3 text-sm text-bg/90 lg:flex-row lg:items-center lg:justify-between">
-        <p class="text-xs">
+      <div class="flex flex-col gap-3 text-bg/90 text-center">
+        <p class="text-base">
           &copy; {new Date().getFullYear()} {siteData.legalName}. All rights reserved. Built by{" "}
           <a
             href="https://griffinswebservices.com"
@@ -129,10 +135,9 @@ const contactLinks = await getContactLinks();
           </a>
         </p>
 
-        <PreferencesLayout
-          className="flex flex-wrap items-center justify-start lg:justify-end gap-x-6 gap-y-2"
-          buttonClassName="!text-bg/90 hover:!text-bg hover:underline text-xs transition-colors"
-        />
+        {/* Scripts + cookie banner only — the visible cookie-preferences
+            control now lives in the Legal column above. */}
+        <PreferencesLayout showButtons={false} />
       </div>
     </div>
   </div>

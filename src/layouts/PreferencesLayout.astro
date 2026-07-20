@@ -26,26 +26,32 @@ interface Props {
   buttonClassName?: string;
   /** Classes for the buttons row wrapper (layout/justify/gap). */
   className?: string;
+  /** Render the visible preference buttons row. The consent script + cookie
+   *  banner always render regardless. Cookie preferences now lives in the
+   *  footer's Legal links, so the footer sets this false. */
+  showButtons?: boolean;
 }
 
 const {
   buttonClassName = "",
   className = "flex flex-wrap justify-center items-center gap-4",
+  showButtons = true,
 } = Astro.props;
 ---
 
 {/* Consent Script - Inline initialization, runs immediately */}
 <ConsentScript />
 
+{/* Cookie consent banner - always available */}
+<CookieConsentBanner client:idle />
+
 {/* Browser Translation Script - Both native and Google enabled */}
 <BrowserTranslateScript enableNative={true} enableGoogle={true} />
 
-{/* Preferences Buttons Row */}
-<div class={`text-xs ${className}`}>
-  {/* Cookie Preferences Button - Client-side only */}
-  <CookiePreferencesButton client:visible className={buttonClassName} />
-  <CookieConsentBanner client:idle />
-
-  {/* Accessibility Button - Client-side only */}
-  <AccessibilityButton client:idle className={buttonClassName} />
-</div>
+{/* Preferences Buttons Row (optional) */}
+{showButtons && (
+  <div class={`text-xs ${className}`}>
+    <CookiePreferencesButton client:visible className={buttonClassName} />
+    <AccessibilityButton client:idle className={buttonClassName} />
+  </div>
+)}

@@ -17,6 +17,12 @@ import { shouldShowCollectionCTA } from "../utils/helpers";
 interface Props extends BaseVariantProps {
   allowMultiple?: boolean;
   pretitle?: string;
+  /** Emit schema.org FAQPage JSON-LD from the items (question = title, answer =
+   *  body/description). On by default — this variant is the site's FAQ display,
+   *  so its schema always matches the FAQs visible on the page. Set false to
+   *  suppress (e.g. a second accordion on a page that isn't really an FAQ, to
+   *  avoid duplicate FAQPage blocks). */
+  faqSchema?: boolean;
 }
 
 const {
@@ -28,12 +34,50 @@ const {
   allowMultiple = false,
   collectionUrl,
   collectionTitle,
+  faqSchema = true,
   id,
 } = Astro.props as Props;
 
 const viewAllText = `View All ${collectionTitle || ""}`.trim();
 const bridgeId = id || "accordion";
+
+// FAQPage structured data — built from the same items rendered below, so the
+// schema always reflects exactly what's visible on this page. The answer text
+// prefers the raw MDX body (`content`); falls back to `description`.
+const faqEntries = faqSchema
+  ? items
+      .map((item: any) => {
+        const question = (item.title || "").trim();
+        const answer = String(item.content ?? item.description ?? "")
+          .replace(/\s+/g, " ")
+          .trim();
+        return question && answer ? { question, answer } : null;
+      })
+      .filter(Boolean)
+  : [];
+
+const faqStructuredData =
+  faqEntries.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqEntries.map((e: any) => ({
+          "@type": "Question",
+          name: e.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: e.answer,
+          },
+        })),
+      }
+    : null;
 ---
+
+{
+  faqStructuredData && (
+    <script type="application/ld+json" set:html={JSON.stringify(faqStructuredData)} />
+  )
+}
 
 <section id={id} class={`py-16 ${className}`}>
   {/* Header Section */}

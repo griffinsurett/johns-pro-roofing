@@ -15,6 +15,7 @@ import Button from "@/components/Button/Button";
 import ReviewButton from "@/components/ReviewButton.astro";
 import { shouldShowCollectionCTA } from "../utils/helpers";
 import SectionHeading from "@/components/SectionHeading.astro";
+import { buildReviewSchema } from "@/utils/reviewSchema";
 
 interface Props extends BaseVariantProps {
   /** Seconds for one full loop (lower = faster). */
@@ -36,7 +37,13 @@ const {
 const safeItems = Array.isArray(items) ? items : [];
 // Duplicate the set so the marquee can loop seamlessly (translateX -50%).
 const loopItems = [...safeItems, ...safeItems];
+// Review + AggregateRating schema from the reviews shown here.
+const reviewSchema = buildReviewSchema(safeItems as any);
 ---
+
+{reviewSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(reviewSchema)} />
+)}
 
 <section id={id} class={`testimonials-section overflow-hidden ${className}`}>
   <div class="container">

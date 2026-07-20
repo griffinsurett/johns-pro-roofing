@@ -104,7 +104,33 @@ const portfolioQuery = portfolioIds.length
       .where((e: any) => portfolioIds.includes(e.id))
       .orderBy(sortByOrder())
   : null;
+
+// Service schema — content-specific structured data for this service page.
+// Declares the Service, links it to the site-wide business entity (@id), and
+// reuses the service-areas collection for areaServed.
+const svcAreas = await query("service-areas").orderBy(sortByOrder()).all();
+const serviceSchema = title
+  ? {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: title,
+      ...(description && { description }),
+      serviceType: category ?? title,
+      provider: {
+        "@type": "RoofingContractor",
+        "@id": `${siteData.url}/#business`,
+        name: siteData.legalName || siteData.title,
+      },
+      areaServed: svcAreas.map((a: any) => ({ "@type": "State", name: a.data?.title })),
+      url: `${siteData.url}${Astro.url.pathname.replace(/\/$/, "")}`,
+    }
+  : null;
 ---
+{
+  serviceSchema && (
+    <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+  )
+}
 {/* Hero slot — override with `slot="hero"`, else the automatic SecondaryHero. */}
 <slot name="hero">
   <SecondaryHero
