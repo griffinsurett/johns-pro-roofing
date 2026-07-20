@@ -64,6 +64,21 @@ All entities stitch together by a shared `@id` (`BUSINESS_ID`), so search
 engines see one coherent business graph (reviews + services attach to the
 business node).
 
+**Content-specific splits into two branches** (both "match visible content"):
+
+- **List schema** — describes a *collection rendered as a list* → lives on the
+  **variant** that renders the list (FAQPage → AccordionVariant, Review →
+  testimonial variants). The variant holds the items and knows what's shown.
+- **Page-identity schema** — describes *the page's own subject* → lives on the
+  **layout/SEO layer** that owns the page (Service → ServiceLayout; Article /
+  WebSite → SEO.astro).
+
+This is why `Service` is on `ServiceLayout`, not a variant: a service is the
+*subject* of its own page, rendered once. Services also appear as a *list* on
+the homepage/`/services` index (via `ServiceListVariant`) — but those are
+teasers, not service pages, so they emit **no** `Service` schema (emitting 8
+`Service` blocks on a listing page is exactly what Google warns against).
+
 ### Builders (`src/utils/schema/`)
 
 - **`businessSchema.ts`** — `RoofingContractor` (LocalBusiness). Exports
