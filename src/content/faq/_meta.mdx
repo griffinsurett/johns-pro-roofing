@@ -1,7 +1,7 @@
 ---
 title: "FAQ"
 heading: "Frequently Asked Questions"
-description: "Get answers to common questions about our roofing and solar services"
+description: "Answers to common questions about our commercial roofing and asphalt paving services across New Jersey."
 hasPage: true
 itemsHasPage: false
 addToMenu:
@@ -12,10 +12,14 @@ addToMenu:
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, sortByOrder } from "@/utils/query";
 
+{/* General FAQs only — service-specific FAQs (those with a `service`
+    reference) render on their own service pages, not here. */}
 <section class="py-[30px] lg:py-[50px]">
   <div class="container">
     <ContentRenderer
-      query={query("faq").orderBy(sortByOrder())}
+      query={query("faq")
+        .where((entry) => !entry.data.service)
+        .orderBy(sortByOrder())}
       variant="AccordionVariant"
     />
   </div>
