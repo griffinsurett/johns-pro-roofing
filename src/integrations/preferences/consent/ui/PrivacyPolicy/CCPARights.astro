@@ -26,8 +26,8 @@ const { sectionNumber } = Astro.props;
 // Query contact information dynamically from contact-us collection
 const emailEntry = await find("contact-us", "email");
 const phoneEntry = await find("contact-us", "phone");
-const emailValue = emailEntry?.data?.description ?? emailEntry?.data?.title ?? "";
-const phoneValue = phoneEntry?.data?.description ?? phoneEntry?.data?.title ?? "";
+const emailValue = emailEntry?.data?.value ?? emailEntry?.data?.description ?? emailEntry?.data?.title ?? "";
+const phoneValue = phoneEntry?.data?.value ?? phoneEntry?.data?.description ?? phoneEntry?.data?.title ?? "";
 ---
 
 <div

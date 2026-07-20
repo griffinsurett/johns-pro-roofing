@@ -11,7 +11,8 @@ import Button from "@/components/Button/Button";
 import { shouldShowCollectionCTA } from "../utils/helpers";
 import GoogleRating from "@/components/GoogleRating.astro";
 import SectionHeading from "@/components/SectionHeading.astro";
-import { buildReviewSchema } from "@/utils/reviewSchema";
+import JsonLd from "@/components/JsonLd.astro";
+import { buildReviewSchema } from "@/utils/schema/reviewSchema";
 
 interface Props extends BaseVariantProps {
   columns?: 1 | 2 | 3 | 4;
@@ -41,9 +42,7 @@ const columnClasses = {
 const reviewSchema = buildReviewSchema(safeItems as any);
 ---
 
-{reviewSchema && (
-  <script type="application/ld+json" set:html={JSON.stringify(reviewSchema)} />
-)}
+<JsonLd schema={reviewSchema} />
 
 <section id={id} class={`testimonials-section ${className}`}>
   <div class="container">

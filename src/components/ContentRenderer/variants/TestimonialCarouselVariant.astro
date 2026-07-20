@@ -15,7 +15,8 @@ import Button from "@/components/Button/Button";
 import ReviewButton from "@/components/ReviewButton.astro";
 import { shouldShowCollectionCTA } from "../utils/helpers";
 import SectionHeading from "@/components/SectionHeading.astro";
-import { buildReviewSchema } from "@/utils/reviewSchema";
+import JsonLd from "@/components/JsonLd.astro";
+import { buildReviewSchema } from "@/utils/schema/reviewSchema";
 
 interface Props extends BaseVariantProps {
   /** Seconds for one full loop (lower = faster). */
@@ -41,9 +42,7 @@ const loopItems = [...safeItems, ...safeItems];
 const reviewSchema = buildReviewSchema(safeItems as any);
 ---
 
-{reviewSchema && (
-  <script type="application/ld+json" set:html={JSON.stringify(reviewSchema)} />
-)}
+<JsonLd schema={reviewSchema} />
 
 <section id={id} class={`testimonials-section overflow-hidden ${className}`}>
   <div class="container">

@@ -5,7 +5,8 @@ import { formatPhoneNumber } from '@/utils/string';
 export interface ContactLink {
   id: string;
   title: string;          // Display heading (e.g., "Call Us", "Email Us")
-  description: string;    // Raw contact value (phone digits, email address)
+  value: string;          // Raw contact value (phone digits, email, address)
+  description?: string;    // Optional subtext (e.g. hours) — no longer the value
   displayValue: string;   // Formatted value for UI (formatted phone, etc.)
   url?: string;           // Full href (mailto:, tel:, etc.)
   linkPrefix?: string;
@@ -27,8 +28,9 @@ export function normalizeContactLinks(items: Array<any>): ContactLink[] {
       const linkPrefix = data.linkPrefix ?? '';
       const tags: string[] = Array.isArray(data.tags) ? data.tags : data.tags ? [data.tags] : [];
 
-      // Use description for the contact value (phone/email), title for the heading
-      const rawValue = String(data.description ?? '');
+      // The contact value comes from `value` (falls back to legacy `description`
+      // for safety); `title` is the heading and `description` is optional subtext.
+      const rawValue = String(data.value ?? data.description ?? '');
       const title = String(data.title ?? '');
 
       // Format the display value (phone numbers get formatted)
@@ -41,7 +43,8 @@ export function normalizeContactLinks(items: Array<any>): ContactLink[] {
       return {
         id,
         title,
-        description: rawValue,
+        value: rawValue,
+        description: data.value ? (data.description ?? undefined) : undefined,
         displayValue,
         url,
         linkPrefix,
@@ -49,7 +52,7 @@ export function normalizeContactLinks(items: Array<any>): ContactLink[] {
         icon: data.icon,
       };
     })
-    .filter((link) => !!link.description);
+    .filter((link) => !!link.value);
 }
 
 export async function getContactLinks(): Promise<ContactLink[]> {

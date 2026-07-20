@@ -1,17 +1,16 @@
-// src/utils/reviewSchema.ts
+// src/utils/schema/reviewSchema.ts
 /**
- * Build schema.org Review + AggregateRating JSON-LD from testimonial items.
+ * Review + AggregateRating schema — built from the testimonial items a variant
+ * is rendering.
  *
- * This is content-specific structured data: it belongs on the testimonial
- * variants (which know exactly which reviews are visible on the page), NOT in
- * the site-wide SEO layer — the same "schema follows visible content" rule we
- * use for FAQPage on the accordion variant.
- *
- * Attaches the reviews + aggregate to the site-wide business entity (@id) so
- * search engines tie them to the RoofingContractor declared in SEO.astro,
- * rather than emitting a free-floating (self-serving) rating.
+ * Content-specific: lives with the testimonial variants (which know which
+ * reviews are visible on the page), NOT the site-wide SEO layer — the same
+ * "schema follows visible content" rule as FAQPage. Attaches to the site-wide
+ * business entity by @id so search engines tie the reviews to the business
+ * declared in businessSchema, rather than a free-floating (self-serving) rating.
  */
 import { siteData } from "@/content/siteData";
+import { BUSINESS_ID, BUSINESS_TYPE } from "./businessSchema";
 
 interface TestimonialItem {
   title?: string; // reviewer name
@@ -20,8 +19,6 @@ interface TestimonialItem {
   role?: string;
   rating?: number;
 }
-
-const BUSINESS_ID = `${siteData.url}/#business`;
 
 export function buildReviewSchema(items: TestimonialItem[]): object | null {
   const safe = Array.isArray(items) ? items : [];
@@ -74,7 +71,7 @@ export function buildReviewSchema(items: TestimonialItem[]): object | null {
   // Attach to the site-wide business entity by @id.
   return {
     "@context": "https://schema.org",
-    "@type": "RoofingContractor",
+    "@type": BUSINESS_TYPE,
     "@id": BUSINESS_ID,
     name: siteData.legalName || siteData.title,
     url: siteData.url,

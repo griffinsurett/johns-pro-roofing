@@ -39,8 +39,22 @@ export const collections = {
     loader: FileLoad("contact-us", "contact-us.json"),
     schema: ({ image }) =>
       baseSchema({ image }).extend({
+        // The contact value itself (phone digits, email, etc.). This is the
+        // canonical field — `description` is free for genuine subtext now.
+        value: z.string().optional(),
         linkPrefix: z.string().optional(),
         url: z.string().optional(),
+        // Structured address parts (on the address entry) — the single source
+        // of truth for schema.org PostalAddress, so builders don't parse the
+        // display string. Fill these on whichever entry holds the address.
+        streetAddress: z.string().optional(),
+        addressLocality: z.string().optional(),
+        addressRegion: z.string().optional(),
+        postalCode: z.string().optional(),
+        addressCountry: z.string().optional(),
+        // Phone country dialing code (E.164 prefix without "+", e.g. "1"),
+        // on the phone entry.
+        phoneCountryCode: z.string().optional(),
       }),
   }),
 

@@ -2,17 +2,23 @@
   {
     "id": "phone",
     "title": "Call Us",
-    "description": "7323513518",
+    "value": "7323513518",
     "icon": "lu:phone",
     "tags": ["phone"],
-    "linkPrefix": "tel:"
+    "linkPrefix": "tel:",
+    "phoneCountryCode": "1"
   },
   {
     "id": "address",
     "title": "Visit Us",
-    "description": "20 Emerald Pl, Somerset, NJ 08873",
+    "value": "20 Emerald Pl, Somerset, NJ 08873",
     "icon": "lu:map-pin",
     "tags": ["address"],
-    "url": "https://maps.google.com/?q=20+Emerald+Pl,+Somerset,+NJ+08873"
+    "url": "https://maps.google.com/?q=20+Emerald+Pl,+Somerset,+NJ+08873",
+    "streetAddress": "20 Emerald Place",
+    "addressLocality": "Somerset",
+    "addressRegion": "NJ",
+    "postalCode": "08873",
+    "addressCountry": "US"
   }
 ]

@@ -12,6 +12,8 @@ import ContentBridge from "../ContentBridge/ContentBridge.astro";
 import Accordion from "@/components/LoopTemplates/Accordion";
 import Button from "@/components/Button/Button";
 import SectionHeading from "@/components/SectionHeading.astro";
+import JsonLd from "@/components/JsonLd.astro";
+import { buildFaqSchema } from "@/utils/schema/faqSchema";
 import { shouldShowCollectionCTA } from "../utils/helpers";
 
 interface Props extends BaseVariantProps {
@@ -41,43 +43,12 @@ const {
 const viewAllText = `View All ${collectionTitle || ""}`.trim();
 const bridgeId = id || "accordion";
 
-// FAQPage structured data — built from the same items rendered below, so the
-// schema always reflects exactly what's visible on this page. The answer text
-// prefers the raw MDX body (`content`); falls back to `description`.
-const faqEntries = faqSchema
-  ? items
-      .map((item: any) => {
-        const question = (item.title || "").trim();
-        const answer = String(item.content ?? item.description ?? "")
-          .replace(/\s+/g, " ")
-          .trim();
-        return question && answer ? { question, answer } : null;
-      })
-      .filter(Boolean)
-  : [];
-
-const faqStructuredData =
-  faqEntries.length > 0
-    ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faqEntries.map((e: any) => ({
-          "@type": "Question",
-          name: e.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: e.answer,
-          },
-        })),
-      }
-    : null;
+// FAQPage structured data from the items rendered below (schema follows visible
+// content). Built by the shared schema builder; `faqSchema={false}` suppresses.
+const faqStructuredData = faqSchema ? buildFaqSchema(items as any) : null;
 ---
 
-{
-  faqStructuredData && (
-    <script type="application/ld+json" set:html={JSON.stringify(faqStructuredData)} />
-  )
-}
+<JsonLd schema={faqStructuredData} />
 
 <section id={id} class={`py-16 ${className}`}>
   {/* Header Section */}

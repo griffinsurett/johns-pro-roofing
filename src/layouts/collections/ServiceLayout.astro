@@ -23,6 +23,9 @@ import SecondaryHero from "@/layouts/SecondaryHero.astro";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, sortByOrder, normalizeReference } from "@/utils/query";
 import { getEntry } from "astro:content";
+import { siteData } from "@/content/siteData";
+import { buildServiceSchema } from "@/utils/schema/serviceSchema";
+import JsonLd from "@/components/JsonLd.astro";
 
 export interface Props {
   eyebrow?: string;
@@ -105,32 +108,18 @@ const portfolioQuery = portfolioIds.length
       .orderBy(sortByOrder())
   : null;
 
-// Service schema — content-specific structured data for this service page.
-// Declares the Service, links it to the site-wide business entity (@id), and
-// reuses the service-areas collection for areaServed.
-const svcAreas = await query("service-areas").orderBy(sortByOrder()).all();
-const serviceSchema = title
-  ? {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      name: title,
-      ...(description && { description }),
-      serviceType: category ?? title,
-      provider: {
-        "@type": "RoofingContractor",
-        "@id": `${siteData.url}/#business`,
-        name: siteData.legalName || siteData.title,
-      },
-      areaServed: svcAreas.map((a: any) => ({ "@type": "State", name: a.data?.title })),
-      url: `${siteData.url}${Astro.url.pathname.replace(/\/$/, "")}`,
-    }
-  : null;
+// Service schema — content-specific structured data for this service page,
+// built by the shared schema builder. The service name arrives as `eyebrow`
+// (frontmatter.title); `title` is usually unset on these pages, so prefer it.
+const serviceName = eyebrow ?? title;
+const serviceSchema = await buildServiceSchema({
+  name: serviceName,
+  description,
+  serviceType: category ?? serviceName,
+  url: `${siteData.url}${Astro.url.pathname.replace(/\/$/, "")}`,
+});
 ---
-{
-  serviceSchema && (
-    <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
-  )
-}
+<JsonLd schema={serviceSchema} />
 {/* Hero slot — override with `slot="hero"`, else the automatic SecondaryHero. */}
 <slot name="hero">
   <SecondaryHero

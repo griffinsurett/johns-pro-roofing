@@ -18,12 +18,13 @@
 
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import siteLogo from "@/assets/astro.svg";
-import defaultOGImage from "@/assets/astro.svg";
+import siteLogo from "@/assets/logo.png";
+import defaultOGImage from "@/assets/logo.png";
 import { siteData } from "@/content/siteData";
 import { getImageUrl } from "@/utils/images";
-import { query, sortByOrder } from "@/utils/query";
-import { humanizeSlug } from "@/utils/string";
+import { buildBusinessSchema } from "@/utils/schema/businessSchema";
+import { buildBreadcrumbSchema } from "@/utils/schema/breadcrumbSchema";
+import JsonLd from "@/components/JsonLd.astro";
 import type { ImageInput, SEOData } from "@/content/schema";
 
 export interface Props {
@@ -135,73 +136,12 @@ const structuredData = {
   }
 };
 
-// ───────────────────────────────────────────────────────────────────────────
-// Site-wide business schema (RoofingContractor). Present on every page so the
-// business entity is consistently declared for local SEO / knowledge panel.
-// Sourced from siteData + the service-areas collection. The review rating is
-// deliberately NOT here — AggregateRating/Review are content-specific and live
-// on the testimonial variant, matching what's visible on the page.
-// ───────────────────────────────────────────────────────────────────────────
-const businessId = `${siteData.url}/#business`;
-
-// Service areas → areaServed (State entities).
-const serviceAreas = await query("service-areas").orderBy(sortByOrder()).all();
-const areaServed = serviceAreas.map((a: any) => ({
-  "@type": "State",
-  name: a.data?.title,
-}));
-
-// Parse the street/city/state/zip out of the single address string
-// ("20 Emerald Place, Somerset, NJ 08873").
-const addressMatch = siteData.address.match(
-  /^(.*),\s*([^,]+),\s*([A-Z]{2})\s*(\d{5})/
-);
-const postalAddress = addressMatch
-  ? {
-      "@type": "PostalAddress",
-      streetAddress: addressMatch[1].trim(),
-      addressLocality: addressMatch[2].trim(),
-      addressRegion: addressMatch[3].trim(),
-      postalCode: addressMatch[4].trim(),
-      addressCountry: "US",
-    }
-  : undefined;
-
-const businessSchema: Record<string, any> = {
-  "@type": "RoofingContractor",
-  "@id": businessId,
-  name: siteData.legalName || siteData.title,
-  description: siteData.description,
-  url: siteData.url,
-  telephone: "+1-732-351-3518",
-  logo: makeAbsolute(siteLogo.src),
-  image: makeAbsolute(siteLogo.src),
-  ...(postalAddress && { address: postalAddress }),
-  ...(areaServed.length > 0 && { areaServed }),
-};
-
-// Breadcrumbs derived from the URL path (skip on the homepage).
-const segments = canonicalPath.split("/").filter(Boolean);
-const breadcrumbSchema =
-  segments.length > 0
-    ? {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: siteData.url,
-          },
-          ...segments.map((seg, i) => ({
-            "@type": "ListItem",
-            position: i + 2,
-            name: humanizeSlug(seg),
-            item: `${siteData.url}/${segments.slice(0, i + 1).join("/")}`,
-          })),
-        ],
-      }
-    : null;
+// Site-wide schema — the business entity (RoofingContractor) and breadcrumbs.
+// Both are built by shared schema builders in @/utils/schema so a new site
+// changes behavior in one place. Content-specific schema (FAQ, reviews,
+// service) lives on the variants/layouts that render that content.
+const businessSchema = await buildBusinessSchema({ logoUrl: makeAbsolute(siteLogo.src) });
+const breadcrumbSchema = buildBreadcrumbSchema(canonicalPath);
 
 // Combine everything into a single JSON-LD @graph.
 const jsonLdGraph = {
@@ -260,4 +200,4 @@ if (import.meta.env.MODE !== 'development') {
 <meta name="twitter:creator" content={authorName} />
 
 <!-- JSON-LD Structured Data (WebSite/Article + RoofingContractor + Breadcrumbs) -->
-<script type="application/ld+json" set:html={JSON.stringify(jsonLdGraph)} />
+<JsonLd schema={jsonLdGraph} />
