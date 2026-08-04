@@ -12,12 +12,15 @@
  * Used in CardVariant for feature showcases, service listings.
  */
 
+import { Image } from "astro:assets";
+import { resolveImageMetadata } from "@/utils/images";
+
 export interface Props {
   title: string;
   url?: string;
   description?: string;
   image?: {
-    src: string;
+    src: any;
     alt: string;
   };
   ctaText?: string; // Call-to-action text
@@ -30,6 +33,9 @@ const {
   image,
   ctaText = "Learn More →",
 } = Astro.props;
+
+// See GridCard: ImageMetadata → <Image>, plain strings fall back to <img>.
+const imgMeta = resolveImageMetadata(image?.src);
 ---
 
 <div
@@ -37,9 +43,26 @@ const {
 >
   {/* Optional header image */}
   {
-    image && (
-      <img src={image.src} alt={image.alt} class="w-full h-48 object-cover" />
-    )
+    image &&
+      (imgMeta ? (
+        <Image
+          src={imgMeta}
+          alt={image.alt}
+          class="w-full h-48 object-cover"
+          widths={[400, 800]}
+          sizes="(max-width: 768px) 92vw, 400px"
+          format="webp"
+          quality={72}
+          loading="lazy"
+        />
+      ) : (
+        <img
+          src={image.src}
+          alt={image.alt}
+          class="w-full h-48 object-cover"
+          loading="lazy"
+        />
+      ))
   }
 
   {/* Card content */}

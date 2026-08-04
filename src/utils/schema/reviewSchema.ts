@@ -13,7 +13,9 @@ import { siteData } from "@/content/siteData";
 import { BUSINESS_ID, BUSINESS_TYPE } from "./businessSchema";
 
 interface TestimonialItem {
-  title?: string; // reviewer name
+  title?: string; // reviewer name (some sites) or headline (others)
+  author?: string; // explicit reviewer name, if present
+  company?: string; // used as author fallback when there's no person name
   content?: string; // review body
   description?: string; // short headline (fallback body)
   role?: string;
@@ -25,7 +27,8 @@ export function buildReviewSchema(items: TestimonialItem[]): object | null {
 
   const reviews = safe
     .map((t) => {
-      const author = (t.title ?? "").trim();
+      // Prefer an explicit author name; fall back to company, then title.
+      const author = (t.author ?? t.company ?? t.title ?? "").trim();
       const body = String(t.content ?? t.description ?? "")
         .replace(/\s+/g, " ")
         .trim();

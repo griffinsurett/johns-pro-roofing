@@ -12,17 +12,24 @@
  * Generic card used in GridVariant - the default section variant.
  */
 
+import { Image } from "astro:assets";
+import { resolveImageMetadata } from "@/utils/images";
+
 export interface Props {
   title: string;
   url?: string;
   description?: string;
   image?: {
-    src: string;
+    src: any;
     alt: string;
   };
 }
 
 const { title, url, description, image } = Astro.props;
+
+// `image.src` is Astro ImageMetadata, so it goes through <Image> for a
+// responsive srcset. Strings (external/public paths) can't be optimized.
+const imgMeta = resolveImageMetadata(image?.src);
 ---
 
 <article
@@ -30,9 +37,26 @@ const { title, url, description, image } = Astro.props;
 >
   {/* Optional image */}
   {
-    image && (
-      <img src={image.src} alt={image.alt} class="w-full h-48 object-cover" />
-    )
+    image &&
+      (imgMeta ? (
+        <Image
+          src={imgMeta}
+          alt={image.alt}
+          class="w-full h-48 object-cover"
+          widths={[400, 800]}
+          sizes="(max-width: 768px) 92vw, 400px"
+          format="webp"
+          quality={72}
+          loading="lazy"
+        />
+      ) : (
+        <img
+          src={image.src}
+          alt={image.alt}
+          class="w-full h-48 object-cover"
+          loading="lazy"
+        />
+      ))
   }
 
   {/* Card content */}

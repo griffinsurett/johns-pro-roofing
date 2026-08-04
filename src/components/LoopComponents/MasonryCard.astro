@@ -13,6 +13,9 @@
  * Used in MasonryVariant for testimonials, portfolios, galleries.
  */
 
+import { Image } from "astro:assets";
+import { resolveImageMetadata } from "@/utils/images";
+
 export interface Props {
   title: string;
   url?: string;
@@ -25,13 +28,37 @@ export interface Props {
 }
 
 const { title, url, description, tags, image } = Astro.props;
+
+// Auto-height masonry tile — no fixed crop, so intrinsic ratio is preserved.
+const imgMeta = resolveImageMetadata(image?.src);
 ---
 
 <article
   class="break-inside-avoid mb-6 bg-bg rounded-lg overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-lg transition-all duration-200"
 >
   {/* Auto-height image */}
-  {image && <img src={image.src} alt={image.alt} class="w-full h-auto block" />}
+  {
+    image &&
+      (imgMeta ? (
+        <Image
+          src={imgMeta}
+          alt={image.alt}
+          class="w-full h-auto block"
+          widths={[400, 800]}
+          sizes="(max-width: 768px) 92vw, 400px"
+          format="webp"
+          quality={72}
+          loading="lazy"
+        />
+      ) : (
+        <img
+          src={image.src}
+          alt={image.alt}
+          class="w-full h-auto block"
+          loading="lazy"
+        />
+      ))
+  }
 
   <div class="p-5">
     {/* Title */}

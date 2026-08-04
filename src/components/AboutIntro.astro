@@ -7,6 +7,7 @@
  * Used by the homepage About section AND the /about-us page so they stay in
  * sync. Stacks (text over image) on mobile.
  */
+import { Image } from "astro:assets";
 import Button from "@/components/Button/Button";
 import Video from "@/components/Video/Video.astro";
 import SectionHeading from "@/components/SectionHeading.astro";
@@ -69,7 +70,16 @@ const {
     {video ? (
       <Video src={video} alt={imageAlt} class="w-full h-full object-cover" wrapperClass="w-full h-full" />
     ) : (
-      <img src={image.src} alt={imageAlt} class="w-full h-full object-cover" />
+      <Image
+        src={image}
+        alt={imageAlt}
+        class="w-full h-full object-cover"
+        widths={[520, 1040]}
+        sizes="(max-width: 1024px) 92vw, 520px"
+        format="webp"
+        quality={72}
+        loading="lazy"
+      />
     )}
   </div>
 </div>

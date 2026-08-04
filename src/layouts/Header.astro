@@ -7,6 +7,7 @@
  * Mobile (<xl):  hamburger left · logo centered (in normal flow, so its height
  *                drives the header) · two-button action row below.
  */
+import { Image } from "astro:assets";
 import headerLogo from "@/assets/logo.png";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { related } from "@/utils/query";
@@ -46,10 +47,21 @@ import TopBar from "@/layouts/TopBar.astro";
         class="order-2 inline-flex items-center flex-shrink-0 mx-auto xl:mx-0"
         aria-label={siteData.title}
       >
-        <img
-          src={headerLogo.src}
+        {/* Logo renders at h-30 (120px) on mobile, 100px on xl. Widths cover
+            1x/2x for the widest displayed box (~213px wide at 120px tall), so
+            the shipped file is a fraction of the 1672x941 source. */}
+        <Image
+          src={headerLogo}
           alt={`${siteData.title} logo`}
           class="header-logo-img block w-auto object-contain h-30 xl:h-[100px]"
+          width={220}
+          height={124}
+          widths={[220, 440]}
+          sizes="220px"
+          format="webp"
+          quality={82}
+          loading="eager"
+          fetchpriority="high"
         />
       </a>
 

@@ -22,18 +22,13 @@
  *     description="Water coming in? We respond fast to stop it." />
  */
 import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
 import Button from "@/components/Button/Button";
 import { children, byItemKeys } from "@/utils/query/snippets";
 import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
+import { resolveImageMetadata } from "@/utils/images";
 // Fallback only — used when the destination service carries no image of its own.
 import placeholderImage from "@/assets/commercial-working.webp";
-
-/** Resolve a prepared entry's image (Astro image object or string) to a src. */
-function imgSrc(image: any): string {
-  return typeof image === "string"
-    ? image
-    : (image?.src?.src ?? image?.src ?? "");
-}
 
 interface Props {
   /** Parent roofing slug whose repair child this links to. */
@@ -75,9 +70,13 @@ const [repair] = await prepareCollectionEntries(entries, "services", meta);
 
 // Image comes from the destination service itself (single source of truth), so
 // the CTA shows that service's own photo — not a hardcoded roofing placeholder.
+// Half-width callout image — resolve to ImageMetadata so <Image> can size it,
+// falling back to the bundled placeholder when the service has no photo.
+const calloutSource =
+  (repair as any)?.featuredImage ?? (repair as any)?.bannerImage;
+const calloutMeta = resolveImageMetadata(calloutSource) ?? placeholderImage;
 const calloutImage =
-  imgSrc((repair as any)?.featuredImage ?? (repair as any)?.bannerImage) ||
-  placeholderImage.src;
+  typeof calloutSource === "string" ? calloutSource : "";
 ---
 
 {
@@ -87,12 +86,27 @@ const calloutImage =
         <div class="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
           {/* Destination service's own image (landscape) */}
           <div class={`overflow-hidden rounded-2xl ${reverse ? "md:order-2" : ""}`}>
-            <img
-              src={calloutImage}
-              alt=""
-              aria-hidden="true"
-              class="aspect-video w-full object-cover"
-            />
+            {calloutImage ? (
+              <img
+                src={calloutImage}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                class="aspect-video w-full object-cover"
+              />
+            ) : (
+              <Image
+                src={calloutMeta}
+                alt=""
+                aria-hidden="true"
+                widths={[480, 768, 960]}
+                sizes="(min-width: 768px) 45vw, 100vw"
+                format="webp"
+                quality={72}
+                loading="lazy"
+                class="aspect-video w-full object-cover"
+              />
+            )}
           </div>
 
           {/* Text + stacked buttons */}

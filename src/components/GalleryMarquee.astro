@@ -10,7 +10,9 @@
  * the homepage and the About page) with no props. No heading — it's a visual
  * prelude, not a titled section.
  */
+import { Image } from "astro:assets";
 import { query, sortByOrder } from "@/utils/query";
+import { resolveImageMetadata } from "@/utils/images";
 
 interface Props {
   /** Seconds for one full loop (lower = faster). */
@@ -21,16 +23,19 @@ const { speed = 45, class: className = "" } = Astro.props as Props;
 
 const items = await query("gallery").orderBy(sortByOrder()).all();
 
-/** Resolve a gallery item's featuredImage to a src. */
-function imgSrc(featuredImage: any): string {
-  return typeof featuredImage === "string"
-    ? featuredImage
-    : (featuredImage?.src?.src ?? featuredImage?.src ?? "");
-}
-
+// Tiles render in a fixed 340px-wide 4:3 box, so they're resolved to
+// ImageMetadata and sized by <Image> — the source photos are multi-megapixel
+// and would otherwise ship at full resolution (twice, via the loop duplicate).
 const tiles = items
-  .map((item: any) => ({ src: imgSrc(item.data?.featuredImage), alt: item.data?.title ?? "" }))
-  .filter((t) => t.src);
+  .map((item: any) => {
+    const featured = item.data?.featuredImage;
+    return {
+      meta: resolveImageMetadata(featured),
+      src: typeof featured === "string" ? featured : "",
+      alt: item.data?.title ?? "",
+    };
+  })
+  .filter((t) => t.meta || t.src);
 
 // Duplicate the set so the marquee can loop seamlessly (translateX -50%).
 const loopTiles = [...tiles, ...tiles];
@@ -46,12 +51,27 @@ const loopTiles = [...tiles, ...tiles];
       <ul class="gallery-marquee-track">
         {loopTiles.map((tile, i) => (
           <li class="gallery-marquee-item" aria-hidden={i >= tiles.length ? "true" : undefined}>
-            <img
-              src={tile.src}
-              alt={tile.alt}
-              loading="lazy"
-              class="w-full h-full object-cover"
-            />
+            {tile.meta ? (
+              <Image
+                src={tile.meta}
+                alt={tile.alt}
+                width={340}
+                height={255}
+                widths={[340, 680]}
+                sizes="(max-width: 425px) 80vw, 340px"
+                format="webp"
+                quality={70}
+                loading="lazy"
+                class="w-full h-full object-cover"
+              />
+            ) : (
+              <img
+                src={tile.src}
+                alt={tile.alt}
+                loading="lazy"
+                class="w-full h-full object-cover"
+              />
+            )}
           </li>
         ))}
       </ul>
@@ -89,7 +109,7 @@ const loopTiles = [...tiles, ...tiles];
     aspect-ratio: 4 / 3;
     overflow: hidden;
     border-radius: 0.75rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-md, 0 10px 20px rgba(0, 0, 0, 0.08));
   }
 
   @keyframes gallery-marquee-scroll {

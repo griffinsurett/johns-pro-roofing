@@ -7,9 +7,11 @@
  * alternating banded layout. Data-driven from the roofing-types collection,
  * filtered by `service` (same source as the card/list variants).
  */
+import { getImage } from "astro:assets";
 import Band from "@/components/Bands/Band.astro";
 import RoofingTypesShowcaseClient from "@/components/RoofingTypesShowcase.tsx";
 import { getRoofingTypes } from "@/utils/roofingTypes";
+import { resolveImageMetadata } from "@/utils/images";
 
 interface Props {
   /** Service id to filter by (e.g. "commercial-roof-repairs"). */
@@ -21,19 +23,42 @@ interface Props {
 
 const { service, heading, reverse = false } = Astro.props as Props;
 
-/** Resolve a prepared item's image (Astro image object or string) to a src. */
-function imgSrc(image: any): string {
-  return typeof image === "string"
-    ? image
-    : (image?.src?.src ?? image?.src ?? "");
+/**
+ * Resolve a prepared item's image to an optimized src + srcset.
+ *
+ * The slideshow is a React island, so it can't use <Image> — we run the images
+ * through getImage here (build time) and hand the client plain strings.
+ */
+async function optimize(image: any): Promise<{ src: string; srcset?: string }> {
+  if (typeof image === "string") return { src: image };
+  const meta = resolveImageMetadata(image);
+  if (!meta) return { src: "" };
+
+  const variants = await Promise.all(
+    [640, 960, 1280].map((width) =>
+      getImage({ src: meta, width, format: "webp", quality: 72 }),
+    ),
+  );
+  return {
+    src: variants[1].src,
+    srcset: variants
+      .map((v, i) => `${v.src} ${[640, 960, 1280][i]}w`)
+      .join(", "),
+  };
 }
 
 const types = await getRoofingTypes({ service });
-const items = types.map((t: any) => ({
-  title: t.data.title,
-  description: t.data.description,
-  image: imgSrc(t.data.featuredImage),
-}));
+const items = await Promise.all(
+  types.map(async (t: any) => {
+    const { src, srcset } = await optimize(t.data.featuredImage);
+    return {
+      title: t.data.title,
+      description: t.data.description,
+      image: src,
+      imageSrcset: srcset,
+    };
+  }),
+);
 ---
 
 <Band class="roofing-showcase-band">

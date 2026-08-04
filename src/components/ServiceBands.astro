@@ -9,11 +9,13 @@
  * light text) via the shared <Bands> styling.
  */
 import type { CollectionKey, CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import Button from "@/components/Button/Button";
 import { roots, sortByOrder } from "@/utils/query";
 import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
+import { resolveImageMetadata } from "@/utils/images";
 
 interface Props {
   /** Collection to list the top-level (root) items of. */
@@ -30,26 +32,36 @@ const entries = (await roots(collection)
   .all()) as CollectionEntry<CollectionKey>[];
 const services = await prepareCollectionEntries(entries, collection, meta);
 
-/** Resolve a prepared item's featuredImage (Astro image object or string) to a src. */
-function imgSrc(featuredImage: any): string {
-  return typeof featuredImage === "string"
-    ? featuredImage
-    : (featuredImage?.src?.src ?? featuredImage?.src ?? "");
-}
 ---
 
 <Bands>
   {
     services.map((service, i) => {
-      const src = imgSrc(service.featuredImage);
+      // Band media is a ~45vw column, so it's sized via <Image>; a plain
+      // string (external/public path) can't be optimized and falls back.
+      const imgMeta = resolveImageMetadata(service.featuredImage);
+      const src =
+        typeof service.featuredImage === "string" ? service.featuredImage : "";
       // Zig-zag: image on the left by default, flipped to the right on odd rows.
       const imageRight = i % 2 === 1;
       return (
         <Band class="band-service">
           <div class={`band-service-grid ${imageRight ? "is-image-right" : ""}`}>
-            {src && (
+            {(imgMeta || src) && (
               <div class="band-service-media">
-                <img src={src} alt={service.title} loading="lazy" />
+                {imgMeta ? (
+                  <Image
+                    src={imgMeta}
+                    alt={service.title}
+                    widths={[480, 768, 960]}
+                    sizes="(min-width: 768px) 45vw, 100vw"
+                    format="webp"
+                    quality={72}
+                    loading="lazy"
+                  />
+                ) : (
+                  <img src={src} alt={service.title} loading="lazy" />
+                )}
               </div>
             )}
             <div class="band-service-body">

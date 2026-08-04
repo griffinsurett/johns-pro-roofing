@@ -18,6 +18,7 @@ import CookiePreferencesButton from "@/integrations/preferences/consent/ui/Cooki
 import { getContactLinks } from "@/utils/contactLinks";
 import Icon from "@/components/Icon";
 import ReviewButton from "@/components/ReviewButton.astro";
+import { Image } from "astro:assets";
 import footerLogo from "@/assets/logo.png";
 
 // Contact info, looped straight from the contact-us content collection
@@ -31,7 +32,18 @@ const contactLinks = await getContactLinks();
       {/* Column 1: Brand & Contact */}
       <div class="flex flex-col gap-6">
         <a href="/" class="inline-block" aria-label={siteData.title}>
-          <img src={footerLogo.src} alt={`${siteData.title} logo`} class="h-28 w-auto" />
+          <Image
+            src={footerLogo}
+            alt={`${siteData.title} logo`}
+            class="h-28 w-auto"
+            width={200}
+            height={113}
+            widths={[200, 400]}
+            sizes="200px"
+            format="webp"
+            quality={82}
+            loading="lazy"
+          />
         </a>
         <p class="text-bg/80 text-sm leading-relaxed">
           Built on Trust. Roofed for Life.<br/>

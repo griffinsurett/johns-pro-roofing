@@ -11,18 +11,24 @@
  * Used in ListVariant for article/post lists.
  */
 
+import { Image } from "astro:assets";
+import { resolveImageMetadata } from "@/utils/images";
+
 export interface Props {
   title: string;
   url?: string;
   description?: string;
   date?: Date | string;
   image?: {
-    src: string;
+    src: any;
     alt: string;
   };
 }
 
 const { title, url, description, date, image } = Astro.props;
+
+// Fixed 192x144 thumbnail — see GridCard for the metadata/string split.
+const imgMeta = resolveImageMetadata(image?.src);
 ---
 
 <article
@@ -32,11 +38,25 @@ const { title, url, description, date, image } = Astro.props;
   {
     image && (
       <div class="flex-shrink-0">
-        <img
-          src={image.src}
-          alt={image.alt}
-          class="w-48 h-36 object-cover rounded-md"
-        />
+        {imgMeta ? (
+          <Image
+            src={imgMeta}
+            alt={image.alt}
+            class="w-48 h-36 object-cover rounded-md"
+            widths={[192, 384]}
+            sizes="192px"
+            format="webp"
+            quality={72}
+            loading="lazy"
+          />
+        ) : (
+          <img
+            src={image.src}
+            alt={image.alt}
+            class="w-48 h-36 object-cover rounded-md"
+            loading="lazy"
+          />
+        )}
       </div>
     )
   }
