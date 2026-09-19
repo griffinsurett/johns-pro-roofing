@@ -54,8 +54,11 @@ export function buildReviewSchema(items: TestimonialItem[]): object | null {
 
   if (reviews.length === 0) return null;
 
-  const ratings = safe
-    .map((t) => Number(t.rating))
+  // Ratings must come from the reviews actually EMITTED above, not every input
+  // item. One dropped for having no body used to still count here, publishing
+  // reviewCount: N against fewer <Review> nodes. Google cross-checks the two.
+  const ratings = (reviews as Array<{ reviewRating?: { ratingValue: number } }>)
+    .map((r) => Number(r.reviewRating?.ratingValue))
     .filter((n) => Number.isFinite(n) && n > 0);
 
   const aggregateRating =
