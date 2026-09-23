@@ -52,9 +52,10 @@ export async function generateVideoPoster(
   videoSrc: string,
   options: { timecodeSeconds?: number; width?: number } = {}
 ): Promise<PosterResult> {
-  // 1024 covers the largest poster box (~721px CSS) at ~1.4x while staying
-  // small — the poster is only visible until the video's first frame paints.
-  const { timecodeSeconds = 0, width = 1024 } = options;
+  // 860 covers the largest poster box (~721px CSS) while staying small — the
+  // poster is only visible until the video's first frame paints, so it doesn't
+  // need to survive close inspection.
+  const { timecodeSeconds = 0, width = 860 } = options;
 
   const videoPath = resolveVideoPath(videoSrc);
   if (!fs.existsSync(videoPath)) {
@@ -92,7 +93,7 @@ export async function generateVideoPoster(
   if (!fs.existsSync(posterFile)) {
     await sharp(rawFrame)
       .resize(width, posterHeight, { fit: "cover" })
-      .webp({ quality: 68 })
+      .webp({ quality: 62 })
       .toFile(posterFile);
   }
 

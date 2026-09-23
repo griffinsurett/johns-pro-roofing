@@ -58,6 +58,9 @@
   /* Fonts */
   --font-headings: 'Outfit', sans-serif;
   --font-body:     'Inter', sans-serif;
+  /* Body text renders in Tailwind's default sans stack. Tailwind 4.3 changed
+     that default; this pins the 4.1 stack the site was built and verified on. */
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   /* Shadows */
   --shadow-sm:      0 2px 4px rgba(5, 24, 48, 0.04);

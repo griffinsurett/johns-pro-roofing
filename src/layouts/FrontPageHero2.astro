@@ -7,7 +7,7 @@
  * The cut-out "john-pointing" person is absolutely centered over the seam.
  * Text content (heading / subtitle / CTA) overlays the left half with a scrim.
  */
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
 import GoogleRating from "@/components/GoogleRating.astro";
@@ -77,6 +77,38 @@ const h = {
   text: headingObj?.text ?? (headingStr ?? (headingObj ? undefined : titleBottom)),
   after: headingObj?.after ?? (headingStr ? undefined : titleAfter),
 };
+
+// The background source is portrait (3:4) but the panel it fills is landscape
+// on desktop and roughly 3:4 on mobile. `widths` alone only caps width, so a
+// portrait source still ships its full height — most of which object-cover
+// crops off. Crop explicitly per breakpoint instead. It also sits under a
+// 72–95% white overlay, so quality can run low with no visible difference.
+const heroDesktop = await Promise.all(
+  [1280, 1920].map((w) =>
+    getImage({
+      src: image,
+      width: w,
+      height: Math.round(w * 0.55),
+      fit: "cover",
+      position: "center",
+      format: "webp",
+      quality: 55,
+    }),
+  ),
+);
+const heroMobile = await Promise.all(
+  [480, 720].map((w) =>
+    getImage({
+      src: image,
+      width: w,
+      height: Math.round(w * 1.44),
+      fit: "cover",
+      position: "center",
+      format: "webp",
+      quality: 55,
+    }),
+  ),
+);
 ---
 
 <section
@@ -89,16 +121,28 @@ const h = {
         otherwise long copy grows past the image and leaves a gap. The mobile
         video banner sits below the text panel and isn't covered. ── */}
   <div class="absolute inset-x-0 top-0 bottom-[var(--fph2-media-h,56.25vw)] xl:bottom-0 xl:inset-0">
-    <Image
-      src={image}
-      alt=""
-      aria-hidden="true"
-      widths={[960, 1280, 1600]}
-      sizes="100vw"
-      class="absolute inset-0 w-full h-full object-cover"
-      loading="eager"
-      fetchpriority="high"
-    />
+    <picture>
+      <source
+        media="(min-width: 1280px)"
+        srcset={heroDesktop.map((v, i) => `${v.src} ${[1280, 1920][i]}w`).join(", ")}
+        sizes="100vw"
+        type="image/webp"
+      />
+      <source
+        srcset={heroMobile.map((v, i) => `${v.src} ${[480, 720][i]}w`).join(", ")}
+        sizes="100vw"
+        type="image/webp"
+      />
+      <img
+        src={heroDesktop[0].src}
+        alt=""
+        aria-hidden="true"
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
     {/* White overlay so the panel reads light for dark text. Mobile uses the
         same opacity range as desktop, just top→bottom instead of left→right. */}
     <div

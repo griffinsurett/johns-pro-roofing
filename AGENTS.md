@@ -86,6 +86,7 @@ is the source of truth that must agree with the allowlist above:
   `--color-canvas-*` tokens. Respect these proportions; don't introduce ad-hoc colors.
 - `MAINTENANCE.md` — upkeep/dependency guidance.
 - `ASTRO-6-MIGRATION.md` — Astro 6 migration notes/gotchas.
+- `../greastro/ASTRO-7-MIGRATION.md` — Astro 7 migration runbook (this site is on Astro 7).
 - SEO/meta lives in `src/layouts/SEO.astro` (+ `HeadTags.astro`); page shell in
   `BaseLayout.astro`; heroes in `FrontPageHero*.astro` / `SecondaryHero.astro`.
 
