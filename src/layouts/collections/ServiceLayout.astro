@@ -23,9 +23,6 @@ import SecondaryHero from "@/layouts/SecondaryHero.astro";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, sortByOrder, normalizeReference } from "@/utils/query";
 import { getEntry } from "astro:content";
-import { siteData } from "@/content/siteData";
-import { buildServiceSchema } from "@/utils/schema/serviceSchema";
-import JsonLd from "@/components/JsonLd.astro";
 
 export interface Props {
   eyebrow?: string;
@@ -107,19 +104,7 @@ const portfolioQuery = portfolioIds.length
       .where((e: any) => portfolioIds.includes(e.id))
       .orderBy(sortByOrder())
   : null;
-
-// Service schema — content-specific structured data for this service page,
-// built by the shared schema builder. The service name arrives as `eyebrow`
-// (frontmatter.title); `title` is usually unset on these pages, so prefer it.
-const serviceName = eyebrow ?? title;
-const serviceSchema = await buildServiceSchema({
-  name: serviceName,
-  description,
-  serviceType: category ?? serviceName,
-  url: `${siteData.url}${Astro.url.pathname.replace(/\/$/, "")}`,
-});
 ---
-<JsonLd schema={serviceSchema} />
 {/* Hero slot — override with `slot="hero"`, else the automatic SecondaryHero. */}
 <slot name="hero">
   <SecondaryHero

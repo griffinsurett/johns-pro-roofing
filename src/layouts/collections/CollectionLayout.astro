@@ -23,6 +23,8 @@ const {
 } = Astro.props as CollectionLayoutProps;
 ---
 <BaseLayout {...seoProps}>
+  {/* Lets a wrapping layout add to <head> (e.g. ServicePageLayout's schema). */}
+  <slot name="head" slot="head" />
   <main class="flex-1">
     {/*
       Empty by design: no hero here. The hero lives in the MDX-level

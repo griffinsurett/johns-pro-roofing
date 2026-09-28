@@ -11,7 +11,7 @@
  * This is build-time data, NOT client JS — the object is serialized during SSG
  * and baked into the page for crawlers; nothing ships to the browser to run.
  *
- *   <JsonLd schema={buildServiceSchema(...)} />
+ *   Prefer <Schema kind="…"> (components/Schema.astro), which resolves the node.
  */
 interface Props {
   schema?: object | null;

@@ -13,8 +13,10 @@
  */
 
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getAuthorName, getImageSrc } from "./helpers/layoutHelpers";
+import { getImageSrc } from "./helpers/layoutHelpers";
 import type { CollectionLayoutProps } from "./types";
+import { siteData } from "@/content/siteData";
+import { resolveAuthor, resolveAuthorId } from "@/utils/seo";
 
 const {
   entry,
@@ -28,12 +30,23 @@ const {
 
 const data = entry?.data || {};
 const featuredImageSrc = getImageSrc(data.featuredImage);
+
+// The post's author, else the founder (siteData.founder). One value
+// drives the byline and the schema author, so they can't disagree.
+const authorRef = data.author ?? siteData.founder;
+const authorId = resolveAuthorId(authorRef);
+const authorName = authorRef ? await resolveAuthor(authorRef) : undefined;
 ---
 
 {/* Editorial content opts IN to BlogPosting. SEO.astro defaults to WebPage —
     a publishDate alone doesn't imply a post (legal docs carry one too).
     Spread last so a post's own seo.* still wins. */}
-<BaseLayout {...seoProps} seo={{ schemaType: "BlogPosting", ...(seoProps as any).seo }}>
+<BaseLayout
+  {...seoProps}
+  author={authorName}
+  authorId={authorId}
+  seo={{ schemaType: "BlogPosting", ...(seoProps as any).seo }}
+>
   <main class="container mx-auto px-4 py-8">
     <article class="max-w-4xl mx-auto">
       {/* Featured image */}
@@ -68,7 +81,7 @@ const featuredImageSrc = getImageSrc(data.featuredImage);
               </time>
             )
           }
-          {data.author && <span>By {getAuthorName(data.author)}</span>}
+          {authorName && <span>By {authorName}</span>}
           {data.readingTime && <span>{data.readingTime} min read</span>}
         </div>
       </header>

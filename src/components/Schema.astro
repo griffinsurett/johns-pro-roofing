@@ -1,0 +1,41 @@
+---
+// src/components/Schema.astro
+/**
+ * Schema — the one way components and layouts emit structured data.
+ *
+ * A component says WHAT it renders; the resolver (utils/schema/resolve.ts)
+ * turns that into JSON-LD, applying the site's field map and the rules.
+ *
+ *   <Schema kind="faq" items={items} />          a section: from what's shown
+ *   <Schema kind="reviews" items={items} />
+ *   <Schema node={subject} />                    a node already resolved (e.g.
+ *                                                a layout's resolveSubject)
+ *
+ * Optional per use: `map` (remap properties) and `extra` (add properties).
+ * Renders nothing when there's nothing valid to say.
+ */
+import JsonLd from "@/components/JsonLd.astro";
+import { resolveSchema, type ResolveOptions } from "@/utils/schema/resolve";
+
+type Props = Partial<Pick<ResolveOptions, "kind" | "entry" | "items" | "map" | "extra">> & {
+  node?: Record<string, any> | null;
+};
+
+const { node: prebuilt, kind, entry, items, map, extra } = Astro.props as Props;
+
+const node =
+  prebuilt !== undefined
+    ? prebuilt
+    : kind
+      ? await resolveSchema({
+          kind,
+          entry,
+          items,
+          map,
+          extra,
+          pathname: Astro.url.pathname,
+          locals: Astro.locals as Record<string, any>,
+        })
+      : null;
+---
+<JsonLd schema={node} />

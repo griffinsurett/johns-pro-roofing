@@ -24,6 +24,7 @@ export interface SEOProps {
   description?: string; // Page description
   image?: ImageInput; // Featured/OG image
   author?: string; // Author name (resolved from reference)
+  authorId?: string; // `authors` entry id (links the schema author node)
   publishDate?: Date | string; // Publication date
   seo?: SEOData; // Additional SEO overrides
   siteName?: string; // Site name for OG tags
@@ -60,6 +61,16 @@ export async function resolveAuthor(author: any): Promise<string | undefined> {
   return undefined;
 }
 
+/** The `authors` entry id behind an author reference, if it is one. */
+export function resolveAuthorId(author: any): string | undefined {
+  const ref = Array.isArray(author) ? author[0] : author;
+  if (!ref) return undefined;
+  if (typeof ref === "string") return ref;
+  if (isCollectionReference(ref)) return ref.id;
+  if (typeof ref === "object" && ref.id) return String(ref.id);
+  return undefined;
+}
+
 /**
  * Build SEO props from a collection item entry
  *
@@ -92,6 +103,7 @@ export async function buildItemSEOProps(
     description: itemData.description,
     image: itemData.featuredImage || collectionMeta?.featuredImage,
     author: authorName,
+    authorId: resolveAuthorId(itemData.author),
     publishDate: itemData.publishDate,
     addToLLMs,
     seo: {

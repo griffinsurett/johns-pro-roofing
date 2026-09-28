@@ -5,11 +5,17 @@
  * Site-wide by nature (every non-home page has a position in the hierarchy),
  * so it's built in the SEO layer from the canonical path. Returns null on the
  * homepage (a single-item breadcrumb adds nothing).
+ *
+ * The last crumb uses the page's own title when given (a root-level item at
+ * /far would otherwise humanize to "Far"); parents humanize their slug.
  */
 import { siteData } from "@/content/siteData";
 import { humanizeSlug } from "@/utils/string";
 
-export function buildBreadcrumbSchema(canonicalPath: string): object | null {
+export function buildBreadcrumbSchema(
+  canonicalPath: string,
+  pageTitle?: string,
+): object | null {
   const segments = canonicalPath.split("/").filter(Boolean);
   if (segments.length === 0) return null;
 
@@ -17,12 +23,16 @@ export function buildBreadcrumbSchema(canonicalPath: string): object | null {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: siteData.url },
-      ...segments.map((seg, i) => ({
-        "@type": "ListItem",
-        position: i + 2,
-        name: humanizeSlug(seg),
-        item: `${siteData.url}/${segments.slice(0, i + 1).join("/")}`,
-      })),
+      ...segments.map((seg, i) => {
+        const isLast = i === segments.length - 1;
+        return {
+          "@type": "ListItem",
+          position: i + 2,
+          // Some pages pass "Title | Site" — keep just the title part.
+          name: (isLast && pageTitle?.split(" | ")[0].trim()) || humanizeSlug(seg),
+          item: `${siteData.url}/${segments.slice(0, i + 1).join("/")}`,
+        };
+      }),
     ],
   };
 }

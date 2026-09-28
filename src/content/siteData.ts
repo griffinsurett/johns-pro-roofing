@@ -8,10 +8,10 @@ export const siteData = {
   description: "Commercial roofing and asphalt paving in New Jersey — flat-roof systems, repairs, maintenance, paving, sealcoating, and parking lot repairs for property managers, facility managers, and building owners. Free estimates.",
   domain: SITE_DOMAIN,
   url: SITE_URL,
+  language: "en",
   location: "New Jersey, USA",
-  // schema.org LocalBusiness subtype for structured data — set per site
-  // (e.g. "RoofingContractor", "Plumber", "Electrician", "GeneralContractor").
-  businessType: "RoofingContractor",
+  schemaType: "RoofingContractor",
+  currency: "USD",
   googleReviewsUrl:
     "https://www.google.com/search?kgmid=/g/11mx000nb3&hl=en-US&q=John%27s+Pro+Roofing+LLC&shem=epsd1,ltae,rimspwouoe&shndl=30&source=sh/x/loc/osrp/m5/1&kgs=9d1507ae5b28eddc&utm_source=epsd1,ltae,rimspwouoe,sh/x/loc/osrp/m5/1&safe=strict#lrd=0x89c3c1af88bc03fb:0x3e59fc7c7673d755,1,,,,",
 };

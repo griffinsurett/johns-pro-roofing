@@ -7,13 +7,12 @@
  * rendering hidden slots. Your existing Accordion.tsx works unchanged!
  */
 
+import Schema from "@/components/Schema.astro";
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import ContentBridge from "../ContentBridge/ContentBridge.astro";
 import Accordion from "@/components/LoopTemplates/Accordion";
 import Button from "@/components/Button/Button";
 import SectionHeading from "@/components/SectionHeading.astro";
-import JsonLd from "@/components/JsonLd.astro";
-import { buildFaqSchema } from "@/utils/schema/faqSchema";
 import { shouldShowCollectionCTA } from "../utils/helpers";
 
 interface Props extends BaseVariantProps {
@@ -24,7 +23,7 @@ interface Props extends BaseVariantProps {
    *  so its schema always matches the FAQs visible on the page. Set false to
    *  suppress (e.g. a second accordion on a page that isn't really an FAQ, to
    *  avoid duplicate FAQPage blocks). */
-  faqSchema?: boolean;
+  schema?: boolean;
 }
 
 const {
@@ -36,7 +35,7 @@ const {
   allowMultiple = false,
   collectionUrl,
   collectionTitle,
-  faqSchema = true,
+  schema = true,
   id,
 } = Astro.props as Props;
 
@@ -44,11 +43,10 @@ const viewAllText = `View All ${collectionTitle || ""}`.trim();
 const bridgeId = id || "accordion";
 
 // FAQPage structured data from the items rendered below (schema follows visible
-// content). Built by the shared schema builder; `faqSchema={false}` suppresses.
-const faqStructuredData = faqSchema ? buildFaqSchema(items as any) : null;
+// content). Built by the shared schema builder; `schema={false}` suppresses.
 ---
 
-<JsonLd schema={faqStructuredData} />
+{schema && <Schema kind="faq" items={items} />}
 
 <section id={id} class={`py-16 ${className}`}>
   {/* Header Section */}

@@ -55,6 +55,11 @@ export const collections = {
         // Phone country dialing code (E.164 prefix without "+", e.g. "1"),
         // on the phone entry.
         phoneCountryCode: z.string().optional(),
+        // Opening hours (local businesses), on the entry that holds them —
+        // [{ dayOfWeek: ["Monday"], opens: "08:00", closes: "17:00" }].
+        hours: z
+          .array(z.object({ dayOfWeek: z.array(z.string()), opens: z.string(), closes: z.string() }))
+          .optional(),
       }),
   }),
 
@@ -142,7 +147,8 @@ export const collections = {
       baseSchema({ image }).extend({
         role: z.string(),
         company: z.string().optional(),
-        rating: z.number().min(1).max(5).default(5),
+        // No default: a star rating must be the reviewer's own.
+        rating: z.number().min(1).max(5).optional(),
         // Where the review came from; "google" shows the Google G badge.
         source: z.string().default("google"),
       }),
@@ -231,6 +237,8 @@ export const collections = {
     schema: ({ image }) =>
       baseSchema({ image }).extend({
         abbr: z.string(),
+        // schema.org type of the area in structured data ("State", "City", …).
+        areaType: z.string().optional(),
       }),
   }),
 

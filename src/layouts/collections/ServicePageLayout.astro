@@ -1,0 +1,22 @@
+---
+// src/layouts/collections/ServicePageLayout.astro
+/**
+ * The routed item layout for services (services/_meta.mdx → itemsLayout).
+ *
+ * Owns the page's silent, functional parts — the Service schema subject —
+ * and renders exactly what CollectionLayout does. The page's DESIGN stays in
+ * the MDX-level ServiceLayout wrapper each service file uses, which is purely
+ * visual. The subject is resolved here, in frontmatter, before the MDX body
+ * renders, so testimonials on the page attach their reviews to the Service.
+ */
+import CollectionLayout from "./CollectionLayout.astro";
+import Schema from "@/components/Schema.astro";
+import { resolveSubject } from "@/utils/schema/resolve";
+import type { CollectionLayoutProps } from "./types";
+
+const { entry } = Astro.props as CollectionLayoutProps;
+const subject = await resolveSubject(Astro, { kind: "service", entry });
+---
+<CollectionLayout {...Astro.props}>
+  <Schema slot="head" node={subject} />
+</CollectionLayout>

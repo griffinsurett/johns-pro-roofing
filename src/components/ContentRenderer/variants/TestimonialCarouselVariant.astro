@@ -9,14 +9,13 @@
  * ContentRenderer / testimonials collection.
  */
 
+import Schema from "@/components/Schema.astro";
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
 import Button from "@/components/Button/Button";
 import ReviewButton from "@/components/ReviewButton.astro";
 import { shouldShowCollectionCTA } from "../utils/helpers";
 import SectionHeading from "@/components/SectionHeading.astro";
-import JsonLd from "@/components/JsonLd.astro";
-import { buildReviewSchema } from "@/utils/schema/reviewSchema";
 
 interface Props extends BaseVariantProps {
   /** Seconds for one full loop (lower = faster). */
@@ -39,10 +38,9 @@ const safeItems = Array.isArray(items) ? items : [];
 // Duplicate the set so the marquee can loop seamlessly (translateX -50%).
 const loopItems = [...safeItems, ...safeItems];
 // Review + AggregateRating schema from the reviews shown here.
-const reviewSchema = buildReviewSchema(safeItems as any);
 ---
 
-<JsonLd schema={reviewSchema} />
+<Schema kind="reviews" items={safeItems} />
 
 <section id={id} class={`testimonials-section overflow-hidden ${className}`}>
   <div class="container">

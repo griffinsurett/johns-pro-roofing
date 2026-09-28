@@ -17,6 +17,7 @@
 import "../styles/global.css";
 import HeadTags from "./HeadTags.astro";
 import SEO from "./SEO.astro";
+import { siteData } from "@/content/siteData";
 import Theme from "./Theme.astro";
 import BodyTags from "./BodyTags.astro";
 import Header from "./Header.astro";
@@ -30,7 +31,7 @@ const { hideHeader = false, hideFooter = false, ...seoProps } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang={siteData.language ?? "en"} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

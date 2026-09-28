@@ -5,14 +5,13 @@
  * Loops the queried testimonials through TestimonialCard.
  */
 
+import Schema from "@/components/Schema.astro";
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
 import Button from "@/components/Button/Button";
 import { shouldShowCollectionCTA } from "../utils/helpers";
 import GoogleRating from "@/components/GoogleRating.astro";
 import SectionHeading from "@/components/SectionHeading.astro";
-import JsonLd from "@/components/JsonLd.astro";
-import { buildReviewSchema } from "@/utils/schema/reviewSchema";
 
 interface Props extends BaseVariantProps {
   columns?: 1 | 2 | 3 | 4;
@@ -39,10 +38,9 @@ const columnClasses = {
   4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
 };
 // Review + AggregateRating schema from the reviews shown here.
-const reviewSchema = buildReviewSchema(safeItems as any);
 ---
 
-<JsonLd schema={reviewSchema} />
+<Schema kind="reviews" items={safeItems} />
 
 <section id={id} class={`testimonials-section ${className}`}>
   <div class="container">
