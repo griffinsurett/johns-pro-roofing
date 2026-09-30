@@ -1,0 +1,333 @@
+{
+  "date": "2026-09-29",
+  "deployment": {
+    "uid": "dpl_F972v5xAXHwoxf5Y6tnQN1UB6Ws7",
+    "url": "johns-pro-roofing-mxef8qdv3-griffinjoshs-projects.vercel.app",
+    "readyState": "READY",
+    "sha": "ff20d7067069d0eea8fb5d00ad936258502abedb"
+  },
+  "productionAlias": "https://johns-pro-roofing.vercel.app",
+  "canonicalDomain": "https://johnsproroofing.com",
+  "canonicalDomainLinked": false,
+  "mode": "existing Codex header via approved workspace helper; no protection changes",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 5,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/404.html",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 5,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/testimonials",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 6,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/about-us",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 5,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/cookie-policy",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 5,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/privacy-policy",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 5,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/faq",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 6,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/projects",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 5,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/links",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 5,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/contact-us",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 5,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/terms-of-service",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 5,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/services",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 6,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/services/commercial-roof-maintenance",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 7,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/services/commercial-roof-repairs",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 7,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/services/flat-roofing",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 7,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/services/parking-lot-repairs",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 7,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/services/residential-roofing",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 7,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/services/parking-lot-sealcoating",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 7,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/services/crack-filling",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 7,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/services/asphalt-paving",
+      "status": 200,
+      "schemaMatchesRelease": true,
+      "nodes": 7,
+      "cspExpected": true,
+      "pass": true
+    },
+    {
+      "path": "/authors",
+      "status": 404,
+      "pass": true
+    },
+    {
+      "path": "/authors/charlie-john",
+      "status": 404,
+      "pass": true
+    },
+    {
+      "path": "/blog",
+      "status": 404,
+      "pass": true
+    },
+    {
+      "path": "/certifications",
+      "status": 404,
+      "pass": true
+    },
+    {
+      "path": "/certifications/todo-cert-1",
+      "status": 404,
+      "pass": true
+    },
+    {
+      "path": "/__schema_nonexistent_route__",
+      "status": 404,
+      "pass": true
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/llms.txt",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/llms-full.txt",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/sitemap-index.xml",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/sitemap-0.xml",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "htmlRedirectTarget": "/contact-us",
+      "pass": true
+    },
+    {
+      "path": "/repairs",
+      "status": 200,
+      "htmlRedirectTarget": "/services/commercial-roof-repairs",
+      "pass": true
+    },
+    {
+      "path": "/commercial-roof-maintenance",
+      "status": 200,
+      "htmlRedirectTarget": "/services/commercial-roof-maintenance",
+      "pass": true
+    },
+    {
+      "path": "/commercial-roof-repairs",
+      "status": 200,
+      "htmlRedirectTarget": "/services/commercial-roof-repairs",
+      "pass": true
+    },
+    {
+      "path": "/flat-roofing",
+      "status": 200,
+      "htmlRedirectTarget": "/services/flat-roofing",
+      "pass": true
+    },
+    {
+      "path": "/parking-lot-repairs",
+      "status": 200,
+      "htmlRedirectTarget": "/services/parking-lot-repairs",
+      "pass": true
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "htmlRedirectTarget": "/about-us",
+      "pass": true
+    },
+    {
+      "path": "/residential-roofing",
+      "status": 200,
+      "htmlRedirectTarget": "/services/residential-roofing",
+      "pass": true
+    },
+    {
+      "path": "/contactus",
+      "status": 200,
+      "htmlRedirectTarget": "/contact-us",
+      "pass": true
+    },
+    {
+      "path": "/parking-lot-sealcoating",
+      "status": 200,
+      "htmlRedirectTarget": "/services/parking-lot-sealcoating",
+      "pass": true
+    },
+    {
+      "path": "/legal/cookie-policy",
+      "status": 200,
+      "htmlRedirectTarget": "/cookie-policy",
+      "pass": true
+    },
+    {
+      "path": "/legal/privacy-policy",
+      "status": 200,
+      "htmlRedirectTarget": "/privacy-policy",
+      "pass": true
+    },
+    {
+      "path": "/legal/terms-of-service",
+      "status": 200,
+      "htmlRedirectTarget": "/terms-of-service",
+      "pass": true
+    },
+    {
+      "path": "/crack-filling",
+      "status": 200,
+      "htmlRedirectTarget": "/services/crack-filling",
+      "pass": true
+    },
+    {
+      "path": "/asphalt-paving",
+      "status": 200,
+      "htmlRedirectTarget": "/services/asphalt-paving",
+      "pass": true
+    },
+    {
+      "path": "exact-deployment/services/asphalt-paving",
+      "status": 200,
+      "pass": true
+    }
+  ],
+  "passed": 48,
+  "total": 48,
+  "browserQA": "pending; computer/browser tooling unavailable"
+}

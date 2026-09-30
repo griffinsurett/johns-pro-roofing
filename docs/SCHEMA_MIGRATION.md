@@ -91,3 +91,16 @@ Vercel currently lists only `https://johns-pro-roofing.vercel.app` for this proj
 connecting the custom domain is a separate launch task. Authenticate verification
 with the existing workspace helper. Never include keys in source, URLs or reports.
 Deployment and live-check evidence belongs in `schema-validation/`.
+
+
+## Published verification
+
+Implementation `3f59b50` and AEO correction `ff20d70` are pushed on main.
+Vercel deployment `dpl_F972v5xAXHwoxf5Y6tnQN1UB6Ws7` is Ready. All 48 live checks
+pass: all 20 page graphs match the isolated release, expected CSP, generated
+crawler files (including the corrected LLMs output), missing routes, 15 HTML
+redirect targets and an exact-deployment service page. See
+[saved production evidence](schema-validation/production-2026-09-29.json).
+Checks use the existing approved Codex automation header and do not establish
+anonymous bot access or browser interactions. The custom-domain and browser QA
+items above remain open; Yungskarz is the next ordered migration.
