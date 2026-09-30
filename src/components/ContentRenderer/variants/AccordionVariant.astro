@@ -7,7 +7,6 @@
  * rendering hidden slots. Your existing Accordion.tsx works unchanged!
  */
 
-import Schema from "@/components/Schema.astro";
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import ContentBridge from "../ContentBridge/ContentBridge.astro";
 import Accordion from "@/components/LoopTemplates/Accordion";
@@ -18,12 +17,10 @@ import { shouldShowCollectionCTA } from "../utils/helpers";
 interface Props extends BaseVariantProps {
   allowMultiple?: boolean;
   pretitle?: string;
-  /** Emit schema.org FAQPage JSON-LD from the items (question = title, answer =
-   *  body/description). On by default — this variant is the site's FAQ display,
-   *  so its schema always matches the FAQs visible on the page. Set false to
-   *  suppress (e.g. a second accordion on a page that isn't really an FAQ, to
-   *  avoid duplicate FAQPage blocks). */
+  /** Capture the actual rendered answers. Defaults on for the FAQ collection;
+   *  disable for non-question accordions. Multiple FAQ sections aggregate. */
   schema?: boolean;
+  collectionName?: string;
 }
 
 const {
@@ -35,7 +32,8 @@ const {
   allowMultiple = false,
   collectionUrl,
   collectionTitle,
-  schema = true,
+  collectionName,
+  schema = collectionName === "faq",
   id,
 } = Astro.props as Props;
 
@@ -46,7 +44,6 @@ const bridgeId = id || "accordion";
 // content). Built by the shared schema builder; `schema={false}` suppresses.
 ---
 
-{schema && <Schema kind="faq" items={items} />}
 
 <section id={id} class={`py-16 ${className}`}>
   {/* Header Section */}
@@ -59,7 +56,7 @@ const bridgeId = id || "accordion";
   {/* Accordion with ContentBridge */}
   {
     items.length > 0 && (
-      <ContentBridge items={items} bridgeId={bridgeId}>
+      <ContentBridge items={items} bridgeId={bridgeId} schema={schema ? "faq" : false}>
         {/* 
         Your existing Accordion component!
         ContentBridge generates slot IDs as: `${bridgeId}-slot-${index}`

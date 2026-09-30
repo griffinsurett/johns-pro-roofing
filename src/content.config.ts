@@ -148,6 +148,7 @@ export const collections = {
         role: z.string(),
         company: z.string().optional(),
         // No default: a star rating must be the reviewer's own.
+        reviewedItem: refSchema(["services"]).optional(),
         rating: z.number().min(1).max(5).optional(),
         // Where the review came from; "google" shows the Google G badge.
         source: z.string().default("google"),

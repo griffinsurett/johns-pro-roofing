@@ -31,9 +31,9 @@ const {
 const data = entry?.data || {};
 const featuredImageSrc = getImageSrc(data.featuredImage);
 
-// The post's author, else the founder (siteData.founder). One value
+// The post's author, else the explicit defaultAuthor. One value
 // drives the byline and the schema author, so they can't disagree.
-const authorRef = data.author ?? siteData.founder;
+const authorRef = data.author ?? ("defaultAuthor" in siteData ? siteData.defaultAuthor : undefined);
 const authorId = resolveAuthorId(authorRef);
 const authorName = authorRef ? await resolveAuthor(authorRef) : undefined;
 ---

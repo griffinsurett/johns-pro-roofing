@@ -17,6 +17,7 @@ import Button from "@/components/Button/Button";
 import GalleryMarquee from "@/components/GalleryMarquee.astro";
 
 interface Props extends BaseVariantProps {
+  items?: (NonNullable<BaseVariantProps["items"]>[number] & { value: string })[];
   pretitle?: string;
   body?: string[];
   cta?: { text: string; href: string };

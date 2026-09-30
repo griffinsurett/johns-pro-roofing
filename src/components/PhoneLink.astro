@@ -16,7 +16,7 @@ import Button from "@/components/Button/Button";
 import { getPhoneContact } from "@/utils/contactLinks";
 
 interface Props {
-  variant?: "phone" | "phone-outline" | "primary" | "secondary" | "outline-white";
+  variant?: "phone" | "phone-outline" | "primary" | "secondary";
   tone?: "white" | "blue";
   size?: "sm" | "md" | "lg";
   class?: string;
@@ -38,7 +38,7 @@ const phone = await getPhoneContact();
     tone={tone}
     size={size}
     href={phone.url}
-    class={className}
+    className={className}
     aria-label={`Call us at ${phone.displayValue}`}
   >
     {phone.displayValue}

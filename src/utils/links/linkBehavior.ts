@@ -9,6 +9,28 @@
 import type { LinkBehaviorConfigType, ValueFormatterType } from "@/content/schema";
 import { formatPhoneNumber } from "@/utils/string";
 
+/** Absolute HTTP(S) link; contact protocols are links, not web-page identities. */
+export function absoluteWebUrl(value: unknown, base: string): string | undefined {
+  if (typeof value !== "string" || !value.trim()) return undefined;
+  try {
+    const url = new URL(value, base);
+    return ["http:", "https:"].includes(url.protocol) ? url.href : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** Shared SEO canonical rule: preserve explicit overrides; generated paths have no trailing slash. */
+export function canonicalWebUrl(pathname: string, base: string, override?: string): string {
+  const value = override || (pathname === "/" ? "/" : pathname.replace(/\/+$/, ""));
+  const absolute = absoluteWebUrl(value, base);
+  if (!absolute) throw new Error(`[urls] Invalid canonical URL: ${value}`);
+  const url = new URL(absolute);
+  if (!override && url.pathname !== "/") url.pathname = url.pathname.replace(/\/+$/, "");
+  url.hash = "";
+  return url.href;
+}
+
 /**
  * Format a value based on the formatter type
  */

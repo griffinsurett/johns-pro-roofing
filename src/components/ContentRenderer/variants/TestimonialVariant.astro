@@ -5,7 +5,7 @@
  * Loops the queried testimonials through TestimonialCard.
  */
 
-import Schema from "@/components/Schema.astro";
+import Schema from "@/components/Schema/Schema.astro";
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
 import Button from "@/components/Button/Button";
@@ -37,7 +37,7 @@ const columnClasses = {
   3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
   4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
 };
-// Review + AggregateRating schema from the reviews shown here.
+// Review schema uses the same excerpt as the cards, without undisplayed ratings.
 ---
 
 <Schema kind="reviews" items={safeItems} />

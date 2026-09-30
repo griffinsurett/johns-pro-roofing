@@ -80,7 +80,10 @@ Whether you're managing a warehouse, a shopping center, a medical building, or a
 
 A roof project shouldn't shut down your building. We schedule around your hours, stage the work to keep entrances and operations accessible, and keep a clean, safe site throughout. You'll know the scope and the cost before we start — and estimates are free.
 
-We're a New Jersey company you can hold accountable, backed by {businessData.warranty} and {businessData.insurance} in NJ.
+We're a New Jersey company you can hold accountable.
+
+{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
 
 </Band>
 
@@ -100,7 +103,7 @@ Getting the base right is what separates a roof that lasts decades from one that
 
 With the deck prepped, we lay the new membrane and detail every seam, edge, and penetration to manufacturer spec. Proper detailing at the transitions is where flat roofs win or lose — so we take the time to get the flashing, drains, and terminations watertight.
 
-The finished surface sheds water cleanly and is built to carry your building through New Jersey's freeze-thaw cycles, backed by {businessData.warranty}.
+The finished surface sheds water cleanly and is built to carry your building through New Jersey's freeze-thaw cycles{businessData.warranty ? `, backed by ${businessData.warranty}` : ""}.
 
 </Band>
 

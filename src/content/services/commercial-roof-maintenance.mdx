@@ -85,7 +85,10 @@ For property managers and facility managers juggling multiple buildings, it's on
 
 Whether you manage a single medical building or a full industrial park, we'll build a plan around your buildings and budget. Consistent upkeep extends roof life, protects your warranty, and keeps you off the emergency-call list.
 
-Every plan is backed by {businessData.warranty}, and we're {businessData.insurance} in NJ.
+
+
+{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
 
 </Band>
 

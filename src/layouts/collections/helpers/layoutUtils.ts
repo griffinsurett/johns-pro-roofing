@@ -56,7 +56,13 @@ function resolveLayoutModule(layoutPath: string): any {
     );
   }
   
-  return module.default;
+  return module;
+}
+
+/** The selected layout owns its subject kind, regardless of collection name. */
+export function getLayoutSchemaKind(layoutPath?: string): string | undefined {
+  const module = resolveLayoutModule(layoutPath || DEFAULT_ITEM_LAYOUT_PATH);
+  return typeof module.schemaKind === "string" ? module.schemaKind : undefined;
 }
 
 /**
@@ -75,7 +81,7 @@ export async function getLayoutComponent(layoutPath?: string) {
   }
 
   try {
-    const component = resolveLayoutModule(path);
+    const component = resolveLayoutModule(path).default;
     
     // Cache the component
     layoutCache.set(path, component);

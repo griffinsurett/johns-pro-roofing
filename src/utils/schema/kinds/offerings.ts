@@ -5,10 +5,11 @@
  * that page then attach to it.
  *
  * Each is a field map over Greastro's standard item fields. A site whose
- * content names things differently remaps them in src/content/schemaMap.ts.
+ * content names things differently remaps them in src/utils/schema/siteMap.ts.
  */
-import { siteData } from "@/content/siteData";
-import { IS_ONLINE_BUSINESS } from "../identity";
+import { siteData as activeSiteData } from "@site/content/siteData";
+import type { SiteSchemaSettings } from "@/utils/schema/types";
+const siteData: SiteSchemaSettings = activeSiteData;
 import type { FieldMap, ItemKind } from "../types";
 
 /** Fields every offering shares. */
@@ -40,22 +41,22 @@ export const course: ItemKind = {
     ...common,
     courseCode: "courseCode",
     provider: { as: "business" },
-    // An `authors` reference on the item, else the founder.
-    instructor: { from: "instructor", as: "person", default: siteData.founder },
+    // An `authors` reference on the item, else the explicitly configured default instructor.
+    instructor: { from: "instructor", as: "person", default: siteData.defaultInstructor },
     inLanguage: { as: "language" },
     // Total study time, ISO 8601 (e.g. "PT40H"). Google's Course info result
     // needs it; it's never invented — it's read from content or left out.
     courseWorkload: "courseWorkload",
+    courseMode: "courseMode",
   },
-  // Course info wants mode/instructor/workload on a CourseInstance.
-  finalize: ({ courseWorkload, ...node }) => ({
+  finalize: ({ courseWorkload, courseMode, instructor, ...node }) => ({
     ...node,
-    hasCourseInstance: {
+    ...((courseWorkload || courseMode || instructor) && { hasCourseInstance: {
       "@type": "CourseInstance",
-      ...(IS_ONLINE_BUSINESS && { courseMode: "Online" }),
-      ...(node.instructor && { instructor: node.instructor }),
+      ...(courseMode && { courseMode }),
+      ...(instructor && { instructor }),
       ...(courseWorkload && { courseWorkload }),
-    },
+    } }),
   }),
 };
 

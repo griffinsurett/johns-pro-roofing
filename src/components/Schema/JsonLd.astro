@@ -1,5 +1,5 @@
 ---
-// src/components/JsonLd.astro
+// src/components/Schema/JsonLd.astro
 /**
  * JsonLd — renders a schema.org JSON-LD block into the static HTML.
  *
@@ -11,11 +11,13 @@
  * This is build-time data, NOT client JS — the object is serialized during SSG
  * and baked into the page for crawlers; nothing ships to the browser to run.
  *
- *   Prefer <Schema kind="…"> (components/Schema.astro), which resolves the node.
+ *   Prefer <Schema kind="…"> (components/Schema/Schema.astro), which resolves the node.
  */
+import { serializeJsonLd } from "@/utils/schema/serialize";
+
 interface Props {
   schema?: object | null;
 }
 const { schema } = Astro.props as Props;
 ---
-{schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+{schema && <script type="application/ld+json" set:html={serializeJsonLd(schema)} />}

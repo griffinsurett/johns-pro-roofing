@@ -7,8 +7,10 @@
 export interface SchemaContext {
   /** The content entry's data (an item page's entry, or one list item). */
   data: Record<string, any>;
-  /** Absolute canonical URL of the page being rendered. */
+  /** Item URL when present, otherwise the displaying page's canonical URL. */
   url: string;
+  /** The item's own web URL, if any (a page-less entry need not have one). */
+  entityUrl?: string;
   /** Astro.locals — shared across the page for subject/dedupe state. */
   locals: Record<string, any>;
 }
@@ -43,7 +45,7 @@ export type FieldMap = Record<string, FieldSpec>;
 export interface ItemKind {
   mode: "item";
   type: string;
-  /** Properties Google requires; a node missing one is dropped with a warning. */
+  /** Minimum properties for this kind; a node missing one is dropped with a warning. */
   required?: string[];
   fields: FieldMap;
   /** Final shaping after mapping (e.g. nesting into hasCourseInstance). */
@@ -63,9 +65,26 @@ export interface ListKind {
   dedupeKey?: (ctx: Omit<SchemaContext, "data">) => string;
   /** Map keys overrides may not fill with fixed values (e.g. ratings). */
   protectedFields?: string[];
+  /** These inputs must come from the rendering boundary without remapping. */
+  lockedFields?: string[];
 }
 
 export type SchemaKind = ItemKind | ListKind;
 
 /** Per-site field remapping: kind name → property overrides. */
 export type SchemaMap = Record<string, FieldMap>;
+
+/** Portable site identity contract; optional settings need not exist on every site's object. */
+export interface SiteSchemaSettings {
+  title: string;
+  url: string;
+  schemaType: string;
+  language: string;
+  currency: string;
+  legalName?: string;
+  description?: string;
+  parentUrl?: string;
+  foundingDate?: string;
+  defaultAuthor?: string;
+  defaultInstructor?: string;
+}

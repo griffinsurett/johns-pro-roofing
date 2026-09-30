@@ -21,8 +21,8 @@ Greastro systems (content collections → `query()` → `ContentRenderer` → va
 - **Site facts / CTA:** `src/content/siteData.ts` — title, legal name, tagline, description,
   address, Google reviews URL, and `ctaData` ("Request an Estimate" → `#quote-form`).
 - **Business credentials:** `businessData` in `siteData.ts` — single source of truth for
-  facts reused across page copy (HIC #, insurance, warranty). Some are `TODO:` placeholders;
-  interpolate from here so every page updates at once — never copy-paste the values inline.
+  facts reused across page copy (HIC #, insurance, warranty). Unconfirmed fields stay
+  unset and conditional copy omits them; never publish placeholders or invented claims.
 - **Brand color:** `src/styles/global.css` `@theme` → change `--color-primary` (one line; the
   50–950 scale auto-derives). Don't hand-edit derived steps.
 - **Brand assets:** `src/assets/johns-pro-roofing/`.
@@ -46,6 +46,8 @@ Plain footer/social links don't count as integrations.
 |---|---|---|---|---|
 | **Formspree** (`formspree.io`) | **active** | Quote + contact form submission | `src/utils/formspree.ts` | `PUBLIC_FORMSPREE_QUOTE_ID`, `PUBLIC_FORMSPREE_CONTACT_ID`, `PUBLIC_FORMSPREE_ID` |
 | **Google Fonts** (`fonts.googleapis.com`, `fonts.gstatic.com`) | **active** | Webfonts: Inter, Outfit, Saira Condensed | `<link>` in `src/pages/index.astro` | — |
+| **Google Translate** (existing `translate.google.com`, `translate.googleapis.com`, `translate-pa.googleapis.com`, Google SDK resources) | **on demand** | Existing language preferences fallback | `src/integrations/preferences/language/` | User selection |
+| **Vercel Analytics / Speed Insights** (same-origin `/_vercel/` endpoints) | **mounted** | Existing analytics components | `src/integrations/IntBodyScripts.astro` | Existing Vercel project |
 | **Google Tag Manager** (`www.googletagmanager.com`) | **wired, off** | Analytics / tags | `src/integrations/analytics/GoogleTagManager.astro` → `IntHeadScripts.astro` | `PUBLIC_GTM_ID` (not set in `.env`) |
 | **OneSignal** (`cdn.onesignal.com`) | **wired, off** | Web push | `src/integrations/onesignal/` | `PUBLIC_ONESIGNAL_APP_ID`, `PUBLIC_ONESIGNAL_SAFARI_WEB_ID` (both empty) |
 
@@ -63,9 +65,8 @@ is the source of truth that must agree with the allowlist above:
 
 - Currently whitelisted by the CSP: **Formspree** (`connect-src`, `form-action`),
   **Google Translate** hosts (`script-src`/`style-src`/`frame-src`/`connect-src`),
-  **Google Fonts** (`fonts.gstatic.com`, `www.gstatic.com`). Note `formspree.io` and the
-  Translate hosts appear in the CSP but are easy to miss in the table — Google Translate is
-  part of the Greastro preferences/language UI.
+  **Google Fonts** (`fonts.googleapis.com` stylesheet, `fonts.gstatic.com` fonts),
+  and Google's existing Translate resource host `www.gstatic.com`.
 - **GTM and OneSignal hosts are NOT in the CSP.** If either is ever activated (its env IDs
   filled), its hosts must be added to the CSP or the browser will block it. Flag this if you
   enable them.
@@ -132,3 +133,23 @@ forgot to record (then update the table). Don't silently work around a mismatch.
   and OneSignal push. See §3.5 of `../greastro/AGENTS.md`.
 - The quote form is the primary conversion (`#quote-form`, posts to Formspree); keep CTAs
   pointed at it.
+
+## Structured data and migration
+
+- `RoofingContractor`, with Charlie John as the user-confirmed JSON author tagged
+  `founder`. Author pages stay disabled. Business contacts and service areas come
+  from their existing collections; no office locations are inferred from states.
+- ServicePageLayout owns Service identity; ServiceLayout keeps the MDX design and
+  selects the displayed FAQs through the existing service reference query.
+- `utils/breadcrumbs.ts` feeds schema and optional UI from the same page/parent
+  rules. This site does not currently mount visible breadcrumb navigation.
+- Components live in `components/Schema/`; the only local field map is
+  `utils/schema/siteMap.ts`. Review excerpts share `testimonialExcerpt` with the
+  card; ratings are omitted because these cards do not show per-review stars.
+- The 4.7/20 Google badge is existing display content, not a source for schema
+  AggregateRating. Verify that display fact separately before changing it.
+- Generated LLMs/robots files regenerate on every build. Edit their source or
+  generator, never generated output. Draft certification examples stay excluded.
+- Release evidence and remaining checks are in `docs/SCHEMA_MIGRATION.md`.
+- In this shared workspace, read `../AGENTS.md` for the existing authenticated
+  Claude/Codex Vercel helper. Never copy credentials into this repository or URLs.

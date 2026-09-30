@@ -4,7 +4,7 @@
  * override layers in order (later wins):
  *
  *   1. the kind's field map          src/utils/schema/kinds/
- *   2. the site's map                src/content/schemaMap.ts
+ *   2. the site's map                src/utils/schema/siteMap.ts
  *   3. the component's `map`/`extra` <Schema kind="…" map={…} extra={…} />
  *   4. the entry's own `schema:`     frontmatter of one content entry
  *
@@ -13,11 +13,16 @@
  * can't be given fixed values), one FAQPage / one review set per target per
  * page, and linking by @id.
  */
-import { siteData } from "@/content/siteData";
-import { schemaMap } from "@/content/schemaMap";
+import { collectSection, registerItemNode } from "./collector";
+import { schemaMap } from "@site/utils/schema/siteMap";
 import { kinds, type KindName } from "./kinds";
 import { transforms } from "./transforms";
 import type { FieldMap, FieldSpec, SchemaContext } from "./types";
+import { getPageCanonicalUrl, setPageCanonicalUrl } from "@/utils/seo";
+import { prepareSchemaEntry, itemIdentity } from "./itemIdentity";
+import { assertOverrideKeys, validateSchemaNode } from "./validation";
+import type { SEOData } from "@/content/schema";
+import { getEntryKey } from "@/utils/query";
 
 export interface ResolveOptions {
   kind: KindName;
@@ -33,24 +38,15 @@ export interface ResolveOptions {
   pathname: string;
   /** Astro.locals. */
   locals: Record<string, any>;
+  /** For frontmatter callers that run before BaseLayout establishes page SEO. */
+  seo?: SEOData;
+  /** Set by resolveSubject; ordinary item calls represent embedded entries. */
+  pageSubject?: boolean;
 }
 
 const present = (v: unknown) =>
   v !== undefined && v !== null && !(typeof v === "string" && v.trim() === "") &&
   !(Array.isArray(v) && v.length === 0);
-
-/** Entry → plain data: collection entries keep fields under `data`, body aside. */
-function dataOf(entry: any): Record<string, any> {
-  if (!entry) return {};
-  if (entry.data && typeof entry.data === "object") {
-    return {
-      ...(entry.id && { id: entry.id }),
-      ...entry.data,
-      ...(entry.body && !entry.data.content && { content: entry.body }),
-    };
-  }
-  return entry;
-}
 
 const read = (data: Record<string, any>, path: string) =>
   path.split(".").reduce<any>((o, k) => (o == null ? undefined : o[k]), data);
@@ -86,13 +82,15 @@ async function mapFields(fields: FieldMap, ctx: SchemaContext) {
 /** Layers 1–3 merged; protected fields keep content-only sources. */
 function mergeMaps(kindName: KindName, componentMap?: FieldMap): FieldMap {
   const kind = kinds[kindName];
+  const locked = kind.mode === "list" ? kind.lockedFields ?? [] : [];
+  assertOverrideKeys(schemaMap[kindName], `${kindName} site map`, locked);
+  assertOverrideKeys(componentMap, `${kindName} component map`, locked);
   const merged: FieldMap = { ...kind.fields, ...(schemaMap[kindName] ?? {}), ...(componentMap ?? {}) };
-  for (const field of (kind as any).protectedFields ?? []) {
+  for (const field of kind.mode === "list" ? kind.protectedFields ?? [] : []) {
     const spec = merged[field];
     if (spec && typeof spec === "object" && !Array.isArray(spec) &&
         ("value" in spec || "default" in spec || spec.resolve)) {
-      console.warn(`[schema] "${kindName}.${field}" can only be read from content; override ignored.`);
-      merged[field] = kind.fields[field];
+      throw new Error(`[schema] "${kindName}.${field}" can only be read from content; fixed/default/computed ratings are not allowed.`);
     }
   }
   return merged;
@@ -101,7 +99,8 @@ function mergeMaps(kindName: KindName, componentMap?: FieldMap): FieldMap {
 /** Layer 4: an entry's own `schema:` frontmatter, protected fields excepted. */
 function entryOverrides(kindName: KindName, data: Record<string, any>) {
   const overrides = { ...(data.schema ?? {}) };
-  for (const field of (kinds[kindName] as any).protectedFields ?? []) delete overrides[field];
+  const kind = kinds[kindName];
+  assertOverrideKeys(overrides, `${kindName} entry ${data.id ?? data.title ?? ""}`, kind.mode === "list" ? Object.keys(kind.fields) : []);
   return overrides;
 }
 
@@ -112,46 +111,52 @@ export async function resolveSchema(options: ResolveOptions): Promise<Record<str
     console.warn(`[schema] Unknown kind "${kindName}"`);
     return null;
   }
-  const url = `${siteData.url}${pathname.replace(/\/$/, "")}`;
+  const pageUrl = options.seo ? setPageCanonicalUrl(locals, pathname, options.seo) : getPageCanonicalUrl(locals, pathname);
   const fields = mergeMaps(kindName, map);
+  assertOverrideKeys(extra, `${kindName} on ${pathname}`);
 
   if (kind.mode === "list") {
-    const baseCtx = { url, locals };
-    // Claim the dedupe key synchronously, before any await, so two sections
-    // rendering in parallel can't both emit.
-    const key = kind.dedupeKey ? `schema:${kind.dedupeKey(baseCtx)}` : undefined;
-    if (key && locals[key]) return null;
-    if (key) locals[key] = true;
-
+    const baseCtx = { url: pageUrl, locals };
     const mapped = await Promise.all(
       (items ?? []).map(async (item) => {
-        const data = dataOf(item);
-        return { ...(await mapFields(fields, { data, url, locals })), ...entryOverrides(kindName, data) };
+        const data = await prepareSchemaEntry(item);
+        if (data.draft) return null;
+        return { ...(await mapFields(fields, { data, url: pageUrl, locals })), ...entryOverrides(kindName, data),
+          _identity: data.id ? getEntryKey(data.collection ?? "", data.id) : undefined };
       }),
     );
-    const node = kind.build(mapped, baseCtx);
-    if (!node) {
-      if (key) locals[key] = false;
-      return null;
-    }
-    return { "@context": "https://schema.org", ...node, ...(extra ?? {}) };
+    const key = kind.dedupeKey?.(baseCtx) ?? kindName;
+    collectSection(locals, key, mapped.filter((item) => item !== null), (all) => {
+      // A parent layout can collect a section before BaseLayout establishes SEO.
+      const node = kind.build(all, { url: getPageCanonicalUrl(locals, pathname), locals });
+      if (!node) return null;
+      assertOverrideKeys(extra, `${kindName} on ${pathname}`, Object.keys(node));
+      const result = { ...node, ...(extra ?? {}) };
+      validateSchemaNode(result, `${kindName} on ${pathname}`);
+      return result;
+    });
+    return null;
   }
 
-  const data = dataOf(entry);
-  const ctx: SchemaContext = { data, url, locals };
+  const data = await prepareSchemaEntry(entry);
+  if (data.draft) return null;
+  const identity = itemIdentity(kindName, data, pageUrl, options.pageSubject);
+  const ctx: SchemaContext = { data, url: identity.url ?? pageUrl, entityUrl: identity.url, locals };
   let node: Record<string, any> = {
     "@type": kind.type,
-    "@id": `${url}#${kindName}`,
+    "@id": identity.id,
     ...(await mapFields(fields, ctx)),
   };
   if (kind.finalize) node = kind.finalize(node, ctx);
   node = { ...node, ...(extra ?? {}), ...entryOverrides(kindName, data) };
+  validateSchemaNode(node, `${kindName} ${data.id ?? ""} on ${pathname}`);
 
   const missing = (kind.required ?? []).filter((p) => !present(node[p]));
   if (missing.length > 0) {
     console.warn(`[schema] ${kind.type} on ${pathname} is missing ${missing.join(", ")} — not emitted.`);
     return null;
   }
+  registerItemNode(locals, node);
   return { "@context": "https://schema.org", ...node };
 }
 
@@ -167,7 +172,8 @@ export async function applySiteMap(
 ): Promise<Record<string, any>> {
   const fields = schemaMap[key];
   if (!fields) return node;
-  const url = `${siteData.url}${context.pathname.replace(/\/$/, "")}`;
+  assertOverrideKeys(fields, `${key} site map`);
+  const url = getPageCanonicalUrl(context.locals, context.pathname);
   const additions: Record<string, any> = {};
   const removals: string[] = [];
   for (const [prop, spec] of Object.entries(fields)) {
@@ -180,24 +186,31 @@ export async function applySiteMap(
   }
   const out = { ...node, ...additions };
   for (const prop of removals) delete out[prop];
+  validateSchemaNode(out, `${key} on ${context.pathname}`);
   return out;
 }
 
 /**
  * Resolve an item kind as the page's SUBJECT — call from a layout's
- * frontmatter (it runs before the page's sections render). Review sections on
- * the page then attach to it instead of the business.
+ * frontmatter (it runs before the page's sections render). Review sections may reference it explicitly through their content relationships.
  */
 export async function resolveSubject(
-  astro: { url: URL; locals: Record<string, any> },
-  options: Omit<ResolveOptions, "pathname" | "locals">,
+  astro: { url: URL; locals: Record<string, any>; props?: Record<string, any> },
+  options: Omit<ResolveOptions, "pathname" | "locals" | "pageSubject">,
 ): Promise<Record<string, any> | null> {
+  const seo = options.seo ?? astro.props?.seoProps?.seo ?? (options.entry?.data ?? options.entry)?.seo;
+  setPageCanonicalUrl(astro.locals, astro.url.pathname, seo);
   const node = await resolveSchema({
     ...options,
     pathname: astro.url.pathname,
     locals: astro.locals,
+    pageSubject: true,
   });
   if (node) {
+    const previous = astro.locals.schemaSubject;
+    if (previous && (previous["@id"] !== node["@id"] || previous.name !== node.name)) {
+      throw new Error(`[schema] ${astro.url.pathname} already has a page subject. Use Schema with an entry for additional displayed items.`);
+    }
     astro.locals.schemaSubject = {
       "@id": node["@id"],
       "@type": node["@type"],

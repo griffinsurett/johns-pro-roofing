@@ -4,24 +4,28 @@
  * SEO.astro; everything else (the page subject, reviews, posts) attaches to
  * these by @id, so search engines see one coherent graph.
  *
- *   business  siteData (legalName, schemaType, founder, …) + contact-us +
+ *   business  siteData (legalName, schemaType, foundingDate, …) + contact-us +
  *             social-media (+ service-areas and hours for local businesses)
  *   people    the `authors` collection, by entry id
  *   website   this domain, published by the business
  */
-import { siteData } from "@/content/siteData";
-import { query, sortByOrder } from "@/utils/query";
+import { siteData as activeSiteData } from "@site/content/siteData";
+import type { SiteSchemaSettings } from "@/utils/schema/types";
+const siteData: SiteSchemaSettings = activeSiteData;
+import { query, sortByOrder, byTag as queryByTag } from "@/utils/query";
 import { formatPhoneNumber } from "@/utils/string";
+import { canonicalWebUrl } from "@/utils/links/linkBehavior";
+import { resolveAuthorEntry } from "@/utils/seo";
 
 /** The company's home — a parent URL for multi-site brands, else this site. */
-export const BUSINESS_URL = siteData.parentUrl ?? siteData.url;
-export const BUSINESS_ID = `${BUSINESS_URL}/#business`;
+export const BUSINESS_URL = canonicalWebUrl(siteData.parentUrl ?? siteData.url, siteData.url);
+export const BUSINESS_ID = `${BUSINESS_URL}#business`;
 export const BUSINESS_TYPE = siteData.schemaType;
 export const BUSINESS_NAME = siteData.legalName ?? siteData.title;
-export const WEBSITE_ID = `${siteData.url}/#website`;
+export const WEBSITE_ID = `${canonicalWebUrl("/", siteData.url)}#website`;
 
 /** A person's @id, keyed by their `authors` entry id. */
-export const personId = (authorId: string) => `${BUSINESS_URL}/#person-${authorId}`;
+export const personId = (authorId: string) => `${BUSINESS_URL}#person-${encodeURIComponent(authorId)}`;
 
 /**
  * Types with no physical location. Anything else is treated as local and gets
@@ -34,10 +38,12 @@ export const IS_ONLINE_BUSINESS = ONLINE_TYPES.has(BUSINESS_TYPE);
 
 /** A collection that doesn't exist on this site reads as empty. */
 export async function entriesOf(collection: string): Promise<any[]> {
+  const { getCollectionNames } = await import("@/utils/collections");
+  if (!getCollectionNames().includes(collection)) return [];
   try {
     return await query(collection as any).orderBy(sortByOrder()).all();
-  } catch {
-    return [];
+  } catch (cause) {
+    throw new Error(`[schema] Failed to load configured collection "${collection}".`, { cause });
   }
 }
 
@@ -48,6 +54,14 @@ export async function buildAreaServed() {
   return areas
     .filter((a) => a.data?.title)
     .map((a) => ({ "@type": a.data?.areaType ?? "Place", name: a.data.title }));
+}
+
+/** Founders are explicit author tags, independent of page generation and authorship. */
+export async function founderIds(): Promise<string[]> {
+  const { getCollectionNames } = await import("@/utils/collections");
+  if (!getCollectionNames().includes("authors")) return [];
+  const founders = await queryByTag("authors", "founder").all();
+  return founders.filter((entry) => "title" in entry.data && entry.data.title).map((entry) => entry.id);
 }
 
 const byTag = (entries: any[], tag: string) => entries.find((e) => e.data?.tags?.includes(tag));
@@ -79,10 +93,11 @@ function buildAddress(entry: any) {
 export async function buildBusinessSchema(
   options: { logoUrl?: string } = {},
 ): Promise<Record<string, any>> {
-  const [contacts, socials, areaServed] = await Promise.all([
+  const [contacts, socials, areaServed, founders] = await Promise.all([
     entriesOf("contact-us"),
     entriesOf("social-media"),
     buildAreaServed(),
+    founderIds(),
   ]);
 
   const telephone = buildPhone(byTag(contacts, "phone"));
@@ -107,7 +122,7 @@ export async function buildBusinessSchema(
     url: BUSINESS_URL,
     ...(options.logoUrl && { logo: options.logoUrl, image: options.logoUrl }),
     ...(siteData.foundingDate && { foundingDate: siteData.foundingDate }),
-    ...(siteData.founder && { founder: { "@id": personId(siteData.founder) } }),
+    ...(founders.length && { founder: founders.map((id) => ({ "@id": personId(id) })) }),
     ...(telephone && { telephone }),
     ...(email && { email }),
     ...(address && { address }),
@@ -123,19 +138,18 @@ export async function buildBusinessSchema(
  * yields a half-empty person.
  */
 export async function buildPersonSchema(authorId: string): Promise<Record<string, any> | null> {
-  const authors = await entriesOf("authors");
-  const author = authors.find((a) => a.id === authorId);
+  const author = await resolveAuthorEntry(authorId);
   if (!author?.data?.title) return null;
   const sameAs = Object.values(author.data.social ?? {}).filter(
     (v): v is string => typeof v === "string" && v.startsWith("http"),
   );
   return {
     "@type": "Person",
-    "@id": personId(authorId),
+    "@id": personId(author.id),
     name: author.data.title,
     ...(author.data.role && { jobTitle: author.data.role }),
     ...(sameAs.length > 0 && { sameAs }),
-    worksFor: { "@id": BUSINESS_ID },
+    ...(author.data.description && { description: author.data.description }),
   };
 }
 

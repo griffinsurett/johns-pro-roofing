@@ -26,6 +26,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
+        "@site": new URL("./src", import.meta.url).pathname,
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },

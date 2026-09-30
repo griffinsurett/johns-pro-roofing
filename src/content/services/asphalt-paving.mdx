@@ -86,7 +86,10 @@ From a fresh lot on a new build to a full-depth reconstruction of a failing surf
 
 A paving project shouldn't shut down your property. We phase the work to keep entrances, parking, and access open where possible, and we communicate the schedule up front. You'll know the scope and the cost before we start — and estimates are free.
 
-We're a New Jersey company you can hold accountable, backed by {businessData.warranty} and {businessData.insurance} in NJ.
+We're a New Jersey company you can hold accountable.
+
+{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
 
 </Band>
 

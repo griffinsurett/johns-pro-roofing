@@ -21,7 +21,7 @@
  */
 import SecondaryHero from "@/layouts/SecondaryHero.astro";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
-import { query, sortByOrder, normalizeReference } from "@/utils/query";
+import { query, related, sortByOrder, normalizeReference } from "@/utils/query";
 import { getEntry } from "astro:content";
 
 export interface Props {
@@ -62,12 +62,7 @@ const currentServiceId =
 
 // FAQ band: FAQs whose `service` reference points at this service.
 const faqQuery = currentServiceId
-  ? query("faq")
-      .where((e: any) => {
-        const refs = normalizeReference(e.data.service);
-        return refs.some((r: any) => r.id === currentServiceId);
-      })
-      .orderBy(sortByOrder())
+  ? related("faq", "service", currentServiceId).orderBy(sortByOrder())
   : null;
 const faqCount = faqQuery ? (await faqQuery.all()).length : 0;
 
@@ -109,7 +104,7 @@ const portfolioQuery = portfolioIds.length
 <slot name="hero">
   <SecondaryHero
     eyebrow={eyebrow}
-    title={title}
+    title={title ?? ""}
     heading={heading}
     description={description}
     image={image}

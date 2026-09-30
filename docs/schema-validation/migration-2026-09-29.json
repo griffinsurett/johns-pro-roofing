@@ -1,0 +1,104 @@
+{
+  "date": "2026-09-29",
+  "template": "5257a3a5fc8d6b2372259a6efb956beda00efd70",
+  "build": "pass",
+  "unit_tests": 6,
+  "typecheck": {
+    "errors": 0,
+    "warnings": 0,
+    "hints": 57
+  },
+  "output": {
+    "html_files": 35,
+    "schema_pages": 20,
+    "redirect_stubs": 15,
+    "jsonld_blocks": 48,
+    "breadcrumb_trails": 19,
+    "faq_pages": 9,
+    "faq_occurrences": 102,
+    "services": 8,
+    "reviews": 48,
+    "errors": []
+  },
+  "external": {
+    "validator": "https://validator.schema.org/",
+    "mode": "public JSON-LD snippets only; no credentials",
+    "results": [
+      {
+        "path": "index.html",
+        "errors": 0,
+        "warnings": 0,
+        "objects": 1
+      },
+      {
+        "path": "faq/index.html",
+        "errors": 0,
+        "warnings": 0,
+        "objects": 3
+      },
+      {
+        "path": "services/asphalt-paving/index.html",
+        "errors": 0,
+        "warnings": 0,
+        "objects": 4
+      },
+      {
+        "path": "services/flat-roofing/index.html",
+        "errors": 0,
+        "warnings": 0,
+        "objects": 4
+      },
+      {
+        "path": "testimonials/index.html",
+        "errors": 0,
+        "warnings": 0,
+        "objects": 2
+      },
+      {
+        "path": "contact-us/index.html",
+        "errors": 0,
+        "warnings": 0,
+        "objects": 2
+      }
+    ]
+  },
+  "content_comparison": {
+    "baseline_html_files": 37,
+    "removed": [
+      "certifications/index.html",
+      "certifications/todo-cert-1/index.html"
+    ],
+    "text_changes": [
+      "services/asphalt-paving/index.html",
+      "services/commercial-roof-maintenance/index.html",
+      "services/commercial-roof-repairs/index.html",
+      "services/crack-filling/index.html",
+      "services/flat-roofing/index.html",
+      "services/parking-lot-repairs/index.html",
+      "services/parking-lot-sealcoating/index.html",
+      "services/residential-roofing/index.html"
+    ],
+    "link_changes": [],
+    "image_changes": []
+  },
+  "browser_qa": "pending; computer/browser tooling unavailable",
+  "release_isolation": {
+    "build": "pass",
+    "unit_tests": 6,
+    "typecheck_errors": 0,
+    "typecheck_warnings": 0,
+    "output_audits": "pass",
+    "graphs_identical_to_working_build": 20,
+    "excluded": [
+      "astro.config.mjs video integration",
+      "src/utils/videoThumbnails.ts",
+      "src/integrations/video-thumbnails/",
+      "public/__video-thumbnails/"
+    ]
+  },
+  "hosting": {
+    "alias": "https://johns-pro-roofing.vercel.app",
+    "canonical_domain": "https://johnsproroofing.com",
+    "canonical_domain_linked": false
+  }
+}

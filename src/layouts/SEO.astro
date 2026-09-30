@@ -20,7 +20,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import siteLogo from "@/assets/logo.png";
 import defaultOGImage from "@/assets/logo.png";
-import { siteData } from "@/content/siteData";
+import { siteData } from "@site/content/siteData";
 import { getImageUrl } from "@/utils/images";
 import {
   BUSINESS_ID,
@@ -29,11 +29,13 @@ import {
   buildPersonSchema,
   buildWebSiteSchema,
   personId,
+  founderIds,
 } from "@/utils/schema/identity";
 import { applySiteMap } from "@/utils/schema/resolve";
-import { buildBreadcrumbSchema } from "@/utils/schema/breadcrumbSchema";
-import JsonLd from "@/components/JsonLd.astro";
+import JsonLd from "@/components/Schema/JsonLd.astro";
 import type { ImageInput, SEOData } from "@/content/schema";
+import { setPageCanonicalUrl } from "@/utils/seo";
+import { absoluteWebUrl } from "@/utils/links/linkBehavior";
 
 export interface Props {
   title?: string;              // Page title
@@ -86,7 +88,7 @@ const finalTwitterCard = seo?.twitterCard || "summary_large_image";
 // No placeholder default: an empty list omits the tag entirely.
 const finalKeywords: string[] = seo?.keywords || [];
 const canonicalPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/$/, '');
-const finalCanonicalUrl = seo?.canonicalUrl || `${siteData.url}${canonicalPath}`;
+const finalCanonicalUrl = setPageCanonicalUrl(Astro.locals, Astro.url.pathname, seo);
 const effectiveRobots = seo?.robots || robots || "index, follow";
 
 // Author and publisher
@@ -98,9 +100,7 @@ const publisherName = siteData.legalName || siteData.title;
  * Social platforms require absolute URLs for images
  */
 const makeAbsolute = (url: string): string => {
-  if (url.startsWith('http')) return url;
-  if (url.startsWith('/')) return `${siteData.url}${url}`;
-  return `${siteData.url}/${url}`;
+  return absoluteWebUrl(url, siteData.url) ?? "";
 };
 
 const absoluteOgImage = makeAbsolute(finalOgImageUrl);
@@ -154,15 +154,16 @@ const structuredData: Record<string, any> = {
 };
 
 // Site-wide schema, one @graph: the page, this website, the business behind
-// it, its people (the founder, plus the page's author) and breadcrumbs. The
+// it and its people (the founder, plus the page's author). Breadcrumbs are
+// emitted after rendering by SchemaBoundary, using the shared navigation data. The
 // page subject (a layout's Service/Course/Product) and section schema (FAQs,
 // reviews) are emitted by the components that render them, via <Schema> —
 // see utils/schema/README.md.
 const people = [
-  ...new Set([siteData.founder, authorId].filter(Boolean) as string[]),
+  ...new Set([...await founderIds(), authorId].filter(Boolean) as string[]),
 ];
 const [businessSchema, ...personSchemas] = await Promise.all([
-  // `schemaMap.business` (src/content/schemaMap.ts) can add/remove properties.
+  // `schemaMap.business` (src/utils/schema/siteMap.ts) can add/remove properties.
   buildBusinessSchema({ logoUrl: makeAbsolute(siteLogo.src) }).then((node) =>
     applySiteMap("business", node, { pathname: Astro.url.pathname, locals: Astro.locals as any }),
   ),
@@ -175,7 +176,6 @@ if (authorId && !personSchemas[people.indexOf(authorId)]) {
     ? { "@type": "Person", "name": authorName }
     : { "@id": BUSINESS_ID };
 }
-const breadcrumbSchema = buildBreadcrumbSchema(canonicalPath, baseTitle);
 
 // Combine everything into a single JSON-LD @graph.
 const jsonLdGraph = {
@@ -185,7 +185,6 @@ const jsonLdGraph = {
     buildWebSiteSchema(),
     businessSchema,
     ...personSchemas.filter(Boolean),
-    ...(breadcrumbSchema ? [breadcrumbSchema] : []),
   ],
 };
 
@@ -235,5 +234,5 @@ if (import.meta.env.MODE !== 'development') {
 <meta name="twitter:site" content={publisherName} />
 <meta name="twitter:creator" content={authorName} />
 
-<!-- JSON-LD Structured Data (WebSite/Article + RoofingContractor + Breadcrumbs) -->
+<!-- JSON-LD Structured Data -->
 <JsonLd schema={jsonLdGraph} />
