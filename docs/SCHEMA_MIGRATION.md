@@ -38,7 +38,7 @@ canonical URLs, shared breadcrumbs, rendered FAQ answers and draft-safe AEO file
 - Build completes: 20 schema-bearing pages and 15 HTML redirect stubs; 48 JSON-LD
   blocks, 19 breadcrumb lists, eight Service subjects, 102 FAQ occurrences across
   nine pages, and 48 Review occurrences across three pages.
-- Six inherited unit tests pass. Typecheck: zero errors/warnings, 57 hints.
+- Eleven unit tests pass (six inherited plus five MDX export regressions). Typecheck: zero errors/warnings, 57 hints.
 - Isolated staged release also builds, typechecks and passes every audit/test.
   All 20 page graphs match the working build; unrelated video work is excluded.
 - Full schema/breadcrumb audits and site-specific assertions pass. They cover
@@ -71,6 +71,18 @@ changes are excluded from this release. Check an isolated staged build too.
 The prior schema commit on the feature branch is an ancestor of the new main
 release; this migration brings that incomplete implementation to the current
 shared runtime before publication.
+
+## Final AEO correction
+
+The first live schema pass succeeded, but final inspection found sixteen
+unresolved warranty/insurance statements in generated `llms-full.txt`. The source
+extractor had matched `<p>` tags inside conditional MDX. The shared Greastro fix
+uses Astro's existing Satteri parser to exclude expression blocks and unresolved
+sentences without executing MDX JavaScript. It also omits module declarations.
+The regenerated file removes exactly those sixteen statements; no visible HTML
+or JSON-LD changes. Dynamic prose is conservatively omitted rather than evaluated.
+Regression tests cover conditionals, nested interpolation, Unicode offsets, literal
+code, and no execution. The site audit now checks generated LLMs for this defect.
 
 ## Hosting
 

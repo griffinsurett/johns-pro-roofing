@@ -86,6 +86,8 @@ for name in ['llms.txt', 'llms-full.txt']:
     text = (ROOT / name).read_text()
     assert '/services/asphalt-paving' in text and '/services/flat-roofing' in text
     assert 'TODO:' not in text and 'todo-cert-1' not in text
+    assert 'businessData' not in text and 'Work is backed by' not in text
+    assert 'We are {businessData.insurance}' not in text
 
 # Preserve the site's restrictive policy while permitting its already-used font CSS.
 headers = json.loads((PROJECT / 'vercel.json').read_text())['headers']

@@ -2,7 +2,7 @@
   "date": "2026-09-29",
   "template": "5257a3a5fc8d6b2372259a6efb956beda00efd70",
   "build": "pass",
-  "unit_tests": 6,
+  "unit_tests": 11,
   "typecheck": {
     "errors": 0,
     "warnings": 0,
@@ -84,7 +84,7 @@
   "browser_qa": "pending; computer/browser tooling unavailable",
   "release_isolation": {
     "build": "pass",
-    "unit_tests": 6,
+    "unit_tests": 11,
     "typecheck_errors": 0,
     "typecheck_warnings": 0,
     "output_audits": "pass",
@@ -100,5 +100,13 @@
     "alias": "https://johns-pro-roofing.vercel.app",
     "canonical_domain": "https://johnsproroofing.com",
     "canonical_domain_linked": false
+  },
+  "aeo_correction": {
+    "unit_cases": 5,
+    "parser": "satteri 0.10.5, existing Astro MDX parser",
+    "removed_unresolved_statements": 16,
+    "visible_html_changed": false,
+    "schema_changed": false,
+    "generated_output_audit": "pass"
   }
 }
