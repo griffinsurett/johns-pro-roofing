@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 import { siteData } from '../../content/siteData';
 import { isDraft, shouldItemUseRootPathData } from '../../utils/pages/pageRules';
 import type { AstroIntegration } from 'astro';
-import { staticMdx } from './staticMdx';
 
 interface PageManifestEntry {
   path: string;
@@ -250,11 +249,10 @@ function stripFrontmatter(src: string): string {
  */
 function extractMdxBody(filePath: string): string | undefined {
   const raw = readFileSync(filePath, 'utf8');
-  const source = stripFrontmatter(raw);
-  if (!source) return undefined;
+  const body = stripFrontmatter(raw);
+  if (!body) return undefined;
 
-  const hasImports = /^import\s/m.test(source);
-  const body = staticMdx(source);
+  const hasImports = /^import\s/m.test(body);
   const hasHtmlTags = /<[a-z]/i.test(body);
 
   // Mode 1: HTML prose (no imports, has <section> blocks)
