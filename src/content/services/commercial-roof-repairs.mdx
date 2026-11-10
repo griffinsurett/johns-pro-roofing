@@ -38,6 +38,8 @@ cta:
     href: "/contact-us"
 ---
 import QuoteCta from "@/components/QuoteCta.astro";
+import Button from "@/components/Button/Button";
+import PhoneLink from "@/components/PhoneLink.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
@@ -144,6 +146,11 @@ If you're patching the same roof year after year, scheduled maintenance breaks t
 - **Report the roof's condition** with photos, so you can budget for repairs instead of reacting to leaks
 
 Many manufacturer warranties also require documented maintenance, and those reports give you that record.
+
+<div class="flex flex-wrap items-center gap-4 mt-6">
+  <Button variant="primary" size="lg" href="/contact-us">Contact Us</Button>
+  <PhoneLink variant="phone" tone="blue" size="lg" />
+</div>
 
 </Band>
 
