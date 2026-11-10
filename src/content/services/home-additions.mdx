@@ -1,0 +1,98 @@
+---
+title: "Home Additions & Extensions"
+heading:
+  before: "Home"
+  text: "Additions"
+  after: "& Extensions in New Jersey"
+description: "Home additions and extensions in New Jersey — room additions, home extensions, and structural additions that expand your existing living space. Free estimates."
+order: 12
+category: "Home Improvement"
+icon: "fa6:ruler-combined"
+cardSize: "small"
+cardCta: "Learn More"
+cardBlurb: "Room additions, home extensions, and structural additions that give you more living space without moving."
+price: "Free estimates available"
+bannerImage: "../../assets/residential-working.webp"
+featuredImage: "../../assets/residential-working-2.webp"
+seo:
+  metaTitle: "Home Additions & Extensions in NJ | John's Pro Roofing"
+  metaDescription: "Home additions and extensions in New Jersey — room additions, extensions, and structural additions to expand your living space. Free estimate. Call 732-351-3518."
+  keywords:
+    - "home additions nj"
+    - "home addition contractors nj"
+    - "room additions nj"
+    - "home extensions nj"
+features:
+  - "Room additions"
+  - "Home extensions"
+  - "Expanding existing living spaces"
+  - "Structural additions & renovations"
+cta:
+  title: "Need more"
+  accent: "space"
+  titleAfter: "at home?"
+  description: "Free estimates on home additions and extensions across New Jersey."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import heroImage from "../../assets/residential-working.webp";
+import bandTypes from "../../assets/siding.jpg";
+import bandRoof from "../../assets/john-on-roof-2.webp";
+
+<ServiceLayout
+  eyebrow={frontmatter.category}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  category={frontmatter.category}
+  portfolioCategories={["Residential Roofing"]}
+  heroActions
+>
+
+<Bands>
+
+<Band image={heroImage} imageAlt="Residential crew at work on a New Jersey home">
+
+## More room without moving
+
+Outgrowing your home doesn't have to mean leaving it. An addition or extension gives you the space you need (another bedroom, a bigger kitchen, a home office) in the neighborhood you already love. We build home additions for New Jersey homeowners from foundation to finished interior.
+
+</Band>
+
+<Band image={bandTypes} imageAlt="House exterior with siding and window shutters" reverse>
+
+## Additions and extensions we build
+
+- **Room additions**: new bedrooms, family rooms, offices, and suites
+- **Home extensions**: pushing out an existing room to make it larger
+- **Expanding existing living spaces**: reworking and opening up the space you already have
+- **Structural additions and renovations**: additions and structural changes that tie into your home's existing framing
+
+Want to update the rest of the house at the same time? See our [home remodeling](/services/home-remodeling) services.
+
+</Band>
+
+<Band image={bandRoof} imageAlt="John on a completed residential roof">
+
+## Built to match your home
+
+An addition should look like it was always part of the house. That comes down to how the new structure ties into the old one, especially the roof. Roofing is our trade, so we tie the new roof into your existing one cleanly and keep it watertight where the two meet.
+
+{businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
+{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form. */}
+<QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>

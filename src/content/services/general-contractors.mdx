@@ -1,0 +1,101 @@
+---
+title: "General Contractors"
+heading:
+  before: "General"
+  text: "Contractors"
+  after: "in New Jersey"
+description: "General contractor for New Jersey homeowners — home renovations and improvements, residential construction, remodeling, and exterior upgrades. Free estimates."
+order: 9
+category: "Home Improvement"
+icon: "fa6:helmet-safety"
+cardSize: "small"
+cardCta: "Learn More"
+cardBlurb: "Home renovations, residential construction, and exterior improvements, managed by one contractor from estimate to cleanup."
+price: "Free estimates available"
+bannerImage: "../../assets/residential-working-2.webp"
+featuredImage: "../../assets/siding.jpg"
+seo:
+  metaTitle: "General Contractors in NJ | John's Pro Roofing"
+  metaDescription: "General contractor in New Jersey for home renovations, residential construction, remodeling, and exterior improvements. Free estimate. Call 732-351-3518."
+  keywords:
+    - "general contractors nj"
+    - "general contractor near me"
+    - "home improvement contractor nj"
+    - "residential contractor nj"
+features:
+  - "Home renovations & improvements"
+  - "Residential construction"
+  - "Remodeling & exterior improvements"
+  - "Free estimates"
+cta:
+  title: "Planning a"
+  accent: "home"
+  titleAfter: "project?"
+  description: "Free estimates on renovations, construction, and home improvements across New Jersey."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import heroImage from "../../assets/residential-working-2.webp";
+import bandExterior from "../../assets/siding.jpg";
+import bandWhy from "../../assets/john-w-client.webp";
+
+<ServiceLayout
+  eyebrow={frontmatter.category}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  category={frontmatter.category}
+  portfolioCategories={["Residential Roofing"]}
+  heroActions
+>
+
+<Bands>
+
+<Band image={heroImage} imageAlt="Residential crew at work on a New Jersey home">
+
+## One contractor for the whole project
+
+Most home projects involve more than one trade. A renovation can mean framing, roofing, siding, and finish work, and coordinating separate contractors for each one is where schedules slip and costs creep.
+
+John's Pro Roofing takes on home renovations, residential construction, and exterior improvements for homeowners across New Jersey. You get one point of contact from the first estimate to the final cleanup.
+
+</Band>
+
+<Band image={bandExterior} imageAlt="House exterior with siding and window shutters" reverse>
+
+## What we build and improve
+
+- **Home renovations and improvements**: updating rooms, systems, and finishes in the home you already have
+- **Residential construction**: new structures built from the ground up
+- **Remodeling**: [kitchens, bathrooms, and full interiors](/services/home-remodeling)
+- **Exterior improvements**: roofing, siding, and [decks](/services/deck-builders)
+- **Additions**: [room additions and extensions](/services/home-additions) when you need more space
+
+Not sure where to start? We'll walk the property with you and tell you what the project involves.
+
+</Band>
+
+<Band image={bandWhy} imageAlt="John meeting with a homeowner">
+
+## Why homeowners choose John's Pro Roofing
+
+We're a local, owner-operated New Jersey company, not a franchise. Before work starts, you get a clear scope and cost, and we keep you in the loop until the job is done and the site is clean. See what your neighbors say on our [reviews](/#testimonials).
+
+{businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
+{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form. */}
+<QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>

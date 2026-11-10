@@ -1,0 +1,101 @@
+---
+title: "Deck Builders"
+heading:
+  before: "Deck"
+  text: "Builders"
+  after: "in New Jersey"
+description: "Custom deck builders in New Jersey — Trex composite and wood decks, deck replacements and repairs, railings, stairs, and covered decks. Free estimates."
+order: 10
+category: "Home Improvement"
+icon: "fa6:stairs"
+cardSize: "small"
+cardCta: "Learn More"
+cardBlurb: "Custom Trex composite and wood decks, plus replacements, repairs, railings, stairs, and covered decks."
+price: "Free estimates available"
+bannerImage: "../../assets/decks.jpg"
+featuredImage: "../../assets/decks.jpg"
+seo:
+  metaTitle: "Deck Builders in NJ | Trex & Wood Decks | John's Pro Roofing"
+  metaDescription: "Custom deck builders in New Jersey — Trex composite and wood decks, replacements, repairs, railings, and covered decks. Free estimate. Call 732-351-3518."
+  keywords:
+    - "deck builders nj"
+    - "deck builders near me"
+    - "trex deck installers nj"
+    - "deck replacement nj"
+features:
+  - "Custom deck construction"
+  - "Trex composite & wood decks"
+  - "Deck replacements & repairs"
+  - "Railings, stairs & covered decks"
+cta:
+  title: "Ready for a"
+  accent: "new"
+  titleAfter: "deck?"
+  description: "Free estimates on deck construction, replacement, and repair across New Jersey."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import heroImage from "../../assets/decks.jpg";
+import bandMaterials from "../../assets/residential-working.webp";
+import bandWhy from "../../assets/john-w-client.webp";
+
+<ServiceLayout
+  eyebrow={frontmatter.category}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  category={frontmatter.category}
+  portfolioCategories={["Residential Roofing"]}
+  heroActions
+>
+
+<Bands>
+
+<Band image={heroImage} imageAlt="Backyard wood deck with railings and stairs">
+
+## Custom decks built for your yard
+
+A good deck fits the way you use your yard: room for a table, a grill, or a quiet corner, with stairs where you actually walk. We design and build custom decks for New Jersey homes, sized and laid out for your space.
+
+Every deck starts with the structure you don't see. Footings, framing, and the connection to your house are what keep a deck solid for years, so we build those right before the boards go down.
+
+</Band>
+
+<Band image={bandMaterials} imageAlt="Residential crew at work on a New Jersey home" reverse>
+
+## Trex composite or wood
+
+- **Trex composite decking** resists rot, splintering, and fading, and doesn't need staining or sealing
+- **Wood decking** costs less up front and has a classic look, with periodic sealing or staining to keep it protected
+
+We'll walk you through both options, including the long-term upkeep, so you can choose what fits your budget.
+
+</Band>
+
+<Band image={bandWhy} imageAlt="John meeting with a homeowner">
+
+## Replacements, repairs, and finishing touches
+
+- **Deck replacements**: tear-out of a worn or unsafe deck and a new build in its place
+- **Deck repairs**: soft or rotted boards, loose railings, and failing stairs
+- **Railings and stairs**: new or upgraded railings and stairs that are safe and solid
+- **Covered decks**: a roof over your deck for shade and rain cover, built by a company that installs roofs every day
+
+{businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
+{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form. */}
+<QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>

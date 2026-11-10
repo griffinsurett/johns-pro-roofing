@@ -20,6 +20,9 @@ interface Props {
   tone?: "white" | "blue";
   size?: "sm" | "md" | "lg";
   class?: string;
+  /** Button text in place of the number (e.g. "Call Now"). */
+  label?: string;
+  leftIcon?: string;
 }
 
 const {
@@ -27,6 +30,8 @@ const {
   tone,
   size,
   class: className,
+  label,
+  leftIcon,
 } = Astro.props as Props;
 
 const phone = await getPhoneContact();
@@ -39,8 +44,9 @@ const phone = await getPhoneContact();
     size={size}
     href={phone.url}
     className={className}
+    leftIcon={leftIcon}
     aria-label={`Call us at ${phone.displayValue}`}
   >
-    {phone.displayValue}
+    {label ?? phone.displayValue}
   </Button>
 )}

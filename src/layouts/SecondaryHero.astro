@@ -16,6 +16,9 @@
 import { Image } from "astro:assets";
 import { getAuthorName } from "@/layouts/collections/helpers/layoutHelpers";
 import SectionHeading from "@/components/SectionHeading.astro";
+import Button from "@/components/Button/Button";
+import PhoneLink from "@/components/PhoneLink.astro";
+import { ctaData } from "@/content/siteData";
 import defaultImage from "@/assets/john-on-roof.webp";
 
 type Heading = string | { before?: string; text?: string; after?: string };
@@ -34,6 +37,8 @@ export interface Props {
   readingTime?: number;
   className?: string;
   minHeight?: string;
+  /** Show "Call Now" + "Free Estimate" (to the page's quote form) buttons. */
+  actions?: boolean;
 }
 
 const {
@@ -47,6 +52,7 @@ const {
   readingTime,
   className = "",
   minHeight = "clamp(360px,52vh,560px)",
+  actions = false,
 } = Astro.props;
 
 const bg = image || defaultImage;
@@ -112,6 +118,17 @@ const headingStr =
         <p class="text-[var(--color-text-muted)] text-lg leading-relaxed max-w-[560px] mt-1">
           {description}
         </p>
+      )
+    }
+
+    {
+      actions && (
+        <div class="flex flex-wrap items-center gap-3 mt-3">
+          <PhoneLink variant="primary" size="lg" label="Call Now" leftIcon="fa6:phone" />
+          <Button variant="secondary" size="lg" href={ctaData.link}>
+            Free Estimate
+          </Button>
+        </div>
       )
     }
 

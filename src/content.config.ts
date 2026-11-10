@@ -120,8 +120,8 @@ export const collections = {
       }),
   }),
 
-  // Services — a single collection grouped by `category` into two families:
-  // "Commercial Roofing" and "Asphalt Paving". Each entry gets its own page
+  // Services — a single collection grouped by `category` ("Commercial
+  // Roofing", "Residential Roofing", "Home Improvement", ...). Each entry gets its own page
   // (e.g. /services/asphalt-paving) with a ServiceLayout hero.
   "services": defineCollection({
     loader: GlobLoad("services"),

@@ -2,7 +2,7 @@
 // Do not edit manually. Run "npm run generate:icons" (or node src/integrations/icons/utils/generate-icon-map.mjs) to regenerate.
 
 import type { IconType } from 'react-icons';
-import { FaArrowRightLong, FaArrowsUpDownLeftRight, FaBandage, FaBrush, FaBuildingShield, FaBullseye, FaClipboardCheck, FaClockRotateLeft, FaCompass, FaEye, FaFeather, FaFileLines, FaHeadset, FaHouseChimney, FaLayerGroup, FaLifeRing, FaLink, FaPalette, FaPhone, FaRoad, FaRobot, FaRotateLeft, FaScaleBalanced, FaScrewdriverWrench, FaShieldHalved, FaStar, FaUniversalAccess, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
+import { FaArrowRightLong, FaArrowsUpDownLeftRight, FaBandage, FaBrush, FaBuildingShield, FaBullseye, FaClipboardCheck, FaClockRotateLeft, FaCompass, FaEye, FaFeather, FaFileLines, FaHammer, FaHeadset, FaHelmetSafety, FaHouseChimney, FaLayerGroup, FaLifeRing, FaLink, FaPalette, FaPhone, FaRoad, FaRobot, FaRotateLeft, FaRulerCombined, FaScaleBalanced, FaScrewdriverWrench, FaShieldHalved, FaStairs, FaStar, FaUniversalAccess, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
 import { LuArrowRight, LuArrowUpRight, LuBookOpen, LuChevronLeft, LuChevronRight, LuContact, LuGlobe, LuImage, LuMail, LuMapPin, LuPhone, LuSettings } from 'react-icons/lu';
 import { SiFacebook, SiInstagram, SiYoutube } from 'react-icons/si';
 
@@ -19,7 +19,9 @@ export const iconMap = {
   'fa6:eye': FaEye,
   'fa6:feather': FaFeather,
   'fa6:file-lines': FaFileLines,
+  'fa6:hammer': FaHammer,
   'fa6:headset': FaHeadset,
+  'fa6:helmet-safety': FaHelmetSafety,
   'fa6:house-chimney': FaHouseChimney,
   'fa6:layer-group': FaLayerGroup,
   'fa6:life-ring': FaLifeRing,
@@ -29,9 +31,11 @@ export const iconMap = {
   'fa6:road': FaRoad,
   'fa6:robot': FaRobot,
   'fa6:rotate-left': FaRotateLeft,
+  'fa6:ruler-combined': FaRulerCombined,
   'fa6:scale-balanced': FaScaleBalanced,
   'fa6:screwdriver-wrench': FaScrewdriverWrench,
   'fa6:shield-halved': FaShieldHalved,
+  'fa6:stairs': FaStairs,
   'fa6:star': FaStar,
   'fa6:universal-access': FaUniversalAccess,
   'fa6:wand-magic-sparkles': FaWandMagicSparkles,

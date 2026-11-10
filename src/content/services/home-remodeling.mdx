@@ -1,0 +1,99 @@
+---
+title: "Home Remodeling"
+heading:
+  before: "Home Remodeling"
+  text: "Contractors"
+  after: "in New Jersey"
+description: "Home remodeling contractors in New Jersey — complete home renovations, kitchen and bathroom remodeling, interior renovations, and home improvement projects. Free estimates."
+order: 11
+category: "Home Improvement"
+icon: "fa6:hammer"
+cardSize: "small"
+cardCta: "Learn More"
+cardBlurb: "Complete home renovations, kitchen and bathroom remodels, and interior improvement projects."
+price: "Free estimates available"
+bannerImage: "../../assets/john-w-client.webp"
+featuredImage: "../../assets/john-w-client.webp"
+seo:
+  metaTitle: "Home Remodeling Contractors in NJ | John's Pro Roofing"
+  metaDescription: "Home remodeling contractors in New Jersey — complete renovations, kitchen and bathroom remodeling, and interior renovations. Free estimate. Call 732-351-3518."
+  keywords:
+    - "home remodeling contractors nj"
+    - "kitchen remodeling nj"
+    - "bathroom remodeling nj"
+    - "home renovation contractors nj"
+features:
+  - "Complete home renovations"
+  - "Kitchen & bathroom remodeling"
+  - "Interior renovations"
+  - "Home improvement projects"
+cta:
+  title: "Ready to"
+  accent: "remodel"
+  titleAfter: "your home?"
+  description: "Free estimates on renovations and remodeling projects across New Jersey."
+  primary:
+    text: "Request a Free Estimate"
+    href: "/contact-us"
+---
+import QuoteCta from "@/components/QuoteCta.astro";
+import Bands from "@/components/Bands/Bands.astro";
+import Band from "@/components/Bands/Band.astro";
+import { businessData } from "@/content/siteData";
+import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import heroImage from "../../assets/john-w-client.webp";
+import bandRooms from "../../assets/residential-working-2.webp";
+import bandProcess from "../../assets/residential-working.webp";
+
+<ServiceLayout
+  eyebrow={frontmatter.category}
+  heading={frontmatter.heading}
+  description={frontmatter.description}
+  image={heroImage}
+  category={frontmatter.category}
+  portfolioCategories={["Residential Roofing"]}
+  heroActions
+>
+
+<Bands>
+
+<Band image={heroImage} imageAlt="John meeting with a homeowner">
+
+## Remodeling that fits how you live
+
+Whether it's one dated bathroom or the whole house, a remodel should make your home work better for the way you live now. We handle home remodeling projects for New Jersey homeowners, from planning the layout to the final walkthrough.
+
+</Band>
+
+<Band image={bandRooms} imageAlt="Residential crew at work on a New Jersey home" reverse>
+
+## What we remodel
+
+- **Complete home renovations**: updating an entire home, room by room or all at once
+- **Kitchen remodeling**: new layouts, cabinets, counters, and finishes
+- **Bathroom remodeling**: from a refreshed vanity to a full gut renovation
+- **Interior renovations**: flooring, walls, trim, and opening up or reworking rooms
+- **Home improvement projects**: smaller upgrades that make a big difference day to day
+
+Planning to add space instead? See our [home additions and extensions](/services/home-additions).
+
+</Band>
+
+<Band image={bandProcess} imageAlt="Residential crew at work on a New Jersey home">
+
+## A clear plan before work starts
+
+A remodel goes smoothly when everyone knows the plan. We start with a free estimate, then give you a clear scope and cost before any work begins. While the job is underway, we keep you in the loop, and when it's done we leave the site clean.
+
+{businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
+{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+
+</Band>
+
+</Bands>
+
+{/* Primary conversion: quote form. */}
+<QuoteCta cta={frontmatter.cta} />
+
+</ServiceLayout>
