@@ -41,8 +41,10 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
+import { query, sortByOrder } from "@/utils/query";
 import heroImage from "../../assets/residential-working.webp";
-import bandTypes from "../../assets/siding.jpg";
 import bandRoof from "../../assets/john-on-roof-2.webp";
 
 <ServiceLayout
@@ -55,6 +57,11 @@ import bandRoof from "../../assets/john-on-roof-2.webp";
   heroActions
 >
 
+<ContentRenderer
+  query={query("selling-points").orderBy(sortByOrder())}
+  variant="MarqueeVariant"
+/>
+
 <Bands>
 
 <Band image={heroImage} imageAlt="Residential crew at work on a New Jersey home">
@@ -65,18 +72,12 @@ Outgrowing your home doesn't have to mean leaving it. An addition or extension g
 
 </Band>
 
-<Band image={bandTypes} imageAlt="House exterior with siding and window shutters" reverse>
-
-## Additions and extensions we build
-
-- **Room additions**: new bedrooms, family rooms, offices, and suites
-- **Home extensions**: pushing out an existing room to make it larger
-- **Expanding existing living spaces**: reworking and opening up the space you already have
-- **Structural additions and renovations**: additions and structural changes that tie into your home's existing framing
-
-Want to update the rest of the house at the same time? See our [home remodeling](/services/home-remodeling) services.
-
-</Band>
+<RoofingTypesShowcase
+  collection="home-improvement-types"
+  service="home-additions"
+  heading="Additions and extensions we build"
+  reverse
+/>
 
 <Band image={bandRoof} imageAlt="John on a completed residential roof">
 
@@ -92,7 +93,50 @@ An addition should look like it was always part of the house. That comes down to
 
 </Bands>
 
+{/* Related home services — image cards linking to each page. */}
+<ContentRenderer
+  query={query("services")
+    .where((entry) =>
+      ["Home Improvement", "Residential Roofing"].includes(entry.data.category) &&
+      entry.id !== "home-additions"
+    )
+    .orderBy(sortByOrder())}
+  variant="ImageCardVariant"
+  id="more-home-services"
+  pretitle="More Home Services"
+  title="One Contractor for"
+  accentTitle="Your Whole Home"
+  description="Renovations, decks, additions, and roofing from the same local New Jersey team."
+  columns={4}
+/>
+
+<ContentRenderer
+  query={query("stats").orderBy(sortByOrder())}
+  variant="StatsVariant"
+  id="why-us"
+  pretitle="Why Choose Us"
+  body={[
+    "We're a local, owner-operated New Jersey company, not a franchise. Every addition starts with a free estimate and a clear scope and cost before any work begins.",
+    "Roofing is our trade, so the hardest part of an addition, tying the new roof into the old one, is work we do every day.",
+  ]}
+>
+  <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
+    More space,
+    <span class="italic text-accent"> built to match </span>
+    your home.
+  </h2>
+</ContentRenderer>
+
 {/* Primary conversion: quote form. */}
 <QuoteCta cta={frontmatter.cta} />
+
+<div id="testimonials" class="pt-[100px]">
+  <ContentRenderer
+    query={query("testimonials").orderBy(sortByOrder())}
+    variant="TestimonialCarouselVariant"
+    collectionUrl="/testimonials"
+    collectionTitle="Reviews"
+  />
+</div>
 
 </ServiceLayout>

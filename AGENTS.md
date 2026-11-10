@@ -32,7 +32,9 @@ Greastro systems (content collections → `query()` → `ContentRenderer` → va
 
 Beyond the Greastro defaults, this site adds collections under `src/content/`:
 `roofing`, `services`, `service-areas`, `certifications`, `selling-points`, `projects`,
-`testimonials`, `faq`. Manufacturer certifications are the `certifications` collection —
+`testimonials`, `faq`, `roofing-types`, `home-improvement-types`. The two `*-types`
+collections share one shape and one query (`utils/roofingTypes.ts`), so
+`RoofingTypesShowcase` renders either via its `collection` prop. Manufacturer certifications are the `certifications` collection —
 **not** a field on `businessData`. Add/edit entries and `_meta.mdx`; render through
 `ContentRenderer` with an existing variant before inventing a new display.
 

@@ -219,6 +219,17 @@ export const collections = {
       }),
   }),
 
+  // ── home-improvement-types ──────────────────────────────
+  // Deck, remodeling, and addition work shown on the home improvement service
+  // pages. Same shape as roofing-types so it reuses RoofingTypesShowcase.
+  "home-improvement-types": defineCollection({
+    loader: GlobLoad("home-improvement-types"),
+    schema: ({ image }) =>
+      baseSchema({ image }).extend({
+        service: refSchema("services"),
+      }),
+  }),
+
   // ── who-we-serve ────────────────────────────────────────
   // Commercial audiences (Property Managers, HOAs, etc.) listed in the
   // red-gradient "Who We Serve" callout band. MDX-backed so each audience can

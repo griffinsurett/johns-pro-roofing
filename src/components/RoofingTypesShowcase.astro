@@ -10,7 +10,7 @@
 import { getImage } from "astro:assets";
 import Band from "@/components/Bands/Band.astro";
 import RoofingTypesShowcaseClient from "@/components/RoofingTypesShowcase.tsx";
-import { getRoofingTypes } from "@/utils/roofingTypes";
+import { getRoofingTypes, type TypesCollection } from "@/utils/roofingTypes";
 import { resolveImageMetadata } from "@/utils/images";
 
 interface Props {
@@ -19,9 +19,11 @@ interface Props {
   heading?: string;
   /** Image on the right instead of the left (desktop). */
   reverse?: boolean;
+  /** Types collection to read (defaults to roofing-types). */
+  collection?: TypesCollection;
 }
 
-const { service, heading, reverse = false } = Astro.props as Props;
+const { service, heading, reverse = false, collection } = Astro.props as Props;
 
 /**
  * Resolve a prepared item's image to an optimized src + srcset.
@@ -47,7 +49,7 @@ async function optimize(image: any): Promise<{ src: string; srcset?: string }> {
   };
 }
 
-const types = await getRoofingTypes({ service });
+const types = await getRoofingTypes({ service, collection });
 const items = await Promise.all(
   types.map(async (t: any) => {
     const { src, srcset } = await optimize(t.data.featuredImage);

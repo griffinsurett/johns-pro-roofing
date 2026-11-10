@@ -41,6 +41,9 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
+import { query, sortByOrder } from "@/utils/query";
 import heroImage from "../../assets/decks.jpg";
 import bandMaterials from "../../assets/residential-working.webp";
 import bandWhy from "../../assets/john-w-client.webp";
@@ -55,6 +58,11 @@ import bandWhy from "../../assets/john-w-client.webp";
   heroActions
 >
 
+<ContentRenderer
+  query={query("selling-points").orderBy(sortByOrder())}
+  variant="MarqueeVariant"
+/>
+
 <Bands>
 
 <Band image={heroImage} imageAlt="Backyard wood deck with railings and stairs">
@@ -67,7 +75,14 @@ Every deck starts with the structure you don't see. Footings, framing, and the c
 
 </Band>
 
-<Band image={bandMaterials} imageAlt="Residential crew at work on a New Jersey home" reverse>
+<RoofingTypesShowcase
+  collection="home-improvement-types"
+  service="deck-builders"
+  heading="Decks we build"
+  reverse
+/>
+
+<Band image={bandMaterials} imageAlt="Residential crew at work on a New Jersey home">
 
 ## Trex composite or wood
 
@@ -78,14 +93,13 @@ We'll walk you through both options, including the long-term upkeep, so you can 
 
 </Band>
 
-<Band image={bandWhy} imageAlt="John meeting with a homeowner">
+<Band image={bandWhy} imageAlt="John meeting with a homeowner" reverse>
 
-## Replacements, repairs, and finishing touches
+## Repair or replace? We'll tell you straight
 
-- **Deck replacements**: tear-out of a worn or unsafe deck and a new build in its place
-- **Deck repairs**: soft or rotted boards, loose railings, and failing stairs
-- **Railings and stairs**: new or upgraded railings and stairs that are safe and solid
-- **Covered decks**: a roof over your deck for shade and rain cover, built by a company that installs roofs every day
+If the footings, framing, and the connection to your house are sound, worn boards, loose railings, and tired stairs can usually be repaired. If the structure is rotted or the deck is pulling away from the house, a replacement is the safer call.
+
+We'll inspect your deck during a free estimate and tell you honestly which one you need, with a clear scope and cost before any work begins.
 
 {businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
 {businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
@@ -95,7 +109,50 @@ We'll walk you through both options, including the long-term upkeep, so you can 
 
 </Bands>
 
+{/* Related home services — image cards linking to each page. */}
+<ContentRenderer
+  query={query("services")
+    .where((entry) =>
+      ["Home Improvement", "Residential Roofing"].includes(entry.data.category) &&
+      entry.id !== "deck-builders"
+    )
+    .orderBy(sortByOrder())}
+  variant="ImageCardVariant"
+  id="more-home-services"
+  pretitle="More Home Services"
+  title="One Contractor for"
+  accentTitle="Your Whole Home"
+  description="Renovations, decks, additions, and roofing from the same local New Jersey team."
+  columns={4}
+/>
+
+<ContentRenderer
+  query={query("stats").orderBy(sortByOrder())}
+  variant="StatsVariant"
+  id="why-us"
+  pretitle="Why Choose Us"
+  body={[
+    "We're a local, owner-operated New Jersey company, not a franchise. Every deck starts with a free estimate and a clear scope and cost before any work begins.",
+    "We build the structure you don't see as carefully as the boards you do, so your deck stays safe and solid for years.",
+  ]}
+>
+  <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
+    Decks built
+    <span class="italic text-accent"> solid, </span>
+    from the footings up.
+  </h2>
+</ContentRenderer>
+
 {/* Primary conversion: quote form. */}
 <QuoteCta cta={frontmatter.cta} />
+
+<div id="testimonials" class="pt-[100px]">
+  <ContentRenderer
+    query={query("testimonials").orderBy(sortByOrder())}
+    variant="TestimonialCarouselVariant"
+    collectionUrl="/testimonials"
+    collectionTitle="Reviews"
+  />
+</div>
 
 </ServiceLayout>

@@ -41,8 +41,10 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
+import { query, sortByOrder } from "@/utils/query";
 import heroImage from "../../assets/john-w-client.webp";
-import bandRooms from "../../assets/residential-working-2.webp";
 import bandProcess from "../../assets/residential-working.webp";
 
 <ServiceLayout
@@ -55,6 +57,11 @@ import bandProcess from "../../assets/residential-working.webp";
   heroActions
 >
 
+<ContentRenderer
+  query={query("selling-points").orderBy(sortByOrder())}
+  variant="MarqueeVariant"
+/>
+
 <Bands>
 
 <Band image={heroImage} imageAlt="John meeting with a homeowner">
@@ -65,19 +72,12 @@ Whether it's one dated bathroom or the whole house, a remodel should make your h
 
 </Band>
 
-<Band image={bandRooms} imageAlt="Residential crew at work on a New Jersey home" reverse>
-
-## What we remodel
-
-- **Complete home renovations**: updating an entire home, room by room or all at once
-- **Kitchen remodeling**: new layouts, cabinets, counters, and finishes
-- **Bathroom remodeling**: from a refreshed vanity to a full gut renovation
-- **Interior renovations**: flooring, walls, trim, and opening up or reworking rooms
-- **Home improvement projects**: smaller upgrades that make a big difference day to day
-
-Planning to add space instead? See our [home additions and extensions](/services/home-additions).
-
-</Band>
+<RoofingTypesShowcase
+  collection="home-improvement-types"
+  service="home-remodeling"
+  heading="What we remodel"
+  reverse
+/>
 
 <Band image={bandProcess} imageAlt="Residential crew at work on a New Jersey home">
 
@@ -93,7 +93,50 @@ A remodel goes smoothly when everyone knows the plan. We start with a free estim
 
 </Bands>
 
+{/* Related home services — image cards linking to each page. */}
+<ContentRenderer
+  query={query("services")
+    .where((entry) =>
+      ["Home Improvement", "Residential Roofing"].includes(entry.data.category) &&
+      entry.id !== "home-remodeling"
+    )
+    .orderBy(sortByOrder())}
+  variant="ImageCardVariant"
+  id="more-home-services"
+  pretitle="More Home Services"
+  title="One Contractor for"
+  accentTitle="Your Whole Home"
+  description="Renovations, decks, additions, and roofing from the same local New Jersey team."
+  columns={4}
+/>
+
+<ContentRenderer
+  query={query("stats").orderBy(sortByOrder())}
+  variant="StatsVariant"
+  id="why-us"
+  pretitle="Why Choose Us"
+  body={[
+    "We're a local, owner-operated New Jersey company, not a franchise. Every remodel starts with a free estimate and a clear scope and cost before any work begins.",
+    "While the work is underway, we keep you in the loop, and when it's done we leave your home clean.",
+  ]}
+>
+  <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
+    Remodels
+    <span class="italic text-accent"> planned right, </span>
+    built to last.
+  </h2>
+</ContentRenderer>
+
 {/* Primary conversion: quote form. */}
 <QuoteCta cta={frontmatter.cta} />
+
+<div id="testimonials" class="pt-[100px]">
+  <ContentRenderer
+    query={query("testimonials").orderBy(sortByOrder())}
+    variant="TestimonialCarouselVariant"
+    collectionUrl="/testimonials"
+    collectionTitle="Reviews"
+  />
+</div>
 
 </ServiceLayout>

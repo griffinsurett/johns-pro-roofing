@@ -41,8 +41,10 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
+import { query, sortByOrder } from "@/utils/query";
 import heroImage from "../../assets/residential-working-2.webp";
-import bandExterior from "../../assets/siding.jpg";
 import bandWhy from "../../assets/john-w-client.webp";
 
 <ServiceLayout
@@ -54,6 +56,11 @@ import bandWhy from "../../assets/john-w-client.webp";
   portfolioCategories={["Residential Roofing"]}
   heroActions
 >
+
+<ContentRenderer
+  query={query("selling-points").orderBy(sortByOrder())}
+  variant="MarqueeVariant"
+/>
 
 <Bands>
 
@@ -67,19 +74,12 @@ John's Pro Roofing takes on home renovations, residential construction, and exte
 
 </Band>
 
-<Band image={bandExterior} imageAlt="House exterior with siding and window shutters" reverse>
-
-## What we build and improve
-
-- **Home renovations and improvements**: updating rooms, systems, and finishes in the home you already have
-- **Residential construction**: new structures built from the ground up
-- **Remodeling**: [kitchens, bathrooms, and full interiors](/services/home-remodeling)
-- **Exterior improvements**: roofing, siding, and [decks](/services/deck-builders)
-- **Additions**: [room additions and extensions](/services/home-additions) when you need more space
-
-Not sure where to start? We'll walk the property with you and tell you what the project involves.
-
-</Band>
+<RoofingTypesShowcase
+  collection="home-improvement-types"
+  service="general-contractors"
+  heading="What we build and improve"
+  reverse
+/>
 
 <Band image={bandWhy} imageAlt="John meeting with a homeowner">
 
@@ -95,7 +95,50 @@ We're a local, owner-operated New Jersey company, not a franchise. Before work s
 
 </Bands>
 
+{/* Related home services — image cards linking to each page. */}
+<ContentRenderer
+  query={query("services")
+    .where((entry) =>
+      ["Home Improvement", "Residential Roofing"].includes(entry.data.category) &&
+      entry.id !== "general-contractors"
+    )
+    .orderBy(sortByOrder())}
+  variant="ImageCardVariant"
+  id="more-home-services"
+  pretitle="More Home Services"
+  title="One Contractor for"
+  accentTitle="Your Whole Home"
+  description="Renovations, decks, additions, and roofing from the same local New Jersey team."
+  columns={4}
+/>
+
+<ContentRenderer
+  query={query("stats").orderBy(sortByOrder())}
+  variant="StatsVariant"
+  id="why-us"
+  pretitle="Why Choose Us"
+  body={[
+    "We're a local, owner-operated New Jersey company, not a franchise. You get one point of contact from the first walkthrough to the final cleanup, and a clear scope and cost before any work begins.",
+    "The same standards we bring to every roof go into every renovation, deck, and addition: honest recommendations, quality materials, and a clean site when the job is done.",
+  ]}
+>
+  <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
+    Home projects
+    <span class="italic text-accent"> done right, </span>
+    start to finish.
+  </h2>
+</ContentRenderer>
+
 {/* Primary conversion: quote form. */}
 <QuoteCta cta={frontmatter.cta} />
+
+<div id="testimonials" class="pt-[100px]">
+  <ContentRenderer
+    query={query("testimonials").orderBy(sortByOrder())}
+    variant="TestimonialCarouselVariant"
+    collectionUrl="/testimonials"
+    collectionTitle="Reviews"
+  />
+</div>
 
 </ServiceLayout>
