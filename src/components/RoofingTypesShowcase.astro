@@ -64,13 +64,17 @@ const items = await Promise.all(
 ---
 
 <Band class="roofing-showcase-band">
-  {heading && <h2>{heading}</h2>}
-  <RoofingTypesShowcaseClient client:visible items={items} reverse={reverse} />
+  <RoofingTypesShowcaseClient
+    client:visible
+    items={items}
+    heading={heading}
+    reverse={reverse}
+  />
 </Band>
 
 <style is:global>
-  /* Give the heading some breathing room above the showcase. */
+  /* Space between the heading and the list it introduces. */
   .roofing-showcase-band h2 {
-    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    margin-bottom: 1.5rem;
   }
 </style>

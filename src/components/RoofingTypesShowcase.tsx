@@ -12,6 +12,8 @@ export interface RoofingTypeItem {
 
 interface Props {
   items: RoofingTypeItem[];
+  /** Heading above the list, so heading + list sit together beside the image. */
+  heading?: string;
   /** Seconds each slide is shown before auto-advancing. */
   interval?: number;
   /** Flip which side the image sits on (desktop). */
@@ -20,6 +22,7 @@ interface Props {
 
 export default function RoofingTypesShowcase({
   items,
+  heading,
   interval = 4,
   reverse = false,
 }: Props) {
@@ -83,41 +86,44 @@ export default function RoofingTypesShowcase({
         ))}
       </div>
 
-      {/* Selectable list */}
-      <ul className={`flex flex-col gap-5 ${reverse ? "lg:order-1" : ""}`}>
-        {items.map((it, i) => {
-          const isActive = i === active;
-          return (
-            <li key={i}>
-              <button
-                type="button"
-                onClick={() => select(i)}
-                aria-current={isActive ? "true" : undefined}
-                className="group block w-full text-left"
-              >
-                <span
-                  className={`text-xl md:text-2xl font-bold tracking-tight transition-all ${
-                    isActive
-                      ? "underline decoration-[var(--color-accent)] decoration-4 underline-offset-[6px]"
-                      : "opacity-55 group-hover:opacity-90"
-                  }`}
+      {/* Heading + selectable list */}
+      <div className={reverse ? "lg:order-1" : ""}>
+        {heading && <h2>{heading}</h2>}
+        <ul className="flex flex-col gap-5">
+          {items.map((it, i) => {
+            const isActive = i === active;
+            return (
+              <li key={i}>
+                <button
+                  type="button"
+                  onClick={() => select(i)}
+                  aria-current={isActive ? "true" : undefined}
+                  className="group block w-full text-left"
                 >
-                  {it.title}
-                </span>
-                {it.description && (
                   <span
-                    className={`mt-1 block text-base leading-relaxed transition-all ${
-                      isActive ? "opacity-90" : "opacity-0 max-h-0 overflow-hidden"
+                    className={`text-xl md:text-2xl font-bold tracking-tight transition-all ${
+                      isActive
+                        ? "underline decoration-[var(--color-accent)] decoration-4 underline-offset-[6px]"
+                        : "opacity-55 group-hover:opacity-90"
                     }`}
                   >
-                    {it.description}
+                    {it.title}
                   </span>
-                )}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+                  {it.description && (
+                    <span
+                      className={`mt-1 block text-base leading-relaxed transition-all ${
+                        isActive ? "opacity-90" : "opacity-0 max-h-0 overflow-hidden"
+                      }`}
+                    >
+                      {it.description}
+                    </span>
+                  )}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }
