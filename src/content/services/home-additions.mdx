@@ -41,10 +41,9 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
-import { query, sortByOrder } from "@/utils/query";
 import heroImage from "../../assets/residential-working.webp";
+import bandOptions from "../../assets/siding.jpg";
 import bandRoof from "../../assets/john-on-roof-2.webp";
 
 <ServiceLayout
@@ -53,22 +52,18 @@ import bandRoof from "../../assets/john-on-roof-2.webp";
   description={frontmatter.description}
   image={heroImage}
   category={frontmatter.category}
-  portfolioCategories={["Residential Roofing"]}
   heroActions
 >
-
-<ContentRenderer
-  query={query("selling-points").orderBy(sortByOrder())}
-  variant="MarqueeVariant"
-/>
 
 <Bands>
 
 <Band image={heroImage} imageAlt="Residential crew at work on a New Jersey home">
 
-## More room without moving
+## Home additions in NJ: more space without moving
 
-Outgrowing your home doesn't have to mean leaving it. An addition or extension gives you the space you need (another bedroom, a bigger kitchen, a home office) in the neighborhood you already love. We build home additions for New Jersey homeowners from foundation to finished interior.
+Outgrowing your home doesn't have to mean leaving it. An addition or extension gives you the space you need, like another bedroom, a bigger kitchen, or a home office, in the neighborhood you already love. John's Pro Roofing builds home additions for New Jersey homeowners from foundation to finished interior.
+
+Every project starts with a free estimate and a clear scope and cost before any work begins.
 
 </Band>
 
@@ -79,11 +74,81 @@ Outgrowing your home doesn't have to mean leaving it. An addition or extension g
   reverse
 />
 
-<Band image={bandRoof} imageAlt="John on a completed residential roof">
+<Band image={bandOptions} imageAlt="House exterior with siding and window shutters">
+
+## Addition, extension, or reworking what you have?
+
+There's more than one way to get more space, and the right one depends on your home and your lot.
+
+- **A room addition** builds new rooms onto the house, like a bedroom, family room, office, or suite.
+- **An extension** pushes out an existing room to make it larger, such as a kitchen or living room.
+- **Expanding your existing space** reworks and opens up the rooms you already have, sometimes with no new footprint at all.
+- **Structural additions and renovations** change the structure itself and tie into your home's existing framing and roof.
+
+We'll look at your home with you and help you choose the approach that gets you the most usable space for your budget.
+
+</Band>
+
+<Band>
+
+## Planning your addition
+
+A few questions shape every addition before design starts:
+
+- **How will you use the space?** A bedroom, a family room, and a kitchen extension each have different needs.
+- **Where does it fit on your lot?** Local zoning rules, like setbacks from property lines, limit where and how big you can build.
+- **What's under it?** The foundation for the new space needs to suit your site and your existing house.
+- **How does it connect?** Heating, cooling, and electrical service need to reach the new space.
+
+We'll talk through all of this during your free estimate, so you know what your project involves before you commit.
+
+</Band>
+
+<Band image={bandRoof} imageAlt="John on a completed residential roof" reverse>
 
 ## Built to match your home
 
-An addition should look like it was always part of the house. That comes down to how the new structure ties into the old one, especially the roof. Roofing is our trade, so we tie the new roof into your existing one cleanly and keep it watertight where the two meet.
+An addition should look like it was always part of the house. That comes down to matching the rooflines, siding, and finishes, and tying the new structure into the old one cleanly.
+
+The roof tie-in is the most important part. Where the new roof meets the existing one is the spot most likely to leak if it's done wrong. Roofing is our trade, so we tie the two together cleanly and keep the connection watertight.
+
+</Band>
+
+<Band>
+
+## How your addition project works
+
+1. **Free estimate.** We visit your home, look at your lot, and talk through what you need the space for.
+2. **Plan and design.** We settle the size, layout, and how the addition connects to your home.
+3. **Clear scope and cost.** You know exactly what's included before any work begins.
+4. **Construction.** Foundation, then framing, then the roof tie-in, then the interior. We keep you updated as the work moves forward.
+5. **Final walkthrough.** We walk the finished space with you and leave the site clean.
+
+</Band>
+
+<Band>
+
+## What affects the cost of a home addition in NJ
+
+- **Size** of the addition
+- **Foundation type** and site conditions
+- **One story or two**
+- **How the roof ties into your existing roof**
+- **Heating, cooling, plumbing, and electrical** needs in the new space
+- **Interior finishes** you choose
+
+We'll walk you through what's driving the cost during your free estimate, so there are no surprises.
+
+</Band>
+
+<Band>
+
+## Why homeowners choose John's Pro Roofing
+
+- **Local and owner-operated.** A New Jersey company, not a franchise.
+- **Roofing expertise** for the roof tie-in, the hardest part of any addition.
+- **Clear scope and cost** before any work begins.
+- **Free estimates** and **0% down financing** available.
 
 {businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
 {businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
@@ -93,50 +158,7 @@ An addition should look like it was always part of the house. That comes down to
 
 </Bands>
 
-{/* Related home services — image cards linking to each page. */}
-<ContentRenderer
-  query={query("services")
-    .where((entry) =>
-      ["Home Improvement", "Residential Roofing"].includes(entry.data.category) &&
-      entry.id !== "home-additions"
-    )
-    .orderBy(sortByOrder())}
-  variant="ImageCardVariant"
-  id="more-home-services"
-  pretitle="More Home Services"
-  title="One Contractor for"
-  accentTitle="Your Whole Home"
-  description="Renovations, decks, additions, and roofing from the same local New Jersey team."
-  columns={4}
-/>
-
-<ContentRenderer
-  query={query("stats").orderBy(sortByOrder())}
-  variant="StatsVariant"
-  id="why-us"
-  pretitle="Why Choose Us"
-  body={[
-    "We're a local, owner-operated New Jersey company, not a franchise. Every addition starts with a free estimate and a clear scope and cost before any work begins.",
-    "Roofing is our trade, so the hardest part of an addition, tying the new roof into the old one, is work we do every day.",
-  ]}
->
-  <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
-    More space,
-    <span class="italic text-accent"> built to match </span>
-    your home.
-  </h2>
-</ContentRenderer>
-
-{/* Primary conversion: quote form. */}
+{/* Primary conversion: quote form with reviews. */}
 <QuoteCta cta={frontmatter.cta} />
-
-<div id="testimonials" class="pt-[100px]">
-  <ContentRenderer
-    query={query("testimonials").orderBy(sortByOrder())}
-    variant="TestimonialCarouselVariant"
-    collectionUrl="/testimonials"
-    collectionTitle="Reviews"
-  />
-</div>
 
 </ServiceLayout>

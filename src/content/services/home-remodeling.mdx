@@ -41,11 +41,8 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
-import { query, sortByOrder } from "@/utils/query";
 import heroImage from "../../assets/john-w-client.webp";
-import bandProcess from "../../assets/residential-working.webp";
 
 <ServiceLayout
   eyebrow={frontmatter.category}
@@ -53,22 +50,18 @@ import bandProcess from "../../assets/residential-working.webp";
   description={frontmatter.description}
   image={heroImage}
   category={frontmatter.category}
-  portfolioCategories={["Residential Roofing"]}
   heroActions
 >
-
-<ContentRenderer
-  query={query("selling-points").orderBy(sortByOrder())}
-  variant="MarqueeVariant"
-/>
 
 <Bands>
 
 <Band image={heroImage} imageAlt="John meeting with a homeowner">
 
-## Remodeling that fits how you live
+## Home remodeling contractors in NJ who plan it right
 
-Whether it's one dated bathroom or the whole house, a remodel should make your home work better for the way you live now. We handle home remodeling projects for New Jersey homeowners, from planning the layout to the final walkthrough.
+Whether it's one dated bathroom or the whole house, a remodel should make your home work better for the way you live now. John's Pro Roofing handles kitchen and bathroom remodeling, interior renovations, and complete home renovations for homeowners across New Jersey.
+
+Every remodel starts with a free estimate and a clear scope and cost before any work begins, so you know what you're getting before the first wall comes down.
 
 </Band>
 
@@ -79,11 +72,88 @@ Whether it's one dated bathroom or the whole house, a remodel should make your h
   reverse
 />
 
-<Band image={bandProcess} imageAlt="Residential crew at work on a New Jersey home">
+<Band>
 
-## A clear plan before work starts
+## Kitchen remodeling
 
-A remodel goes smoothly when everyone knows the plan. We start with a free estimate, then give you a clear scope and cost before any work begins. While the job is underway, we keep you in the loop, and when it's done we leave the site clean.
+The kitchen is the room you use most, so a remodel there has to work every day, not just look good. A kitchen remodel can include:
+
+- A new layout that improves how you move and cook
+- Cabinets, countertops, and backsplash
+- Flooring and lighting
+- Plumbing and electrical changes for a new layout or appliances
+
+The biggest cost decision is usually whether the layout changes. Keeping the sink, range, and refrigerator where they are keeps costs down. Moving them opens up more options. We'll walk you through both.
+
+</Band>
+
+<Band>
+
+## Bathroom remodeling
+
+From a refreshed vanity to a full gut renovation, a bathroom remodel lives or dies on what's behind the tile. A bathroom handles water every day, so the waterproofing behind the shower walls, the slope to the drain, and the ventilation matter as much as the finishes you see.
+
+Keeping water where it belongs is our trade as roofers. We build bathrooms with the same attention to water that we give every roof.
+
+</Band>
+
+<Band>
+
+## Interior renovations
+
+- **Flooring** throughout the house
+- **Walls, trim, and doors** updated or replaced
+- **Opening up rooms** by removing or reworking walls
+- **Reconfiguring space** so rooms fit how you use them
+
+Removing a load-bearing wall takes structural planning, like a beam sized to carry the load. We'll tell you which walls can come out and what it takes.
+
+</Band>
+
+<Band>
+
+## Complete home renovations
+
+A complete renovation updates the whole house as one project. You can do it room by room, so parts of the home stay usable, or all at once, which is usually faster when the house is empty.
+
+Either way, the work has to happen in the right order: structure and anything inside the walls first, then surfaces, then finishes. We plan the sequence before work starts, so the project doesn't stall halfway through.
+
+</Band>
+
+<Band>
+
+## How your remodel works
+
+1. **Free estimate.** We walk through the space with you and talk through what's not working today.
+2. **Plan and options.** We settle the layout, materials, and finishes.
+3. **Clear scope and cost.** You know exactly what's included before any work begins.
+4. **Construction.** We manage the work and keep you updated as it moves forward.
+5. **Final walkthrough.** We walk the finished space with you and leave your home clean.
+
+</Band>
+
+<Band>
+
+## What affects the cost of a remodel in NJ
+
+- **Layout changes**, like moving plumbing, walls, or appliances
+- **Size** of the space
+- **Cabinets, countertops, tile, and finishes** you choose
+- **What's behind the walls and floors** once they're opened up
+- **Whether it's one room or the whole house**
+
+We'll walk you through what's driving the cost during your free estimate, so there are no surprises.
+
+</Band>
+
+<Band>
+
+## Why homeowners choose John's Pro Roofing
+
+- **Local and owner-operated.** A New Jersey company, not a franchise.
+- **Clear scope and cost** before any work begins.
+- **Updates as the work moves forward**, so you're never guessing where things stand.
+- **Free estimates** and **0% down financing** available.
 
 {businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
 {businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
@@ -93,50 +163,7 @@ A remodel goes smoothly when everyone knows the plan. We start with a free estim
 
 </Bands>
 
-{/* Related home services — image cards linking to each page. */}
-<ContentRenderer
-  query={query("services")
-    .where((entry) =>
-      ["Home Improvement", "Residential Roofing"].includes(entry.data.category) &&
-      entry.id !== "home-remodeling"
-    )
-    .orderBy(sortByOrder())}
-  variant="ImageCardVariant"
-  id="more-home-services"
-  pretitle="More Home Services"
-  title="One Contractor for"
-  accentTitle="Your Whole Home"
-  description="Renovations, decks, additions, and roofing from the same local New Jersey team."
-  columns={4}
-/>
-
-<ContentRenderer
-  query={query("stats").orderBy(sortByOrder())}
-  variant="StatsVariant"
-  id="why-us"
-  pretitle="Why Choose Us"
-  body={[
-    "We're a local, owner-operated New Jersey company, not a franchise. Every remodel starts with a free estimate and a clear scope and cost before any work begins.",
-    "While the work is underway, we keep you in the loop, and when it's done we leave your home clean.",
-  ]}
->
-  <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
-    Remodels
-    <span class="italic text-accent"> planned right, </span>
-    built to last.
-  </h2>
-</ContentRenderer>
-
-{/* Primary conversion: quote form. */}
+{/* Primary conversion: quote form with reviews. */}
 <QuoteCta cta={frontmatter.cta} />
-
-<div id="testimonials" class="pt-[100px]">
-  <ContentRenderer
-    query={query("testimonials").orderBy(sortByOrder())}
-    variant="TestimonialCarouselVariant"
-    collectionUrl="/testimonials"
-    collectionTitle="Reviews"
-  />
-</div>
 
 </ServiceLayout>

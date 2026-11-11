@@ -41,11 +41,8 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
-import { query, sortByOrder } from "@/utils/query";
 import heroImage from "../../assets/decks.jpg";
-import bandMaterials from "../../assets/residential-working.webp";
 import bandWhy from "../../assets/john-w-client.webp";
 
 <ServiceLayout
@@ -54,24 +51,18 @@ import bandWhy from "../../assets/john-w-client.webp";
   description={frontmatter.description}
   image={heroImage}
   category={frontmatter.category}
-  portfolioCategories={["Residential Roofing"]}
   heroActions
 >
-
-<ContentRenderer
-  query={query("selling-points").orderBy(sortByOrder())}
-  variant="MarqueeVariant"
-/>
 
 <Bands>
 
 <Band image={heroImage} imageAlt="Backyard wood deck with railings and stairs">
 
-## Custom decks built for your yard
+## Deck builders in New Jersey, built from the footings up
 
-A good deck fits the way you use your yard: room for a table, a grill, or a quiet corner, with stairs where you actually walk. We design and build custom decks for New Jersey homes, sized and laid out for your space.
+A deck should fit the way you use your yard: room for a table, a grill, or a quiet corner, with stairs where you actually walk. John's Pro Roofing designs and builds custom decks for New Jersey homes in Trex composite or wood, and we replace and repair decks that have seen better days.
 
-Every deck starts with the structure you don't see. Footings, framing, and the connection to your house are what keep a deck solid for years, so we build those right before the boards go down.
+Every project starts with a free estimate. We measure the space, talk through how you want to use it, and give you a clear scope and cost before any work begins.
 
 </Band>
 
@@ -82,24 +73,105 @@ Every deck starts with the structure you don't see. Footings, framing, and the c
   reverse
 />
 
-<Band image={bandMaterials} imageAlt="Residential crew at work on a New Jersey home">
+<Band>
 
-## Trex composite or wood
+## Trex composite vs. wood decking
 
-- **Trex composite decking** resists rot, splintering, and fading, and doesn't need staining or sealing
-- **Wood decking** costs less up front and has a classic look, with periodic sealing or staining to keep it protected
+The right material depends on your budget and how much upkeep you want. We build with both and will walk you through the trade-offs for your yard.
 
-We'll walk you through both options, including the long-term upkeep, so you can choose what fits your budget.
+### Trex composite
+
+- Doesn't need staining or sealing
+- Resists rot, splintering, and fading
+- Holds its color and finish for years
+- Costs more up front than wood
+
+### Wood
+
+- Lower upfront cost
+- A natural, classic look
+- Needs sealing or staining every few years to stay protected
+- Can split, warp, or weather over time if it isn't maintained
+
+Many composite decks are built on a pressure-treated wood frame, so the structure underneath matters just as much as the boards you choose.
+
+</Band>
+
+<Band>
+
+## The structure you don't see
+
+The boards are what you walk on, but the structure is what keeps a deck safe. We build that part carefully:
+
+- **Footings** set deep enough to resist frost heave through New Jersey winters
+- **Framing** sized for the deck's spans and loads
+- **The ledger connection** fastened and flashed where the deck meets your house, so water can't get behind it
+
+That last point is where many decks fail. Water that gets behind the ledger rots the framing and the house wall. Keeping water out is our trade as roofers, and we bring it to every deck.
+
+</Band>
+
+<Band>
+
+## Signs your deck needs repair or replacement
+
+- Soft or spongy boards
+- Rot at the posts, joists, or ledger board
+- Loose or wobbly railings
+- Stairs that shift or bounce underfoot
+- Rusted fasteners or connectors
+- A deck that's pulling away from the house
+
+If the footings, framing, and ledger are sound, worn boards, railings, and stairs can usually be repaired. If the structure itself is rotted or failing, a replacement is the safer call. We'll inspect your deck and tell you honestly which one you need.
+
+</Band>
+
+<Band>
+
+## Railings, stairs, and covered decks
+
+**Railings and stairs** take the most day-to-day wear on a deck. We build new railings and stairs and replace worn ones, in wood or composite to match your deck.
+
+**Covered decks** add a roof for shade and rain cover, so you can use the deck in more weather. A deck roof has to be supported by the structure below and tied into your house so water drains away instead of in. That tie-in is roofing work, and it's work we do every day.
+
+</Band>
+
+<Band>
+
+## How your deck project works
+
+1. **Free estimate.** We visit your home, measure the space, and talk through how you want to use your deck.
+2. **Design and materials.** We settle the size, layout, stairs, railings, and Trex composite or wood.
+3. **Clear scope and cost.** You know exactly what's included before any work begins.
+4. **Build.** Footings, then framing, then decking, then railings and stairs.
+5. **Final walkthrough.** We walk the finished deck with you and leave your yard clean.
+
+</Band>
+
+<Band>
+
+## What affects the cost of a deck in NJ
+
+- **Size** of the deck
+- **Material**: Trex composite costs more up front than wood
+- **Height** off the ground and the number of stairs
+- **Railing style** and materials
+- **A roof** for a covered deck
+- **Removing an old deck** before the new build
+- **Site conditions** like slope and access to the yard
+
+We'll walk you through what's driving the cost during your free estimate, so there are no surprises.
 
 </Band>
 
 <Band image={bandWhy} imageAlt="John meeting with a homeowner" reverse>
 
-## Repair or replace? We'll tell you straight
+## Why homeowners choose John's Pro Roofing
 
-If the footings, framing, and the connection to your house are sound, worn boards, loose railings, and tired stairs can usually be repaired. If the structure is rotted or the deck is pulling away from the house, a replacement is the safer call.
-
-We'll inspect your deck during a free estimate and tell you honestly which one you need, with a clear scope and cost before any work begins.
+- **Local and owner-operated.** A New Jersey company, not a franchise.
+- **Clear scope and cost** before any work begins.
+- **Free estimates** and **0% down financing** available.
+- **A clean site** when the job is done.
 
 {businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
 {businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
@@ -109,50 +181,7 @@ We'll inspect your deck during a free estimate and tell you honestly which one y
 
 </Bands>
 
-{/* Related home services — image cards linking to each page. */}
-<ContentRenderer
-  query={query("services")
-    .where((entry) =>
-      ["Home Improvement", "Residential Roofing"].includes(entry.data.category) &&
-      entry.id !== "deck-builders"
-    )
-    .orderBy(sortByOrder())}
-  variant="ImageCardVariant"
-  id="more-home-services"
-  pretitle="More Home Services"
-  title="One Contractor for"
-  accentTitle="Your Whole Home"
-  description="Renovations, decks, additions, and roofing from the same local New Jersey team."
-  columns={4}
-/>
-
-<ContentRenderer
-  query={query("stats").orderBy(sortByOrder())}
-  variant="StatsVariant"
-  id="why-us"
-  pretitle="Why Choose Us"
-  body={[
-    "We're a local, owner-operated New Jersey company, not a franchise. Every deck starts with a free estimate and a clear scope and cost before any work begins.",
-    "We build the structure you don't see as carefully as the boards you do, so your deck stays safe and solid for years.",
-  ]}
->
-  <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
-    Decks built
-    <span class="italic text-accent"> solid, </span>
-    from the footings up.
-  </h2>
-</ContentRenderer>
-
-{/* Primary conversion: quote form. */}
+{/* Primary conversion: quote form with reviews. */}
 <QuoteCta cta={frontmatter.cta} />
-
-<div id="testimonials" class="pt-[100px]">
-  <ContentRenderer
-    query={query("testimonials").orderBy(sortByOrder())}
-    variant="TestimonialCarouselVariant"
-    collectionUrl="/testimonials"
-    collectionTitle="Reviews"
-  />
-</div>
 
 </ServiceLayout>

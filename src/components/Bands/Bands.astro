@@ -64,12 +64,16 @@ const { class: className = "" } = Astro.props as Props;
     font-size: 1.0625rem;
     line-height: 1.7;
   }
-  .band-prose ul {
+  .band-prose ul,
+  .band-prose ol {
     list-style: disc;
     padding-left: 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+  .band-prose ol {
+    list-style: decimal;
   }
   /* Prose links only — never restyle buttons (.btn-base) rendered inside a band
      (e.g. RepairCallout), which own their color/decoration. */

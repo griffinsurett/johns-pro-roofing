@@ -41,10 +41,10 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
-import { query, sortByOrder } from "@/utils/query";
 import heroImage from "../../assets/residential-working-2.webp";
+import bandConstruction from "../../assets/residential-working.webp";
+import bandExterior from "../../assets/siding.jpg";
 import bandWhy from "../../assets/john-w-client.webp";
 
 <ServiceLayout
@@ -53,39 +53,106 @@ import bandWhy from "../../assets/john-w-client.webp";
   description={frontmatter.description}
   image={heroImage}
   category={frontmatter.category}
-  portfolioCategories={["Residential Roofing"]}
   heroActions
 >
-
-<ContentRenderer
-  query={query("selling-points").orderBy(sortByOrder())}
-  variant="MarqueeVariant"
-/>
 
 <Bands>
 
 <Band image={heroImage} imageAlt="Residential crew at work on a New Jersey home">
 
-## One contractor for the whole project
+## A general contractor in NJ who runs the whole job
 
-Most home projects involve more than one trade. A renovation can mean framing, roofing, siding, and finish work, and coordinating separate contractors for each one is where schedules slip and costs creep.
+Hiring a general contractor means one company is responsible for your project from the first walkthrough to the final cleanup. John's Pro Roofing plans the work, schedules each trade in the right order, gets materials on site, and keeps you updated, so you're not coordinating carpenters, roofers, and finish crews yourself.
 
-John's Pro Roofing takes on home renovations, residential construction, and exterior improvements for homeowners across New Jersey. You get one point of contact from the first estimate to the final cleanup.
+We take on home renovations, residential construction, remodeling, and exterior improvements for homeowners across New Jersey. Every project starts with a free estimate.
 
 </Band>
 
 <RoofingTypesShowcase
   collection="home-improvement-types"
   service="general-contractors"
-  heading="What we build and improve"
+  heading="Projects we manage"
   reverse
 />
 
-<Band image={bandWhy} imageAlt="John meeting with a homeowner">
+<Band>
+
+## Home renovations and improvements
+
+Most renovations touch more than one part of the house. Updating a kitchen can mean new framing, plumbing and electrical changes, and finish work. Bringing an older home up to date can mean new windows, siding, and a new roof at the same time.
+
+The hard part isn't any single trade. It's the order they happen in. When framing isn't done, the next crew waits. When a roof goes on after the siding, work gets torn up and redone. We sequence the job so each stage is ready for the next one.
+
+</Band>
+
+<Band image={bandConstruction} imageAlt="Residential crew at work on a New Jersey home">
+
+## Residential construction
+
+New residential construction starts with the parts you don't see: footings, framing, and a roof and walls that keep water out. Those are the stages where shortcuts cause problems for years, and they're where we put our attention.
+
+Roofing is our trade, so the building envelope gets the same care we give every roof: solid decking, proper flashing, and clean transitions where water would otherwise find its way in.
+
+</Band>
+
+<Band image={bandExterior} imageAlt="House exterior with siding and window shutters" reverse>
+
+## Remodeling and exterior improvements
+
+- **Interior remodeling**: kitchens, bathrooms, and full interiors
+- **Roofing**: repairs and full replacements, our core trade
+- **Siding and exterior trim**: a refreshed exterior that also protects the house
+- **Decks**: new decks, replacements, railings, stairs, and covered decks
+- **Additions**: room additions and extensions when you need more space
+
+Whatever the mix, you have one contractor responsible for all of it.
+
+</Band>
+
+<Band>
+
+## Why hire one general contractor instead of separate trades?
+
+When you hire trades separately, you become the project manager. You schedule each crew, make sure the last one finished before the next one starts, and sort it out when something doesn't line up.
+
+With a general contractor, one company owns the schedule, the budget, and the result. If something comes up mid-project, there's one call to make, and it's our job to fix it.
+
+</Band>
+
+<Band>
+
+## How a project with us works
+
+1. **Free estimate.** We walk the property with you and talk through what you want to change.
+2. **Clear scope and cost.** You know exactly what's included before any work begins.
+3. **Scheduling.** We plan the order of work and set a schedule you can plan around.
+4. **Construction.** We manage the crews and materials and keep you updated as the work moves forward.
+5. **Final walkthrough.** We walk the finished project with you and leave the site clean.
+
+</Band>
+
+<Band>
+
+## What affects the cost of a home project in NJ
+
+- **Size and scope** of the work
+- **Structural changes** like moving walls or adding framing
+- **Materials and finishes** you choose
+- **The condition of the existing house**, including what's found once walls or roofing are opened up
+- **How many trades** the project involves
+
+We'll walk you through what's driving the cost during your free estimate, so there are no surprises.
+
+</Band>
+
+<Band image={bandWhy} imageAlt="John meeting with a homeowner" reverse>
 
 ## Why homeowners choose John's Pro Roofing
 
-We're a local, owner-operated New Jersey company, not a franchise. Before work starts, you get a clear scope and cost, and we keep you in the loop until the job is done and the site is clean. See what your neighbors say on our [reviews](/#testimonials).
+- **Local and owner-operated.** A New Jersey company, not a franchise.
+- **One point of contact** from estimate to cleanup.
+- **Clear scope and cost** before any work begins.
+- **Free estimates** and **0% down financing** available.
 
 {businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
 {businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
@@ -95,50 +162,7 @@ We're a local, owner-operated New Jersey company, not a franchise. Before work s
 
 </Bands>
 
-{/* Related home services — image cards linking to each page. */}
-<ContentRenderer
-  query={query("services")
-    .where((entry) =>
-      ["Home Improvement", "Residential Roofing"].includes(entry.data.category) &&
-      entry.id !== "general-contractors"
-    )
-    .orderBy(sortByOrder())}
-  variant="ImageCardVariant"
-  id="more-home-services"
-  pretitle="More Home Services"
-  title="One Contractor for"
-  accentTitle="Your Whole Home"
-  description="Renovations, decks, additions, and roofing from the same local New Jersey team."
-  columns={4}
-/>
-
-<ContentRenderer
-  query={query("stats").orderBy(sortByOrder())}
-  variant="StatsVariant"
-  id="why-us"
-  pretitle="Why Choose Us"
-  body={[
-    "We're a local, owner-operated New Jersey company, not a franchise. You get one point of contact from the first walkthrough to the final cleanup, and a clear scope and cost before any work begins.",
-    "The same standards we bring to every roof go into every renovation, deck, and addition: honest recommendations, quality materials, and a clean site when the job is done.",
-  ]}
->
-  <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
-    Home projects
-    <span class="italic text-accent"> done right, </span>
-    start to finish.
-  </h2>
-</ContentRenderer>
-
-{/* Primary conversion: quote form. */}
+{/* Primary conversion: quote form with reviews. */}
 <QuoteCta cta={frontmatter.cta} />
-
-<div id="testimonials" class="pt-[100px]">
-  <ContentRenderer
-    query={query("testimonials").orderBy(sortByOrder())}
-    variant="TestimonialCarouselVariant"
-    collectionUrl="/testimonials"
-    collectionTitle="Reviews"
-  />
-</div>
 
 </ServiceLayout>
