@@ -21,9 +21,11 @@ interface Props {
   reverse?: boolean;
   /** Types collection to read (defaults to roofing-types). */
   collection?: TypesCollection;
+  /** Only types carrying this tag (e.g. "commercial"). */
+  tag?: string;
 }
 
-const { service, heading, reverse = false, collection } = Astro.props as Props;
+const { service, heading, reverse = false, collection, tag } = Astro.props as Props;
 
 /**
  * Resolve a prepared item's image to an optimized src + srcset.
@@ -49,7 +51,7 @@ async function optimize(image: any): Promise<{ src: string; srcset?: string }> {
   };
 }
 
-const types = await getRoofingTypes({ service, collection });
+const types = await getRoofingTypes({ service, collection, tag });
 const items = await Promise.all(
   types.map(async (t: any) => {
     const { src, srcset } = await optimize(t.data.featuredImage);

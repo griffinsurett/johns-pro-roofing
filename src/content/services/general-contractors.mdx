@@ -4,34 +4,34 @@ heading:
   before: "General"
   text: "Contractors"
   after: "in New Jersey"
-description: "General contractor for New Jersey homeowners — home renovations and improvements, residential construction, remodeling, and exterior upgrades. Free estimates."
+description: "Commercial and residential general contractor in New Jersey — renovations, construction, roofing, and exterior work for businesses and homeowners. Free estimates."
 order: 9
-category: "Home Improvement"
+category: "General Contracting"
 icon: "fa6:helmet-safety"
 cardSize: "small"
 cardCta: "Learn More"
-cardBlurb: "Home renovations, residential construction, and exterior improvements, managed by one contractor from estimate to cleanup."
+cardBlurb: "Commercial and residential renovations, construction, and exterior work, managed by one contractor from estimate to cleanup."
 price: "Free estimates available"
-bannerImage: "../../assets/residential-working-2.webp"
-featuredImage: "../../assets/siding.jpg"
+bannerImage: "../../assets/commercial-working.webp"
+featuredImage: "../../assets/commercial-4.webp"
 seo:
-  metaTitle: "General Contractors in NJ | John's Pro Roofing"
-  metaDescription: "General contractor in New Jersey for home renovations, residential construction, remodeling, and exterior improvements. Free estimate. Call 732-351-3518."
+  metaTitle: "General Contractors in NJ | Commercial & Residential"
+  metaDescription: "Commercial and residential general contractor in New Jersey for renovations, construction, and exterior work. Free estimate. Call 732-351-3518."
   keywords:
     - "general contractors nj"
+    - "commercial general contractor nj"
+    - "residential general contractor nj"
     - "general contractor near me"
-    - "home improvement contractor nj"
-    - "residential contractor nj"
 features:
-  - "Home renovations & improvements"
-  - "Residential construction"
-  - "Remodeling & exterior improvements"
+  - "Commercial renovations & construction"
+  - "Residential renovations & construction"
+  - "Roofing & exterior work"
   - "Free estimates"
 cta:
   title: "Planning a"
-  accent: "home"
+  accent: "building"
   titleAfter: "project?"
-  description: "Free estimates on renovations, construction, and home improvements across New Jersey."
+  description: "Free estimates on commercial and residential projects across New Jersey."
   primary:
     text: "Request a Free Estimate"
     href: "/contact-us"
@@ -42,13 +42,18 @@ import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
-import heroImage from "../../assets/residential-working-2.webp";
-import bandConstruction from "../../assets/residential-working.webp";
-import bandExterior from "../../assets/siding.jpg";
+import WhoWeServe from "@/components/WhoWeServe.astro";
+import AudienceTabs from "@/components/AudienceTabs.astro";
+import heroImage from "../../assets/commercial-working.webp";
+import commercialIntro from "../../assets/commercial-3.webp";
+import commercialOps from "../../assets/commercial-7.webp";
+import commercialEnvelope from "../../assets/commercial-8.webp";
+import residentialIntro from "../../assets/residential-working-2.webp";
+import residentialRoof from "../../assets/john-on-roof-2.webp";
 import bandWhy from "../../assets/john-w-client.webp";
 
 <ServiceLayout
-  eyebrow={frontmatter.category}
+  eyebrow="Commercial & Residential"
   heading={frontmatter.heading}
   description={frontmatter.description}
   image={heroImage}
@@ -56,102 +61,136 @@ import bandWhy from "../../assets/john-w-client.webp";
   heroActions
 >
 
+<AudienceTabs
+  heading="What kind of project is it?"
+  tabs={[
+    { id: "commercial", label: "Commercial" },
+    { id: "residential", label: "Residential" },
+  ]}
+>
+
+<div slot="commercial">
+
 <Bands>
 
-<Band image={heroImage} imageAlt="Residential crew at work on a New Jersey home">
+<Band image={commercialIntro} imageAlt="Crew working on a commercial roof">
 
-## A general contractor in NJ who runs the whole job
+## Commercial general contractor in NJ
 
-Hiring a general contractor means one company is responsible for your project from the first walkthrough to the final cleanup. John's Pro Roofing plans the work, schedules each trade in the right order, gets materials on site, and keeps you updated, so you're not coordinating carpenters, roofers, and finish crews yourself.
+Most of our work is commercial. John's Pro Roofing takes on renovations, construction, roofing, and exterior work for commercial buildings across New Jersey, working directly with property managers, facility managers, and building owners.
 
-We take on home renovations, residential construction, remodeling, and exterior improvements for homeowners across New Jersey. Every project starts with a free estimate.
+As your general contractor, we plan the job, schedule every trade, and manage the site, so you have one company accountable for the schedule, the budget, and the result.
 
 </Band>
 
 <RoofingTypesShowcase
-  collection="home-improvement-types"
+  collection="project-types"
   service="general-contractors"
-  heading="Projects we manage"
+  tag="commercial"
+  heading="Commercial projects we take on"
+  reverse
+/>
+
+<Band image={commercialOps} imageAlt="Commercial building where a crew is working">
+
+## Your building stays open while we work
+
+A commercial project can't shut down your business. We schedule around your hours, stage the work so entrances and operations stay accessible, and keep the site clean and safe for tenants, staff, and customers.
+
+- **A clear scope and cost** before work begins, ready for budgets and approvals
+- **One point of contact** for the whole job
+- **Updates as the work moves forward**, so you can keep tenants and ownership informed
+
+</Band>
+
+<Band image={commercialEnvelope} imageAlt="Finished white membrane on a commercial flat roof" reverse>
+
+## The building envelope is our trade
+
+Most commercial building problems start with water: a failing roof, a leaking seam, or a gap where a wall meets the roof. Commercial roofing is our core trade, so the roof, the walls, and every place they meet get the attention that keeps a building watertight.
+
+When your project touches the exterior, you're working with a contractor that knows exactly where buildings leak and how to stop it.
+
+</Band>
+
+</Bands>
+
+<WhoWeServe
+  title="Commercial Properties We Work On"
+  description="From a single building to a full portfolio, we work with the teams responsible for commercial properties across New Jersey."
+/>
+
+</div>
+
+<div slot="residential">
+
+<Bands>
+
+<Band image={residentialIntro} imageAlt="Residential crew at work on a New Jersey home">
+
+## Residential general contractor in NJ
+
+We bring the same crew discipline and standards from our commercial work to homes across New Jersey. John's Pro Roofing handles home renovations, residential construction, additions, and exterior improvements for homeowners.
+
+As your general contractor, we run the project from the first walkthrough to the final cleanup, so you're not coordinating carpenters, roofers, and finish crews yourself.
+
+</Band>
+
+<RoofingTypesShowcase
+  collection="project-types"
+  service="general-contractors"
+  tag="residential"
+  heading="Home projects we take on"
   reverse
 />
 
 <Band>
 
-## Home renovations and improvements
+## One contractor, start to finish
 
-Most renovations touch more than one part of the house. Updating a kitchen can mean new framing, plumbing and electrical changes, and finish work. Bringing an older home up to date can mean new windows, siding, and a new roof at the same time.
+Most home projects involve more than one trade, and the hard part is the order they happen in. When framing isn't done, the next crew waits. When a roof goes on after the siding, work gets torn up and redone.
 
-The hard part isn't any single trade. It's the order they happen in. When framing isn't done, the next crew waits. When a roof goes on after the siding, work gets torn up and redone. We sequence the job so each stage is ready for the next one.
-
-</Band>
-
-<Band image={bandConstruction} imageAlt="Residential crew at work on a New Jersey home">
-
-## Residential construction
-
-New residential construction starts with the parts you don't see: footings, framing, and a roof and walls that keep water out. Those are the stages where shortcuts cause problems for years, and they're where we put our attention.
-
-Roofing is our trade, so the building envelope gets the same care we give every roof: solid decking, proper flashing, and clean transitions where water would otherwise find its way in.
+We sequence the job so each stage is ready for the next one, and you have one person to call with questions from estimate to cleanup.
 
 </Band>
 
-<Band image={bandExterior} imageAlt="House exterior with siding and window shutters" reverse>
+<Band image={residentialRoof} imageAlt="John on a completed residential roof" reverse>
 
-## Remodeling and exterior improvements
+## Additions and exteriors done by roofers
 
-- **Interior remodeling**: kitchens, bathrooms, and full interiors
-- **Roofing**: repairs and full replacements, our core trade
-- **Siding and exterior trim**: a refreshed exterior that also protects the house
-- **Decks**: new decks, replacements, railings, stairs, and covered decks
-- **Additions**: room additions and extensions when you need more space
+An addition or a new exterior lives or dies where it meets the existing roof. A bad tie-in is the most common source of leaks on a renovated home.
 
-Whatever the mix, you have one contractor responsible for all of it.
+Roofing is our trade, so we tie new work into your existing roof cleanly and keep the connection watertight.
 
 </Band>
 
-<Band>
+</Bands>
 
-## Why hire one general contractor instead of separate trades?
+</div>
 
-When you hire trades separately, you become the project manager. You schedule each crew, make sure the last one finished before the next one starts, and sort it out when something doesn't line up.
+</AudienceTabs>
 
-With a general contractor, one company owns the schedule, the budget, and the result. If something comes up mid-project, there's one call to make, and it's our job to fix it.
-
-</Band>
+<Bands>
 
 <Band>
 
 ## How a project with us works
 
-1. **Free estimate.** We walk the property with you and talk through what you want to change.
+1. **Free estimate.** We walk the property with you and talk through what you need.
 2. **Clear scope and cost.** You know exactly what's included before any work begins.
-3. **Scheduling.** We plan the order of work and set a schedule you can plan around.
+3. **Scheduling.** We plan the order of work and set a schedule around your business hours or your household.
 4. **Construction.** We manage the crews and materials and keep you updated as the work moves forward.
 5. **Final walkthrough.** We walk the finished project with you and leave the site clean.
 
 </Band>
 
-<Band>
+<Band image={bandWhy} imageAlt="John meeting with a customer" reverse>
 
-## What affects the cost of a home project in NJ
+## Why property owners choose John's Pro Roofing
 
-- **Size and scope** of the work
-- **Structural changes** like moving walls or adding framing
-- **Materials and finishes** you choose
-- **The condition of the existing house**, including what's found once walls or roofing are opened up
-- **How many trades** the project involves
-
-We'll walk you through what's driving the cost during your free estimate, so there are no surprises.
-
-</Band>
-
-<Band image={bandWhy} imageAlt="John meeting with a homeowner" reverse>
-
-## Why homeowners choose John's Pro Roofing
-
+- **Commercial experience.** Most of our work is for commercial properties.
 - **Local and owner-operated.** A New Jersey company, not a franchise.
 - **One point of contact** from estimate to cleanup.
-- **Clear scope and cost** before any work begins.
 - **Free estimates** and **0% down financing** available.
 
 {businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
