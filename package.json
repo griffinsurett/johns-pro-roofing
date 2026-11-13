@@ -15,6 +15,7 @@
     "@astrojs/react": "^7.0.0",
     "@astrojs/sitemap": "^3.7.4",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@freshjuice/zest": "2.7.0",
     "@iconify-json/fa6-solid": "^1.2.4",
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.1.11",
@@ -32,7 +33,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@qwik.dev/partytown": "^0.11.2",
+    "@qwik.dev/partytown": "^0.14.5",
     "typescript": "^5.9.3"
   },
   "allowScripts": {

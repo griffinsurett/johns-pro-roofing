@@ -4,7 +4,7 @@
  * Preferences Layout
  *
  * Consolidates all user preference systems:
- * - Cookie consent (with script management)
+ * - Cookie consent (Zest: blocks trackers from the head; this renders the UI)
  * - Accessibility preferences
  * - Language switcher (Google Translate)
  *
@@ -14,7 +14,6 @@
 // Cookie Consent Preferences
 import CookiePreferencesButton from "@/integrations/preferences/consent/ui/CookiePreferencesButton";
 import CookieConsentBanner from "@/integrations/preferences/consent/ui/CookieConsentBanner";
-import ConsentScript from "@/integrations/preferences/consent/core/scripts/ConsentScript.astro";
 
 // Accessibility Preferences
 import AccessibilityButton from "@/integrations/preferences/accessibility/ui/AccessibilityButton";
@@ -26,9 +25,10 @@ interface Props {
   buttonClassName?: string;
   /** Classes for the buttons row wrapper (layout/justify/gap). */
   className?: string;
-  /** Render the visible preference buttons row. The consent script + cookie
-   *  banner always render regardless. Cookie preferences now lives in the
-   *  footer's Legal links, so the footer sets this false. */
+  /** Render the visible preference buttons row. The cookie banner always
+   *  renders regardless (it stays hidden in US mode, or once a choice is
+   *  saved). Cookie preferences now lives in the footer's Legal links, so the
+   *  footer sets this false. */
   showButtons?: boolean;
 }
 
@@ -39,10 +39,9 @@ const {
 } = Astro.props;
 ---
 
-{/* Consent Script - Inline initialization, runs immediately */}
-<ConsentScript />
-
-{/* Cookie consent banner - always available */}
+{/* Zest blocks trackers synchronously in the head (IntHeadScripts). The
+    banner hydrates independently and only shows when Zest asks for consent:
+    never in US mode, where visitors opt out instead. */}
 <CookieConsentBanner client:idle />
 
 {/* Browser Translation Script - Both native and Google enabled */}

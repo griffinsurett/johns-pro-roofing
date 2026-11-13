@@ -1,44 +1,23 @@
 // src/integrations/preferences/ui/consent/components/CookiePreferencesButton.tsx
-import { useEffect, useState, lazy, Suspense, memo } from "react";
-import { subscribeToCookiePreferencesRequests } from "@/integrations/preferences/consent/core/utils/events";
+import { memo } from "react";
+import { requestCookieSettings } from "@/integrations/preferences/consent/core/hooks/useZestConsent";
 import Button from "@/components/Button/Button";
 
-const CookiePreferencesModal = lazy(() => import("./CookiePreferencesModal"));
 
-interface CookiePreferencesButtonProps {
-  className?: string;
-}
-
-function CookiePreferencesButton({ className = "" }: CookiePreferencesButtonProps) {
-  const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    return subscribeToCookiePreferencesRequests(() => {
-      setShowModal(true);
-    });
-  }, []);
+function CookiePreferencesButton({ className }: { className?: string }) {
 
   return (
     <>
       <Button
         variant="link"
+        className={className}
         size="sm"
-        onClick={() => setShowModal(true)}
+        onClick={requestCookieSettings}
         aria-label="Manage cookie preferences"
         rightIcon="lucide:settings"
-        className={className}
       >
         Your Privacy Choices
       </Button>
-
-      {showModal && (
-        <Suspense fallback={null}>
-          <CookiePreferencesModal
-            isOpen={showModal}
-            onClose={() => setShowModal(false)}
-          />
-        </Suspense>
-      )}
     </>
   );
 }

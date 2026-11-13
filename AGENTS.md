@@ -103,6 +103,20 @@ load. Activating one = filling its env var, not new code. No backend, no SSR, no
 content fetch, no CMS. If a new service is needed, get sign-off and add a row here in the
 same change.
 
+### Cookie consent — Zest, US mode
+
+Consent runs on headless Zest (`@freshjuice/zest`, pinned like Greastro), with Greastro's own
+banner/modal UI: `ZestEngine` in `IntHeadScripts` installs the blockers before any tracker, and
+`PreferencesLayout` (mounted by the footer) renders the UI. The old in-house system
+(`cookie-consent` cookie, `scriptManager`, `consent-changed`) is gone; gate scripts with
+Zest's `data-consent-category` and read consent from `window.Zest`.
+
+`US_MODE` in `integrations/preferences/consent/core/consentConfig.ts` picks the model:
+`true` (current) = opt-out, no banner; tracking runs, the footer shows "Do Not Sell or Share
+My Personal Information" (→ the privacy policy's opt-out), and GPC/DNT counts as an opt-out.
+`false` = opt-in banner for everyone. It's a fixed setting, not geolocation: Greastro's
+`/api/geo` route isn't used here because the site has no server routes.
+
 ### The CSP is the enforcement layer — keep it in sync with this list
 
 `vercel.json` ships a strict **Content-Security-Policy** (`default-src 'none'`, plus

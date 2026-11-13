@@ -19,9 +19,11 @@ If either `PUBLIC_ONESIGNAL_APP_ID` or `PUBLIC_ONESIGNAL_SAFARI_WEB_ID` is empty
 OneSignal scripts are marked with:
 
 - `type="text/plain"`
-- `data-consent="targeting"`
+- `data-consent-category="functional"`
 
-They activate only after the consent system enables targeting scripts.
+After functional consent, the lightweight initializer waits until page load
+and browser idle time before requesting the SDK. Direct interaction with a
+custom `[data-onesignal-bell]` control bypasses the idle delay.
 
 ## Worker Files
 

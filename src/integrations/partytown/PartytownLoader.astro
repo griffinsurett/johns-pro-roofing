@@ -25,18 +25,37 @@ const forwardConfig = JSON.stringify(forward);
 ---
 
 <script is:inline define:vars={{ forwardConfig, debug }}>
-  // Conditional Partytown loader - only loads if partytown scripts exist
+  // Conditional Partytown loader — only boots if partytown scripts exist.
+  //
+  // Consent interaction (this is load-bearing, do not simplify):
+  // Zest temporarily rewrites a blocked Partytown script to text/plain. Once
+  // consent is granted it restores the type and emits zest:change, allowing
+  // the listener below to boot the worker. Consent categories cannot be used
+  // as a proxy because main-thread integrations use those attributes too.
   (function() {
-    // Check if there are any partytown scripts on the page
-    if (!document.querySelector('script[type="text/partytown"]')) return;
+    var booted = false;
 
-    // Partytown scripts exist, configure and load
-    var f = JSON.parse(forwardConfig);
-    window.partytown = { lib: '/~partytown/', debug: debug, forward: f };
+    function hasPartytownScripts() {
+      return !!document.querySelector('script[type="text/partytown"]');
+    }
 
-    // Load partytown bootstrap dynamically
-    var s = document.createElement('script');
-    s.src = '/~partytown/partytown.js';
-    document.head.appendChild(s);
+    function boot() {
+      if (booted) return;
+      if (!hasPartytownScripts()) return;
+      booted = true;
+
+      var f = JSON.parse(forwardConfig);
+      window.partytown = { lib: '/~partytown/', debug: debug, forward: f };
+
+      var s = document.createElement('script');
+      s.src = '/~partytown/partytown.js';
+      document.head.appendChild(s);
+    }
+
+    boot();
+
+    // Consent granted after load releases blocked scripts back to
+    // text/partytown — make sure a worker exists to run them.
+    window.addEventListener('zest:change', boot);
   })();
 </script>

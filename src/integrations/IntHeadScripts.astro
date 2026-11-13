@@ -9,7 +9,6 @@
  * Includes:
  * - Google Tag Manager (with Consent Mode v2)
  * - OneSignal Web Push (consent-gated; active only when env IDs are set)
- * - Consent Script (marks consent existence)
  * - Accessibility Script (applies saved preferences before render)
  * - Language Detection Script (detects browser language)
  *
@@ -19,19 +18,20 @@
  *   </head>
  */
 
+import ZestEngine from "@/integrations/preferences/consent/core/ZestEngine.astro";
+import { zestConfig } from "@/integrations/preferences/consent/core/consentConfig";
 import GoogleTagManager from "@/integrations/analytics/GoogleTagManager.astro";
 import OneSignalPush from "@/integrations/onesignal/OneSignalPush.astro";
-import ConsentScript from "@/integrations/preferences/consent/core/scripts/ConsentScript.astro";
 import AccessibilityScript from "@/integrations/preferences/accessibility/core/scripts/AccessibilityScript.astro";
 import LanguageDetectionScript from "@/integrations/preferences/language/core/scripts/LanguageDetectionScript.astro";
 ---
 
+<!-- Consent interceptors must install before any tracker is evaluated. -->
+<ZestEngine config={zestConfig} />
+
 <!-- Analytics: Google Tag Manager with Consent Mode v2 -->
 <GoogleTagManager />
 <OneSignalPush />
-
-<!-- Consent: Mark existing consent for components -->
-<ConsentScript />
 
 <!-- Accessibility: Apply saved preferences before content renders (prevents FOUC) -->
 <AccessibilityScript />

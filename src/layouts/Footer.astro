@@ -15,6 +15,7 @@ import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro"
 import { query, related, sortByOrder } from "@/utils/query";
 import PreferencesLayout from "./PreferencesLayout.astro";
 import CookiePreferencesButton from "@/integrations/preferences/consent/ui/CookiePreferencesButton";
+import { US_MODE } from "@/integrations/preferences/consent/core/consentConfig";
 import { getContactLinks } from "@/utils/contactLinks";
 import ReviewButton from "@/components/ReviewButton.astro";
 import { Image } from "astro:assets";
@@ -110,6 +111,16 @@ const contactLinks = await getContactLinks();
             client:visible
             className="link-base link-md p-0 mt-3 !text-bg/80 hover:!text-bg transition-colors"
           />
+          {/* US mode (opt-out): the required opt-out link, to the privacy
+              policy's opt-out section. */}
+          {US_MODE && (
+            <a
+              href="/privacy-policy#ccpa-rights"
+              class="block mt-3 !text-bg/80 hover:!text-bg transition-colors"
+            >
+              Do Not Sell or Share My Personal Information
+            </a>
+          )}
         </div>
       </div>
 

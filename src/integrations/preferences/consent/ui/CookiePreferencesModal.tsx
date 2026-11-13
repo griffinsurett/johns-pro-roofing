@@ -5,24 +5,23 @@
  * Detailed consent preferences with granular category controls.
  * Allows users to enable/disable specific cookie categories.
  *
- * After preferences are saved, enables scripts via scriptManager.
+ * Zest owns consent state and releases scripts after consent is granted.
  */
 
 import {
   useState,
-  useMemo,
+  useCallback,
   useTransition,
   useRef,
   useEffect,
   memo,
 } from "react";
 import Modal from "@/components/Modal";
-import { useCookieStorage } from "@/hooks/useCookieStorage";
-import { enableConsentedScripts } from "@/integrations/preferences/consent/core/scripts/scriptManager";
-import type {
-  CookieConsent,
-  CookieCategoryInfo,
-} from "@/integrations/preferences/consent/core/types";
+import {
+  CONSENT_CATEGORIES,
+  type ConsentCategory,
+} from "@/integrations/preferences/consent/core/consentConfig";
+import { useZestConsent } from "@/integrations/preferences/consent/core/hooks/useZestConsent";
 import Button from "@/components/Button/Button";
 import ToggleControl from "@/integrations/preferences/shared/ui/ToggleControl";
 import Accordion from "@/components/LoopTemplates/Accordion";
@@ -33,62 +32,39 @@ interface CookiePreferencesModalProps {
   onClose: () => void;
 }
 
-const cookieCategories: CookieCategoryInfo[] = [
-  {
-    id: "necessary",
-    title: "Strictly Necessary Cookies",
-    description:
-      "These cookies are essential for the website to function properly. They enable core functionality such as security, network management, and accessibility.",
-    required: true,
-  },
-  {
-    id: "functional",
-    title: "Functional Cookies",
-    description:
-      "These cookies enable the website to provide enhanced functionality and personalization. They may be set by us or by third party providers.",
-  },
-  {
-    id: "performance",
-    title: "Performance Cookies",
-    description:
-      "These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site.",
-  },
-  {
-    id: "targeting",
-    title: "Targeting Cookies",
-    description:
-      "These cookies may be set through our site by our advertising partners to build a profile of your interests and show you relevant adverts.",
-  },
-];
+/**
+ * One row per user-facing choice. Ids are Google Consent Mode v2 types, so a
+ * toggle maps straight onto the gtag payload.
+ *
+ * The three ad_* types share the "Advertising" row (see AD_TYPES) — Google keeps
+ * them separate, but asking a visitor to distinguish ad_user_data from
+ * ad_personalization is not a meaningful choice.
+ */
+const cookieCategories = CONSENT_CATEGORIES;
 
 function CookiePreferencesModal({
   isOpen,
   onClose,
 }: CookiePreferencesModalProps) {
-  const { getCookie, setCookie } = useCookieStorage();
+  const { consent, updateConsent, rejectAll } = useZestConsent();
   const [isPending, startTransition] = useTransition();
 
-  // Parse cookie only once with useMemo
-  const initialPreferences = useMemo(() => {
-    const existingConsent = getCookie("cookie-consent");
-    if (existingConsent) {
-      try {
-        return JSON.parse(existingConsent) as CookieConsent;
-      } catch (error) {
-        console.error("Failed to parse cookie consent:", error);
-      }
-    }
-    return {
-      necessary: true,
-      functional: false,
-      performance: false,
-      targeting: false,
-      timestamp: Date.now(),
-    };
-  }, [getCookie]);
+  const fromEngine = useCallback(
+    () => ({
+      essential: true,
+      functional: consent.functional === true,
+      analytics: consent.analytics === true,
+      marketing: consent.marketing === true,
+    }),
+    [consent.functional, consent.analytics, consent.marketing],
+  );
 
   const [preferences, setPreferences] =
-    useState<CookieConsent>(initialPreferences);
+    useState<Record<ConsentCategory, boolean>>(fromEngine);
+
+  useEffect(() => {
+    setPreferences(fromEngine());
+  }, [isOpen, fromEngine]);
   const [canScroll, setCanScroll] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -122,60 +98,28 @@ function CookiePreferencesModal({
     contentSlotId: `cookie-category-${idx}-content`,
   }));
 
-  const handleToggle = (
-    categoryId: keyof Omit<CookieConsent, "timestamp">,
-    nextValue?: boolean
-  ) => {
-    if (categoryId === "necessary") return;
+  const handleToggle = (categoryId: ConsentCategory, nextValue?: boolean) => {
+    if (categoryId === "essential") return;
 
-    setPreferences((prev) => ({
-      ...prev,
-      [categoryId]:
-        typeof nextValue === "boolean" ? nextValue : !prev[categoryId],
-    }));
+    setPreferences((prev) => {
+      const value =
+        typeof nextValue === "boolean" ? nextValue : !prev[categoryId];
+      return { ...prev, [categoryId]: value };
+    });
   };
 
   const handleRejectAll = () => {
-    const consent: CookieConsent = {
-      necessary: true,
-      functional: false,
-      performance: false,
-      targeting: false,
-      timestamp: Date.now(),
-    };
-
-    // Save consent
-    setCookie("cookie-consent", JSON.stringify(consent), { expires: 365 });
-
-    // Enable scripts based on new consent
-    enableConsentedScripts();
-
-    // Dispatch custom event
-    window.dispatchEvent(new Event("consent-changed"));
-
-    startTransition(() => {
-      onClose();
-    });
+    rejectAll();
+    startTransition(onClose);
   };
 
   const handleConfirm = () => {
-    const consent: CookieConsent = {
-      ...preferences,
-      timestamp: Date.now(),
-    };
-
-    // Save consent
-    setCookie("cookie-consent", JSON.stringify(consent), { expires: 365 });
-
-    // Enable scripts based on new consent
-    enableConsentedScripts();
-
-    // Dispatch custom event
-    window.dispatchEvent(new Event("consent-changed"));
-
-    startTransition(() => {
-      onClose();
+    updateConsent({
+      functional: preferences.functional,
+      analytics: preferences.analytics,
+      marketing: preferences.marketing,
     });
+    startTransition(onClose);
   };
 
   return (
@@ -248,17 +192,8 @@ function CookiePreferencesModal({
                     <ToggleControl
                       label={category.title}
                       description={category.description}
-                      checked={
-                        preferences[
-                          category.id as keyof Omit<CookieConsent, "timestamp">
-                        ]
-                      }
-                      onChange={(checked) =>
-                        handleToggle(
-                          category.id as keyof Omit<CookieConsent, "timestamp">,
-                          checked
-                        )
-                      }
+                      checked={preferences[category.id]}
+                      onChange={(checked) => handleToggle(category.id, checked)}
                       disabled={category.required}
                       id={toggleId}
                       bordered={false}
