@@ -230,15 +230,15 @@ Need more rooms, not better ones? That's a [home addition or extension](/service
 
 </Bands>
 
-{/* Reviews above the list (this service's reviews, else the featured set). */}
-<ServiceReviewsCarousel serviceId="home-remodeling" description="What customers say about working with Charlie and his crew." />
-
 {/* White list, like general contracting's "What we take on". */}
 <Bands>
 
 <ContentRenderer items={frontmatter.offerings} variant="OfferingsVariant" title="What we remodel" />
 
 </Bands>
+
+{/* Reviews under the list (this service's reviews, else the featured set). */}
+<ServiceReviewsCarousel serviceId="home-remodeling" description="What customers say about working with Charlie and his crew." />
 
 {/* Its own group so it stays white under the navy gradient cards. */}
 <Bands>
