@@ -5,12 +5,11 @@
  */
 
 import FormWrapper from "@/components/Form/FormWrapper";
+import ConsentCheckbox from "@/components/Form/inputs/ConsentCheckbox";
 import FormStep from "@/components/Form/step/FormStep";
 import Input from "@/components/Form/inputs/Input";
 import Select from "@/components/Form/inputs/Select";
 import Textarea from "@/components/Form/inputs/Textarea";
-import Checkbox from "@/components/Form/inputs/Checkbox";
-import Button from "@/components/Button/Button";
 
 export default function MultiStepQuoteForm() {
   const handleSubmit = async (values: any) => {
@@ -177,24 +176,7 @@ export default function MultiStepQuoteForm() {
           textareaClassName="w-full px-4 py-3 bg-text/5 border-0 rounded-md focus:outline-none focus:ring-2 focus:ring-MainDark resize-vertical"
         />
 
-        <Checkbox
-          name="privacy"
-          label={
-            <>
-              I have read and agree to the{" "}
-              <Button
-                variant="link"
-                href="/privacy-policy"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Privacy Policy
-              </Button>
-              , and consent to John's Pro Roofing LLC contacting me by phone,
-              text, or email about my request. Consent is not a condition of
-              purchase. Message and data rates may apply; reply STOP to opt out.
-            </>
-          }
+        <ConsentCheckbox />          }
           required
           containerClassName="mb-6"
           checkboxClassName="w-4 h-4 text-MainDark border-surface rounded"

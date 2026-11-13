@@ -1,0 +1,62 @@
+---
+// src/components/LoopComponents/ServiceBandCard.astro
+/**
+ * ServiceBandCard — one service as a <Band>: featured image on one side,
+ * heading + description + button on the other. `index` drives the zig-zag
+ * (image on the right on odd rows). Rendered by ServiceBandsVariant.
+ */
+import { Image } from "astro:assets";
+import Band from "@/components/Bands/Band.astro";
+import Button from "@/components/Button/Button";
+import { resolveImageMetadata } from "@/utils/images";
+
+export interface Props {
+  index: number;
+  title: string;
+  description?: string;
+  url?: string;
+  featuredImage?: any;
+  ctaLabel?: string;
+}
+
+const { index, title, description, url, featuredImage, ctaLabel = "Learn More" } = Astro.props as Props;
+
+// Band media is a ~45vw column, so it's sized via <Image>; a plain string
+// (external/public path) can't be optimized and falls back to <img>.
+const imgMeta = resolveImageMetadata(featuredImage);
+const src = typeof featuredImage === "string" ? featuredImage : "";
+const imageRight = index % 2 === 1;
+---
+
+<Band class="band-service">
+  <div class={`band-service-grid ${imageRight ? "is-image-right" : ""}`}>
+    {(imgMeta || src) && (
+      <div class="band-service-media">
+        {imgMeta ? (
+          <Image
+            src={imgMeta}
+            alt={title}
+            widths={[480, 768, 960]}
+            sizes="(min-width: 768px) 45vw, 100vw"
+            format="webp"
+            quality={72}
+            loading="lazy"
+          />
+        ) : (
+          <img src={src} alt={title} loading="lazy" />
+        )}
+      </div>
+    )}
+    <div class="band-service-body">
+      <h2>{title}</h2>
+      {description && <p>{description}</p>}
+      {url && (
+        <div class="band-cta">
+          <Button variant="primary" size="lg" href={url} rightIcon="lu:arrow-up-right">
+            {ctaLabel}
+          </Button>
+        </div>
+      )}
+    </div>
+  </div>
+</Band>

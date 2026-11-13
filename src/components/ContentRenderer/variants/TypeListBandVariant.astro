@@ -1,0 +1,28 @@
+---
+// src/components/ContentRenderer/variants/TypeListBandVariant.astro
+/**
+ * Type List Band Variant — an in-content <Band>: a heading and a bulleted
+ * "**Title** — description" list (TypeListItems), with an optional image on
+ * one side. Used by RoofingTypesList for a service's roofing systems.
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import Band from "@/components/Bands/Band.astro";
+import TypeListItem from "@/components/LoopComponents/TypeListItem.astro";
+
+interface Props extends BaseVariantProps {
+  image?: ImageMetadata | string;
+  imageAlt?: string;
+  reverse?: boolean;
+}
+
+const { items = [], title, image, imageAlt = "", reverse = false } = Astro.props as Props;
+---
+
+<Band image={image} imageAlt={imageAlt} reverse={reverse}>
+  {title && <h2>{title}</h2>}
+  <ul>
+    {items.map((item: any) => (
+      <TypeListItem title={item.title} description={item.description} />
+    ))}
+  </ul>
+</Band>

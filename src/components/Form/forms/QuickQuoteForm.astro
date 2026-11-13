@@ -1,0 +1,103 @@
+---
+// src/components/Form/forms/QuickQuoteForm.astro
+/**
+ * QuickQuoteForm — the compact callback form in a service page's hero:
+ * name, phone, and what the visitor needs. Low friction on purpose; the
+ * detailed questions live in the bottom ProjectDetailsForm.
+ *
+ * All copy (heading, field label, options, button) comes from the page's
+ * `quickForm` frontmatter, so each service sets its own options.
+ *
+ * Like every form, it carries the required opt-in (ConsentCheckbox).
+ *
+ * Posts to PUBLIC_FORMSPREE_QUICK_QUOTE_ID. Until that form exists, it falls
+ * back to the quote form endpoint; `formName` and `service` tell the
+ * submissions apart.
+ */
+import Button from "@/components/Button/Button";
+import FormWrapper from "@/components/Form/FormWrapper";
+import ConsentCheckbox from "@/components/Form/inputs/ConsentCheckbox";
+import Input from "@/components/Form/inputs/Input";
+import Select from "@/components/Form/inputs/Select";
+
+export interface QuickFormContent {
+  heading: string;
+  description?: string;
+  selectLabel: string;
+  options: string[];
+  button: string;
+}
+
+interface Props {
+  /** Service name sent with the submission (e.g. "Home Additions & Extensions"). */
+  service: string;
+  content: QuickFormContent;
+}
+
+const { service, content } = Astro.props as Props;
+
+const formId =
+  import.meta.env.PUBLIC_FORMSPREE_QUICK_QUOTE_ID ||
+  import.meta.env.PUBLIC_FORMSPREE_QUOTE_ID ||
+  import.meta.env.PUBLIC_FORMSPREE_ID;
+
+const currentPageUrl = Astro.url.href;
+const inputClass =
+  "w-full px-4 py-3 bg-surface border-0 rounded-md focus:outline-none focus:ring-2 focus:ring-primary";
+const options = content.options.map((label) => ({ value: label, label }));
+---
+
+<div>
+  <h2 class="text-2xl font-bold text-heading mb-1">{content.heading}</h2>
+  {content.description && <p class="text-text mb-6">{content.description}</p>}
+
+  <FormWrapper
+    client:idle
+    formspreeId={formId}
+    useNativeFormSubmission={Boolean(formId)}
+    successMessage="Thanks! We'll call you soon."
+    resetOnSuccess={true}
+    className="w-full gap-0 mt-4"
+  >
+    <input type="hidden" name="formName" value="Quick Quote" />
+    <input type="hidden" name="service" value={service} />
+    <input type="hidden" name="pageUrl" value={currentPageUrl} />
+
+    <Input
+      name="name"
+      label="Name"
+      type="text"
+      required={true}
+      minLength={2}
+      placeholder="Your name"
+      autoComplete="name"
+      containerClassName="mb-4"
+      inputClassName={inputClass}
+    />
+    <Input
+      name="phone"
+      label="Phone"
+      type="tel"
+      required={true}
+      placeholder="732-555-0123"
+      autoComplete="tel"
+      containerClassName="mb-4"
+      inputClassName={inputClass}
+    />
+    <Select
+      name="projectType"
+      label={content.selectLabel}
+      options={options}
+      required={true}
+      defaultValue=""
+      containerClassName="mb-6"
+      selectClassName={inputClass}
+    />
+
+    <ConsentCheckbox containerClassName="mb-5" />
+
+    <Button variant="primary" type="submit" className="w-full justify-center">
+      {content.button}
+    </Button>
+  </FormWrapper>
+</div>

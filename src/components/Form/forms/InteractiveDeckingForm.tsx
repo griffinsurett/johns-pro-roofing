@@ -6,10 +6,10 @@
 
 import { useState } from "react";
 import FormWrapper from "@/components/Form/FormWrapper";
+import ConsentCheckbox from "@/components/Form/inputs/ConsentCheckbox";
 import FormStep from "@/components/Form/step/FormStep";
 import Input from "@/components/Form/inputs/Input";
 import Textarea from "@/components/Form/inputs/Textarea";
-import Checkbox from "@/components/Form/inputs/Checkbox";
 
 export default function InteractiveDeckingForm() {
   const [deckStyle, setDeckStyle] = useState("single-level");
@@ -259,14 +259,7 @@ export default function InteractiveDeckingForm() {
               labelClassName="block text-sm font-semibold text-brand-navy mb-1"
             />
 
-            <Checkbox
-              name="consent"
-              label="I consent to receive calls/texts from John's Pro Roofing LLC regarding my estimate request."
-              required
-              containerClassName="mb-4"
-              checkboxClassName="w-4 h-4 text-brand-navy border-border rounded focus:ring-brand-navy"
-              labelClassName="text-xs text-text-muted select-none cursor-pointer flex items-start gap-2"
-            />
+            <ConsentCheckbox />
           </div>
         </FormStep>
       </FormWrapper>

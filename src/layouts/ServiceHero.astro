@@ -1,0 +1,289 @@
+---
+// src/layouts/ServiceHero.astro
+/**
+ * ServiceHero — the split hero for service landing pages: the page title on the
+ * left, a compact callback form on the right (the `aside` slot).
+ *
+ * Structure ported from Koi Roofing and Solar's ServiceHero (copy column +
+ * form column, stacking on mobile); styling follows this site's SecondaryHero
+ * (light panel, navy headline, accent-red eyebrow) so it reads as John's Pro
+ * Roofing, not Koi.
+ *
+ * SecondaryHero stays the hero for every non-service page. Service pages pass
+ * this one into ServiceLayout's `hero` slot:
+ *
+ *   <ServiceLayout ...>
+ *     <ServiceHero slot="hero" ...>
+ *       <QuickQuoteForm slot="aside" ... />
+ *     </ServiceHero>
+ *     ...
+ *   </ServiceLayout>
+ *
+ * The background is the service's `bannerImage` (which the services schema
+ * defaults to its `featuredImage`), looked up from the current page unless an
+ * `image` prop is passed. Until a service has its own photo, it falls back to
+ * the site's default photo (the same one QuoteCta and CtaBanner use), so every
+ * service hero has a banner.
+ *
+ * Every service hero shows the Google rating badge under its description,
+ * the same badge (and tone) as the homepage hero.
+ *
+ * Full-screen landing: the hero plus whatever is passed in the `below` slot
+ * (the service's highlights marquee) fill exactly one screen under the header,
+ * so the marquee sits on the bottom edge when the visitor lands, on every
+ * device. The header publishes its landing height as --header-height-full
+ * (see Header.astro); the top row is 100svh minus that minus the marquee.
+ * Taller content simply grows the row. On phones the callback form doesn't
+ * fit beside the copy, so it moves to its own row right after the marquee.
+ */
+import { Image } from "astro:assets";
+import SectionHeading from "@/components/SectionHeading.astro";
+import GoogleRating from "@/components/GoogleRating.astro";
+import { getEntry } from "astro:content";
+import { resolveImageMetadata } from "@/utils/images";
+import defaultBanner from "@/assets/commercial-working.webp";
+
+type Heading = string | { before?: string; text?: string; after?: string };
+
+export interface Props {
+  title: string;
+  /** Main H1. Falls back to `title`. Supports `{ before, text, after }`. */
+  heading?: Heading;
+  eyebrow?: string;
+  description?: string;
+  /** Background override. Defaults to the service's `bannerImage`. */
+  image?: any;
+  /** Service id to read `bannerImage` from. Defaults to the last URL segment. */
+  serviceId?: string;
+  className?: string;
+}
+
+const { title, heading, eyebrow, description, image: imageProp, serviceId, className = "" } =
+  Astro.props as Props;
+
+const currentId = serviceId ?? Astro.url.pathname.replace(/\/$/, "").split("/").pop();
+const entry = imageProp || !currentId ? undefined : await getEntry("services", currentId);
+const image = imageProp ?? resolveImageMetadata(entry?.data.bannerImage) ?? defaultBanner;
+
+const headingObj = heading && typeof heading === "object" ? heading : undefined;
+const headingStr =
+  typeof heading === "string" && heading.trim() ? heading : undefined;
+---
+
+<section class={`service-hero ${className}`}>
+  {/* Background (top row only, full width) */}
+  <div class="service-hero__bg bg-surface" aria-hidden="true">
+    {
+      image && (
+        <>
+          {typeof image === "string" ? (
+            <img src={image} alt="" class="absolute inset-0 w-full h-full object-cover" loading="eager" />
+          ) : (
+            <Image
+              src={image}
+              alt=""
+              widths={[960, 1280, 1600]}
+              sizes="100vw"
+              class="absolute inset-0 w-full h-full object-cover"
+              loading="eager"
+              fetchpriority="high"
+            />
+          )}
+          <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.97)_0%,rgba(255,255,255,0.94)_55%,rgba(255,255,255,0.88)_100%)] lg:bg-[linear-gradient(90deg,rgba(255,255,255,0.97)_0%,rgba(255,255,255,0.9)_40%,rgba(255,255,255,0.5)_68%,rgba(255,255,255,0.25)_100%)]" />
+        </>
+      )
+    }
+  </div>
+
+  {/* Copy */}
+  <div class="service-hero__copy flex flex-col gap-4">
+    <SectionHeading
+      align="left"
+      class="!mb-0"
+      headingTag="h1"
+      pretitle={eyebrow}
+      heading={headingObj ?? headingStr ?? title}
+      headingClass="service-hero__title !mb-0 !text-[clamp(34px,5.5vw,56px)] [@media(max-height:820px)]:!text-[clamp(28px,3.6vw,44px)] leading-[1.05] [text-wrap:balance]"
+    />
+    {
+      description && (
+        <p class="service-hero__desc text-[var(--color-text-muted)] text-lg leading-relaxed max-w-[560px]">
+          {description}
+        </p>
+      )
+    }
+    <GoogleRating tone="dark" class="mt-2 self-start" />
+    <slot name="belowDescription" />
+  </div>
+
+  {/* Callback form: beside the copy from lg up, after the marquee on phones */}
+  <div class="service-hero__form">
+    <div class="bg-bg rounded-2xl shadow-xl p-6 md:p-8">
+      <slot name="aside" />
+    </div>
+  </div>
+
+  {/* Marquee, pinned to the bottom of the landing screen */}
+  <div class="service-hero__below">
+    <slot name="below" />
+  </div>
+
+  <slot />
+</section>
+
+<style>
+  .service-hero {
+    /* Landing height of the header, published by Header.astro. Fallbacks are
+       the measured heights for the first paint if the script hasn't run. */
+    --hero-header: var(--header-height-full, 228px);
+    --hero-marquee: 72px;
+    /* Match the site's .container exactly (Tailwind's container: max-width
+       steps at each breakpoint, 24px padding, 48px from lg), so the hero's
+       edges line up with every section below it. */
+    --hero-cmax: 100%;
+    --hero-gutter: 24px;
+    --hero-cw: calc(min(100%, var(--hero-cmax)) - 2 * var(--hero-gutter));
+    position: relative;
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(0, 1fr) [content-start] minmax(0, var(--hero-cw))
+      [content-end] minmax(0, 1fr) [full-end];
+    grid-template-rows:
+      [top] minmax(calc(100svh - var(--hero-header) - var(--hero-marquee)), auto)
+      [below] auto
+      [form] auto;
+  }
+  @media (min-width: 640px) { .service-hero { --hero-cmax: 640px; } }
+  @media (min-width: 768px) { .service-hero { --hero-cmax: 768px; } }
+  @media (min-width: 1024px) { .service-hero { --hero-cmax: 1024px; } }
+  @media (min-width: 1280px) { .service-hero { --hero-cmax: 1280px; } }
+  @media (min-width: 1536px) { .service-hero { --hero-cmax: 1536px; } }
+  .service-hero__bg {
+    grid-column: full;
+    grid-row: top;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-hero__copy {
+    grid-column: content;
+    grid-row: top;
+    align-self: center;
+    position: relative;
+    z-index: 1;
+    padding-block: 2.5rem;
+  }
+  .service-hero__below {
+    grid-column: full;
+    grid-row: below;
+  }
+  /* The marquee's height is fixed here so the landing maths is exact. */
+  .service-hero__below :global(.hero-marquee) {
+    height: var(--hero-marquee);
+  }
+  .service-hero__form {
+    grid-column: content;
+    grid-row: form;
+    padding-block: 2.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .service-hero {
+      --hero-marquee: 86px;
+      --hero-gutter: 48px;
+      /* Copy and form split the container like the old hero did:
+         1.15fr : 1fr with a 4rem gap. */
+      grid-template-columns:
+        [full-start] minmax(0, 1fr)
+        [content-start copy-start] minmax(0, calc((var(--hero-cw) - 4rem) * 1.15 / 2.15))
+        [copy-end] 4rem
+        [form-start] minmax(0, calc((var(--hero-cw) - 4rem) / 2.15))
+        [content-end form-end] minmax(0, 1fr) [full-end];
+      grid-template-rows:
+        [top] minmax(calc(100svh - var(--hero-header) - var(--hero-marquee)), auto)
+        [below] auto;
+    }
+    .service-hero__copy {
+      grid-column: copy;
+      padding-block: 3rem;
+    }
+    .service-hero__form {
+      grid-column: form;
+      grid-row: top;
+      align-self: center;
+      position: relative;
+      z-index: 1;
+      padding-block: 3rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .service-hero {
+      --hero-header: var(--header-height-full, 148px);
+    }
+  }
+
+  /* lg widths still use the tall phone-style header (it switches at xl), so
+     on short screens there (iPad landscape, small laptops) the form can't fit
+     beside the copy above the marquee. Use the phone layout: copy on the
+     landing screen, the form right after the marquee. */
+  @media (min-width: 1024px) and (max-width: 1279.98px) and (max-height: 820px) {
+    .service-hero {
+      grid-template-columns:
+        [full-start] minmax(0, 1fr)
+        [content-start copy-start form-start] minmax(0, var(--hero-cw))
+        [content-end copy-end form-end] minmax(0, 1fr) [full-end];
+      grid-template-rows:
+        [top] minmax(calc(100svh - var(--hero-header) - var(--hero-marquee)), auto)
+        [below] auto
+        [form] auto;
+    }
+    .service-hero__form {
+      grid-row: form;
+      align-self: auto;
+      padding-block: 2.5rem;
+    }
+    .service-hero__form > div {
+      max-width: 560px;
+    }
+  }
+
+  /* Short screens (small laptops, small phones): tighten the hero so the
+     marquee still lands on the bottom edge instead of below the fold. */
+  @media (max-height: 820px) {
+    .service-hero__copy,
+    .service-hero__form {
+      padding-block: 0.75rem;
+    }
+    .service-hero__copy {
+      gap: 0.75rem;
+    }
+    /* The heading's short-screen size is a Tailwind variant on the element
+       itself: an !important utility lives in a cascade layer, which beats an
+       !important rule here. */
+    .service-hero__desc {
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+    .service-hero__form > div {
+      padding: 1rem 1.25rem;
+    }
+    .service-hero__form :global(h2) {
+      font-size: 1.375rem;
+    }
+    .service-hero__form :global(.mb-4) {
+      margin-bottom: 0.75rem;
+    }
+    .service-hero__form :global(input),
+    .service-hero__form :global(select) {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    /* The opt-in stays, in small print, so the form fits beside the copy. */
+    .service-hero__form :global(label:has(input[name="privacy"])) {
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+    .service-hero__form :global(div:has(> label > input[name="privacy"])) {
+      margin-bottom: 0.75rem;
+    }
+  }
+</style>

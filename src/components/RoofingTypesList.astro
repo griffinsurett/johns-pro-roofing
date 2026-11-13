@@ -1,13 +1,13 @@
 ---
 // src/components/RoofingTypesList.astro
 /**
- * RoofingTypesList — the roofing systems for a service rendered as an in-content
- * <Band>: a heading + a bulleted "**Title** — description" list beside an image,
- * matching the "Systems we install and service" band. Data-driven from the
- * roofing-types collection (filtered by `service`) instead of a static list.
+ * RoofingTypesList — the roofing systems for a service as an in-content
+ * <Band>: a heading + a bulleted "**Title** — description" list beside an
+ * image. A thin wrapper: the roofing-types query (filtered by `service`)
+ * runs through ContentRenderer, laid out by TypeListBandVariant.
  */
-import Band from "@/components/Bands/Band.astro";
-import { getRoofingTypes } from "@/utils/roofingTypes";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder, normalizeReference } from "@/utils/query";
 
 interface Props {
   /** Service id to filter by (e.g. "flat-roofing"). */
@@ -29,17 +29,16 @@ const {
   reverse = false,
 } = Astro.props as Props;
 
-const types = await getRoofingTypes({ service });
+const typesQuery = query("roofing-types")
+  .where((e: any) => normalizeReference(e.data.service).some((ref: any) => ref.id === service))
+  .orderBy(sortByOrder());
 ---
 
-<Band image={image} imageAlt={imageAlt} reverse={reverse}>
-  <h2>{heading}</h2>
-  <ul>
-    {types.map((t: any) => (
-      <li>
-        <strong>{t.data.title}</strong>
-        {t.data.description && <> — {t.data.description}</>}
-      </li>
-    ))}
-  </ul>
-</Band>
+<ContentRenderer
+  query={typesQuery}
+  variant="TypeListBandVariant"
+  title={heading}
+  image={image}
+  imageAlt={imageAlt}
+  reverse={reverse}
+/>

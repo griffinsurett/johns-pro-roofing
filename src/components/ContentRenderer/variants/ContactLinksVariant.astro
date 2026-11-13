@@ -1,0 +1,21 @@
+---
+// src/components/ContentRenderer/variants/ContactLinksVariant.astro
+/**
+ * Contact Links Variant — a compact vertical list of contact methods
+ * (ContactLinkItems) for dark backgrounds, e.g. the footer. No heading.
+ *
+ *   <ContentRenderer items={await getContactLinks()} variant="ContactLinksVariant" />
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import ContactLinkItem from "@/components/LoopComponents/ContactLinkItem.astro";
+
+interface Props extends BaseVariantProps {}
+
+const { items = [], className = "" } = Astro.props as Props;
+---
+
+<ul class={`flex flex-col gap-3 text-sm text-bg/80 mt-2 list-none ${className}`.trim()}>
+  {items.map((item: any) => (
+    <ContactLinkItem url={item.url} icon={item.icon} displayValue={item.displayValue} />
+  ))}
+</ul>

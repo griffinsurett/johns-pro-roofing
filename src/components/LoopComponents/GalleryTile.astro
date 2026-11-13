@@ -1,0 +1,42 @@
+---
+// src/components/LoopComponents/GalleryTile.astro
+/**
+ * GalleryTile — one photo in the gallery marquee (fixed 340px-wide 4:3
+ * tile). Resolves the item's featuredImage so <Image> ships a right-sized
+ * WebP instead of the multi-megapixel original. Rendered by
+ * GalleryMarqueeVariant; `duplicate` marks the loop copy as aria-hidden.
+ */
+import { Image } from "astro:assets";
+import { resolveImageMetadata } from "@/utils/images";
+
+export interface Props {
+  title?: string;
+  featuredImage?: any;
+  duplicate?: boolean;
+}
+
+const { title = "", featuredImage, duplicate = false } = Astro.props as Props;
+const meta = resolveImageMetadata(featuredImage);
+const src = typeof featuredImage === "string" ? featuredImage : "";
+---
+
+{(meta || src) && (
+  <li class="gallery-marquee-item" aria-hidden={duplicate ? "true" : undefined}>
+    {meta ? (
+      <Image
+        src={meta}
+        alt={title}
+        width={340}
+        height={255}
+        widths={[340, 680]}
+        sizes="(max-width: 425px) 80vw, 340px"
+        format="webp"
+        quality={70}
+        loading="lazy"
+        class="w-full h-full object-cover"
+      />
+    ) : (
+      <img src={src} alt={title} loading="lazy" class="w-full h-full object-cover" />
+    )}
+  </li>
+)}

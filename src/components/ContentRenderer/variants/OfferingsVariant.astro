@@ -1,0 +1,442 @@
+---
+// src/components/ContentRenderer/variants/OfferingsVariant.astro
+/**
+ * Offerings Variant — the services a service page offers, as a grid of
+ * OfferingCards inside a <Band> (so it joins the page's alternating banded
+ * layout). Items are the page's `offerings` frontmatter, passed through
+ * ContentRenderer's static `items` mode:
+ *
+ *   <ContentRenderer
+ *     items={frontmatter.offerings}
+ *     variant="OfferingsVariant"
+ *     title="What we build"
+ *     filters={frontmatter.offeringFilters}
+ *   />
+ *
+ * - An item with `page` (a service id) links to that service. The id is
+ *   checked here, so a typo or a removed page fails the build. Roofing is
+ *   never listed on the non-roofing pages, so they never link to it.
+ * - Layout: plain items fill the card grid. Linked items sit after it as
+ *   larger navy cards, two side by side, each listing every job from the
+ *   linked page's own `offerings` (read from that page, never copied here)
+ *   with a button to it. An item with `wide: true` (e.g. one that ties the
+ *   others together) closes the list at full width. Frontmatter order is
+ *   kept within each group.
+ * - Filter chips: `filters` (the page's `offeringFilters`) says which item
+ *   field to match and lists the options, e.g. All projects / Commercial /
+ *   Home on `group`. Without `allLabel` they're tabs: no "All" option, the
+ *   first option starts selected (its cards rendered, the rest hidden in the
+ *   HTML). Without `filters`, items with `propertyTypes` get the default
+ *   All homes / Houses / Townhouses / Condos filter. The filter only hides
+ *   cards, syncs with the URL hash (#condo, #commercial), and fires
+ *   `offerings:filter`: ComparisonVariant highlights the column with the same
+ *   id, and the form select named `filters.prefill` gets the option's
+ *   `formValue`.
+ * - `confirmed: false` is review bookkeeping (not shown on the page).
+ */
+import { getEntry } from "astro:content";
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import Band from "@/components/Bands/Band.astro";
+import OfferingCard from "@/components/LoopComponents/OfferingCard.astro";
+import { PROPERTY_TYPE_IDS, PROPERTY_TYPES } from "@/utils/propertyTypes";
+
+interface FilterOption {
+  id: string;
+  label: string;
+  formValue?: string;
+}
+interface Filters {
+  field: "group" | "propertyTypes";
+  /** Omit for tabs (no "All"; the first option starts selected). */
+  allLabel?: string;
+  prefill?: string;
+  options: FilterOption[];
+}
+interface Props extends BaseVariantProps {
+  filters?: Filters;
+}
+
+const { items = [], title, description, id, filters: pageFilters } = Astro.props as Props;
+const offerings = items as any[];
+
+const urls = new Map<string, string>();
+const jobs = new Map<string, string[]>();
+for (const item of offerings) {
+  if (!item.page) continue;
+  const entry = await getEntry("services", item.page);
+  if (!entry) {
+    throw new Error(`OfferingsVariant: "${item.title}" links to service "${item.page}", which doesn't exist.`);
+  }
+  urls.set(item.page, `/services/${entry.id}`);
+  jobs.set(item.page, (entry.data.offerings ?? []).map((o: { title: string }) => o.title));
+}
+
+// Card photos. MDX `frontmatter` is the raw YAML, so an item's `image` is
+// only a path there; the processed image lives on the page's parsed entry
+// (found from the URL, like ServiceHero's banner), matched by title.
+const currentId = Astro.url.pathname.replace(/\/$/, "").split("/").pop();
+const pageEntry = currentId ? await getEntry("services", currentId) : undefined;
+const photos = new Map<string, unknown>(
+  (pageEntry?.data.offerings ?? []).filter((o: any) => o.image).map((o: any) => [o.title, o.image]),
+);
+
+// Default filter: property types, for lists that tag items with them.
+const filters: Filters = pageFilters ?? {
+  field: "propertyTypes",
+  allLabel: "All homes",
+  prefill: "homeType",
+  options: PROPERTY_TYPE_IDS.map((t) => ({
+    id: t,
+    label: PROPERTY_TYPES[t].plural,
+    formValue: PROPERTY_TYPES[t].label,
+  })),
+};
+
+const idsOf = (item: any): string[] => {
+  const value = item[filters.field];
+  return value == null ? [] : Array.isArray(value) ? value : [value];
+};
+
+if (pageFilters) {
+  const known = new Set(pageFilters.options.map((o) => o.id));
+  for (const item of offerings) {
+    const unknown = idsOf(item).filter((v) => !known.has(v));
+    if (unknown.length) {
+      throw new Error(`OfferingsVariant: "${item.title}" has ${pageFilters.field} "${unknown.join(", ")}", which isn't a filter option.`);
+    }
+  }
+}
+
+const optionsInUse = filters.options.filter((o) => offerings.some((item) => idsOf(item).includes(o.id)));
+const hasFilter = optionsInUse.length > 1;
+// Tabs (no "All"): the first option is selected from the start.
+const initial = hasFilter && !filters.allLabel ? optionsInUse[0].id : "all";
+const startsHidden = (item: any) => {
+  const ids = idsOf(item);
+  return initial !== "all" && ids.length > 0 && !ids.includes(initial);
+};
+
+const wide = offerings.filter((item) => item.wide);
+const linked = offerings.filter((item) => item.page && !item.wide);
+const plain = offerings.filter((item) => !item.page && !item.wide);
+const groups = [
+  { layout: "card", items: plain },
+  { layout: "feature", items: linked },
+  { layout: "wide", items: wide },
+] as const;
+---
+
+<Band class="offerings-band">
+  <div data-offerings id={id} data-prefill={hasFilter ? filters.prefill : undefined}>
+    {title && <h2>{title}</h2>}
+    {description && <p>{description}</p>}
+
+    {
+      hasFilter && (
+        <div class="offerings-filter" role="group" aria-label="Show work for">
+          {filters.allLabel && (
+            <button type="button" data-filter="all" aria-pressed="true">{filters.allLabel}</button>
+          )}
+          {optionsInUse.map((o) => (
+            <button type="button" data-filter={o.id} data-form-value={o.formValue} aria-pressed={String(o.id === initial)}>
+              {o.label}
+            </button>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="offerings-lists">
+    {
+      groups.map(({ layout, items: group }) =>
+        group.length > 0 && (
+          <ul class={`offerings-list offerings-list--${layout}`} role="list">
+            {group.map((item) => (
+              <OfferingCard
+                title={item.title}
+                description={item.description}
+                propertyTypes={item.propertyTypes}
+                filterIds={hasFilter ? idsOf(item) : []}
+                url={item.page ? urls.get(item.page) : undefined}
+                includes={item.page ? jobs.get(item.page) : undefined}
+                image={layout === "card" ? photos.get(item.title) : undefined}
+                layout={layout}
+                hidden={hasFilter && startsHidden(item)}
+              />
+            ))}
+          </ul>
+        ),
+      )
+    }
+    </div>
+  </div>
+</Band>
+
+<script>
+  // One shared selection for every offerings grid on the page. A card with no
+  // filter ids (applies to everything) is never hidden. Tabs start on the
+  // option rendered as pressed. `chosen` stays false until the visitor picks
+  // (a click or a #hash link), so a preselected tab never fills in a form.
+  let selected =
+    document.querySelector<HTMLElement>('[data-offerings] [data-filter][aria-pressed="true"]')?.dataset.filter ?? "all";
+  let chosen = false;
+
+  const buttonFor = (filter: string) =>
+    document.querySelector<HTMLButtonElement>(`[data-offerings] [data-filter="${CSS.escape(filter)}"]`);
+
+  function apply(root: HTMLElement, filter: string) {
+    root.querySelectorAll<HTMLButtonElement>("[data-filter]").forEach((btn) => {
+      btn.setAttribute("aria-pressed", String(btn.dataset.filter === filter));
+    });
+    root.querySelectorAll<HTMLElement>(".offerings-card").forEach((card) => {
+      const ids = (card.dataset.types ?? "").split(" ").filter(Boolean);
+      card.hidden = filter !== "all" && ids.length > 0 && !ids.includes(filter);
+    });
+  }
+
+  // Prefill the bottom form's matching answer (e.g. "house, townhouse or
+  // condo?", "what kind of project?"). The form is a React island that
+  // hydrates later and resets its select, so this runs on every change and
+  // again when the visitor first focuses the form, and never overrides an
+  // answer they've picked themselves.
+  function prefill(onlyIfEmpty: boolean) {
+    if (!chosen || selected === "all") return;
+    const btn = buttonFor(selected);
+    const name = btn?.closest<HTMLElement>("[data-offerings]")?.dataset.prefill;
+    const value = btn?.dataset.formValue;
+    if (!name || !value) return;
+    document.querySelectorAll<HTMLSelectElement>(`select[name="${CSS.escape(name)}"]`).forEach((select) => {
+      if (onlyIfEmpty && select.value) return;
+      if ([...select.options].some((o) => o.value === value)) select.value = value;
+    });
+  }
+
+  document.addEventListener("focusin", (event) => {
+    const form = (event.target as HTMLElement | null)?.closest("form");
+    if (form && chosen) prefill(true);
+  });
+
+  function init() {
+    const roots = document.querySelectorAll<HTMLElement>("[data-offerings]");
+    if (!roots.length || !document.querySelector("[data-offerings] [data-filter]")) return;
+
+    const fromHash = (): string | null => {
+      const h = decodeURIComponent(location.hash.slice(1));
+      return h && h !== "all" && buttonFor(h) ? h : null;
+    };
+
+    const select = (filter: string, updateHash: boolean) => {
+      selected = filter;
+      chosen = true;
+      roots.forEach((root) => apply(root, filter));
+      document.dispatchEvent(new CustomEvent("offerings:filter", { detail: { id: filter } }));
+      prefill(false);
+      if (updateHash) {
+        const url = filter === "all" ? location.pathname + location.search : `#${filter}`;
+        history.replaceState(null, "", url);
+      }
+    };
+
+    roots.forEach((root) => {
+      root.querySelectorAll<HTMLButtonElement>("[data-filter]").forEach((btn) => {
+        btn.addEventListener("click", () => select(btn.dataset.filter ?? "all", true));
+      });
+    });
+
+    const initial = fromHash();
+    if (initial) select(initial, false);
+    window.addEventListener("hashchange", () => {
+      const next = fromHash();
+      if (next) select(next, false);
+    });
+  }
+
+  init();
+</script>
+
+<style is:global>
+  .offerings-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .offerings-filter button {
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    border: 1.5px solid color-mix(in oklab, currentColor 35%, transparent);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .offerings-filter button:hover {
+    border-color: currentColor;
+  }
+  .offerings-filter button[aria-pressed="true"] {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+  .offerings-filter button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  /* The lists stack with the same gap as the cards inside them; a list that
+     is filtered out (display: none below) leaves no gap behind. */
+  .band-prose .offerings-lists {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .band-prose .offerings-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  /* A list whose cards are all filtered out takes no space. */
+  .band-prose .offerings-list:not(:has(> li:not([hidden]))) {
+    display: none;
+  }
+  @media (min-width: 640px) {
+    .band-prose .offerings-list--card {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 768px) {
+    .band-prose .offerings-list--feature {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1024px) {
+    .band-prose .offerings-list--card {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .offerings-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem 1.25rem 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in oklab, currentColor 18%, transparent);
+    background: color-mix(in oklab, currentColor 4%, transparent);
+  }
+  /* Linked cards: the button's link stretches over the whole card. */
+  .offerings-card--link {
+    position: relative;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .offerings-card--link:hover {
+    transform: translateY(-2px);
+  }
+  .offerings-card__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 0.75rem;
+  }
+  .offerings-card--link:has(.offerings-card__link:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  /* Grid card with a photo: the photo runs edge to edge across the top. */
+  .offerings-card__media {
+    margin: -1.25rem -1.25rem 0.5rem;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+  .offerings-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .offerings-card[hidden] {
+    display: none;
+  }
+  .band-prose .offerings-card h3 {
+    font-size: 1.125rem;
+    line-height: 1.3;
+  }
+  .band-prose .offerings-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  /* Larger linked cards: navy gradient, white text, every job on the linked
+     page one per line, and a white button on the bottom edge. */
+  .offerings-card--feature {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    gap: 0.75rem;
+    border: 0;
+    color: var(--color-bg);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-400) 100%);
+    box-shadow: 0 12px 30px rgba(0, 28, 70, 0.22);
+  }
+  .offerings-card--feature:hover {
+    box-shadow: 0 16px 36px rgba(0, 28, 70, 0.3);
+  }
+  /* Beats the Bands heading color rule (.bands .band:nth-of-type(odd) h3). */
+  .bands .band .band-prose .offerings-card--feature h3 {
+    font-size: 1.375rem;
+    color: var(--color-bg);
+  }
+  .band-prose .offerings-card--feature p {
+    color: color-mix(in oklab, var(--color-bg) 85%, transparent);
+  }
+  /* Buttons sit on the bottom edge so side-by-side cards line up. */
+  .offerings-card__action {
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+  .offerings-card--wide {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .band-prose .offerings-includes {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .band-prose .offerings-includes li {
+    position: relative;
+    padding-left: 1.6rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0;
+  }
+  /* Simple white check. */
+  .band-prose .offerings-includes li::before {
+    content: "";
+    position: absolute;
+    left: 0.3rem;
+    top: 0.1em;
+    width: 0.4rem;
+    height: 0.8rem;
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .offerings-meta {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .offerings-types {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    opacity: 0.75;
+  }
+</style>

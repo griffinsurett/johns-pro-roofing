@@ -1,0 +1,64 @@
+---
+// src/components/ContentRenderer/variants/TypesShowcaseVariant.astro
+/**
+ * Types Showcase Variant — an image slideshow paired with a selectable list
+ * (the active item is underlined), auto-advancing and clickable, inside a
+ * <Band>. The interactive part is the RoofingTypesShowcase React island; this
+ * variant prepares its items (optimized image src/srcset at build time, since
+ * an island can't use <Image>) and renders it.
+ *
+ *   <ContentRenderer
+ *     query={query("roofing-types").where(...)}
+ *     variant="TypesShowcaseVariant"
+ *     listHeading="Systems we install"
+ *   />
+ *
+ * `listHeading` (not `title`/`heading`) so ContentRenderer's automatic
+ * collection heading never appears unless the page asks for one.
+ */
+import { getImage } from "astro:assets";
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import Band from "@/components/Bands/Band.astro";
+import RoofingTypesShowcaseClient from "@/components/RoofingTypesShowcase.tsx";
+import { resolveImageMetadata } from "@/utils/images";
+
+interface Props extends BaseVariantProps {
+  listHeading?: string;
+  /** Image on the right instead of the left (desktop). */
+  reverse?: boolean;
+}
+
+const { items = [], listHeading, reverse = false } = Astro.props as Props;
+
+async function optimize(image: any): Promise<{ src: string; srcset?: string }> {
+  if (typeof image === "string") return { src: image };
+  const meta = resolveImageMetadata(image);
+  if (!meta) return { src: "" };
+  const widths = [640, 960, 1280];
+  const variants = await Promise.all(
+    widths.map((width) => getImage({ src: meta, width, format: "webp", quality: 72 })),
+  );
+  return {
+    src: variants[1].src,
+    srcset: variants.map((v, i) => `${v.src} ${widths[i]}w`).join(", "),
+  };
+}
+
+const slides = await Promise.all(
+  (items as any[]).map(async (item) => {
+    const { src, srcset } = await optimize(item.featuredImage);
+    return { title: item.title, description: item.description, image: src, imageSrcset: srcset };
+  }),
+);
+---
+
+<Band class="roofing-showcase-band">
+  <RoofingTypesShowcaseClient client:visible items={slides} heading={listHeading} reverse={reverse} />
+</Band>
+
+<style is:global>
+  /* Space between the heading and the list it introduces. */
+  .roofing-showcase-band h2 {
+    margin-bottom: 1.5rem;
+  }
+</style>

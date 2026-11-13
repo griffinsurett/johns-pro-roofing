@@ -72,8 +72,41 @@ const { class: className = "" } = Astro.props as Props;
     flex-direction: column;
     gap: 0.5rem;
   }
+  /* Numbered lists (process steps) use the homepage "Who we serve" marker: a
+     28px circle with a bold number, 16px from the text. One column, stacked.
+     Navy circle on white bands; red on navy bands, where navy would vanish. */
   .band-prose ol {
-    list-style: decimal;
+    list-style: none;
+    padding-left: 0;
+    counter-reset: band-step;
+    gap: 1.25rem;
+  }
+  .band-prose ol > li {
+    counter-increment: band-step;
+    position: relative;
+    padding-left: 2.75rem;
+  }
+  .band-prose ol > li::before {
+    content: counter(band-step);
+    position: absolute;
+    left: 0;
+    /* Centered on the first line: list text is 1.0625rem at line-height 1.7
+       (~1.81rem tall), so a 1.75rem circle sits at the top of the line. */
+    top: 0.03rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1;
+    background: var(--color-primary);
+    color: var(--color-bg);
+  }
+  .bands .band:nth-of-type(even) .band-prose ol > li::before {
+    background: var(--color-accent);
   }
   /* Prose links only — never restyle buttons (.btn-base) rendered inside a band
      (e.g. RepairCallout), which own their color/decoration. */

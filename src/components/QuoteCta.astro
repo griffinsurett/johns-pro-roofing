@@ -7,15 +7,24 @@
  *
  * Drop-in replacement for <CtaBanner /> on service pages. Reuses the same
  * `cta` frontmatter shape, so a page's existing `cta:` block drives the copy.
+ *
+ * Standalone service pages (decks, remodeling, additions) also pass:
+ *  - `serviceId`: the reviews use getServiceReviews (this service's reviews,
+ *    else the "featured" set) instead of every review on the site.
+ *  - a default slot: their own detailed form replaces the generic QuoteForm.
+ *  - optionally `image`: the page's own background photo. Until a service has
+ *    one, the default photo is the fallback (`image={null}` drops the photo
+ *    for a solid brand-red panel).
+ * With a custom form, the phone line sits right under the description (above
+ * the reviews) so it's visible without scrolling the pinned pitch.
  */
 import PhoneLink from "@/components/PhoneLink.astro";
 import SectionHeading from "@/components/SectionHeading.astro";
 import QuoteForm from "@/components/Form/forms/QuoteForm.astro";
 import ContactForm from "@/components/Form/forms/ContactForm.astro";
-import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, sortByOrder } from "@/utils/query";
-import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
-import type { CollectionEntry } from "astro:content";
+import { getServiceReviews } from "@/utils/serviceReviews";
 import type { CTAData } from "@/content/schema";
 import serviceRoofRepair from "@/assets/commercial-working.webp";
 
@@ -28,6 +37,11 @@ interface Props {
   formTitle?: string;
   /** Subtext under the form-panel heading. */
   formDescription?: string;
+  /** Show this service's reviews (falling back to the featured set) instead
+   *  of every review. */
+  serviceId?: string;
+  /** Background photo. `null` drops it for a solid brand-red panel. */
+  image?: ImageMetadata | null;
 }
 
 const {
@@ -36,7 +50,10 @@ const {
   form = "quote",
   formTitle = "Request a free estimate",
   formDescription = "No cost, no obligation — we'll be in touch fast.",
+  serviceId,
+  image = serviceRoofRepair,
 } = Astro.props as Props;
+const hasCustomForm = Astro.slots.has("default");
 const Form = form === "contact" ? ContactForm : QuoteForm;
 
 const title = cta?.title ?? "Ready for a";
@@ -46,40 +63,43 @@ const description =
   cta?.description ??
   "Tell us about your project and we'll get you a free, no-obligation estimate.";
 
-// Social proof: real reviews next to the form to maximize conversions.
-// Prepared so TestimonialCard gets the review body (`content`).
-const testimonialMeta = getCollectionMeta("testimonials");
-const testimonialEntries = (await query("testimonials")
-  .orderBy(sortByOrder())
-  .all()) as CollectionEntry<"testimonials">[];
-const testimonials = await prepareCollectionEntries(
-  testimonialEntries,
-  "testimonials",
-  testimonialMeta,
-);
-// Duplicate the set so the vertical marquee loops seamlessly (translateY -50%).
-const loopTestimonials = [...testimonials, ...testimonials];
+// Social proof: real reviews next to the form, rendered through ContentRenderer
+// (TestimonialMarqueeVariant). With a serviceId: that service's reviews, else
+// the "featured" set (getServiceReviews); otherwise every review.
+const reviewIds = serviceId ? (await getServiceReviews(serviceId)).map((t) => t.id) : null;
+const reviewsQuery = reviewIds
+  ? query("testimonials")
+      .where((e: any) => reviewIds.includes(e.id))
+      .orderBy(sortByOrder())
+  : query("testimonials").orderBy(sortByOrder());
 ---
 
-<section class="relative overflow-hidden" id={id}>
-  {/* Background photo */}
-  <img
-    src={serviceRoofRepair.src}
-    alt=""
-    aria-hidden="true"
-    class="absolute inset-0 w-full h-full object-cover"
-  />
-  {/* Red gradient overlay: opaque left → transparent right */}
-  <div
-    class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_45%,color-mix(in_oklab,var(--color-accent)_70%,transparent)_80%,color-mix(in_oklab,var(--color-accent)_55%,transparent)_100%)]"
-    aria-hidden="true"
-  >
+<section class="relative bg-accent scroll-mt-24" id={id}>
+  {/* Background layers. Clipped here rather than on the section: overflow on
+      the section would stop the pinned pitch (position: sticky) from sticking. */}
+  <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+    {
+      image && (
+        <img
+          src={image.src}
+          alt=""
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+      )
+    }
+    {/* Red gradient overlay: opaque left → transparent right */}
+    <div
+      class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_45%,color-mix(in_oklab,var(--color-accent)_70%,transparent)_80%,color-mix(in_oklab,var(--color-accent)_55%,transparent)_100%)]"
+    >
+    </div>
   </div>
 
   <div class="container relative z-10 py-[80px]">
-    <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+    {/* A page's own detailed form is much taller than the generic one, so the
+        pitch pins to the top and stays in view while the visitor fills it in. */}
+    <div class={`grid gap-10 lg:grid-cols-2 lg:gap-16 ${hasCustomForm ? "lg:items-start" : "lg:items-center"}`}>
       {/* Pitch */}
-      <div class="text-bg">
+      <div class={`text-bg ${hasCustomForm ? "lg:sticky lg:top-32" : ""}`}>
         <SectionHeading
           align="left"
           class="!mb-0"
@@ -91,77 +111,33 @@ const loopTestimonials = [...testimonials, ...testimonials];
           {description}
         </p>
 
-        {
-          testimonials.length > 0 && (
-            <div
-              class="qc-testimonials mb-8"
-              aria-label="Customer testimonials"
-            >
-              <ul class="qc-testimonials-track">
-                {loopTestimonials.map((item, i) => (
-                  <li
-                    class="qc-testimonials-item"
-                    aria-hidden={i >= testimonials.length ? "true" : undefined}
-                  >
-                    <TestimonialCard {...item} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
+        {hasCustomForm && (
+          <div class="flex items-center gap-3 text-bg mb-8">
+            <span class="text-bg/80">Prefer to call?</span>
+            <PhoneLink variant="phone" tone="white" size="lg" />
+          </div>
+        )}
 
-        <div class="flex items-center gap-3 text-bg">
-          <span class="text-bg/80">Prefer to call?</span>
-          <PhoneLink variant="phone" tone="white" size="lg" />
-        </div>
+        <ContentRenderer
+          query={reviewsQuery}
+          variant="TestimonialMarqueeVariant"
+          compact={hasCustomForm}
+        />
+
+        {!hasCustomForm && (
+          <div class="flex items-center gap-3 text-bg">
+            <span class="text-bg/80">Prefer to call?</span>
+            <PhoneLink variant="phone" tone="white" size="lg" />
+          </div>
+        )}
       </div>
 
       {/* Quote form */}
       <div class="bg-bg rounded-2xl shadow-xl p-6 md:p-8">
         <h3 class="text-2xl font-bold text-heading mb-1">{formTitle}</h3>
-        <p class="text-text mb-6">{formDescription}</p>
-        <Form />
+        {formDescription && <p class="text-text mb-6">{formDescription}</p>}
+        {hasCustomForm ? <slot /> : <Form />}
       </div>
     </div>
   </div>
 </section>
-
-<style>
-  /* Vertical auto-scrolling testimonial marquee beside the form. */
-  .qc-testimonials {
-    position: relative;
-    height: 360px;
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
-    mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
-  }
-  .qc-testimonials-track {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    animation: qc-testimonials-scroll 40s linear infinite;
-  }
-  .qc-testimonials:hover .qc-testimonials-track {
-    animation-play-state: paused;
-  }
-  .qc-testimonials-item {
-    flex: 0 0 auto;
-  }
-  /* Cards keep their own (light) look so they pop on the red panel. */
-  .qc-testimonials-item :global(.testimonial-card) {
-    height: 100%;
-  }
-  @keyframes qc-testimonials-scroll {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-50%); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .qc-testimonials-track {
-      animation: none;
-    }
-  }
-</style>

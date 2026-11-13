@@ -1,0 +1,19 @@
+---
+// src/components/LoopComponents/RecentPostItem.astro
+/**
+ * RecentPostItem — one post in the blog sidebar: title link and date.
+ * Rendered by RecentPostsVariant.
+ */
+export interface Props {
+  title: string;
+  url: string;
+  publishDate?: string | Date;
+}
+
+const { title, url, publishDate } = Astro.props as Props;
+---
+
+<li class="pb-3 border-b border-surface last:border-b-0 last:pb-0">
+  <a href={url} class="text-heading hover:text-primary transition-colors">{title}</a>
+  {publishDate && <p class="text-sm text-text mt-1">{new Date(publishDate).toLocaleDateString("en-US")}</p>}
+</li>

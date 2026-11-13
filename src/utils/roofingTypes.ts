@@ -3,11 +3,10 @@
  * Shared query for the roofing-types collection, filtered by the service each
  * type references. Used by both the card band (RoofingTypes.astro) and the
  * in-content list band (RoofingTypesList.astro) so the filter lives once.
- * `project-types` has the same shape and reuses the same query.
  */
 import { query, sortByOrder, normalizeReference } from "@/utils/query";
 
-export type TypesCollection = "roofing-types" | "project-types";
+export type TypesCollection = "roofing-types";
 
 interface Options {
   /** Service id to filter by (e.g. "flat-roofing"). Omit to return all types. */

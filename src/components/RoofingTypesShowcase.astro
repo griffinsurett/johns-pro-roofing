@@ -1,17 +1,13 @@
 ---
 // src/components/RoofingTypesShowcase.astro
 /**
- * RoofingTypesShowcase — the roofing systems for a service shown as an image
- * slideshow paired with a selectable list (the active type is underlined).
- * Auto-advances and is clickable. Renders as a <Band> so it joins the page's
- * alternating banded layout. Data-driven from the roofing-types collection,
- * filtered by `service` (same source as the card/list variants).
+ * RoofingTypesShowcase — the roofing systems for a service as an image
+ * slideshow paired with a selectable list, inside a <Band>. A thin wrapper:
+ * the roofing-types query (filtered by `service`, optionally by `tag`) runs
+ * through ContentRenderer and TypesShowcaseVariant renders it.
  */
-import { getImage } from "astro:assets";
-import Band from "@/components/Bands/Band.astro";
-import RoofingTypesShowcaseClient from "@/components/RoofingTypesShowcase.tsx";
-import { getRoofingTypes, type TypesCollection } from "@/utils/roofingTypes";
-import { resolveImageMetadata } from "@/utils/images";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query, sortByOrder, normalizeReference } from "@/utils/query";
 
 interface Props {
   /** Service id to filter by (e.g. "commercial-roof-repairs"). */
@@ -19,64 +15,24 @@ interface Props {
   heading?: string;
   /** Image on the right instead of the left (desktop). */
   reverse?: boolean;
-  /** Types collection to read (defaults to roofing-types). */
-  collection?: TypesCollection;
   /** Only types carrying this tag (e.g. "commercial"). */
   tag?: string;
 }
 
-const { service, heading, reverse = false, collection, tag } = Astro.props as Props;
+const { service, heading, reverse = false, tag } = Astro.props as Props;
 
-/**
- * Resolve a prepared item's image to an optimized src + srcset.
- *
- * The slideshow is a React island, so it can't use <Image> — we run the images
- * through getImage here (build time) and hand the client plain strings.
- */
-async function optimize(image: any): Promise<{ src: string; srcset?: string }> {
-  if (typeof image === "string") return { src: image };
-  const meta = resolveImageMetadata(image);
-  if (!meta) return { src: "" };
-
-  const variants = await Promise.all(
-    [640, 960, 1280].map((width) =>
-      getImage({ src: meta, width, format: "webp", quality: 72 }),
-    ),
-  );
-  return {
-    src: variants[1].src,
-    srcset: variants
-      .map((v, i) => `${v.src} ${[640, 960, 1280][i]}w`)
-      .join(", "),
-  };
-}
-
-const types = await getRoofingTypes({ service, collection, tag });
-const items = await Promise.all(
-  types.map(async (t: any) => {
-    const { src, srcset } = await optimize(t.data.featuredImage);
-    return {
-      title: t.data.title,
-      description: t.data.description,
-      image: src,
-      imageSrcset: srcset,
-    };
-  }),
-);
+const typesQuery = query("roofing-types")
+  .where(
+    (e: any) =>
+      normalizeReference(e.data.service).some((ref: any) => ref.id === service) &&
+      (!tag || e.data.tags?.includes(tag)),
+  )
+  .orderBy(sortByOrder());
 ---
 
-<Band class="roofing-showcase-band">
-  <RoofingTypesShowcaseClient
-    client:visible
-    items={items}
-    heading={heading}
-    reverse={reverse}
-  />
-</Band>
-
-<style is:global>
-  /* Space between the heading and the list it introduces. */
-  .roofing-showcase-band h2 {
-    margin-bottom: 1.5rem;
-  }
-</style>
+<ContentRenderer
+  query={typesQuery}
+  variant="TypesShowcaseVariant"
+  listHeading={heading}
+  reverse={reverse}
+/>

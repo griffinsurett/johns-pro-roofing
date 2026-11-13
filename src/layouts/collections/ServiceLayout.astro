@@ -10,19 +10,23 @@
  *     ...bands / content...
  *   </ServiceLayout>
  *
- * By default the `hero` slot falls back to the automatic SecondaryHero built
- * from the props passed in. To lead with a different hero, a page passes its
- * own into the `hero` slot:
- *
- *   <ServiceLayout ...>
- *     <FrontPageHero2 slot="hero" ... />
- *     ...content...
- *   </ServiceLayout>
+ * Every service gets the same default hero: ServiceHero (title + compact
+ * callback form, full screen under the header) with the service's highlights
+ * marquee pinned to its bottom. It's built from the props passed in plus the
+ * service's own content:
+ *   - `quickForm`  the callback form's heading, dropdown label and options
+ *   - `marquee`    the highlights strip (falls back to the service's `features`)
+ *   - `bannerImage` the hero background (schema-defaulted to `featuredImage`)
+ * A page can still pass its own hero into the `hero` slot, but none should
+ * need to.
  */
-import SecondaryHero from "@/layouts/SecondaryHero.astro";
+import ServiceHero from "@/layouts/ServiceHero.astro";
+import QuickQuoteForm, { type QuickFormContent } from "@/components/Form/forms/QuickQuoteForm.astro";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, related, sortByOrder, normalizeReference } from "@/utils/query";
 import { getEntry } from "astro:content";
+import CtaBanner from "@/components/CtaBanner.astro";
+import { ctaData } from "@/content/siteData";
 
 export interface Props {
   eyebrow?: string;
@@ -36,7 +40,8 @@ export interface Props {
   /** Service category (e.g. "Commercial Roofing"). When set, a portfolio band
    *  of before/after projects in the same category renders below the content. */
   category?: string;
-  /** Show the hero's "Call Now" + "Free Estimate" buttons. */
+  /** Legacy prop from the old SecondaryHero (call/estimate buttons). The
+   *  service hero carries a callback form instead, so it's ignored. */
   heroActions?: boolean;
   /** This service's collection id (e.g. "commercial-roof-repairs"). Used to
    *  pull the service's own FAQs. Falls back to the last URL segment. */
@@ -53,7 +58,6 @@ const {
   author,
   readingTime,
   category,
-  heroActions = false,
   serviceId,
 } = Astro.props as Props;
 
@@ -68,6 +72,32 @@ const faqQuery = currentServiceId
   ? related("faq", "service", currentServiceId).orderBy(sortByOrder())
   : null;
 const faqCount = faqQuery ? (await faqQuery.all()).length : 0;
+
+// Hero content from the service entry: callback form copy and marquee phrases.
+const serviceEntry = currentServiceId
+  ? await getEntry("services", currentServiceId)
+  : undefined;
+const serviceTitle = serviceEntry?.data.title ?? title ?? "";
+// A service without its own `quickForm` still gets a working callback form.
+const quickForm: QuickFormContent = serviceEntry?.data.quickForm ?? {
+  heading: "Get a call back",
+  selectLabel: "What do you need?",
+  options: ["A free estimate", "Something else"],
+  button: "Request a Call Back",
+};
+const ctaBannerData = serviceEntry?.data.ctaBanner;
+// The banner's numbered points: how to get started. True for every service,
+// so it's the default; a page can set its own `ctaBanner.points`.
+const GET_STARTED_STEPS = [
+  "Request your free estimate",
+  "We come out and look at the job",
+  "You get a clear, written price",
+];
+const marqueeItems = (
+  serviceEntry?.data.marquee?.length
+    ? serviceEntry.data.marquee
+    : serviceEntry?.data.features ?? []
+).map((item: string) => ({ title: item }));
 
 // Portfolio band: projects whose referenced service shares this page's
 // category, and which have a before/after pair. Resolving each project's
@@ -103,19 +133,19 @@ const portfolioQuery = portfolioIds.length
       .orderBy(sortByOrder())
   : null;
 ---
-{/* Hero slot — override with `slot="hero"`, else the automatic SecondaryHero. */}
+{/* Hero slot — the shared service hero unless a page passes `slot="hero"`. */}
 <slot name="hero">
-  <SecondaryHero
+  <ServiceHero
     eyebrow={eyebrow}
-    title={title ?? ""}
+    title={serviceTitle}
     heading={heading}
     description={description}
     image={image}
-    publishDate={publishDate}
-    author={author}
-    readingTime={readingTime}
-    actions={heroActions}
-  />
+    serviceId={currentServiceId}
+  >
+    <QuickQuoteForm slot="aside" service={serviceTitle} content={quickForm} />
+    {marqueeItems.length > 0 && <ContentRenderer slot="below" items={marqueeItems} variant="MarqueeVariant" />}
+  </ServiceHero>
 </slot>
 
 <slot />
@@ -140,9 +170,11 @@ const portfolioQuery = portfolioIds.length
   faqQuery && faqCount > 0 && (
     <section class="py-[80px] lg:py-[100px]">
       <div class="container">
+        {/* No "View all FAQ" link: the page ends on the CTA banner instead. */}
         <ContentRenderer
           query={faqQuery}
           variant="AccordionVariant"
+          collectionUrl={undefined}
           pretitle="FAQ"
           title="Frequently Asked Questions"
           description={`Common questions about ${(title ?? "this service").toLowerCase()}.`}
@@ -151,3 +183,16 @@ const portfolioQuery = portfolioIds.length
     </section>
   )
 }
+
+{/* Pre-footer CTA banner, as on the homepage, but fully action-oriented: the
+    service's own headline, the steps to get started as the numbered points,
+    and the estimate button pointing at this page's quote form. */}
+<CtaBanner
+  id="estimate-cta"
+  cta={{
+    ...ctaBannerData,
+    points: ctaBannerData?.points ?? GET_STARTED_STEPS,
+    primary: ctaBannerData?.primary ?? { text: ctaData.text, href: ctaData.link },
+  }}
+/>
+

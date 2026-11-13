@@ -1,0 +1,36 @@
+---
+// src/components/LoopComponents/NumberedItem.astro
+/**
+ * NumberedItem — one entry in a numbered list on a red band: a navy number
+ * circle and white text. Used by NumberedListVariant (CtaBanner's points) and
+ * ServiceCalloutVariant ("Who we serve", process steps).
+ *
+ * With `showDescription`, the bold title is followed by its description on
+ * the same line (process steps); the circle then aligns to the first line.
+ */
+export interface Props {
+  index: number;
+  title: string;
+  description?: string;
+  showDescription?: boolean;
+}
+
+const { index, title, description, showDescription = false } = Astro.props as Props;
+const withDescription = showDescription && Boolean(description);
+---
+
+<li class={`flex gap-4 ${withDescription ? "items-start" : "items-center"}`}>
+  <span
+    class={`flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center ${withDescription ? "mt-0.5" : ""}`}
+  >
+    {index + 1}
+  </span>
+  {withDescription ? (
+    <span class="text-bg text-lg leading-relaxed">
+      <span class="font-semibold">{title}</span>{" "}
+      <span class="text-bg/90">{description}</span>
+    </span>
+  ) : (
+    <span class="text-bg text-lg font-semibold">{title}</span>
+  )}
+</li>

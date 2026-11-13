@@ -1,0 +1,128 @@
+---
+// src/components/Form/forms/ProjectDetailsForm.astro
+/**
+ * ProjectDetailsForm — the detailed second-chance form at the bottom of a
+ * service page. Contact fields and consent are the same everywhere; the
+ * project questions come from the page's `detailsForm.questions` frontmatter,
+ * so each service asks its own questions without a new component.
+ *
+ * Posts to the quote form endpoint (PUBLIC_FORMSPREE_QUOTE_ID).
+ */
+import Button from "@/components/Button/Button";
+import FormWrapper from "@/components/Form/FormWrapper";
+import ConsentCheckbox from "@/components/Form/inputs/ConsentCheckbox";
+import Input from "@/components/Form/inputs/Input";
+import Select from "@/components/Form/inputs/Select";
+import Textarea from "@/components/Form/inputs/Textarea";
+
+export interface DetailsQuestion {
+  name: string;
+  label: string;
+  /** "checkboxes" renders a pick-any group from `options` (never required:
+   *  HTML can't require one-of-many). */
+  type: "select" | "checkboxes" | "text" | "textarea";
+  options?: string[];
+  placeholder?: string;
+  required?: boolean;
+}
+
+export interface DetailsFormContent {
+  button: string;
+  questions: DetailsQuestion[];
+}
+
+interface Props {
+  /** Service name sent with the submission. */
+  service: string;
+  content: DetailsFormContent;
+}
+
+const { service, content } = Astro.props as Props;
+
+const formId =
+  import.meta.env.PUBLIC_FORMSPREE_QUOTE_ID || import.meta.env.PUBLIC_FORMSPREE_ID;
+
+const currentPageUrl = Astro.url.href;
+const inputClass =
+  "w-full px-4 py-3 bg-surface border-0 rounded-md focus:outline-none focus:ring-2 focus:ring-primary";
+---
+
+<FormWrapper
+  client:idle
+  formspreeId={formId}
+  useNativeFormSubmission={Boolean(formId)}
+  successMessage="Thanks! We've got your project details and we'll be in touch soon."
+  resetOnSuccess={true}
+  className="w-full gap-0"
+>
+  <input type="hidden" name="formName" value="Project Details" />
+  <input type="hidden" name="service" value={service} />
+  <input type="hidden" name="pageUrl" value={currentPageUrl} />
+
+  <div class="grid gap-x-4 sm:grid-cols-2">
+    <Input name="firstName" label="First name" type="text" required={true} minLength={2} autoComplete="given-name" containerClassName="mb-4" inputClassName={inputClass} />
+    <Input name="lastName" label="Last name" type="text" required={true} minLength={2} autoComplete="family-name" containerClassName="mb-4" inputClassName={inputClass} />
+    <Input name="phone" label="Phone" type="tel" required={true} autoComplete="tel" containerClassName="mb-4" inputClassName={inputClass} />
+    <Input name="email" label="Email" type="email" required={true} autoComplete="email" containerClassName="mb-4" inputClassName={inputClass} />
+  </div>
+  <Input name="address" label="Address" type="text" required={true} autoComplete="street-address" placeholder="Street, town, ZIP" containerClassName="mb-4" inputClassName={inputClass} />
+
+  {
+    content.questions.map((q) =>
+      q.type === "select" ? (
+        <Select
+          name={q.name}
+          label={q.label}
+          options={(q.options ?? []).map((label) => ({ value: label, label }))}
+          required={q.required ?? false}
+          defaultValue=""
+          containerClassName="mb-4"
+          selectClassName={inputClass}
+        />
+      ) : q.type === "checkboxes" ? (
+        <fieldset class="mb-4">
+          <legend class="block text-sm font-medium text-text mb-2">{q.label}</legend>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2">
+            {(q.options ?? []).map((option) => (
+              <label class="flex items-center gap-2 cursor-pointer text-text">
+                <input
+                  type="checkbox"
+                  name={q.name}
+                  value={option}
+                  class="w-4 h-4 shrink-0 text-primary border-surface rounded"
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ) : q.type === "textarea" ? (
+        <Textarea
+          name={q.name}
+          label={q.label}
+          placeholder={q.placeholder}
+          required={q.required ?? false}
+          rows={4}
+          containerClassName="mb-4"
+          textareaClassName={inputClass}
+        />
+      ) : (
+        <Input
+          name={q.name}
+          label={q.label}
+          type="text"
+          placeholder={q.placeholder}
+          required={q.required ?? false}
+          containerClassName="mb-4"
+          inputClassName={inputClass}
+        />
+      ),
+    )
+  }
+
+  <ConsentCheckbox />
+
+  <Button variant="primary" type="submit" className="w-full justify-center">
+    {content.button}
+  </Button>
+</FormWrapper>

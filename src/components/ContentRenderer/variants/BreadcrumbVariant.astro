@@ -1,0 +1,43 @@
+---
+// src/components/ContentRenderer/variants/BreadcrumbVariant.astro
+/**
+ * Breadcrumb Variant — the breadcrumb trail as a <nav> with an ordered list
+ * of BreadcrumbItems. Items come from `useBreadcrumbs` (see Breadcrumbs.astro).
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import BreadcrumbItem from "@/components/LoopComponents/BreadcrumbItem.astro";
+
+interface Props extends BaseVariantProps {
+  label?: string;
+  listClass?: string;
+  linkClass?: string;
+  currentClass?: string;
+  separator?: string;
+}
+
+const {
+  items = [],
+  className,
+  label = "Breadcrumb",
+  listClass = "flex flex-wrap items-center gap-2 text-sm",
+  linkClass = "underline underline-offset-4",
+  currentClass,
+  separator = "/",
+} = Astro.props as Props;
+---
+
+<nav aria-label={label} class={className}>
+  <ol class={listClass}>
+    {items.map((item: any, index) => (
+      <BreadcrumbItem
+        label={item.label}
+        url={item.url}
+        index={index}
+        isLast={index === items.length - 1}
+        separator={separator}
+        linkClass={linkClass}
+        currentClass={currentClass}
+      />
+    ))}
+  </ol>
+</nav>

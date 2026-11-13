@@ -1,0 +1,85 @@
+---
+// src/components/ContentRenderer/variants/GalleryMarqueeVariant.astro
+/**
+ * Gallery Marquee Variant — a continuous auto-scrolling row of GalleryTiles
+ * (track slides left in an infinite loop, pauses on hover, wraps statically
+ * under reduced motion). No heading: it's a visual prelude, not a section.
+ *
+ *   <ContentRenderer query={query("gallery").orderBy(sortByOrder())} variant="GalleryMarqueeVariant" />
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import GalleryTile from "@/components/LoopComponents/GalleryTile.astro";
+
+interface Props extends BaseVariantProps {
+  /** Seconds for one full loop (lower = faster). */
+  speed?: number;
+}
+
+const { items = [], speed = 45, className = "" } = Astro.props as Props;
+const withImages = (items as any[]).filter((item) => item.featuredImage);
+---
+
+{
+  withImages.length > 0 && (
+    <div
+      class={`gallery-marquee ${className}`}
+      style={`--gallery-marquee-speed:${speed}s;`}
+      aria-label="Project and job-site photos"
+    >
+      <ul class="gallery-marquee-track">
+        {[0, 1].map((copy) =>
+          withImages.map((item) => (
+            <GalleryTile title={item.title} featuredImage={item.featuredImage} duplicate={copy === 1} />
+          )),
+        )}
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .gallery-marquee {
+    width: 100%;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .gallery-marquee-track {
+    display: flex;
+    align-items: stretch;
+    width: max-content;
+    gap: 24px;
+    padding: 4px 12px;
+    margin: 0;
+    list-style: none;
+    animation: gallery-marquee-scroll var(--gallery-marquee-speed, 45s) linear infinite;
+  }
+
+  .gallery-marquee:hover .gallery-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .gallery-marquee-track :global(.gallery-marquee-item) {
+    flex: 0 0 auto;
+    width: 340px;
+    max-width: 80vw;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md, 0 10px 20px rgba(0, 0, 0, 0.08));
+  }
+
+  @keyframes gallery-marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-marquee-track {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>

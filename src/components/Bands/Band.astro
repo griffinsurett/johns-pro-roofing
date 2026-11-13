@@ -46,6 +46,14 @@ interface Props {
   aspect?: "landscape" | "portrait";
   /** Place the media on the right instead of the left. */
   reverse?: boolean;
+  /** Which part of the image stays in frame when it's cropped to the band's
+   *  aspect ratio (CSS object-position), e.g. "center 15%" to keep a face in a
+   *  portrait photo. Defaults to the center. */
+  imagePosition?: string;
+  /** A photo slot still waiting for a real job photo. Renders a labeled
+   *  placeholder in the media cell (e.g. "Finished addition, outside"), so a
+   *  page under review shows where each photo goes without borrowing one. */
+  photoNeeded?: string;
 }
 const {
   class: className = "",
@@ -55,10 +63,12 @@ const {
   videoAlt = "",
   aspect = "landscape",
   reverse = false,
+  imagePosition,
+  photoNeeded,
 } = Astro.props as Props;
 
 const hasVideo = Boolean(video);
-const hasMedia = hasVideo || Boolean(image);
+const hasMedia = hasVideo || Boolean(image) || Boolean(photoNeeded);
 const videoAspect = aspect === "portrait" ? "portrait" : "landscape";
 ---
 
@@ -75,10 +85,15 @@ const videoAspect = aspect === "portrait" ? "portrait" : "landscape";
               class="w-full h-full"
             />
           </div>
+        ) : photoNeeded && !image ? (
+          <div class="band-split__media band-split__placeholder" data-aspect={aspect}>
+            <span class="band-split__placeholder-tag">Photo needed</span>
+            <span>{photoNeeded}</span>
+          </div>
         ) : (
         <div class="band-split__media" data-aspect={aspect}>
           {typeof image === "string" ? (
-            <img src={image} alt={imageAlt} class="band-split__img" loading="lazy" />
+            <img src={image} alt={imageAlt} class="band-split__img" loading="lazy" style={imagePosition ? `object-position: ${imagePosition}` : undefined} />
           ) : (
             <Image
               src={image as ImageMetadata}
@@ -87,6 +102,7 @@ const videoAspect = aspect === "portrait" ? "portrait" : "landscape";
               sizes="(min-width: 768px) 45vw, 100vw"
               class="band-split__img"
               loading="lazy"
+              style={imagePosition ? `object-position: ${imagePosition}` : undefined}
             />
           )}
         </div>
@@ -137,6 +153,25 @@ const videoAspect = aspect === "portrait" ? "portrait" : "landscape";
     max-width: 340px;
     margin-inline: auto;
     width: 100%;
+  }
+  .band-split__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    border: 2px dashed color-mix(in oklab, currentColor 35%, transparent);
+    background: color-mix(in oklab, currentColor 6%, transparent);
+    box-shadow: none;
+  }
+  .band-split__placeholder-tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
   }
   .band-split__img {
     width: 100%;

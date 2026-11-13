@@ -32,3 +32,15 @@ pnpm-debug.log*
 
 # Claude Code local tooling
 .claude/
+
+# Disposable local investigation output (keep one-off work in the OS temp directory)
+.scratch/
+.tmp/
+tmp/
+test-results/
+playwright-report/
+coverage/
+__pycache__/
+*.pyc
+*.log
+.vercel/

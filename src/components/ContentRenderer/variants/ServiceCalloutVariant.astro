@@ -9,11 +9,16 @@
  * images (CSS-only; freezes on the first image for reduced-motion users).
  * Items with a resolved url (e.g. roofing) render as links; page-less ones
  * (decking, siding) render as plain list entries.
+ *
+ * Service pages also use it for their process steps ("How your deck gets
+ * built"): `columns={1}` stacks one step per line, and an item's
+ * `description` follows its bold title on the same line.
  */
 import { getImage } from "astro:assets";
 import type { BaseVariantProps } from "../ContentRenderer.types";
 import Button from "@/components/Button/Button";
 import SectionHeading from "@/components/SectionHeading.astro";
+import NumberedItem from "@/components/LoopComponents/NumberedItem.astro";
 import { resolveImageMetadata } from "@/utils/images";
 
 interface Props extends BaseVariantProps {
@@ -26,6 +31,9 @@ interface Props extends BaseVariantProps {
    *  images of their own (e.g. the "Who We Serve" audience list). Pass a single
    *  image for a static band, or an array to cross-fade them as a slideshow. */
   backgroundImage?: any;
+  /** List columns from `sm` up: 2 (default, short audience lists) or 1
+   *  (process steps, one per line). */
+  columns?: 1 | 2;
 }
 
 const {
@@ -38,6 +46,7 @@ const {
   ctaLink,
   backgroundImage,
   id,
+  columns = 2,
 } = Astro.props as Props;
 
 const safeItems = Array.isArray(items) ? items : [];
@@ -105,9 +114,15 @@ const isSlideshow = slides.length > 1;
       ))}
     </div>
   )}
-  {/* Red gradient overlay: opaque on the left, fading to transparent on the right */}
+  {/* Red gradient overlay: opaque on the left, fading to transparent on the
+      right. One-column bands (process steps) run longer lines, so their solid
+      red reaches further across to sit under the whole text column. */}
   <div
-    class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_30%,color-mix(in_oklab,var(--color-accent)_55%,transparent)_62%,transparent_100%)]"
+    class={`absolute inset-0 ${
+      columns === 1
+        ? "bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_46%,color-mix(in_oklab,var(--color-accent)_58%,transparent)_70%,transparent_100%)]"
+        : "bg-[linear-gradient(90deg,var(--color-accent)_0%,color-mix(in_oklab,var(--color-accent)_92%,transparent)_30%,color-mix(in_oklab,var(--color-accent)_55%,transparent)_62%,transparent_100%)]"
+    }`}
     aria-hidden="true"
   >
   </div>
@@ -125,16 +140,16 @@ const isSlideshow = slides.length > 1;
       />
 
       {safeItems.length > 0 && (
-        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 mb-10 list-none">
+        <ol class={`grid grid-cols-1 ${columns === 2 ? "sm:grid-cols-2" : ""} gap-x-8 gap-y-5 mb-10 list-none`}>
           {safeItems.map((item, i) => (
-            <li class="flex items-center gap-4">
-              <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
-                {i + 1}
-              </span>
-              <span class="text-bg text-lg font-semibold">{item.title}</span>
-            </li>
+            <NumberedItem
+              index={i}
+              title={item.title}
+              description={item.description}
+              showDescription={columns === 1}
+            />
           ))}
-        </ul>
+        </ol>
       )}
 
       {ctaText && ctaLink && (

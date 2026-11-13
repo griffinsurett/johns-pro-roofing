@@ -1,0 +1,29 @@
+---
+// src/components/LoopComponents/ContactLinkItem.astro
+/**
+ * ContactLinkItem — one contact method (phone, email, address) as an icon +
+ * link, styled for a dark background. Rendered by ContactLinksVariant.
+ */
+import Icon from "@/components/Icon";
+
+export interface Props {
+  url?: string;
+  icon?: string;
+  displayValue: string;
+}
+
+const { url, icon, displayValue } = Astro.props as Props;
+const external = url?.startsWith("http");
+---
+
+<li>
+  <a
+    href={url}
+    class="inline-flex items-start gap-2.5 hover:text-bg transition-colors"
+    target={external ? "_blank" : undefined}
+    rel={external ? "noopener noreferrer" : undefined}
+  >
+    <Icon icon={icon || "lu:contact"} size="sm" className="text-bg/70 shrink-0 mt-0.5" />
+    <span>{displayValue}</span>
+  </a>
+</li>

@@ -9,6 +9,7 @@
  * without copying markup. Pulls its own selling points from the content
  * collection and imports its own background image.
  */
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { query, sortByOrder } from "@/utils/query";
 import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
@@ -36,12 +37,13 @@ const description =
   cta?.description ??
   "Our unmatched benefits that set us apart and ensure your peace of mind.";
 
-// Benefit list: explicit `points` from frontmatter, else top selling-points.
-const points =
-  cta?.points ??
-  (await query("selling-points").orderBy(sortByOrder()).all())
-    .slice(0, cta?.count ?? 4)
-    .map((p) => p.data.title);
+// Benefit list, rendered through ContentRenderer (NumberedListVariant):
+// explicit `points` from frontmatter (static items), else the top
+// selling-points (collection query).
+const pointItems = cta?.points?.map((title) => ({ title }));
+const sellingPointsQuery = query("selling-points")
+  .orderBy(sortByOrder())
+  .limit(cta?.count ?? 4);
 
 // Buttons: configurable primary, with the phone link as the default secondary.
 const primary = cta?.primary ?? { text: ctaData.text, href: "/contact-us" };
@@ -77,17 +79,10 @@ const secondary = cta?.secondary;
       </p>
 
       {
-        points.length > 0 && (
-          <ul class="flex flex-col gap-5 mb-10">
-            {points.map((point, i) => (
-              <li class="flex items-center gap-4">
-                <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-bg text-sm font-bold flex items-center justify-center">
-                  {i + 1}
-                </span>
-                <span class="text-bg text-lg font-semibold">{point}</span>
-              </li>
-            ))}
-          </ul>
+        pointItems ? (
+          <ContentRenderer items={pointItems} variant="NumberedListVariant" />
+        ) : (
+          <ContentRenderer query={sellingPointsQuery} variant="NumberedListVariant" />
         )
       }
 

@@ -18,9 +18,10 @@
  */
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
-import { baseSchema, MenuSchema, MenuItemFields, refSchema, imageInputSchema } from "./content/schema";
+import { baseSchema, MenuSchema, MenuItemFields, refSchema, imageInputSchema, ctaSchema } from "./content/schema";
 import { GlobLoad, FileLoad } from "@/utils/loaders/loaderUtils";
 import { MenuItemsLoader } from "@/utils/loaders/MenuItemsLoader";
+import { PROPERTY_TYPE_IDS } from "@/utils/propertyTypes";
 
 export const collections = {
   // ── menus.json ─────────────────────────────────────────
@@ -138,7 +139,138 @@ export const collections = {
         cardCta: z.string().optional(),
         cardBlurb: z.string().optional(),
         badge: z.string().optional(),
-      }),
+        // Services contained in this page (ContentRenderer + OfferingsVariant). `confirmed: false`
+        // marks an item the client hasn't approved yet (bookkeeping; not shown).
+        offerings: z
+          .array(
+            z.object({
+              title: z.string(),
+              description: z.string(),
+              confirmed: z.boolean().default(true),
+              // Kinds of home this item applies to. When set, the grid shows
+              // where each item applies and a property-type filter.
+              propertyTypes: z.array(z.enum(PROPERTY_TYPE_IDS)).optional(),
+              // Audience this item belongs to (e.g. "commercial" / "home"),
+              // used by an `offeringFilters` filter on `group`.
+              group: z.string().optional(),
+              // Another service this item is: the card links to that page.
+              // Must be a real service id (checked at build). Used for the
+              // allowed cross-mentions (general contracting → remodeling,
+              // additions); roofing is never listed, so it never links.
+              page: z.string().optional(),
+              // Full-width card closing the list (e.g. one that ties the
+              // others together).
+              wide: z.boolean().optional(),
+              // Photo on top of a grid card (e.g. a finished commercial job).
+              // `src` or `{ src, alt }`; cards without one stay text-only.
+              // Linked and wide cards don't show it.
+              image: imageInputSchema({ image }),
+            })
+          )
+          .optional(),
+        // Filter chips above the offerings grid. Without this, a list whose items
+        // carry `propertyTypes` gets the default All homes / Houses / Townhouses /
+        // Condos filter. `field` is the item field to match (`group` or
+        // `propertyTypes`); option ids are its values. Picking one highlights the
+        // comparison column with the same id and sets the form select named
+        // `prefill` to the option's `formValue`.
+        offeringFilters: z
+          .object({
+            field: z.enum(["group", "propertyTypes"]),
+            // Omit for tabs: no "All" option, and the first option starts
+            // selected.
+            allLabel: z.string().optional(),
+            prefill: z.string().optional(),
+            options: z
+              .array(
+                z.object({
+                  id: z.string(),
+                  label: z.string(),
+                  formValue: z.string().optional(),
+                })
+              )
+              .min(2),
+          })
+          .optional(),
+        // Side-by-side comparison (ContentRenderer + ComparisonVariant), e.g. house /
+        // townhouse / condo or composite / wood. Every column has the same
+        // rows, so each needs one cell per row. A column whose `id` matches a
+        // filter option (property type, or an `offeringFilters` id) is highlighted
+        // when the OfferingsVariant filter picks it.
+        comparison: z
+          .object({
+            heading: z.string(),
+            intro: z.string().optional(),
+            rows: z.array(z.string()).min(1),
+            columns: z
+              .array(
+                z.object({
+                  id: z.string(),
+                  label: z.string(),
+                  cells: z.array(z.string()),
+                })
+              )
+              .min(2),
+          })
+          .refine(
+            (c) => c.columns.every((col) => col.cells.length === c.rows.length),
+            { message: "Each comparison column needs exactly one cell per row." }
+          )
+          .optional(),
+        // Pre-footer CTA banner (CtaBanner), separate from `cta` (which heads
+        // the mid-page quote form) so the page doesn't repeat one headline.
+        // `points` default to the get-started steps (see ServiceLayout).
+        ctaBanner: ctaSchema,
+        // Highlights strip under the service hero: this page's own phrases
+        // (a plain list per page, no shared query).
+        marquee: z.array(z.string()).optional(),
+        // Process steps ("How your deck gets built"), shown in the red photo
+        // band (ServiceCalloutVariant, one column).
+        process: z
+          .object({
+            pretitle: z.string().optional(),
+            heading: z.string(),
+            description: z.string().optional(),
+            steps: z
+              .array(z.object({ title: z.string(), description: z.string() }))
+              .min(1),
+          })
+          .optional(),
+        // Compact callback form in the service hero (QuickQuoteForm).
+        quickForm: z
+          .object({
+            heading: z.string(),
+            description: z.string().optional(),
+            selectLabel: z.string(),
+            options: z.array(z.string()).min(1),
+            button: z.string(),
+          })
+          .optional(),
+        // Detailed bottom form (ProjectDetailsForm): this service's questions.
+        detailsForm: z
+          .object({
+            heading: z.string(),
+            description: z.string().optional(),
+            button: z.string(),
+            questions: z.array(
+              z.object({
+                name: z.string(),
+                label: z.string(),
+                type: z.enum(["select", "checkboxes", "text", "textarea"]),
+                options: z.array(z.string()).optional(),
+                placeholder: z.string().optional(),
+                required: z.boolean().optional(),
+              })
+            ),
+          })
+          .optional(),
+      })
+      // The service hero's background is `bannerImage`; when a page doesn't
+      // set one, it defaults to the page's `featuredImage`.
+      .transform((data) => ({
+        ...data,
+        bannerImage: data.bannerImage ?? data.featuredImage,
+      })),
   }),
 
   "testimonials": defineCollection({
@@ -215,18 +347,6 @@ export const collections = {
       baseSchema({ image }).extend({
         // The service(s) this roofing system is installed/serviced under
         // (e.g. TPO → flat-roofing). Mirrors the projects → services pattern.
-        service: refSchema("services"),
-      }),
-  }),
-
-  // ── project-types ───────────────────────────────────────
-  // Commercial and residential contracting work (renovations, decks,
-  // additions, ...) shown on the non-roofing service pages. Same shape as
-  // roofing-types so it reuses RoofingTypesShowcase.
-  "project-types": defineCollection({
-    loader: GlobLoad("project-types"),
-    schema: ({ image }) =>
-      baseSchema({ image }).extend({
         service: refSchema("services"),
       }),
   }),

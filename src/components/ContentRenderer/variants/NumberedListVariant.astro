@@ -1,0 +1,22 @@
+---
+// src/components/ContentRenderer/variants/NumberedListVariant.astro
+/**
+ * Numbered List Variant — a single-column numbered list of NumberedItems,
+ * for use inside a red band (CtaBanner's points). No heading of its own.
+ *
+ *   <ContentRenderer items={points} variant="NumberedListVariant" />
+ *   <ContentRenderer query={query("selling-points").limit(4)} variant="NumberedListVariant" />
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import NumberedItem from "@/components/LoopComponents/NumberedItem.astro";
+
+interface Props extends BaseVariantProps {}
+
+const { items = [], id } = Astro.props as Props;
+---
+
+<ul id={id} class="flex flex-col gap-5 mb-10">
+  {items.map((item: any, i) => (
+    <NumberedItem index={i} title={item.title} />
+  ))}
+</ul>

@@ -24,7 +24,11 @@ import TopBar from "@/layouts/TopBar.astro";
   {/* Nav row. `data-menu-anchor` is on this whole wrapper (nav row + mobile
       action row) so the mobile dropdown opens BELOW the action buttons, not
       behind them (which was hiding the first menu item). */}
-  <div data-menu-anchor class="py-0 bg-bg backdrop-blur-md space-y-2 xl:py-0">
+  {/* No space-y here: Tailwind v4's space-y puts a bottom margin on every child
+      but the last, and on xl the last child (the mobile action row) is hidden,
+      so that 8px margin leaked out under the header. The spacing lives on the
+      mobile row instead (mt-2), so it only exists when that row is shown. */}
+  <div data-menu-anchor class="py-0 bg-bg backdrop-blur-md xl:py-0">
     <div
       class="relative w-full max-w-[1600px] mx-auto px-6 xl:px-12 flex items-center justify-start xl:justify-between gap-6 py-1"
     >
@@ -74,7 +78,7 @@ import TopBar from "@/layouts/TopBar.astro";
 
 
   {/* Mobile-only action row — red estimate + blue phone, full width */}
-  <div class="flex xl:hidden gap-3 px-6 bg-bg [&>*]:flex-1 [&_.btn-base]:w-full [&_.btn-base]:justify-center">
+  <div class="flex xl:hidden mt-2 gap-3 px-6 bg-bg [&>*]:flex-1 [&_.btn-base]:w-full [&_.btn-base]:justify-center">
     <Button variant="primary" href="/contact-us" className="mobile-action-btn" fullWidth>
       Contact Us
     </Button>
@@ -134,5 +138,23 @@ import TopBar from "@/layouts/TopBar.astro";
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     update();
+
+    // Publish the header's height as CSS variables so layouts can size against
+    // it on any device, whatever the header renders as (logo size, wrapped top
+    // bar, breakpoint changes). A ResizeObserver keeps them current.
+    //   --header-height       the header's height right now (shrinks on scroll)
+    //   --header-height-full  its height in the landing (non-compact) state, a
+    //                         stable number for full-screen heroes that must
+    //                         not resize as the logo shrinks on scroll
+    // This runs inline right after the header, so the values exist before the
+    // page below it is laid out (no jump on load).
+    const root = document.documentElement;
+    const publish = () => {
+      const h = header.offsetHeight;
+      root.style.setProperty("--header-height", h + "px");
+      if (!compact) root.style.setProperty("--header-height-full", h + "px");
+    };
+    publish();
+    if ("ResizeObserver" in window) new ResizeObserver(publish).observe(header);
   })();
 </script>

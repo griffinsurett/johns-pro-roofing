@@ -1,21 +1,14 @@
 ---
 // src/components/ServiceBands.astro
 /**
- * ServiceBands — lists a collection's top-level services using the same
- * alternating white/navy <Bands> treatment as the service pages. Each service
- * is a band with its featured image on one side and a prose heading +
- * description + button on the other; the image side alternates per band (zig-
- * zag), and band backgrounds alternate (odd = white/navy text, even = navy/
- * light text) via the shared <Bands> styling.
+ * ServiceBands — lists a collection's top-level services as alternating
+ * white/navy bands (the services hub). A thin wrapper: the query runs through
+ * ContentRenderer, the layout is ServiceBandsVariant and each band is a
+ * ServiceBandCard.
  */
-import type { CollectionKey, CollectionEntry } from "astro:content";
-import { Image } from "astro:assets";
-import Bands from "@/components/Bands/Bands.astro";
-import Band from "@/components/Bands/Band.astro";
-import Button from "@/components/Button/Button";
+import type { CollectionKey } from "astro:content";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { roots, sortByOrder } from "@/utils/query";
-import { getCollectionMeta, prepareCollectionEntries } from "@/utils/collections";
-import { resolveImageMetadata } from "@/utils/images";
 
 interface Props {
   /** Collection to list the top-level (root) items of. */
@@ -25,101 +18,10 @@ interface Props {
 }
 
 const { collection, ctaLabel = "Learn More" } = Astro.props as Props;
-
-const meta = getCollectionMeta(collection);
-const entries = (await roots(collection)
-  .orderBy(sortByOrder())
-  .all()) as CollectionEntry<CollectionKey>[];
-const services = await prepareCollectionEntries(entries, collection, meta);
-
 ---
 
-<Bands>
-  {
-    services.map((service, i) => {
-      // Band media is a ~45vw column, so it's sized via <Image>; a plain
-      // string (external/public path) can't be optimized and falls back.
-      const imgMeta = resolveImageMetadata(service.featuredImage);
-      const src =
-        typeof service.featuredImage === "string" ? service.featuredImage : "";
-      // Zig-zag: image on the left by default, flipped to the right on odd rows.
-      const imageRight = i % 2 === 1;
-      return (
-        <Band class="band-service">
-          <div class={`band-service-grid ${imageRight ? "is-image-right" : ""}`}>
-            {(imgMeta || src) && (
-              <div class="band-service-media">
-                {imgMeta ? (
-                  <Image
-                    src={imgMeta}
-                    alt={service.title}
-                    widths={[480, 768, 960]}
-                    sizes="(min-width: 768px) 45vw, 100vw"
-                    format="webp"
-                    quality={72}
-                    loading="lazy"
-                  />
-                ) : (
-                  <img src={src} alt={service.title} loading="lazy" />
-                )}
-              </div>
-            )}
-            <div class="band-service-body">
-              <h2>{service.title}</h2>
-              {service.description && <p>{service.description}</p>}
-              {service.url && (
-                <div class="band-cta">
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    href={service.url}
-                    rightIcon="lu:arrow-up-right"
-                  >
-                    {ctaLabel}
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-        </Band>
-      );
-    })
-  }
-</Bands>
-
-<style is:global>
-  /* Side-by-side image + text inside each band. */
-  .band-service .band-service-grid {
-    display: grid;
-    gap: 2.5rem;
-    align-items: center;
-  }
-  @media (min-width: 768px) {
-    .band-service .band-service-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-    /* Zig-zag: push the media column to the right (after the text) on alt rows. */
-    .band-service .band-service-grid.is-image-right .band-service-media {
-      order: 2;
-    }
-  }
-
-  .band-service .band-service-media {
-    border-radius: 1rem;
-    overflow: hidden;
-  }
-  .band-service .band-service-media img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-  }
-
-  .band-service .band-service-body > * + * {
-    margin-top: 1rem;
-  }
-  .band-service .band-cta {
-    margin-top: 1.75rem;
-  }
-</style>
+<ContentRenderer
+  query={roots(collection).orderBy(sortByOrder())}
+  variant="ServiceBandsVariant"
+  ctaLabel={ctaLabel}
+/>

@@ -1,0 +1,34 @@
+---
+// src/components/ServiceReviewsCarousel.astro
+/**
+ * ServiceReviewsCarousel — the homepage's review carousel (navy review cards,
+ * auto-scrolling) for a service page. A thin wrapper: the service's reviews
+ * (getServiceReviews: reviews about this service, else the "featured" set)
+ * run through ContentRenderer and TestimonialCarouselVariant renders them.
+ */
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { getServiceReviews } from "@/utils/serviceReviews";
+import { query, sortByOrder } from "@/utils/query";
+
+interface Props {
+  /** Service id whose reviews to show (e.g. "general-contractors"). */
+  serviceId: string;
+  /** Replaces the reviews collection's own subtitle, which is about roofing. */
+  description?: string;
+}
+
+const { serviceId, description } = Astro.props as Props;
+
+const reviewIds = (await getServiceReviews(serviceId)).map((t) => t.id);
+const reviewsQuery = query("testimonials")
+  .where((e: any) => reviewIds.includes(e.id))
+  .orderBy(sortByOrder());
+---
+
+<ContentRenderer
+  query={reviewsQuery}
+  variant="TestimonialCarouselVariant"
+  collectionUrl="/testimonials"
+  collectionTitle="Reviews"
+  description={description}
+/>

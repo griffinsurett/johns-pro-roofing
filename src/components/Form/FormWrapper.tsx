@@ -129,7 +129,10 @@ export default function FormWrapper({
         if (values.length > 1) {
           data[key] = values;
         } else if (form.querySelector(`[name="${key}"][type="checkbox"]`)) {
-          data[key] = value === "on";
+          // A bare checkbox (consent) submits "on" → true. A checkbox in a
+          // group carries its own value (e.g. "Kitchen"); keep it, or a single
+          // ticked option would arrive as false.
+          data[key] = value === "on" ? true : value;
         } else {
           data[key] = value;
         }

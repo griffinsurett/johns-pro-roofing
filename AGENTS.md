@@ -32,11 +32,56 @@ Greastro systems (content collections → `query()` → `ContentRenderer` → va
 
 Beyond the Greastro defaults, this site adds collections under `src/content/`:
 `roofing`, `services`, `service-areas`, `certifications`, `selling-points`, `projects`,
-`testimonials`, `faq`, `roofing-types`, `project-types`. The two `*-types`
-collections share one shape and one query (`utils/roofingTypes.ts`), so
-`RoofingTypesShowcase` renders either via its `collection` prop. Manufacturer certifications are the `certifications` collection —
+`testimonials`, `faq`, `roofing-types`. `RoofingTypesShowcase` renders `roofing-types`
+(via `utils/roofingTypes.ts`). The non-roofing service pages keep their own lists in the page's
+MDX frontmatter (`offerings`, `comparison`, `process`, `marquee`), per the handoff's "array in the
+MDX file" rule, and render them through `ContentRenderer`'s static `items` mode (see below).
+Manufacturer certifications are the `certifications` collection —
 **not** a field on `businessData`. Add/edit entries and `_meta.mdx`; render through
 `ContentRenderer` with an existing variant before inventing a new display.
+
+## Every content display goes through ContentRenderer — no exceptions
+
+Anything that renders a list or repeated content (cards, grids, comparisons, steps, marquees,
+audiences, reviews) goes **ContentRenderer → Variant → LoopComponent**. This is the Greastro
+architecture, and it was broken here once (standalone `OfferingsGrid` / `Comparison` /
+`AudienceList` components, variants called directly with frontmatter arrays). Don't repeat it.
+
+- **Data from a collection:** `<ContentRenderer query={query("…")} variant="…" />`.
+- **Data from page frontmatter** (a service's own list): `<ContentRenderer items={frontmatter.x}
+  variant="…" />` (static `items` mode). Still ContentRenderer, never the variant directly.
+- **Never import a variant into a page or layout and render it yourself**
+  (`<ServiceCalloutVariant …/>`, `<MarqueeVariant …/>`). Always `variant="…"` on ContentRenderer.
+- **Never write a standalone component that loops over content** in `src/components/`. A new
+  display style is a new file in `ContentRenderer/variants/`, and its per-item markup is a new file
+  in `LoopComponents/`.
+- **Reuse before adding:** check the existing variants (`ServiceCalloutVariant` red band,
+  `MarqueeVariant`, `OfferingsVariant`, `ComparisonVariant`, `GridVariant`, `AccordionVariant`, …)
+  and shared sections built on them (`WhoWeServe`) first. Only add a variant when none fits, and
+  say why.
+- Before reporting work done, grep the change for `.map(` in pages, layouts and
+  `src/components/*.astro` outside `ContentRenderer/` and `LoopComponents/`. Any content loop
+  there is a violation to fix.
+
+Current service-page displays: offerings → `OfferingsVariant` + `OfferingCard` (filter chips from
+the page's `offeringFilters`, or the default property-type filter; it fires `offerings:filter`, which
+`ComparisonVariant` uses to highlight a column); comparisons →
+`ComparisonVariant` + `ComparisonColumn`; process steps and "who we build for" →
+`ServiceCalloutVariant` (red band; the latter via `WhoWeServe` on the `who-we-serve` collection);
+highlights strip → `MarqueeVariant`; FAQ → `AccordionVariant`; reviews beside a quote form →
+`TestimonialMarqueeVariant`; a standalone review carousel → `ServiceReviewsCarousel` (thin wrapper:
+`getServiceReviews` → `TestimonialCarouselVariant`, the homepage's carousel). `ComparisonVariant`'s
+`featureCards` gives navy gradient columns for a white band, with no filter highlight.
+
+Site-wide displays: CTA banner points → `NumberedListVariant` + `NumberedItem` (also the items in
+`ServiceCalloutVariant`); services hub → `ServiceBandsVariant` + `ServiceBandCard`; gallery strip
+→ `GalleryMarqueeVariant` + `GalleryTile`; roofing systems → `TypesShowcaseVariant` (slideshow
+island) and `TypeListBandVariant` + `TypeListItem`; footer contacts → `ContactLinksVariant` +
+`ContactLinkItem`; breadcrumbs → `BreadcrumbVariant` + `BreadcrumbItem`; blog index →
+`BlogFeedVariant` + `BlogFeedCard` and `RecentPostsVariant` + `RecentPostItem`. Components like
+`CtaBanner`, `ServiceBands`, `GalleryMarquee`, `RoofingTypesShowcase`, `RoofingTypesList` and
+`Breadcrumbs` are thin wrappers that call ContentRenderer (the `WhoWeServe` pattern); they hold no
+content loops.
 
 ## Sanctioned third parties & endpoints
 
@@ -46,7 +91,7 @@ Plain footer/social links don't count as integrations.
 
 | Service | Status | Purpose | How it's wired | Config |
 |---|---|---|---|---|
-| **Formspree** (`formspree.io`) | **active** | Quote + contact form submission | `src/utils/formspree.ts` | `PUBLIC_FORMSPREE_QUOTE_ID`, `PUBLIC_FORMSPREE_CONTACT_ID`, `PUBLIC_FORMSPREE_ID` |
+| **Formspree** (`formspree.io`) | **active** | Quote, quick quote (service hero) + contact form submission | `src/utils/formspree.ts` | `PUBLIC_FORMSPREE_QUOTE_ID`, `PUBLIC_FORMSPREE_QUICK_QUOTE_ID` (pending; falls back to the quote ID), `PUBLIC_FORMSPREE_CONTACT_ID`, `PUBLIC_FORMSPREE_ID` |
 | **Google Fonts** (`fonts.googleapis.com`, `fonts.gstatic.com`) | **active** | Webfonts: Inter, Outfit, Saira Condensed | `<link>` in `src/pages/index.astro` | — |
 | **Google Translate** (existing `translate.google.com`, `translate.googleapis.com`, `translate-pa.googleapis.com`, Google SDK resources) | **on demand** | Existing language preferences fallback | `src/integrations/preferences/language/` | User selection |
 | **Vercel Analytics / Speed Insights** (same-origin `/_vercel/` endpoints) | **mounted** | Existing analytics components | `src/integrations/IntBodyScripts.astro` | Existing Vercel project |

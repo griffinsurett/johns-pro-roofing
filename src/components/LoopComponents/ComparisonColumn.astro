@@ -1,0 +1,29 @@
+---
+// src/components/LoopComponents/ComparisonColumn.astro
+/**
+ * ComparisonColumn — one option in a side-by-side comparison (e.g. "Condo"
+ * or "Composite"), rendered by ComparisonVariant. Every column gets the same
+ * row labels, in the same order, so the columns read straight across.
+ */
+export interface Props {
+  /** Column id; matched against the property-type filter for highlighting. */
+  id: string;
+  label: string;
+  rows: string[];
+  cells: string[];
+}
+
+const { id, label, rows, cells } = Astro.props as Props;
+---
+
+<section class="comparison-col" data-type={id} aria-labelledby={`comparison-${id}`}>
+  <h3 id={`comparison-${id}`}>{label}</h3>
+  <dl>
+    {rows.map((row, i) => (
+      <div class="comparison-row">
+        <dt>{row}</dt>
+        <dd>{cells[i]}</dd>
+      </div>
+    ))}
+  </dl>
+</section>

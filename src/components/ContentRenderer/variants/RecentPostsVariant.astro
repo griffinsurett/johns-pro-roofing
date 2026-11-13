@@ -1,0 +1,18 @@
+---
+// src/components/ContentRenderer/variants/RecentPostsVariant.astro
+/**
+ * Recent Posts Variant — the blog sidebar's compact list of RecentPostItems.
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import RecentPostItem from "@/components/LoopComponents/RecentPostItem.astro";
+
+interface Props extends BaseVariantProps {}
+
+const { items = [] } = Astro.props as Props;
+---
+
+<ul class="space-y-4">
+  {items.map((post: any) => (
+    <RecentPostItem title={post.title} url={post.url} publishDate={post.publishDate} />
+  ))}
+</ul>

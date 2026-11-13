@@ -1,0 +1,70 @@
+---
+// src/components/ContentRenderer/variants/ServiceBandsVariant.astro
+/**
+ * Service Bands Variant — services listed as alternating white/navy <Bands>,
+ * one ServiceBandCard per service with the image side zig-zagging. Used by
+ * the services hub (via ServiceBands). No heading of its own.
+ *
+ *   <ContentRenderer query={roots("services").orderBy(sortByOrder())} variant="ServiceBandsVariant" />
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import Bands from "@/components/Bands/Bands.astro";
+import ServiceBandCard from "@/components/LoopComponents/ServiceBandCard.astro";
+
+interface Props extends BaseVariantProps {
+  /** Button label on each service band. */
+  ctaLabel?: string;
+}
+
+const { items = [], ctaLabel = "Learn More" } = Astro.props as Props;
+---
+
+<Bands>
+  {items.map((service: any, i) => (
+    <ServiceBandCard
+      index={i}
+      title={service.title}
+      description={service.description}
+      url={service.url}
+      featuredImage={service.featuredImage}
+      ctaLabel={ctaLabel}
+    />
+  ))}
+</Bands>
+
+<style is:global>
+  /* Side-by-side image + text inside each band. */
+  .band-service .band-service-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .band-service .band-service-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    /* Zig-zag: push the media column to the right (after the text) on alt rows. */
+    .band-service .band-service-grid.is-image-right .band-service-media {
+      order: 2;
+    }
+  }
+
+  .band-service .band-service-media {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  .band-service .band-service-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .band-service .band-service-body > * + * {
+    margin-top: 1rem;
+  }
+  .band-service .band-cta {
+    margin-top: 1.75rem;
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+// src/components/LoopComponents/BreadcrumbItem.astro
+/**
+ * BreadcrumbItem — one step in the breadcrumb trail: a separator before
+ * every step but the first, a link for ancestors, plain text (aria-current)
+ * for the current page. Rendered by BreadcrumbVariant.
+ */
+export interface Props {
+  label: string;
+  url?: string;
+  index: number;
+  isLast: boolean;
+  separator?: string;
+  linkClass?: string;
+  currentClass?: string;
+}
+
+const { label, url, index, isLast, separator = "/", linkClass, currentClass } = Astro.props as Props;
+---
+
+<li class="flex items-center gap-2">
+  {index > 0 && <span aria-hidden="true">{separator}</span>}
+  {!isLast && url ? (
+    <a href={url} class={linkClass}>{label}</a>
+  ) : (
+    <span aria-current="page" class={currentClass}>{label}</span>
+  )}
+</li>

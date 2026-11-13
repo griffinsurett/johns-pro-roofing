@@ -1,207 +1,335 @@
 ---
+# Source of truth: docs/service-content/general-contracting.md.
+# Copy changes go into that document first, then here.
+# No bannerImage/featuredImage yet: the old ones were commercial roofing
+# photos, and roofing stays off this page. The hero stays plain until there's
+# a general contracting photo.
 title: "General Contractors"
 heading:
   before: "General"
-  text: "Contractors"
+  text: "Contractor"
   after: "in New Jersey"
-description: "Commercial and residential general contractor in New Jersey — renovations, construction, roofing, and exterior work for businesses and homeowners. Free estimates."
+description: "Commercial and residential general contractor in New Jersey. One company to plan, schedule and manage your project from estimate to final walkthrough. Free estimates."
 order: 9
 category: "General Contracting"
 icon: "fa6:helmet-safety"
 cardSize: "small"
 cardCta: "Learn More"
-cardBlurb: "Commercial and residential renovations, construction, and exterior work, managed by one contractor from estimate to cleanup."
+cardBlurb: "Commercial renovations and home projects, managed by one contractor from estimate to cleanup."
 price: "Free estimates available"
-bannerImage: "../../assets/commercial-working.webp"
-featuredImage: "../../assets/commercial-4.webp"
 seo:
-  metaTitle: "General Contractors in NJ | Commercial & Residential"
-  metaDescription: "Commercial and residential general contractor in New Jersey for renovations, construction, and exterior work. Free estimate. Call 732-351-3518."
+  metaTitle: "General Contractor in NJ | Commercial & Residential | John's Pro Roofing"
+  metaDescription: "Commercial and residential general contractor in New Jersey. One company to plan, schedule and manage your project from estimate to final walkthrough. Free estimates."
   keywords:
+    - "general contractor nj"
     - "general contractors nj"
     - "commercial general contractor nj"
     - "residential general contractor nj"
     - "general contractor near me"
-features:
-  - "Commercial renovations & construction"
-  - "Residential renovations & construction"
-  - "Roofing & exterior work"
-  - "Free estimates"
-cta:
-  title: "Planning a"
-  accent: "building"
-  titleAfter: "project?"
-  description: "Free estimates on commercial and residential projects across New Jersey."
-  primary:
-    text: "Request a Free Estimate"
-    href: "/contact-us"
+    - "tenant improvement contractor nj"
+    - "commercial renovation contractor nj"
+    - "office renovation contractor nj"
+    - "medical office build-out nj"
+    - "hoa contractor nj"
+quickForm:
+  heading: "Get a call back"
+  selectLabel: "What's the project?"
+  options:
+    - "Commercial"
+    - "HOA or community"
+    - "Home"
+    - "Not sure yet"
+  button: "Request a Call Back"
+marquee:
+  - "Commercial Construction"
+  - "Commercial Renovations"
+  - "Tenant Build-Outs"
+  - "HOA & Community Work"
+  - "Home Remodeling"
+  - "Home Additions & Extensions"
+  - "One Point of Contact"
+  - "We Pull the Permits"
+  - "Free Estimates"
+ctaBanner:
+  title: "One contractor,"
+  accent: "start"
+  titleAfter: "to finish."
+  description: "Free estimates on commercial and home projects across New Jersey."
+offerings:
+  - title: "Commercial construction"
+    description: "New commercial buildings and additions to the ones you already have."
+    group: "commercial"
+    confirmed: false
+  - title: "Tenant improvements and build-outs"
+    description: "Getting a space ready for a new tenant, from bare walls to move-in."
+    group: "commercial"
+    confirmed: false
+  - title: "Office renovations"
+    description: "New layouts and finishes while your business keeps running."
+    group: "commercial"
+    confirmed: false
+  - title: "Restaurant and retail fit-outs"
+    description: "Storefronts, customer areas and back-of-house space, ready for opening day."
+    group: "commercial"
+    confirmed: false
+  - title: "Medical and dental office build-outs"
+    description: "Exam rooms and plumbing-heavy layouts for medical and dental tenants."
+    group: "commercial"
+    confirmed: false
+  - title: "Commercial interior renovations"
+    description: "Common areas, restrooms, break rooms and the rooms people actually use every day."
+    group: "commercial"
+    confirmed: false
+  - title: "Interior finishes"
+    description: "Drywall, ceilings, flooring and paint for commercial spaces."
+    group: "commercial"
+    confirmed: false
+  - title: "Warehouse and industrial improvements"
+    description: "Offices, loading areas and upgrades inside buildings that have to keep working."
+    group: "commercial"
+    confirmed: false
+  - title: "Apartment and multifamily renovations"
+    description: "Unit turnovers and upgrades for property managers, done on a schedule that keeps units rented."
+    group: "commercial"
+    confirmed: false
+  - title: "HOA and community association work"
+    description: "Clubhouses, common areas, building exteriors and repairs across the community."
+    group: "commercial"
+    confirmed: false
+  - title: "Church renovations"
+    description: "Sanctuaries, fellowship halls and the rest of the building, for houses of worship."
+    group: "commercial"
+    confirmed: false
+  - title: "Building repairs"
+    description: "Fixing damage and wear before it turns into a bigger problem."
+    group: "commercial"
+    confirmed: false
+  - title: "Vacancy make-ready"
+    description: "Getting an empty commercial space ready to show and lease."
+    group: "commercial"
+    confirmed: false
+  - title: "Exterior repairs and upgrades"
+    description: "Siding, doors, windows and the parts of a building people see first."
+    group: "commercial"
+    confirmed: false
+  - title: "Interior demolition and site prep"
+    description: "Clearing a space out properly so the new work starts on a clean slate."
+    group: "commercial"
+    confirmed: false
+  # Linked cards sit side by side and list every job from the linked page.
+  - title: "Home remodeling"
+    description: "New life for the rooms you already have."
+    group: "home"
+    page: "home-remodeling"
+    confirmed: false
+  - title: "Home additions and extensions"
+    description: "More space, built onto the house or pushed out from a room you have."
+    group: "home"
+    page: "home-additions-and-extensions"
+    confirmed: false
+  - title: "Projects that cross the lines"
+    description: "Plenty of jobs don't fit one box, like an addition with a new kitchen or a whole-floor layout change. That's exactly what a general contractor is for."
+    # No group: it spans both, so it shows under every filter. Full width,
+    # under the two linked cards.
+    wide: true
+    confirmed: false
+# Tabs on the "What we take on" list (no "All": Commercial starts selected).
+# Picking one prefills "What kind of project is it?" on both forms.
+offeringFilters:
+  field: "group"
+  prefill: "projectType"
+  options:
+    - id: "commercial"
+      label: "Commercial"
+      formValue: "Commercial"
+    - id: "home"
+      label: "Residential"
+      formValue: "Home"
+comparison:
+  heading: "Commercial or home project? Here's how we run each."
+  intro: "The way we build is the same. What changes is what we plan around."
+  rows:
+    - "How we schedule"
+    - "How we keep you informed"
+  columns:
+    - id: "commercial"
+      label: "Commercial"
+      cells:
+        - "Around how your building runs, staged so entrances stay open and tenants and customers can still get in."
+        - "A written scope and cost you can take to ownership or a board, and updates as the work moves."
+    - id: "home"
+      label: "Home"
+      cells:
+        - "Around your household, with notice of which rooms are affected and when."
+        - "A weekly update on what's happening and what's next, and one person to call with questions."
+process:
+  pretitle: "How it works"
+  heading: "How a project with us runs"
+  steps:
+    - title: "Free estimate."
+      description: "We walk the site with you and listen to what you need."
+    - title: "Scope and cost in writing."
+      description: "You see what's included, and what it costs, before anything starts."
+    - title: "Permits and scheduling."
+      description: "We pull the permits and schedule the inspections, then line up the trades in the right order around your business or your household."
+    - title: "Construction."
+      description: "We run the crews and the materials, and you hear from us as the work moves."
+    - title: "Final walkthrough."
+      description: "We go through the finished work with you and leave the site clean."
+detailsForm:
+  description: "The more you tell us, the more useful our first conversation will be."
+  heading: "Tell us about your project"
+  button: "Send My Project Details"
+  questions:
+    - name: "projectType"
+      label: "What kind of project is it?"
+      type: "select"
+      required: true
+      options:
+        - "Commercial"
+        - "HOA or community"
+        - "Home"
+    - name: "propertyType"
+      label: "What kind of property is it?"
+      type: "select"
+      options:
+        - "Office"
+        - "Retail or restaurant"
+        - "Medical or dental office"
+        - "Warehouse or industrial"
+        - "Apartment or multifamily"
+        - "HOA or community"
+        - "Church"
+        - "House"
+        - "Something else"
+    - name: "newConstruction"
+      label: "Is it a new building, or work on an existing one?"
+      type: "select"
+      options:
+        - "Work on an existing building"
+        - "New construction or an addition"
+        - "Not sure yet"
+    - name: "timeline"
+      label: "When do you want to start?"
+      type: "select"
+      options:
+        - "As soon as possible"
+        - "In 1 to 3 months"
+        - "In 3 to 6 months"
+        - "Just planning"
+    - name: "notes"
+      label: "Tell us about the project"
+      type: "textarea"
 ---
-import QuoteCta from "@/components/QuoteCta.astro";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
-import { businessData } from "@/content/siteData";
+import ProjectDetailsForm from "@/components/Form/forms/ProjectDetailsForm.astro";
+import QuoteCta from "@/components/QuoteCta.astro";
+import processBackground from "@/assets/commercial-3.webp";
+import johnOutside from "@/assets/john-outside.png";
+import johnWithClient from "@/assets/john-w-client.webp";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
-import AudienceTabs from "@/components/AudienceTabs.astro";
-import heroImage from "../../assets/commercial-working.webp";
-import commercialIntro from "../../assets/commercial-3.webp";
-import commercialOps from "../../assets/commercial-7.webp";
-import commercialEnvelope from "../../assets/commercial-8.webp";
-import residentialIntro from "../../assets/residential-working-2.webp";
-import residentialRoof from "../../assets/john-on-roof-2.webp";
-import bandWhy from "../../assets/john-w-client.webp";
+import ServiceReviewsCarousel from "@/components/ServiceReviewsCarousel.astro";
+import { businessData } from "@/content/siteData";
 
 <ServiceLayout
+  title={frontmatter.title}
+  category={frontmatter.category}
   eyebrow="Commercial & Residential"
   heading={frontmatter.heading}
-  description={frontmatter.description}
-  image={heroImage}
-  category={frontmatter.category}
-  heroActions
+  description="One company to plan the job, run the crews and answer for the result. We take on commercial projects and home projects across New Jersey."
 >
 
-<AudienceTabs
-  heading="What kind of project is it?"
-  tabs={[
-    { id: "commercial", label: "Commercial" },
-    { id: "residential", label: "Residential" },
-  ]}
->
-
-<div slot="commercial">
-
 <Bands>
 
-<Band image={commercialIntro} imageAlt="Crew working on a commercial roof">
+<Band image={johnOutside} imageAlt="John in a John's Pro Roofing work shirt outside a client's home" imagePosition="center 12%">
 
-## Commercial general contractor in NJ
+## What a general contractor actually does
 
-Most of our work is commercial. John's Pro Roofing takes on renovations, construction, roofing, and exterior work for commercial buildings across New Jersey, working directly with property managers, facility managers, and building owners.
+Almost every building project needs more than one trade. There's demolition, framing, electrical, plumbing, drywall and finish work, and they have to happen in the right order. Get the order wrong and crews end up waiting on each other, or tearing out work that's already done.
 
-As your general contractor, we plan the job, schedule every trade, and manage the site, so you have one company accountable for the schedule, the budget, and the result.
+A general contractor owns that whole sequence. We plan the job, schedule every trade, order materials, keep the site safe, pull the permits and schedule the inspections.
 
-</Band>
-
-<RoofingTypesShowcase
-  collection="project-types"
-  service="general-contractors"
-  tag="commercial"
-  heading="Commercial projects we take on"
-  reverse
-/>
-
-<Band image={commercialOps} imageAlt="Commercial building where a crew is working">
-
-## Your building stays open while we work
-
-A commercial project can't shut down your business. We schedule around your hours, stage the work so entrances and operations stay accessible, and keep the site clean and safe for tenants, staff, and customers.
-
-- **A clear scope and cost** before work begins, ready for budgets and approvals
-- **One point of contact** for the whole job
-- **Updates as the work moves forward**, so you can keep tenants and ownership informed
-
-</Band>
-
-<Band image={commercialEnvelope} imageAlt="Finished white membrane on a commercial flat roof" reverse>
-
-## The building envelope is our trade
-
-Most commercial building problems start with water: a failing roof, a leaking seam, or a gap where a wall meets the roof. Commercial roofing is our core trade, so the roof, the walls, and every place they meet get the attention that keeps a building watertight.
-
-When your project touches the exterior, you're working with a contractor that knows exactly where buildings leak and how to stop it.
-
-</Band>
-
-</Bands>
-
-<WhoWeServe
-  title="Commercial Properties We Work On"
-  description="From a single building to a full portfolio, we work with the teams responsible for commercial properties across New Jersey."
-/>
-
-</div>
-
-<div slot="residential">
-
-<Bands>
-
-<Band image={residentialIntro} imageAlt="Residential crew at work on a New Jersey home">
-
-## Residential general contractor in NJ
-
-We bring the same crew discipline and standards from our commercial work to homes across New Jersey. John's Pro Roofing handles home renovations, residential construction, additions, and exterior improvements for homeowners.
-
-As your general contractor, we run the project from the first walkthrough to the final cleanup, so you're not coordinating carpenters, roofers, and finish crews yourself.
-
-</Band>
-
-<RoofingTypesShowcase
-  collection="project-types"
-  service="general-contractors"
-  tag="residential"
-  heading="Home projects we take on"
-  reverse
-/>
-
-<Band>
-
-## One contractor, start to finish
-
-Most home projects involve more than one trade, and the hard part is the order they happen in. When framing isn't done, the next crew waits. When a roof goes on after the siding, work gets torn up and redone.
-
-We sequence the job so each stage is ready for the next one, and you have one person to call with questions from estimate to cleanup.
-
-</Band>
-
-<Band image={residentialRoof} imageAlt="John on a completed residential roof" reverse>
-
-## Additions and exteriors done by roofers
-
-An addition or a new exterior lives or dies where it meets the existing roof. A bad tie-in is the most common source of leaks on a renovated home.
-
-Roofing is our trade, so we tie new work into your existing roof cleanly and keep the connection watertight.
-
-</Band>
-
-</Bands>
-
-</div>
-
-</AudienceTabs>
-
-<Bands>
-
-<Band>
-
-## How a project with us works
-
-1. **Free estimate.** We walk the property with you and talk through what you need.
-2. **Clear scope and cost.** You know exactly what's included before any work begins.
-3. **Scheduling.** We plan the order of work and set a schedule around your business hours or your household.
-4. **Construction.** We manage the crews and materials and keep you updated as the work moves forward.
-5. **Final walkthrough.** We walk the finished project with you and leave the site clean.
-
-</Band>
-
-<Band image={bandWhy} imageAlt="John meeting with a customer" reverse>
-
-## Why property owners choose John's Pro Roofing
-
-- **Commercial experience.** Most of our work is for commercial properties.
-- **Local and owner-operated.** A New Jersey company, not a franchise.
-- **One point of contact** from estimate to cleanup.
-- **Free estimates** and **0% down financing** available.
+When a job's split between five separate contractors and something goes wrong, everyone points at someone else. With us there's nobody else to point at. You've got one company responsible for the schedule, the budget and the finished work, and one number to call.
 
 {businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
 {businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
 
 </Band>
 
 </Bands>
 
-{/* Primary conversion: quote form with reviews. */}
-<QuoteCta cta={frontmatter.cta} />
+{/* Who we build for: the shared red "Who we serve" section (the who-we-serve
+    collection through ContentRenderer), with this page's heading. */}
+<WhoWeServe
+  pretitle="Who we build for"
+  title="Commercial properties and communities"
+  description="From a single office to a whole HOA community, we work with the people responsible for keeping buildings in shape. Homeowners, see home projects below."
+/>
+
+<Bands>
+
+<ContentRenderer items={frontmatter.offerings} variant="OfferingsVariant" title="What we take on" filters={frontmatter.offeringFilters} />
+
+</Bands>
+
+{/* Reviews between the list and the comparison (this service's reviews, else
+    the featured set). */}
+<ServiceReviewsCarousel serviceId="general-contractors" description="What customers say about working with Charlie and his crew." />
+
+<Bands>
+
+<ContentRenderer
+  items={frontmatter.comparison.columns}
+  rows={frontmatter.comparison.rows}
+  variant="ComparisonVariant"
+  title={frontmatter.comparison.heading}
+  description={frontmatter.comparison.intro}
+  featureCards
+/>
+
+</Bands>
+
+{/* Between the comparison and the cost band, so this red band never sits on
+    the red form section below. */}
+<ContentRenderer
+  items={frontmatter.process.steps}
+  variant="ServiceCalloutVariant"
+  pretitle={frontmatter.process.pretitle}
+  title={frontmatter.process.heading}
+  description={frontmatter.process.description}
+  columns={1}
+  backgroundImage={processBackground}
+/>
+
+<Bands>
+
+<Band image={johnWithClient} imageAlt="John with a homeowner after going over their project">
+
+## What affects the cost of a project
+
+- How much work is involved, and how many trades it takes
+- Permits, inspections and any engineering the job needs
+- Working in an occupied building, around tenants, customers or your family
+- What's behind the walls once they're opened up
+- The materials and finishes you choose
+
+You'll get a written scope and price after your free estimate, before anything starts.
+
+</Band>
+
+</Bands>
+
+<QuoteCta
+  serviceId="general-contractors"
+  cta={{ title: "Planning a", accent: "project?", titleAfter: "", description: "Tell us what you're building. We'll come out, take a look and give you a free estimate." }}
+  formTitle={frontmatter.detailsForm.heading}
+  formDescription={frontmatter.detailsForm.description}
+>
+  <ProjectDetailsForm service={frontmatter.title} content={frontmatter.detailsForm} />
+</QuoteCta>
 
 </ServiceLayout>

@@ -77,10 +77,20 @@ const authorName = authorRef ? await resolveAuthor(authorRef) : undefined;
           {
             data.publishDate && (
               <time datetime={new Date(data.publishDate).toISOString()}>
-                {new Date(data.publishDate).toLocaleDateString()}
+                {new Date(data.publishDate).toLocaleDateString(undefined, { timeZone: "UTC" })}
               </time>
             )
           }
+          {/* Shown only for a post revised on a later day than it was published. */}
+          {data.updatedDate &&
+            new Date(data.updatedDate).toDateString() !== new Date(data.publishDate ?? 0).toDateString() && (
+              <span>
+                Updated{" "}
+                <time datetime={new Date(data.updatedDate).toISOString()}>
+                  {new Date(data.updatedDate).toLocaleDateString(undefined, { timeZone: "UTC" })}
+                </time>
+              </span>
+            )}
           {authorName && <span>By {authorName}</span>}
           {data.readingTime && <span>{data.readingTime} min read</span>}
         </div>

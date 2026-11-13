@@ -1,5 +1,13 @@
 ---
+// src/components/Breadcrumbs.astro
+/**
+ * Breadcrumbs — the visible breadcrumb trail for the current page. A thin
+ * wrapper: `useBreadcrumbs` builds the trail (the same rules the breadcrumb
+ * schema uses), ContentRenderer renders it with BreadcrumbVariant.
+ */
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import { useBreadcrumbs, type BreadcrumbOptions } from "@/utils/breadcrumbs";
+
 interface Props extends BreadcrumbOptions {
   class?: string;
   listClass?: string;
@@ -8,16 +16,26 @@ interface Props extends BreadcrumbOptions {
   label?: string;
   separator?: string;
 }
-const { class: className, listClass = "flex flex-wrap items-center gap-2 text-sm", linkClass = "underline underline-offset-4", currentClass, label = "Breadcrumb", separator = "/", ...options } = Astro.props;
+
+const {
+  class: className,
+  listClass = "flex flex-wrap items-center gap-2 text-sm",
+  linkClass = "underline underline-offset-4",
+  currentClass,
+  label = "Breadcrumb",
+  separator = "/",
+  ...options
+} = Astro.props;
 const items = await useBreadcrumbs(Astro, Object.keys(options).length ? options : undefined);
 ---
-{items.length > 0 && <nav aria-label={label} class={className}>
-  <ol class={listClass}>
-    {items.map((item, index) => <li class="flex items-center gap-2">
-      {index > 0 && <span aria-hidden="true">{separator}</span>}
-      {index < items.length - 1 && item.url
-        ? <a href={item.url} class={linkClass}>{item.label}</a>
-        : <span aria-current="page" class={currentClass}>{item.label}</span>}
-    </li>)}
-  </ol>
-</nav>}
+
+<ContentRenderer
+  items={items}
+  variant="BreadcrumbVariant"
+  className={className}
+  label={label}
+  listClass={listClass}
+  linkClass={linkClass}
+  currentClass={currentClass}
+  separator={separator}
+/>

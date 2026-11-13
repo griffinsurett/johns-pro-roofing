@@ -1,0 +1,78 @@
+---
+// src/components/ContentRenderer/variants/TestimonialMarqueeVariant.astro
+/**
+ * Testimonial Marquee Variant — a vertical, auto-scrolling column of
+ * TestimonialCards, used beside the quote form in QuoteCta. The set is
+ * duplicated so the loop is seamless; pauses on hover and stops for
+ * reduced-motion users. No heading of its own (it sits inside a section).
+ *
+ *   <ContentRenderer query={query("testimonials")} variant="TestimonialMarqueeVariant" />
+ *
+ * `compact` shortens the window (used beside a tall custom form, where the
+ * pitch column is pinned and must stay short enough to stick).
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import TestimonialCard from "@/components/LoopComponents/TestimonialCard.astro";
+
+interface Props extends BaseVariantProps {
+  compact?: boolean;
+}
+
+const { items = [], compact = false, id } = Astro.props as Props;
+const loopItems = [...items, ...items];
+---
+
+<div
+  id={id}
+  class={`qc-testimonials mb-8 ${compact ? "qc-testimonials--compact" : ""}`}
+  aria-label="Customer testimonials"
+>
+  <ul class="qc-testimonials-track">
+    {loopItems.map((item: any, i) => (
+      <li class="qc-testimonials-item" aria-hidden={i >= items.length ? "true" : undefined}>
+        <TestimonialCard {...item} />
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .qc-testimonials {
+    position: relative;
+    height: 360px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .qc-testimonials--compact {
+    height: 240px;
+  }
+  .qc-testimonials-track {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    animation: qc-testimonials-scroll 40s linear infinite;
+  }
+  .qc-testimonials:hover .qc-testimonials-track {
+    animation-play-state: paused;
+  }
+  .qc-testimonials-item {
+    flex: 0 0 auto;
+  }
+  /* Cards keep their own (light) look so they pop on the red panel. */
+  .qc-testimonials-item :global(.testimonial-card) {
+    height: 100%;
+  }
+  @keyframes qc-testimonials-scroll {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .qc-testimonials-track {
+      animation: none;
+    }
+  }
+</style>

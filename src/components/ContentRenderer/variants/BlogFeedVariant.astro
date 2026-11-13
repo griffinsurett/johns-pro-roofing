@@ -1,0 +1,32 @@
+---
+// src/components/ContentRenderer/variants/BlogFeedVariant.astro
+/**
+ * Blog Feed Variant — the blog index's main column: a stacked list of
+ * BlogFeedCards wired for query-param pagination (`data-pagination-feed`).
+ * Items are the layout's prepared posts (author names, tags, image src).
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import BlogFeedCard from "@/components/LoopComponents/BlogFeedCard.astro";
+
+interface Props extends BaseVariantProps {
+  paginationId: string;
+  pageSize: number;
+}
+
+const { items = [], paginationId, pageSize } = Astro.props as Props;
+---
+
+<div class="space-y-6" data-pagination-feed={paginationId} data-page-size={pageSize}>
+  {items.map((post: any) => (
+    <BlogFeedCard
+      title={post.title}
+      url={post.url}
+      description={post.description}
+      publishDate={post.publishDate}
+      authorNames={post.authorNames}
+      tags={post.tags}
+      featuredImageSrc={post.featuredImageSrc}
+      featuredImageAlt={post.featuredImageAlt}
+    />
+  ))}
+</div>

@@ -1,0 +1,77 @@
+---
+// src/components/LoopComponents/OfferingCard.astro
+/**
+ * OfferingCard — one service a page offers (e.g. "Room additions"), rendered
+ * by OfferingsVariant. Shows where it applies (property types) and, when the
+ * item is another service page, becomes a navy gradient card listing every
+ * job on that page (`includes`, set by the variant) with a white button to it
+ * (the whole card is clickable). A grid card can carry a photo on top
+ * (`image`); cards without one stay text-only. `layout` is set by the
+ * variant: "card" (grid), "feature" (larger linked card) or "wide".
+ *
+ * An item's `confirmed: false` is review bookkeeping only (what the client
+ * still has to approve, tracked in docs/service-content). It isn't shown.
+ */
+import { Image } from "astro:assets";
+import Button from "@/components/Button/Button";
+import { resolveImageMetadata } from "@/utils/images";
+import { PROPERTY_TYPES, type PropertyTypeId } from "@/utils/propertyTypes";
+
+export interface Props {
+  title: string;
+  description: string;
+  propertyTypes?: PropertyTypeId[];
+  /** Ids the variant's filter matches this card on (e.g. ["condo"], ["home"]). */
+  filterIds?: string[];
+  /** Resolved link to another service page (set by the variant). */
+  url?: string;
+  /** Jobs on the linked page (set by the variant). */
+  includes?: string[];
+  layout?: "card" | "feature" | "wide";
+  /** Rendered hidden (a tab that isn't selected yet; set by the variant). */
+  hidden?: boolean;
+  /** Optional photo on top of the card: an image or `{ src, alt }`. */
+  image?: any;
+}
+
+const { title, description, propertyTypes = [], filterIds = [], url, includes = [], layout = "card", image, hidden = false } = Astro.props as Props;
+const photo = resolveImageMetadata(image);
+const photoAlt = typeof image === "object" && image && "alt" in image ? image.alt ?? "" : "";
+const buttonLabel = `Learn more about ${title.charAt(0).toLowerCase()}${title.slice(1)}`;
+---
+
+<li class={`offerings-card offerings-card--${layout} ${url ? "offerings-card--link" : ""}`} data-types={filterIds.join(" ")} hidden={hidden}>
+  {photo && (
+    <div class="offerings-card__media">
+      <Image src={photo} alt={photoAlt} widths={[400, 640, 800]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw" loading="lazy" />
+    </div>
+  )}
+  <h3>{title}</h3>
+  <p>{description}</p>
+  {includes.length > 0 && (
+    <ul class="offerings-includes" role="list">
+      {includes.map((job) => <li>{job}</li>)}
+    </ul>
+  )}
+  {url && (
+    <div class="offerings-card__action">
+      <Button
+        variant="secondary"
+        size="md"
+        href={url}
+        rightIcon="lu:arrow-right"
+        className="offerings-card__link !border-white hover:!bg-white/90 hover:!text-primary"
+        aria-label={buttonLabel}
+      >
+        Learn more
+      </Button>
+    </div>
+  )}
+  {propertyTypes.length > 0 && (
+    <div class="offerings-meta">
+      <span class="offerings-types">
+        {propertyTypes.map((id) => PROPERTY_TYPES[id].plural).join(" · ")}
+      </span>
+    </div>
+  )}
+</li>
