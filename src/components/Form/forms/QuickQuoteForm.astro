@@ -2,7 +2,7 @@
 // src/components/Form/forms/QuickQuoteForm.astro
 /**
  * QuickQuoteForm — the compact callback form in a service page's hero:
- * name, phone, and what the visitor needs. Low friction on purpose; the
+ * first and last name, phone, and what the visitor needs. Low friction on purpose; the
  * detailed questions live in the bottom ProjectDetailsForm.
  *
  * All copy (heading, field label, options, button) comes from the page's
@@ -63,17 +63,29 @@ const options = content.options.map((label) => ({ value: label, label }));
     <input type="hidden" name="service" value={service} />
     <input type="hidden" name="pageUrl" value={currentPageUrl} />
 
-    <Input
-      name="name"
-      label="Name"
-      type="text"
-      required={true}
-      minLength={2}
-      placeholder="Your name"
-      autoComplete="name"
-      containerClassName="mb-4"
-      inputClassName={inputClass}
-    />
+    {/* Same field names as ProjectDetailsForm, so submissions line up. */}
+    <div class="grid gap-x-4 sm:grid-cols-2">
+      <Input
+        name="firstName"
+        label="First name"
+        type="text"
+        required={true}
+        minLength={2}
+        autoComplete="given-name"
+        containerClassName="mb-4"
+        inputClassName={inputClass}
+      />
+      <Input
+        name="lastName"
+        label="Last name"
+        type="text"
+        required={true}
+        minLength={2}
+        autoComplete="family-name"
+        containerClassName="mb-4"
+        inputClassName={inputClass}
+      />
+    </div>
     <Input
       name="phone"
       label="Phone"
