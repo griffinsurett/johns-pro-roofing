@@ -107,7 +107,14 @@ bugging you about the space now, because that's what the plan should be built ar
 
 Need more rooms, not better ones? That's a [home addition or extension](/services/home-additions-and-extensions).
 
+### Reviews
+
+The homepage review carousel sits right above this list (this page's reviews, else the featured
+set), subtitled "What customers say about working with Charlie and his crew."
+
 ### What we remodel
+
+White band, like general contracting's "What we take on".
 
 Accessibility (aging-in-place) remodeling is off the page for now; it waits for Charlie's answer
 (see client-questions.md).

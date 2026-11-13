@@ -201,6 +201,7 @@ import Band from "@/components/Bands/Band.astro";
 import processBackground from "@/assets/commercial-3.webp";
 import ProjectDetailsForm from "@/components/Form/forms/ProjectDetailsForm.astro";
 import QuoteCta from "@/components/QuoteCta.astro";
+import ServiceReviewsCarousel from "@/components/ServiceReviewsCarousel.astro";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
 import { businessData } from "@/content/siteData";
 
@@ -227,7 +228,20 @@ Need more rooms, not better ones? That's a [home addition or extension](/service
 
 </Band>
 
+</Bands>
+
+{/* Reviews above the list (this service's reviews, else the featured set). */}
+<ServiceReviewsCarousel serviceId="home-remodeling" description="What customers say about working with Charlie and his crew." />
+
+{/* White list, like general contracting's "What we take on". */}
+<Bands>
+
 <ContentRenderer items={frontmatter.offerings} variant="OfferingsVariant" title="What we remodel" />
+
+</Bands>
+
+{/* Its own group so it stays white under the navy gradient cards. */}
+<Bands>
 
 <ContentRenderer
   items={frontmatter.comparison.columns}
