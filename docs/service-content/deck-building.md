@@ -71,7 +71,7 @@ and pressure-treated wood (both confirmed; brands still needed) `[CONFIRM: cedar
 
 ### Hero
 
-**Eyebrow:** Deck Builders
+**Eyebrow:** Deck Building
 
 **H1:** Deck Builders in New Jersey
 
