@@ -10,7 +10,8 @@ import Modal from "@/components/Modal";
 import Icon from "@/components/Icon";
 import { useAccessibility } from "@/integrations/preferences/accessibility/core/hooks/useAccessibility";
 import type { A11yPreferences } from "@/integrations/preferences/accessibility/core/types";
-import LanguageSwitcher from "@/integrations/preferences/language/ui/LanguageSwitcher";
+// Translation is OFF: not part of this client's package. To turn it back on, restore the commented lines in IntHeadScripts, IntBodyScripts, PreferencesLayout and AccessibilityModal, the Translate hosts in the vercel.json CSP, and the Google Translate / user-language / googtrans entries in src/utils/privacy.ts (see AGENTS.md).
+// import LanguageSwitcher from "@/integrations/preferences/language/ui/LanguageSwitcher";
 import { siteData } from "@/content/siteData";
 
 interface AccessibilityModalProps {
@@ -304,6 +305,8 @@ function AccessibilityModal({ isOpen, onClose }: AccessibilityModalProps) {
         </div>
 
         <div className="a11y-scroll-region w-full mx-auto">
+          {/* Language picker is OFF (not in this client's package); see the
+              note at the top of this file.
           <div className="a11y-card a11y-card--spacious">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text/70">
               Language
@@ -312,6 +315,7 @@ function AccessibilityModal({ isOpen, onClose }: AccessibilityModalProps) {
               <LanguageSwitcher />
             </div>
           </div>
+          */}
 
           <SectionBlock
             title="Text"

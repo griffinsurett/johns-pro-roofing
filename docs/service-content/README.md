@@ -95,7 +95,8 @@ slot is open. When photos arrive, fill in the file name and confirm the job matc
 | General Contracting | Cost section | Crew on a home exterior | `src/assets/crew-on-home-exterior.webp` | Client job photo, low resolution |
 | General Contracting | Commercial section | Finished commercial interior or exterior work | | |
 | General Contracting | Residential section | A home project in progress | | |
-| Home Remodeling | Intro | A finished kitchen or bathroom | | |
+| Home Remodeling | Intro | A finished kitchen or bathroom | `src/assets/home-remodeling/remodeled-kitchen.webp` | Illustrative, not a JPR job |
+| Home Remodeling | What drives the cost | A remodel in progress, walls opened up | `src/assets/home-remodeling/remodel-walls-opened-up.webp` | Illustrative, not a JPR job |
 | Home Remodeling | Project gallery | Before-and-after pairs from remodeling jobs (kitchens, baths, basements) | | |
 | Home Additions & Extensions | Intro | A finished addition seen from outside | `src/assets/crew-on-home-exterior.webp` | Stand-in until an addition photo arrives |
 | Home Additions & Extensions | Under construction | Framing or foundation of an addition | `src/assets/home-additions/home-addition-framing.webp` | Illustrative, not a JPR job |

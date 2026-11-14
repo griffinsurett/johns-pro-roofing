@@ -1,9 +1,12 @@
 // src/integrations/preferences/ui/consent/components/OptOutButton.tsx
 /**
- * CCPA Opt-Out Button (Default UI)
+ * CCPA Opt-Out Button — rejects every non-essential cookie category through
+ * Zest, confirms, then reloads so blocked scripts are gone. Uses the site's
+ * primary Button so it matches the buttons beside it.
  */
 
 import { useState } from "react";
+import Button from "@/components/Button/Button";
 
 export default function OptOutButton() {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -16,22 +19,15 @@ export default function OptOutButton() {
 
   if (showConfirmation) {
     return (
-      <div className="bg-success/10 border-2 border-success rounded-lg p-6">
-        <p className="font-bold text-success text-lg">✅ Success!</p>
-        <p className="text-success/80 text-sm mt-2">
-          You've opted out. Non-essential cookies disabled. Reloading...
-        </p>
-      </div>
+      <p className="m-0 font-semibold text-heading" role="status">
+        You've opted out. Non-essential cookies are off. Reloading…
+      </p>
     );
   }
 
   return (
-    <button
-      onClick={handleOptOut}
-      className="bg-primary text-bg px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary-700 transition-colors"
-      type="button"
-    >
-      🚫 Opt Out of Data Sharing
-    </button>
+    <Button variant="primary" type="button" onClick={handleOptOut}>
+      Opt out of data sharing
+    </Button>
   );
 }

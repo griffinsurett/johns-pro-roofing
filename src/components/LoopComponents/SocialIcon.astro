@@ -4,8 +4,7 @@
  * Social Icon Component
  * 
  * Individual social media icon with:
- * - Borderless; a soft background on hover
- * - Hover scale effect
+ * - Borderless; on hover/focus the icon scales up (no background change)
  * - Size variants (sm, md, lg)
  * - Optional link
  * - Accessibility labels
@@ -41,11 +40,15 @@ const wrapperPadding = {
     href={link}
     target="_blank"
     rel="noopener noreferrer"
-    class={`${wrapperPadding[size]} hover:bg-current/10 rounded-md inline-flex items-center justify-center transition-all duration-200`}
+    class={`group ${wrapperPadding[size]} rounded-md inline-flex items-center justify-center`}
     aria-label={`Visit our ${title} page`}
     title={title}
   >
-    <Icon icon={displayIcon} size={size} className="text-current" />
+    <Icon
+      icon={displayIcon}
+      size={size}
+      className="text-current transition-transform duration-200 motion-safe:group-hover:scale-125 motion-safe:group-focus-visible:scale-125"
+    />
   </a>
 ) : (
   /* Otherwise just display icon */

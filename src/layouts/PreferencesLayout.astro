@@ -19,7 +19,8 @@ import CookieConsentBanner from "@/integrations/preferences/consent/ui/CookieCon
 import AccessibilityButton from "@/integrations/preferences/accessibility/ui/AccessibilityButton";
 
 // Language Switcher
-import BrowserTranslateScript from "@/integrations/preferences/language/core/scripts/BrowserTranslateScript.astro";
+// Translation is OFF: not part of this client's package. To turn it back on, restore the commented lines in IntHeadScripts, IntBodyScripts, PreferencesLayout and AccessibilityModal, the Translate hosts in the vercel.json CSP, and the Google Translate / user-language / googtrans entries in src/utils/privacy.ts (see AGENTS.md).
+// import BrowserTranslateScript from "@/integrations/preferences/language/core/scripts/BrowserTranslateScript.astro";
 
 interface Props {
   buttonClassName?: string;
@@ -44,8 +45,10 @@ const {
     never in US mode, where visitors opt out instead. */}
 <CookieConsentBanner client:idle />
 
-{/* Browser Translation Script - Both native and Google enabled */}
+{/* Browser translation is OFF (not in this client's package); see the note
+    in the frontmatter.
 <BrowserTranslateScript enableNative={true} enableGoogle={true} />
+*/}
 
 {/* Preferences Buttons Row (optional) */}
 {showButtons && (

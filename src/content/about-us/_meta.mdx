@@ -18,7 +18,7 @@ import AboutIntro from "@/components/AboutIntro.astro";
 import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
 import CtaBanner from "@/components/CtaBanner.astro";
 import { query, sortByOrder } from "@/utils/query";
-import { ctaData } from "@/content/siteData";
+import { ctaData, businessData } from "@/content/siteData";
 import differenceBg from "@/assets/commercial-6.webp";
 
 {/* Intro — same block as the homepage, but the primary button is the main
@@ -41,7 +41,7 @@ import differenceBg from "@/assets/commercial-6.webp";
 <ContentRenderer
   query={query("stats").orderBy(sortByOrder())}
   variant="StatsVariant"
-  pretitle="By the Numbers"
+  pretitle="Why Work With Us"
   body={[
     "We're a local New Jersey company you can hold accountable — no franchise, no call center, just a crew that answers the phone and stands behind its work.",
   ]}
@@ -49,7 +49,7 @@ import differenceBg from "@/assets/commercial-6.webp";
   <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">
     Built on results,
     <span class="italic text-accent"> backed </span>
-    by our warranty.
+    {businessData.warranty ? "by our warranty." : "by our crew."}
   </h2>
 </ContentRenderer>
 

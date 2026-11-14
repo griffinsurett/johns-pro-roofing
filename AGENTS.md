@@ -21,10 +21,12 @@ Greastro systems (content collections → `query()` → `ContentRenderer` → va
 - **Site facts / CTA:** `src/content/siteData.ts` — title, legal name, tagline, description,
   address, Google reviews URL, and `ctaData` ("Request an Estimate" → `#quote-form`).
 - **Business credentials:** `businessData` in `siteData.ts` — single source of truth for
-  facts reused across page copy (HIC #, insurance, warranty). Unconfirmed fields stay
+  facts reused across page copy (HIC #, insurance, warranty, financing). Unconfirmed fields stay
   unset and conditional copy omits them; never publish placeholders or invented claims.
   Service pages show them through `<BusinessCredentials />` (each line only when set;
   `hic={false}` on commercial-only pages), so filling a value in once shows it everywhere.
+  The homepage, About and FAQ copy read the same fields. Unconfirmed stats, selling points and
+  FAQs are `draft: true`; the restore list is in `docs/service-content/client-questions.md`.
 - **Brand color:** `src/styles/global.css` `@theme` → change `--color-primary` (one line; the
   50–950 scale auto-derives). Don't hand-edit derived steps.
 - **Brand assets:** `src/assets/johns-pro-roofing/`.
@@ -97,7 +99,7 @@ Plain footer/social links don't count as integrations.
 |---|---|---|---|---|
 | **Formspree** (`formspree.io`) | **active** | Quote, quick quote (service hero) + contact form submission | `src/utils/formspree.ts` | `PUBLIC_FORMSPREE_QUOTE_ID`, `PUBLIC_FORMSPREE_QUICK_QUOTE_ID` (falls back to the quote ID if unset), `PUBLIC_FORMSPREE_CONTACT_ID`, `PUBLIC_FORMSPREE_ID` |
 | **Google Fonts** (`fonts.googleapis.com`, `fonts.gstatic.com`) | **active** | Webfonts: Inter, Outfit, Saira Condensed | `<link>` in `src/pages/index.astro` | — |
-| **Google Translate** (existing `translate.google.com`, `translate.googleapis.com`, `translate-pa.googleapis.com`, Google SDK resources) | **on demand** | Existing language preferences fallback | `src/integrations/preferences/language/` | User selection |
+| **Google Translate** (`translate.google.com`, `translate.googleapis.com`, `translate-pa.googleapis.com`, `www.gstatic.com`) | **off: not in this client's package** | All translation is commented out (browser-language detection, native translator, Google fallback, language picker) | `IntHeadScripts`, `IntBodyScripts`, `PreferencesLayout`, `AccessibilityModal` | To restore: uncomment those, re-add the four hosts to the CSP (`script-src`, `style-src`, `img-src`, `connect-src`, `frame-src`), and uncomment the entries in `src/utils/privacy.ts` |
 | **Vercel Analytics / Speed Insights** (same-origin `/_vercel/` endpoints) | **mounted** | Existing analytics components | `src/integrations/IntBodyScripts.astro` | Existing Vercel project |
 | **Google Tag Manager** (`www.googletagmanager.com`) | **wired, off** | Analytics / tags | `src/integrations/analytics/GoogleTagManager.astro` → `IntHeadScripts.astro` | `PUBLIC_GTM_ID` (not set in `.env`) |
 | **OneSignal** (`cdn.onesignal.com`) | **wired, off** | Web push | `src/integrations/onesignal/` | `PUBLIC_ONESIGNAL_APP_ID`, `PUBLIC_ONESIGNAL_SAFARI_WEB_ID` (both empty) |
@@ -130,15 +132,18 @@ explicit `script-src` / `connect-src` / `form-action` / `font-src` / `img-src` /
 allowances). This is what *actually* blocks an unsanctioned third party at the browser, so it
 is the source of truth that must agree with the allowlist above:
 
-- Currently whitelisted by the CSP: **Formspree** (`connect-src`, `form-action`),
-  **Google Translate** hosts (`script-src`/`style-src`/`frame-src`/`connect-src`),
-  **Google Fonts** (`fonts.googleapis.com` stylesheet, `fonts.gstatic.com` fonts),
-  and Google's existing Translate resource host `www.gstatic.com`.
+- Currently whitelisted by the CSP: **Formspree** (`connect-src`, `form-action`) and
+  **Google Fonts** (`fonts.googleapis.com` stylesheet, `fonts.gstatic.com` fonts). The
+  Google Translate hosts were removed with translation (see the allowlist row).
 - **GTM and OneSignal hosts are NOT in the CSP.** If either is ever activated (its env IDs
   filled), its hosts must be added to the CSP or the browser will block it. Flag this if you
   enable them.
 - **Adding any new third party means editing the CSP too** — in the same change as the
   allowlist row. A service in the table but not the CSP will silently fail in production.
+- **…and the policy list.** The privacy policy, cookie policy, California section and terms
+  render their "services we use" and "what we store" lists from `src/utils/privacy.ts`
+  (GTM and OneSignal show only while their env IDs are set). A new service or cookie goes
+  there in the same change, or the policies stop matching the site.
 
 ### Commands
 
@@ -168,8 +173,8 @@ the allowlist above and report anything that doesn't match. Check both direction
 - `fetch()` / `axios` / SDK calls, or any build-time/runtime data load from an external API.
 - New hosts in the code that aren't in the allowlist. Quick sweep:
   - `grep -rhoiE "https?://[a-z0-9.-]+" src` → compare hosts to the table (ignore plain
-    footer/social links and `schema.org`/`w3.org`; Google Translate hosts are legitimate —
-    Greastro language UI).
+    footer/social links and `schema.org`/`w3.org`; Google Translate hosts appear only in
+    the commented-out Greastro language code, which is off for this client).
   - `grep -rniE "fetch\(|axios|createClient|new .*Client|\.env|import\.meta\.env" src`
   - Diff `.env` keys against the table; flag any **non-`PUBLIC_` (secret)** var, or any new
     `PUBLIC_*` service key not represented above.

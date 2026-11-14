@@ -1,0 +1,29 @@
+---
+// src/components/ContentRenderer/variants/PolicyListVariant.astro
+/**
+ * Policy List Variant — a bulleted list for legal pages (services we use,
+ * cookies we set), one PolicyListItem per entry. No heading: the MDX page
+ * supplies it.
+ *
+ *   <ContentRenderer items={getSiteServices()} variant="PolicyListVariant" />
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import PolicyListItem from "@/components/LoopComponents/PolicyListItem.astro";
+
+interface Props extends BaseVariantProps {}
+
+const { items = [] } = Astro.props as Props;
+---
+
+{items.length > 0 && (
+  <ul class="policy-list">
+    {items.map((item: any) => (
+      <PolicyListItem
+        title={item.title}
+        description={item.description}
+        details={item.details}
+        link={item.link}
+      />
+    ))}
+  </ul>
+)}

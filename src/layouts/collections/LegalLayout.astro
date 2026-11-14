@@ -16,7 +16,6 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import LastUpdated from '@/integrations/preferences/consent/ui/PrivacyPolicy/LastUpdated.astro';
 import SecondaryHero from '@/layouts/SecondaryHero.astro';
-import { humanizeSlug } from '@/utils/string';
 import type { CollectionLayoutProps } from './types';
 
 const { 
@@ -34,10 +33,13 @@ const data = entry?.data || {};
 // Format dates for display
 const formatDate = (date?: Date) => {
   if (!date) return undefined;
+  // UTC: dates are entered as midnight UTC, and local time would show the
+  // day before in US time zones.
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
+    timeZone: 'UTC',
   });
 };
 
@@ -48,22 +50,22 @@ const effectiveDate = formatDate(data.effectiveDate);
 <BaseLayout {...seoProps}>
   <main class="flex-1">
     <SecondaryHero
-      eyebrow={humanizeSlug(entry?.id ?? "")}
+      eyebrow="Legal"
       title={data.title}
       heading={data.heading}
       description={data.description}
       image={data.bannerImage}
-      publishDate={data.publishDate}
       minHeight="45vh"
     />
 
-    <article class="legal-document prose prose-lg max-w-4xl mx-auto py-12 px-6">
+    {/* The dates sit at the top of the document (not in the hero), once. */}
+    <article class="legal-document max-w-3xl mx-auto py-12 md:py-16 px-6">
       {/* Dates Section */}
       {lastUpdated && (
         <LastUpdated 
           lastUpdated={lastUpdated} 
           effectiveDate={effectiveDate} 
-          className="mb-8 opacity-80"
+          className="mb-2"
         />
       )}
 

@@ -7,6 +7,20 @@ Last updated 2026-11-13. Already answered and not repeated here: he always pulls
 schedules the inspections; on decks he does multi-level decks, covered decks and pergolas,
 screened porches, and wood, composite, aluminum and cable railings.
 
+## Hidden until Charlie answers (launch state, 2026-11-14)
+
+The site launches without these. Each comes back the moment the answer is in:
+
+| Hidden | Where it showed | Restore by | Question |
+| --- | --- | --- | --- |
+| Workmanship warranty ("25-Yr", "Lifetime Warranty Available", "backed by our workmanship warranty", "satisfaction guarantee") | Homepage stats + copy, About heading, Residential Roofing description, scrolling highlights | Set `businessData.warranty` in `src/content/siteData.ts` (homepage, About and service-page copy return); remove `draft` from the `workmanship-warranty` stat and `lifetime-warranty` selling point, with the confirmed wording. Two spots are plain text and need a hand edit: the Residential Roofing `description` (was "…honest recommendations backed by a workmanship warranty.") and the homepage "satisfaction guarantee" line | 3 |
+| Financing ("0% Down Financing", "Financing Available", "we offer financing…") | Homepage hero, meta description, stats, highlights, 8 cost FAQs | Set `businessData.financing` (every FAQ clause and the hero return); remove `draft` from the `financing-available` stat and `zero-percent-down-financing` selling point | 4 |
+| Licensed & insured | Highlights, About "difference" list | Set `businessData.insurance`; remove `draft` from the `licensed-and-insured` selling point | 2 |
+| "500+ Roofs Installed" | Homepage and About stats | Remove `draft` from the `roofs-installed` stat (with his real number) | 43 |
+| FAQs: "Do you offer financing?", "Do you offer a warranty?", "Are you licensed and insured?" | FAQ page | Remove `draft: true` from each file in `src/content/faq/`, matching the answer to what he says | 2, 3, 4 |
+| "No subs" (homepage) | Homepage "Why Choose Us" | Put back only if his crew does all the work | 5 |
+| Manufacturer certifications | Certifications section | Replace the draft entry in `src/content/certifications/certifications.json` | 44 |
+
 ---
 
 **Website questions: John's Pro Roofing service pages**
@@ -134,5 +148,10 @@ which you actually do, and how you'd like them described.
 41. Do you have photos for remodeling, additions and general contracting jobs? Before-and-afters
     are best. A wide photo of a general contracting job would be ideal for the top of that page.
 42. Is the close-up photo of siding and a window (pink siding, green shutters) one of your jobs?
+
+**Company facts on the homepage**
+
+43. About how many roofs have you installed? The old site said "500+".
+44. Which manufacturer certifications do you hold (GAF, Owens Corning, CertainTeed, others)?
 
 Thanks!

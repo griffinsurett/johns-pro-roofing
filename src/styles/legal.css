@@ -18,6 +18,7 @@
 
 .legal-document {
   /* Improve readability for legal text */
+  @apply text-base text-text;
   line-height: 1.75;
 }
 
@@ -29,12 +30,14 @@
   @apply text-4xl font-bold mb-4;
 }
 
+/* Each numbered section starts with a hairline, so the long page reads as
+   distinct sections rather than one block. */
 .legal-document h2 {
-  @apply text-2xl font-bold mt-12 mb-4;
+  @apply text-2xl font-bold text-heading mt-12 mb-4 pt-10 border-t border-text/10 scroll-mt-32;
 }
 
 .legal-document h3 {
-  @apply text-xl font-semibold mt-8 mb-3;
+  @apply text-lg font-semibold text-heading mt-8 mb-3;
 }
 
 .legal-document h4 {
@@ -49,17 +52,25 @@
   @apply mb-4;
 }
 
-.legal-document ul,
+/* The base reset strips list markers; give documents real bullets. */
+.legal-document ul {
+  @apply list-disc mb-5 pl-5;
+}
+
 .legal-document ol {
-  @apply mb-4 ml-6;
+  @apply list-decimal mb-5 pl-5;
 }
 
 .legal-document li {
-  @apply mb-2;
+  @apply mb-2 pl-1;
 }
 
-.legal-document a {
-  @apply text-primary underline hover:text-primary-700 transition-colors;
+.legal-document li::marker {
+  @apply text-accent;
+}
+
+.legal-document a:not(.btn-base) {
+  @apply text-primary underline underline-offset-2 hover:text-primary-700 transition-colors;
 }
 
 .legal-document strong {
@@ -68,6 +79,51 @@
 
 .legal-document em {
   @apply italic;
+}
+
+/* Services / stored-items lists (PolicyListVariant): facts on their own line. */
+.legal-document .policy-list__item {
+  @apply mb-3;
+}
+
+.legal-document .policy-list__meta {
+  @apply block text-sm text-text/70;
+}
+
+/* ============================================================================
+   Cards: the few blocks a reader acts on (opt-out controls, contact details)
+   ========================================================================== */
+
+.legal-document .legal-card {
+  @apply my-8 rounded-2xl border border-text/10 bg-surface p-6 md:p-8;
+}
+
+.legal-document .legal-card > :first-child {
+  @apply mt-0;
+}
+
+.legal-document .legal-card > :last-child {
+  @apply mb-0;
+}
+
+.legal-document .legal-card__actions {
+  @apply my-5 flex flex-wrap items-center gap-3;
+}
+
+.legal-document .legal-card__note {
+  @apply text-sm text-text/80;
+}
+
+.legal-document .legal-card__details {
+  @apply mt-3 text-sm;
+}
+
+.legal-document .legal-card__details summary {
+  @apply cursor-pointer font-semibold text-primary;
+}
+
+.legal-document .legal-card__details ul {
+  @apply mt-3 mb-0;
 }
 
 /* ============================================================================

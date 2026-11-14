@@ -1,0 +1,31 @@
+---
+// src/components/LoopComponents/PolicyListItem.astro
+/**
+ * PolicyListItem — one service or stored item on a legal page: name, what it
+ * does, short facts, and a link to the provider's privacy policy.
+ * Rendered by PolicyListVariant; styled by legal.css.
+ */
+export interface Props {
+  title: string;
+  description: string;
+  details?: string[];
+  link?: string;
+}
+
+const { title, description, details = [], link } = Astro.props as Props;
+---
+
+<li class="policy-list__item">
+  <strong>{title}:</strong> {description}
+  {(details.length > 0 || link) && (
+    <span class="policy-list__meta">
+      {details.join(" · ")}
+      {details.length > 0 && link && " · "}
+      {link && (
+        <a href={link} target="_blank" rel="noopener noreferrer">
+          Their privacy policy
+        </a>
+      )}
+    </span>
+  )}
+</li>

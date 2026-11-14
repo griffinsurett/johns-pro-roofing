@@ -3,7 +3,8 @@
     "id": "zero-percent-down-financing",
     "title": "0% Down Financing",
     "description": "Flexible financing with nothing down to get your project started",
-    "order": 1
+    "order": 1,
+    "draft": true
   },
   {
     "id": "free-estimates",
@@ -15,7 +16,8 @@
     "id": "licensed-and-insured",
     "title": "Licensed & Insured",
     "description": "Fully licensed and insured for your peace of mind",
-    "order": 3
+    "order": 3,
+    "draft": true
   },
   {
     "id": "roofing-and-decks",
@@ -27,7 +29,8 @@
     "id": "lifetime-warranty",
     "title": "Lifetime Warranty Available",
     "description": "Long-lasting protection backed by lifetime warranty options",
-    "order": 5
+    "order": 5,
+    "draft": true
   },
   {
     "id": "locally-owned",

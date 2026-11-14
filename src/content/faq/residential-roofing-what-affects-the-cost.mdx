@@ -6,4 +6,6 @@ order: 2
 category: "Residential Roofing"
 service: "residential-roofing"
 ---
-The biggest factors are the size and pitch of your roof, the shingle grade you choose, and how many layers of old roofing need to come off. Things like the number of valleys, chimneys, and skylights add labor, and if we find rotted decking underneath, that has to be replaced too. Rather than guess at a number, we'll come out for a free estimate and give you a clear, itemized price, and we offer financing if you'd like to spread the cost out.
+import { businessData } from "@/content/siteData";
+
+The biggest factors are the size and pitch of your roof, the shingle grade you choose, and how many layers of old roofing need to come off. Things like the number of valleys, chimneys, and skylights add labor, and if we find rotted decking underneath, that has to be replaced too. Rather than guess at a number, we'll come out for a free estimate and give you a clear, itemized price{businessData.financing ? ", and we offer financing if you'd like to spread the cost out" : ""}.

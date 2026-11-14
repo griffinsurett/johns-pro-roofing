@@ -170,10 +170,14 @@ function CookiePreferencesModal({
           ref={scrollContainerRef}
           className="overflow-y-auto max-h-[40vh] pr-2"
         >
+          {/* The shared Accordion is sized for the FAQ page (32px rows, big
+              "+"); these overrides make compact settings rows for the modal. */}
           <Accordion
             allowMultiple
-            className="space-y-3"
             items={accordionItems}
+            headerClassName="!py-3 md:!py-3 !gap-4 md:!gap-4"
+            indicatorClassName="!h-6 !w-6 !text-2xl"
+            contentClassName="!pb-4 md:!pb-4 !pr-10 md:!pr-10"
             headerSlot={({ item, id, expanded }) => {
               const category = cookieCategories.find((c) => c.id === item.id);
               if (!category) return null;
@@ -185,7 +189,9 @@ function CookiePreferencesModal({
                   </span>
                   <div className="shrink-0 flex items-center gap-3">
                     {category.required && (
-                      <span className="text-sm font-semibold text-primary">
+                      // Phones: the locked toggle says it; the label would
+                      // squeeze the category name onto two lines.
+                      <span className="hidden sm:inline text-xs font-semibold text-primary">
                         Always Active
                       </span>
                     )}

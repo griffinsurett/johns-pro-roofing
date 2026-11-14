@@ -23,7 +23,7 @@ export const siteData = {
 // they appear on every service page via <BusinessCredentials /> (HIC # only on
 // residential/home-improvement pages).
 // ─────────────────────────────────────────────────────────────────────────
-export const businessData: { njHicNumber?: string; insurance?: string; warranty?: string } = {
+export const businessData: { njHicNumber?: string; insurance?: string; warranty?: string; financing?: string } = {
   // NJ Home Improvement Contractor registration number, e.g. "13VH01234500"
   njHicNumber: undefined,
   // Insurance status shown in copy, e.g. "fully licensed and insured"
@@ -31,6 +31,9 @@ export const businessData: { njHicNumber?: string; insurance?: string; warranty?
   // One shared warranty phrase used in service-page copy,
   // e.g. "a 25-year workmanship warranty"
   warranty: undefined,
+  // Financing offer shown in copy, e.g. "0% down financing". Unset hides every
+  // financing mention (FAQ clauses, homepage hero and meta description).
+  financing: undefined,
   // Note: manufacturer certifications are a list — see the "certifications"
   // content collection (src/content/certifications), not a field here.
   //

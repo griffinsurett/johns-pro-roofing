@@ -194,7 +194,7 @@ the heading, and one numbered step per line.
 
 ### What drives the cost
 
-`[PHOTO: a remodel in progress, walls opened up]` (left of the text)
+Photo (left of the text): walls opened to the studs mid-remodel, `src/assets/home-remodeling/remodel-walls-opened-up.webp` (illustrative).
 
 The size of the room matters, but it's rarely the biggest factor. These usually are:
 

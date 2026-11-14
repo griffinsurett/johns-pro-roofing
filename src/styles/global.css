@@ -124,9 +124,11 @@ body {
     @apply px-6 py-3 text-lg;
   }
 
-  /* Link base styles */
+  /* Link base styles. Link variants also carry .btn-base (ButtonBase adds it),
+     so undo its button-only uppercase and wide tracking: inline links read as
+     normal text, like the footer's. */
   .link-base {
-    @apply inline-flex items-center gap-1;
+    @apply inline-flex items-center gap-1 normal-case tracking-normal;
     @apply text-primary hover:text-primary-700 hover:underline;
     @apply bg-transparent font-normal;
     @apply transition-colors duration-200;

@@ -3,18 +3,21 @@
     "id": "roofs-installed",
     "value": "500+",
     "title": "Roofs Installed",
-    "order": 1
+    "order": 1,
+    "draft": true
   },
   {
     "id": "workmanship-warranty",
     "value": "25-Yr",
     "title": "Workmanship Warranty",
-    "order": 2
+    "order": 2,
+    "draft": true
   },
   {
     "id": "financing-available",
     "value": "0%",
     "title": "Financing Available",
-    "order": 3
+    "order": 3,
+    "draft": true
   }
 ]

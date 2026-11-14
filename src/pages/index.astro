@@ -8,6 +8,7 @@ import Button from "@/components/Button/Button";
 import AboutIntro from "@/components/AboutIntro.astro";
 import CtaBanner from "@/components/CtaBanner.astro";
 import { getServiceAreaNames } from "@/utils/serviceAreas";
+import { businessData } from "@/content/siteData";
 import aboutImage from "@/assets/john-on-roof.webp";
 import heroImage from "@/assets/commercial-7.webp";
 import WhoWeServe from "@/components/WhoWeServe.astro";
@@ -16,11 +17,15 @@ import RoofingTypes from "@/components/RoofingTypes.astro";
 // Service-area states (single source of truth) → full-name label for copy.
 const serviceAreaLabel = await getServiceAreaNames();
 
+// Warranty and financing claims show only once confirmed in businessData
+// (see docs/service-content/client-questions.md).
+const { warranty, financing } = businessData;
+
 ---
 
 <BaseLayout
   title="Professional Roofing Services"
-  description="Commercial roofing services in Somerset, New Jersey. Flat-roof systems, repairs, and replacements for businesses and property managers. Free estimates and financing available."
+  description={`Commercial roofing services in Somerset, New Jersey. Flat-roof systems, repairs, and replacements for businesses and property managers. Free estimates${financing ? " and financing" : ""} available.`}
 >
   <Fragment slot="head">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,7 +39,7 @@ const serviceAreaLabel = await getServiceAreaNames();
   <main class="flex-1">
     <FrontPageHero2
       heading={{ before: "Roofing That Keeps Your", text: "Business", after: "Covered." }}
-      description="Commercial roofing that protects your business — flat-roof systems, replacements, and repairs scheduled around your operations. Free estimates and financing, from a local team you can count on."
+      description={`Commercial roofing that protects your business — flat-roof systems, replacements, and repairs scheduled around your operations. Free estimates${financing ? " and financing" : ""}, from a local team you can count on.`}
       primaryCTA={{ text: "Get a Free Quote", link: "/contact-us" }}
       image={heroImage}
       video="/commercial-vid.mp4"
@@ -53,7 +58,7 @@ const serviceAreaLabel = await getServiceAreaNames();
           video={null}
           image={aboutImage}
           imageAlt="John with a satisfied John's Pro Roofing customer"
-          description="No job is too big or too small. John's Pro Roofing LLC works with property managers, facility managers, and building owners across New Jersey on commercial roofing and asphalt paving — straightforward service, honest communication, and dependable results, all backed by our workmanship warranty."
+          description={`No job is too big or too small. John's Pro Roofing LLC works with property managers, facility managers, and building owners across New Jersey on commercial roofing and asphalt paving — straightforward service, honest communication, and dependable results${warranty ? `, all backed by ${warranty}` : ""}.`}
         />
       </div>
     </section>
@@ -73,8 +78,10 @@ const serviceAreaLabel = await getServiceAreaNames();
       id="why-us"
       pretitle="Why Choose Us"
       body={[
-        "We don't cut corners. Every job gets a thorough inspection, honest recommendations, and quality materials installed by a crew that treats your property like their own — no subs, no surprises.",
-        "From storm-damage repairs to full replacements, we back our work with a 25-year workmanship warranty and a satisfaction guarantee. If it's not right, we make it right.",
+        "We don't cut corners. Every job gets a thorough inspection, honest recommendations, and quality materials installed by a crew that treats your property like their own, with no surprises.",
+        ...(warranty
+          ? [`From storm-damage repairs to full replacements, we back our work with ${warranty}. If it's not right, we make it right.`]
+          : []),
       ]}
     >
       <h2 slot="heading" class="section-title !text-[clamp(36px,5vw,56px)] leading-[1.05]">

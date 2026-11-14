@@ -23,7 +23,8 @@ import { zestConfig } from "@/integrations/preferences/consent/core/consentConfi
 import GoogleTagManager from "@/integrations/analytics/GoogleTagManager.astro";
 import OneSignalPush from "@/integrations/onesignal/OneSignalPush.astro";
 import AccessibilityScript from "@/integrations/preferences/accessibility/core/scripts/AccessibilityScript.astro";
-import LanguageDetectionScript from "@/integrations/preferences/language/core/scripts/LanguageDetectionScript.astro";
+// Translation is OFF: not part of this client's package. To turn it back on, restore the commented lines in IntHeadScripts, IntBodyScripts, PreferencesLayout and AccessibilityModal, the Translate hosts in the vercel.json CSP, and the Google Translate / user-language / googtrans entries in src/utils/privacy.ts (see AGENTS.md).
+// import LanguageDetectionScript from "@/integrations/preferences/language/core/scripts/LanguageDetectionScript.astro";
 ---
 
 <!-- Consent interceptors must install before any tracker is evaluated. -->
@@ -36,5 +37,6 @@ import LanguageDetectionScript from "@/integrations/preferences/language/core/sc
 <!-- Accessibility: Apply saved preferences before content renders (prevents FOUC) -->
 <AccessibilityScript />
 
-<!-- Language: Detect browser language and set preference -->
+{/* Language detection is OFF (not in this client's package); see the note above.
 <LanguageDetectionScript />
+*/}

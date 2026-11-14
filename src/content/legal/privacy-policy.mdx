@@ -1,8 +1,8 @@
 ---
 title: "Privacy Policy"
 description: "How we collect and use your information"
-publishDate: 2026-06-19T00:00:00Z
-effectiveDate: 2026-06-19T00:00:00Z
+publishDate: 2026-11-14T00:00:00Z
+effectiveDate: 2026-11-14T00:00:00Z
 order: 0
 seo:
   metaTitle: "Privacy Policy"
@@ -11,66 +11,76 @@ seo:
 ---
 
 import { siteData } from "@/content/siteData";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { getSiteServices } from "@/utils/privacy";
 import CCPARights from "@/integrations/preferences/consent/ui/PrivacyPolicy/CCPARights.astro";
 import LegalContactSection from "@/integrations/preferences/consent/ui/PrivacyPolicy/LegalContactSection.astro";
+
+{/* The services list comes from src/utils/privacy.ts, the same list the
+    cookie policy and terms use, so this page matches what the site runs. */}
 
 export let sectionNumber = 0;
 
 ## {++sectionNumber}. Introduction
 
-Welcome to {siteData.title}. We respect your privacy and are committed to 
-protecting your personal information. This Privacy Policy explains how we 
-collect, use, disclose, and safeguard your information when you visit our website.
+Welcome to {siteData.title}. We respect your privacy. This policy explains
+what information we collect when you visit our website, how we use it, and
+the choices you have.
 
 ## {++sectionNumber}. Information We Collect
 
-When you interact with {siteData.title}, we may collect:
+- **What you send us:** when you fill out a form, the details you enter: your
+  name, phone number, email, company, message and project details, plus the
+  page you sent it from.
+- **Basic technical data:** like any website, our host receives your IP
+  address and browser details with each page request.
+- **Visit counts:** we count page visits and measure page speed without
+  cookies and without identifying you.
 
-- **Contact Information:** Name, email address, and phone number when you submit forms or contact us.
-- **Technical Data:** IP address, browser type, device information, and pages visited (via cookies when you consent).
-- **Usage Data:** How you interact with our site, pages viewed, time spent, and referral sources (via cookies when you consent).
+We don't ask for payment details, Social Security numbers or other sensitive
+information through this website.
 
 ## {++sectionNumber}. How We Use Your Information
 
-- To provide and maintain our services
-- To respond to your inquiries and requests
-- To improve our website and user experience
-- To analyze site performance and usage (with consent)
-- To send marketing communications (with consent)
+- To call, text or email you back about your request, as you agreed to on the form
+- To give you an estimate and do the work you ask for
+- To keep the website secure and working, and to improve it
 
-## {++sectionNumber}. Third-Party Services
+We don't sell your information, and we don't use it for advertising.
 
-With your consent, we may share information with:
+## {++sectionNumber}. Services We Use
 
-- **Google Translate:** For website translation (functional cookies)
-- **Google Analytics:** For site analytics (performance cookies, if enabled)
-- **Advertising Networks:** Facebook, Google Ads (targeting cookies, if enabled)
+These companies help run the website. Each receives only what it needs to
+do its job:
 
-We use Vercel for hosting and Vercel Analytics for basic traffic metrics. 
-These services are privacy-first and do not use cookies or track personal information.
+<ContentRenderer items={getSiteServices()} variant="PolicyListVariant" />
 
-## {++sectionNumber}. Cookies & Tracking
+## {++sectionNumber}. Cookies and Browser Storage
 
-We use cookies and similar technologies to enhance your experience. You can 
-manage your cookie preferences at any time. For full details, see our 
-[Cookie Policy](/cookie-policy).
+We keep this to a minimum: your cookie choices and your accessibility
+settings. There are no advertising or tracking cookies. See our
+[Cookie Policy](/cookie-policy) for the full list.
 
 <CCPARights sectionNumber={++sectionNumber} />
 
+## {++sectionNumber}. How Long We Keep It
+
+Form submissions stay in our email so we can follow up on your project and
+keep records of our work. Ask us and we'll delete yours, unless we need to
+keep it for legal or business records.
+
 ## {++sectionNumber}. Data Security
 
-We implement reasonable technical and organizational measures to protect 
-your data against unauthorized access, disclosure, alteration, or destruction. 
-However, no method of transmission over the Internet is 100% secure.
+We use reasonable technical and organizational measures to protect your
+information against unauthorized access, disclosure, alteration or
+destruction. No method of sending data over the internet is 100% secure.
 
 ## {++sectionNumber}. Changes to This Policy
 
-We may update this Privacy Policy from time to time. Changes will be posted 
-on this page with a revised "Effective date." We encourage you to review 
-this policy periodically. Your continued use of our services after any changes 
-indicates your acceptance of the updated policy.
+We may update this policy when the website changes. The date at the top of
+this page shows the latest version.
 
-<LegalContactSection 
+<LegalContactSection
   sectionNumber={++sectionNumber}
-  introText="If you have questions about this Privacy Policy or wish to exercise your rights, contact us:"
+  introText="If you have questions about this Privacy Policy or want to use your rights, contact us:"
 />

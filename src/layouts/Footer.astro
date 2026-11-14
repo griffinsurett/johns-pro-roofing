@@ -74,7 +74,7 @@ const businessHours = await getBusinessHours();
           <ContentRenderer
             query={query("social-media")}
             variant="SocialMediaVariant"
-            size="sm"
+            size="lg"
             alignment="left"
             className="text-bg"
           />
@@ -86,7 +86,7 @@ const businessHours = await getBusinessHours();
       {/* Column 2: Roofing Services */}
       <div class="flex flex-col gap-6">
         <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Our Services</h3>
-        <div class="text-sm text-bg/80">
+        <div class="footer-links text-bg/80">
           <ContentRenderer
             query={query("services")
               .where((entry) => Boolean(entry.data.cardSize))
@@ -103,7 +103,7 @@ const businessHours = await getBusinessHours();
       {/* Column 3: Quick Links */}
       <div class="flex flex-col gap-6">
         <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Quick Links</h3>
-        <div class="text-sm text-bg/80">
+        <div class="footer-links text-bg/80">
           <ContentRenderer
             query={related("menu-items", "menu", "footer-menu")}
             variant="ListVariant"
@@ -118,7 +118,7 @@ const businessHours = await getBusinessHours();
           control (rendered inline as the last legal item, vertical). */}
       <div class="flex flex-col gap-6">
         <h3 class="text-lg font-bold text-bg uppercase tracking-wider">Legal</h3>
-        <div class="text-sm text-bg/80">
+        <div class="footer-links text-bg/80">
           <ContentRenderer
             query={query("legal")}
             variant="ListVariant"
@@ -144,12 +144,12 @@ const businessHours = await getBusinessHours();
         <p class="text-base">
           &copy; {new Date().getFullYear()} {siteData.legalName}. All rights reserved. Built by{" "}
           <a
-            href="https://griffinswebservices.com"
+            href="https://webmaxxers.com"
             target="_blank"
             rel="noopener noreferrer"
             class="font-semibold underline-offset-4 transition hover:underline"
           >
-            Griffin&apos;s Web Services
+            Webmaxxers
           </a>
         </p>
 
@@ -160,3 +160,16 @@ const businessHours = await getBusinessHours();
     </div>
   </div>
 </footer>
+
+<style>
+  /* Footer menu links and the cookie-preferences button are Button link
+     variants, which inherit btn-base's uppercase and wide tracking plus
+     link-md's 16px. In the footer they read as normal-case text, a step
+     smaller. */
+  .footer-links :global(a),
+  .footer-links :global(button) {
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 0.9375rem;
+  }
+</style>

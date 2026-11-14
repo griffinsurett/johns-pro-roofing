@@ -23,7 +23,7 @@ export const CONSENT_CATEGORIES: ConsentCategoryInfo[] = [
     id: "functional",
     title: "Functionality",
     description:
-      "Remembers choices such as your language, theme, and accessibility preferences.",
+      "Remembers choices such as your accessibility preferences.",
   },
   {
     id: "analytics",
