@@ -92,16 +92,19 @@ slot is open. When photos arrive, fill in the file name and confirm the job matc
 | --- | --- | --- | --- | --- |
 | General Contracting | Hero | A commercial or mixed job site with the crew working | | |
 | General Contracting | Intro (What a general contractor does) | John or the crew, not on a roof | `src/assets/john-outside.png` | Existing site photo |
-| General Contracting | Cost section | John with a client | `src/assets/john-w-client.webp` | Existing site photo (shingle board in frame) |
+| General Contracting | Cost section | Crew on a home exterior | `src/assets/crew-on-home-exterior.webp` | Client job photo, low resolution |
 | General Contracting | Commercial section | Finished commercial interior or exterior work | | |
 | General Contracting | Residential section | A home project in progress | | |
 | Home Remodeling | Intro | A finished kitchen or bathroom | | |
 | Home Remodeling | Project gallery | Before-and-after pairs from remodeling jobs (kitchens, baths, basements) | | |
-| Home Additions & Extensions | Hero | A finished addition seen from outside | | |
-| Home Additions & Extensions | Under construction | Framing or foundation of an addition | | |
-| Home Additions & Extensions | Finished interior | Inside the new space | | |
-| Deck Building | Intro | A finished deck | `src/assets/decks/composite-deck-dusk.png` | Client-supplied |
-| Deck Building | Structure | Framing, footings or ledger during a build | | |
+| Home Additions & Extensions | Intro | A finished addition seen from outside | `src/assets/crew-on-home-exterior.webp` | Stand-in until an addition photo arrives |
+| Home Additions & Extensions | Under construction | Framing or foundation of an addition | `src/assets/home-additions/home-addition-framing.webp` | Illustrative, not a JPR job |
+| Home Additions & Extensions | Finished interior | Inside the new space | `src/assets/home-additions/home-addition-interior.webp` | Illustrative, not a JPR job |
+| Home Additions & Extensions | What drives the cost | Plans for an addition | `src/assets/home-additions/home-addition-plans.webp` | Illustrative, not a JPR job |
+| Deck Building | Intro | A finished deck | `public/covered-deck-walkthrough.mp4` + `src/assets/decks/covered-deck-exterior.webp` (a still from 0:20 of the same video), side by side | Client job video |
+| Deck Building | Structure | Framing, footings or ledger during a build | `src/assets/decks/deck-framing-in-progress.webp` | Supplied 2026-11-13 |
+| Deck Building | Repair or replace? | A deck job in progress | `src/assets/decks/composite-deck-wraparound-steps.webp` | Client job photo |
+| Deck Building | What drives the cost | A finished deck | `src/assets/decks/composite-deck-dusk.png` | Client-supplied |
 | Deck Building | Project gallery | Before-and-after pairs from deck jobs | | |
 
 `src/assets/decks.jpg` is in the repo already. Before it's used, confirm it's a Johns Pro
@@ -109,22 +112,21 @@ Roofing job and not a stock image.
 
 ### Client media received (2026-11-12)
 
-From `~/Downloads/johns pro november`, renamed by service. Nothing here is on the site yet.
+From `~/Downloads/johns pro november`, renamed by service. The originals stay there; site copies use codebase names (no service prefix) in the service's asset folder.
 
 | File | Shows | Service | Notes | Original name |
 | --- | --- | --- | --- | --- |
-| `deck-builders_covered-deck-stone-tv-wall.heic` | Covered deck: gray composite, white railings, pine ceiling, fan, stone TV wall | Deck building | Best photo in the set. Only 450×600: ask for the original | `IMG_9078.heic` |
-| `deck-builders_covered-deck-walkthrough.mp4` | 34s walkthrough of the same covered deck, inside and out | Deck building | Full quality | `63EABD08-09CC-4E24-9ED5-B6DFC28FCC9A.mp4` |
-| `deck-builders_composite-deck-wraparound-steps.heic` | Gray composite deck, white railings, wraparound steps, crew on site | Deck building | Full resolution. Looks downloaded from a web listing: confirm it's his job | `photo-741_singular_display_fullPicture.heic` |
-| `deck-builders_composite-deck-dusk.png` | Brown composite deck at dusk, step lights, staged furniture | Deck building | Possibly AI-generated, but the client sent it: approved for use. **On the deck page intro.** In repo as `src/assets/decks/composite-deck-dusk.png` | `95A186E2-BB04-4BC7-8938-44CA7299A4ED.PNG` |
+| `deck-builders_covered-deck-stone-tv-wall.heic` | Covered deck: gray composite, white railings, pine ceiling, fan, stone TV wall | Deck building | Only 450×600: ask for the original. Not used: the walkthrough video shows the same deck | `IMG_9078.heic` |
+| `deck-builders_covered-deck-walkthrough.mp4` | 34s walkthrough of the same covered deck, inside and out | Deck building | **On the deck page intro.** In repo as `public/covered-deck-walkthrough.mp4` (H.264; the original is HEVC) | `63EABD08-09CC-4E24-9ED5-B6DFC28FCC9A.mp4` |
+| `deck-builders_composite-deck-wraparound-steps.heic` | Gray composite deck, white railings, wraparound steps, crew on site | Deck building | **On the deck page, "Repair or replace?".** In repo as `src/assets/decks/composite-deck-wraparound-steps.webp` (crew on site: his job) | `photo-741_singular_display_fullPicture.heic` |
+| `deck-builders_composite-deck-dusk.png` | Brown composite deck at dusk, step lights, staged furniture | Deck building | Possibly AI-generated, but the client sent it: approved for use. **On the deck page, "What drives the cost".** In repo as `src/assets/decks/composite-deck-dusk.png` | `95A186E2-BB04-4BC7-8938-44CA7299A4ED.PNG` |
 | `residential-roofing_tear-off-two-story-house.heic` | Two-story house mid tear-off, new sheathing, GAF shingles | Residential roofing | 450×600: ask for the original | `IMG_7397.heic` |
 | `residential-roofing_chimney-flashing.heic` | Brick chimney with new flashing on a shingle roof | Residential roofing | 450×600: ask for the original | `IMG_4317.heic` |
 | `residential-roofing_chimney-repointing.mp4` | 13s close-up of a repointed chimney with new flashing | Residential roofing | Different chimney from the photo above | `IMG_4313.mp4` |
-| `residential-roofing_tile-roof-crew-balcony.png` | Crew on the balcony of a stucco house with a tile roof | Residential roofing | 600×338 screenshot: low resolution | `2026-08-27-11-23-37-954.PNG` |
+| `residential-roofing_tile-roof-crew-balcony.png` | Crew on the balcony of a stucco house with a tile roof | Residential roofing | 600×338 screenshot: low resolution. **On general contracting (cost) and additions (intro)** as `src/assets/crew-on-home-exterior.webp` | `2026-08-27-11-23-37-954.PNG` |
 | `unassigned_paver-patio-pergola.heic` | Paver patio, curved steps, pergola, outdoor fireplace | None yet | Matches no page. Ask what job this was. 450×600 | `IMG_7843.heic` |
 
-Candidates for open slots: the covered deck photo and walkthrough fit the deck page's intro slot
-(and the covered decks card). Still nothing for remodeling, additions or general contracting.
+Still no client photos for remodeling, additions or general contracting.
 
 ## Forms
 

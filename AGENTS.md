@@ -23,6 +23,8 @@ Greastro systems (content collections → `query()` → `ContentRenderer` → va
 - **Business credentials:** `businessData` in `siteData.ts` — single source of truth for
   facts reused across page copy (HIC #, insurance, warranty). Unconfirmed fields stay
   unset and conditional copy omits them; never publish placeholders or invented claims.
+  Service pages show them through `<BusinessCredentials />` (each line only when set;
+  `hic={false}` on commercial-only pages), so filling a value in once shows it everywhere.
 - **Brand color:** `src/styles/global.css` `@theme` → change `--color-primary` (one line; the
   50–950 scale auto-derives). Don't hand-edit derived steps.
 - **Brand assets:** `src/assets/johns-pro-roofing/`.
@@ -91,7 +93,7 @@ Plain footer/social links don't count as integrations.
 
 | Service | Status | Purpose | How it's wired | Config |
 |---|---|---|---|---|
-| **Formspree** (`formspree.io`) | **active** | Quote, quick quote (service hero) + contact form submission | `src/utils/formspree.ts` | `PUBLIC_FORMSPREE_QUOTE_ID`, `PUBLIC_FORMSPREE_QUICK_QUOTE_ID` (pending; falls back to the quote ID), `PUBLIC_FORMSPREE_CONTACT_ID`, `PUBLIC_FORMSPREE_ID` |
+| **Formspree** (`formspree.io`) | **active** | Quote, quick quote (service hero) + contact form submission | `src/utils/formspree.ts` | `PUBLIC_FORMSPREE_QUOTE_ID`, `PUBLIC_FORMSPREE_QUICK_QUOTE_ID` (falls back to the quote ID if unset), `PUBLIC_FORMSPREE_CONTACT_ID`, `PUBLIC_FORMSPREE_ID` |
 | **Google Fonts** (`fonts.googleapis.com`, `fonts.gstatic.com`) | **active** | Webfonts: Inter, Outfit, Saira Condensed | `<link>` in `src/pages/index.astro` | — |
 | **Google Translate** (existing `translate.google.com`, `translate.googleapis.com`, `translate-pa.googleapis.com`, Google SDK resources) | **on demand** | Existing language preferences fallback | `src/integrations/preferences/language/` | User selection |
 | **Vercel Analytics / Speed Insights** (same-origin `/_vercel/` endpoints) | **mounted** | Existing analytics components | `src/integrations/IntBodyScripts.astro` | Existing Vercel project |

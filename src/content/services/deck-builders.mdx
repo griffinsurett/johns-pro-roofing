@@ -177,8 +177,11 @@ import processBackground from "@/assets/commercial-3.webp";
 import ProjectDetailsForm from "@/components/Form/forms/ProjectDetailsForm.astro";
 import QuoteCta from "@/components/QuoteCta.astro";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import { businessData } from "@/content/siteData";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
 import deckDusk from "@/assets/decks/composite-deck-dusk.png";
+import deckCoveredExterior from "@/assets/decks/covered-deck-exterior.webp";
+import deckFraming from "@/assets/decks/deck-framing-in-progress.webp";
+import deckWraparoundSteps from "@/assets/decks/composite-deck-wraparound-steps.webp";
 
 <ServiceLayout
   title={frontmatter.title}
@@ -191,7 +194,7 @@ import deckDusk from "@/assets/decks/composite-deck-dusk.png";
 
 <Bands>
 
-<Band image={deckDusk} imageAlt="Brown composite deck with black railings and lit steps at dusk">
+<Band video="/covered-deck-walkthrough.mp4" videoAlt="Walkthrough of a covered composite deck with a wood plank ceiling, ceiling fan and stone TV wall" image={deckCoveredExterior} imageAlt="Covered deck with white railings, a stone TV wall and a ceiling fan, seen from the paver patio with Adirondack chairs around a fire pit" aspect="portrait" wideText>
 
 ## A deck that fits how you'll use it
 
@@ -222,7 +225,7 @@ The answers decide the size, the shape, where the stairs land and how much room 
   featureCards
 />
 
-<Band photoNeeded="Framing, footings or ledger during a build" reverse>
+<Band image={deckFraming} imageAlt="Deck frame under construction: posts on concrete footings, pressure-treated joists and a ledger board bolted to the house" imagePosition="60% center" reverse>
 
 ## The part you won't see
 
@@ -238,7 +241,7 @@ We build to code, pull the permit and schedule the inspections, and we'll show y
 
 </Band>
 
-<Band photoNeeded="A resurfaced deck, before and after" reverse>
+<Band image={deckWraparoundSteps} imageAlt="Crew finishing the wraparound steps of a gray composite deck with white railings behind a two-story house" imagePosition="center 62%" reverse>
 
 ## Repair or replace?
 
@@ -271,7 +274,7 @@ The last two can be safety problems, so don't wait on them. We'll come look and 
 
 <Bands>
 
-<Band photoNeeded="A finished deck, from the yard">
+<Band image={deckDusk} imageAlt="Brown composite deck with black railings and lit steps at dusk">
 
 ## What drives the cost
 
@@ -285,9 +288,7 @@ The last two can be safety problems, so don't wait on them. We'll come look and 
 
 We'll show you where the money goes at your free estimate.
 
-{businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+<BusinessCredentials />
 
 </Band>
 

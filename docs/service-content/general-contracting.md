@@ -191,8 +191,7 @@ doesn't. "Projects that cross the lines" shows under both. The home remodeling a
 
 ### What affects the cost of a project
 
-Photo (left): `src/assets/john-w-client.webp`, John with a homeowner. The homeowner is holding a
-shingle sample board; swap for a general contracting photo when one arrives.
+Photo (left): `src/assets/crew-on-home-exterior.webp`, a crew working from a ladder and the balcony of a two-story house (client job photo, 600×338; ask for the original).
 
 - How much work is involved, and how many trades it takes
 - Permits, inspections and any engineering the job needs

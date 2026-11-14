@@ -203,7 +203,8 @@ import ProjectDetailsForm from "@/components/Form/forms/ProjectDetailsForm.astro
 import QuoteCta from "@/components/QuoteCta.astro";
 import ServiceReviewsCarousel from "@/components/ServiceReviewsCarousel.astro";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import { businessData } from "@/content/siteData";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
+import remodeledKitchen from "@/assets/home-remodeling/remodeled-kitchen.webp";
 
 <ServiceLayout
   title={frontmatter.title}
@@ -216,7 +217,7 @@ import { businessData } from "@/content/siteData";
 
 <Bands>
 
-<Band photoNeeded="A finished kitchen or bathroom">
+<Band image={remodeledKitchen} imageAlt="Remodeled kitchen with white shaker cabinets, a marble-topped island with leather stools, and an open dining area">
 
 ## Make the home you have work better
 
@@ -279,9 +280,7 @@ The size of the room matters, but it's rarely the biggest factor. These usually 
 
 We'll show you where the money's going during your free estimate, and we'll tell you where you can save without cutting corners.
 
-{businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+<BusinessCredentials />
 
 </Band>
 

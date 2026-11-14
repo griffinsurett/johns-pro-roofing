@@ -56,8 +56,8 @@ import Button from "@/components/Button/Button";
 import PhoneLink from "@/components/PhoneLink.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
-import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
 import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
 import heroImage from "../../assets/commercial-3.webp";
@@ -106,8 +106,7 @@ We respond quickly, contain the problem, and give you a clear scope and cost bef
 
 
 
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+<BusinessCredentials hic={false} />
 
 </Band>
 

@@ -155,7 +155,11 @@ import processBackground from "@/assets/commercial-3.webp";
 import ProjectDetailsForm from "@/components/Form/forms/ProjectDetailsForm.astro";
 import QuoteCta from "@/components/QuoteCta.astro";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
-import { businessData } from "@/content/siteData";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
+import crewOnHomeExterior from "@/assets/crew-on-home-exterior.webp";
+import additionFraming from "@/assets/home-additions/home-addition-framing.webp";
+import additionInterior from "@/assets/home-additions/home-addition-interior.webp";
+import additionPlans from "@/assets/home-additions/home-addition-plans.webp";
 
 <ServiceLayout
   title={frontmatter.title}
@@ -168,7 +172,7 @@ import { businessData } from "@/content/siteData";
 
 <Bands>
 
-<Band photoNeeded="A finished addition, seen from outside">
+<Band image={crewOnHomeExterior} imageAlt="Crew working from a ladder and the balcony of a two-story house, with materials laid out on the front lawn" imagePosition="20% center">
 
 ## Out of room, not out of options
 
@@ -196,7 +200,7 @@ Which one makes sense depends on what's missing. If you need another room, it's 
 
 <ContentRenderer items={frontmatter.offerings} variant="OfferingsVariant" title="Additions we build" />
 
-<Band photoNeeded="Addition framing or foundation during construction" reverse>
+<Band image={additionFraming} imageAlt="Wood framing and wall sheathing for a home addition on a new concrete foundation, built onto the side of a house" reverse>
 
 ## What has to be figured out first
 
@@ -214,7 +218,7 @@ We'll go through all of this at your free estimate, so you know what you're gett
 
 </Band>
 
-<Band photoNeeded="Finished interior of the new space">
+<Band image={additionInterior} imageAlt="Bright family room addition with a vaulted ceiling, skylight and tall windows looking out on the backyard">
 
 ## It should look like it was always there
 
@@ -238,7 +242,7 @@ Where the new roof meets the old one is the part that has to be done right. It's
 
 <Bands>
 
-<Band photoNeeded="Going over plans with a homeowner">
+<Band image={additionPlans} imageAlt="Architectural plans for a home addition and a tape measure on a table outside a house">
 
 ## What drives the cost
 
@@ -250,9 +254,7 @@ Where the new roof meets the old one is the part that has to be done right. It's
 
 You'll get a written breakdown after your free estimate. No guessing.
 
-{businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+<BusinessCredentials />
 
 </Band>
 

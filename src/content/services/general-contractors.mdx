@@ -229,11 +229,11 @@ import ProjectDetailsForm from "@/components/Form/forms/ProjectDetailsForm.astro
 import QuoteCta from "@/components/QuoteCta.astro";
 import processBackground from "@/assets/commercial-3.webp";
 import johnOutside from "@/assets/john-outside.png";
-import johnWithClient from "@/assets/john-w-client.webp";
+import crewOnHomeExterior from "@/assets/crew-on-home-exterior.webp";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
 import ServiceReviewsCarousel from "@/components/ServiceReviewsCarousel.astro";
-import { businessData } from "@/content/siteData";
 
 <ServiceLayout
   title={frontmatter.title}
@@ -255,9 +255,7 @@ A general contractor owns that whole sequence. We plan the job, schedule every t
 
 When a job's split between five separate contractors and something goes wrong, everyone points at someone else. With us there's nobody else to point at. You've got one company responsible for the schedule, the budget and the finished work, and one number to call.
 
-{businessData.njHicNumber && <p>NJ Home Improvement Contractor registration #{businessData.njHicNumber}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
+<BusinessCredentials />
 
 </Band>
 
@@ -308,7 +306,7 @@ When a job's split between five separate contractors and something goes wrong, e
 
 <Bands>
 
-<Band image={johnWithClient} imageAlt="John with a homeowner after going over their project">
+<Band image={crewOnHomeExterior} imageAlt="Crew working from a ladder and the balcony of a two-story house, with materials laid out on the front lawn" imagePosition="20% center">
 
 ## What affects the cost of a project
 

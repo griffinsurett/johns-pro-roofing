@@ -56,8 +56,8 @@ import QuoteCta from "@/components/QuoteCta.astro";
 import ServiceCallout from "@/components/RepairCallout.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
-import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
 import parking1 from "../../assets/paving-asphault/parking-1.png";
 import parking2 from "../../assets/paving-asphault/parking-2.png";
@@ -96,8 +96,7 @@ We work with property managers, facility managers, and building owners to priori
 
 Fast, scheduled around your operations.
 
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+<BusinessCredentials hic={false} />
 
 </Band>
 

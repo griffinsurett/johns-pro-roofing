@@ -19,7 +19,9 @@ export const siteData = {
 // ─────────────────────────────────────────────────────────────────────────
 // Business credentials — single source of truth for facts reused across page
 // copy (service pages, About). Leave unconfirmed facts unset; enter verified
-// values here once John confirms them. Conditional copy updates from this data.
+// values here once John confirms them. Unset values render nothing; once set,
+// they appear on every service page via <BusinessCredentials /> (HIC # only on
+// residential/home-improvement pages).
 // ─────────────────────────────────────────────────────────────────────────
 export const businessData: { njHicNumber?: string; insurance?: string; warranty?: string } = {
   // NJ Home Improvement Contractor registration number, e.g. "13VH01234500"

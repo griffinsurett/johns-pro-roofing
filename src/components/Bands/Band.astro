@@ -13,7 +13,10 @@
  * one side, the slotted copy on the other. Pass a `video` (public-path string)
  * instead to render an autoplaying, lazy-loaded clip in the same media slot.
  * `reverse` puts the media on the right. Without media the band stays
- * full-width text, exactly as before.
+ * full-width text, exactly as before. Portrait `video` + `image` together
+ * show side by side at the same size and corner radius as the video card,
+ * image first so the video sits next to the copy (e.g. a still from a job
+ * beside its walkthrough).
  *
  * @example
  *   <Bands>
@@ -46,6 +49,10 @@ interface Props {
   aspect?: "landscape" | "portrait";
   /** Place the media on the right instead of the left. */
   reverse?: boolean;
+  /** Portrait media only: shrink the media column to the media's own width
+   *  (340px) and give the copy the rest of the row, instead of a 50/50 split
+   *  that leaves empty space around a narrow video. */
+  wideText?: boolean;
   /** Which part of the image stays in frame when it's cropped to the band's
    *  aspect ratio (CSS object-position), e.g. "center 15%" to keep a face in a
    *  portrait photo. Defaults to the center. */
@@ -63,11 +70,14 @@ const {
   videoAlt = "",
   aspect = "landscape",
   reverse = false,
+  wideText = false,
   imagePosition,
   photoNeeded,
 } = Astro.props as Props;
 
 const hasVideo = Boolean(video);
+// Portrait video + image: both, side by side, same size.
+const isPair = hasVideo && Boolean(image) && aspect === "portrait";
 const hasMedia = hasVideo || Boolean(image) || Boolean(photoNeeded);
 const videoAspect = aspect === "portrait" ? "portrait" : "landscape";
 ---
@@ -75,8 +85,29 @@ const videoAspect = aspect === "portrait" ? "portrait" : "landscape";
 <section class={`band ${hasMedia ? "band--split" : ""} ${className}`}>
   {
     hasMedia ? (
-      <div class={`container band-split ${reverse ? "band-split--reverse" : ""}`}>
-        {hasVideo ? (
+      <div class={`container band-split ${reverse ? "band-split--reverse" : ""} ${wideText && aspect === "portrait" ? "band-split--wide-text" : ""} ${isPair ? "band-split--pair" : ""}`}>
+        {isPair ? (
+          <div class="band-split__pair">
+            <div class="band-split__media" data-aspect="portrait">
+              {typeof image === "string" ? (
+                <img src={image} alt={imageAlt} class="band-split__img" loading="lazy" style={imagePosition ? `object-position: ${imagePosition}` : undefined} />
+              ) : (
+                <Image
+                  src={image as ImageMetadata}
+                  alt={imageAlt}
+                  widths={[340, 680]}
+                  sizes="(min-width: 768px) 340px, 50vw"
+                  class="band-split__img"
+                  loading="lazy"
+                  style={imagePosition ? `object-position: ${imagePosition}` : undefined}
+                />
+              )}
+            </div>
+            <div class="band-split__videocell" data-aspect="portrait">
+              <VideoCard video={video as string} videoAspect="portrait" centered class="w-full h-full" />
+            </div>
+          </div>
+        ) : hasVideo ? (
           <div class="band-split__videocell" data-aspect={aspect}>
             <VideoCard
               video={video as string}
@@ -131,6 +162,25 @@ const videoAspect = aspect === "portrait" ? "portrait" : "landscape";
     .band-split {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
+    /* wideText: the portrait media keeps its own width, the copy takes the
+       rest. Reverse flips the column sizes along with the order. */
+    .band-split--wide-text {
+      grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    }
+    .band-split--wide-text.band-split--reverse {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+    }
+    /* A video + image pair is two 340px cards wide, which only leaves the
+       copy a readable width from 1280px up. Below that the pair sits
+       centered above the copy. */
+    .band-split--pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .band-split--pair .band-split__pair {
+      width: 100%;
+      max-width: 696px;
+      margin-inline: auto;
+    }
     /* Reverse: copy first, media second (media lands on the right). */
     .band-split--reverse .band-split__media,
     .band-split--reverse .band-split__videocell {
@@ -153,6 +203,30 @@ const videoAspect = aspect === "portrait" ? "portrait" : "landscape";
     max-width: 340px;
     margin-inline: auto;
     width: 100%;
+  }
+  @media (min-width: 1280px) {
+    .band-split--pair {
+      grid-template-columns: minmax(0, 696px) minmax(0, 1fr);
+    }
+    .band-split--pair.band-split--reverse {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 696px);
+    }
+  }
+  /* Portrait video + image side by side, same size (stays two-up on phones). */
+  .band-split__pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+  }
+  .band-split__pair > .band-split__media[data-aspect="portrait"],
+  .band-split__pair > .band-split__videocell[data-aspect="portrait"] {
+    max-width: none;
+    margin-inline: 0;
+  }
+  /* Match the video card's corners (VideoCardClient: rounded-[28px]). */
+  .band-split__pair > .band-split__media {
+    border-radius: 28px;
   }
   .band-split__placeholder {
     display: flex;

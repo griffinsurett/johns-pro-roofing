@@ -68,7 +68,7 @@ Every item needs the client's confirmation before it goes live. Unconfirmed item
 
 **Subheading:** More room for the life you've got, in the house and the neighborhood you already love.
 
-`[PHOTO: finished addition seen from outside]`
+Photo (left): `src/assets/crew-on-home-exterior.webp`, a crew working from a ladder and the balcony of a two-story house (client job photo, 600×338; ask for the original). Shared with the general contracting cost section; swap for a finished addition when one arrives.
 
 ### Highlights strip (under the hero)
 
@@ -168,7 +168,7 @@ kid or a rental, where your town's zoning allows it.
 **Modular and prefab additions.** The addition's built off-site, then set in place and connected
 to your house. It can shorten the time your yard's a job site.
 
-`[PHOTO: addition framing or foundation during construction]`
+Photo (right): `src/assets/home-additions/home-addition-framing.webp`, framing and sheathing on a new foundation. Illustrative image, not a JPR job; swap in a real job photo when one exists.
 
 ---
 
@@ -203,7 +203,7 @@ Where the new roof meets the old one is the part that has to be done right. It's
 likely to leak if it isn't. We frame, flash and seal that connection carefully, so the addition
 stays as dry as the rest of the house.
 
-`[PHOTO: finished interior of the new space]`
+Photo (left): `src/assets/home-additions/home-addition-interior.webp`, a bright family room addition. Illustrative image, not a JPR job.
 
 ---
 
@@ -222,7 +222,7 @@ the heading, and one numbered step per line.
 
 ### What drives the cost
 
-`[PHOTO: going over plans with a homeowner]` (left of the list)
+Photo (left of the list): `src/assets/home-additions/home-addition-plans.webp`, architectural plans and a tape measure (no people). Illustrative image, not a JPR job.
 
 - How big it is, and whether it's one story or two
 - The foundation and how the site is to work on

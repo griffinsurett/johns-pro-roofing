@@ -51,8 +51,8 @@ ctaBanner:
 import QuoteCta from "@/components/QuoteCta.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
-import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
 import seal1 from "../../assets/paving-asphault/seal-1.png";
 import seal2 from "../../assets/paving-asphault/seal-2.png";
@@ -91,8 +91,7 @@ For property managers watching a maintenance budget, a sealcoating cycle is easy
 
 We schedule around your operations and keep the lot accessible where possible.
 
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+<BusinessCredentials hic={false} />
 
 </Band>
 

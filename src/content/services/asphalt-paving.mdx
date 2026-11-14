@@ -55,8 +55,8 @@ import QuoteCta from "@/components/QuoteCta.astro";
 import ServiceCallout from "@/components/RepairCallout.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
-import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
 import bandIntro from "../../assets/paving-asphault/pave-1.png";
 import bandServices from "../../assets/paving-asphault/pave-2.png";
@@ -103,8 +103,7 @@ A paving project shouldn't shut down your property. We phase the work to keep en
 
 We're a New Jersey company you can hold accountable.
 
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+<BusinessCredentials hic={false} />
 
 </Band>
 

@@ -103,7 +103,8 @@ Custom Decks · Composite & Wood · Covered Decks & Pergolas · Screened Porches
 
 ### A deck that fits how you'll use it
 
-`[PHOTO: finished deck]`
+Video (left, portrait, `wideText` so the copy takes the rest of the row): `public/covered-deck-walkthrough.mp4`, a 34s walkthrough of a covered deck with a plank ceiling, fan and stone TV wall (client job video; re-encoded to H.264 so every browser plays it).
+Beside it (image first, so the video sits next to the text), same size and 28px corners: `src/assets/decks/covered-deck-exterior.webp`, the 0:20 frame of that video (the covered deck from the patio, fire pit and Adirondack chairs in front). The pair sits beside the text from 1280px wide and above it on smaller screens.
 
 Before we talk boards and railings, we'll ask how you want to use the deck. Big family dinners?
 A grill and a couple of chairs? Somewhere for the kids to play where you can see them?
@@ -167,7 +168,7 @@ lifespan is really decided.
 
 ### The part you won't see
 
-`[PHOTO: framing, footings or ledger during a build]`
+Photo (right): `src/assets/decks/deck-framing-in-progress.webp`, a deck frame mid-build (posts on concrete footings, joists, ledger bolted to the house). Cropped to keep the footings and ledger in frame.
 
 Boards are what you notice. What keeps a deck safe is underneath.
 
@@ -187,7 +188,7 @@ deck's built before the boards go on.
 
 ### Repair or replace?
 
-`[PHOTO: a resurfaced deck, before and after]` (right of the text)
+Photo (right): `src/assets/decks/composite-deck-wraparound-steps.webp`, the crew finishing a gray composite deck's wraparound steps (client job photo).
 
 Not every tired deck needs to come down. If the frame and footings are solid, resurfacing it
 with new boards, railings or stairs can make it feel new again for a lot less.
@@ -221,7 +222,7 @@ the heading, and one numbered step per line.
 
 ### What drives the cost
 
-`[PHOTO: a finished deck, from the yard]` (left of the list)
+Photo (left): `src/assets/decks/composite-deck-dusk.png`, a finished brown composite deck at dusk (client-supplied).
 
 - How big the deck is
 - Composite or wood

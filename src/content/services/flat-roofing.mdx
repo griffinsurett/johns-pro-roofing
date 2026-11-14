@@ -55,6 +55,7 @@ import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
 import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
 import WhoWeServe from "@/components/WhoWeServe.astro";
 import RoofingTypesShowcase from "@/components/RoofingTypesShowcase.astro";
 import heroImage from "../../assets/commercial-working.webp";
@@ -96,8 +97,7 @@ A roof project shouldn't shut down your building. We schedule around your hours,
 
 We're a New Jersey company you can hold accountable.
 
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+<BusinessCredentials hic={false} />
 
 </Band>
 

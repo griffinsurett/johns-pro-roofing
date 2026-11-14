@@ -53,8 +53,8 @@ ctaBanner:
 import QuoteCta from "@/components/QuoteCta.astro";
 import Bands from "@/components/Bands/Bands.astro";
 import Band from "@/components/Bands/Band.astro";
-import { businessData } from "@/content/siteData";
 import ServiceLayout from "@/layouts/collections/ServiceLayout.astro";
+import BusinessCredentials from "@/components/BusinessCredentials.astro";
 import heroImage from "../../assets/residential-working.webp";
 import bandReplace from "../../assets/residential-working-2.webp";
 import bandChoose from "../../assets/john-on-roof-2.webp";
@@ -98,8 +98,7 @@ Not sure which you need? We'll take a look and tell you straight — no pressure
 
 We're a local New Jersey company, not a franchise — the same crew that quotes your roof is the one that installs it. See what your neighbors say on our [reviews](/#testimonials).
 
-{businessData.warranty && <p>Work is backed by {businessData.warranty}.</p>}
-{businessData.insurance && <p>We are {businessData.insurance} in NJ.</p>}
+<BusinessCredentials />
 
 </Band>
 
