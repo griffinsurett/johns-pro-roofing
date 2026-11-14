@@ -4,7 +4,7 @@
  * Social Icon Component
  * 
  * Individual social media icon with:
- * - Circular background
+ * - Borderless; a soft background on hover
  * - Hover scale effect
  * - Size variants (sm, md, lg)
  * - Optional link
@@ -41,7 +41,7 @@ const wrapperPadding = {
     href={link}
     target="_blank"
     rel="noopener noreferrer"
-    class={`${wrapperPadding[size]} border border-current/30 hover:border-current/60 hover:bg-current/10 rounded-md inline-flex items-center justify-center transition-all duration-200`}
+    class={`${wrapperPadding[size]} hover:bg-current/10 rounded-md inline-flex items-center justify-center transition-all duration-200`}
     aria-label={`Visit our ${title} page`}
     title={title}
   >
@@ -50,7 +50,7 @@ const wrapperPadding = {
 ) : (
   /* Otherwise just display icon */
   <div
-    class={`${wrapperPadding[size]} border border-current/30 rounded-md inline-flex items-center justify-center`}
+    class={`${wrapperPadding[size]} rounded-md inline-flex items-center justify-center`}
     title={title}
   >
     <Icon icon={displayIcon} size={size} className="text-current" />

@@ -79,7 +79,9 @@ Site-wide displays: CTA banner points → `NumberedListVariant` + `NumberedItem`
 `ServiceCalloutVariant`); services hub → `ServiceBandsVariant` + `ServiceBandCard`; gallery strip
 → `GalleryMarqueeVariant` + `GalleryTile`; roofing systems → `TypesShowcaseVariant` (slideshow
 island) and `TypeListBandVariant` + `TypeListItem`; footer contacts → `ContactLinksVariant` +
-`ContactLinkItem`; breadcrumbs → `BreadcrumbVariant` + `BreadcrumbItem`; blog index →
+`ContactLinkItem`; footer hours → `BusinessHoursVariant` + `BusinessHoursRow` (from the `hours`
+on the contact-us phone entry via `utils/businessHours.ts`, the same data as the schema's
+`openingHoursSpecification`); breadcrumbs → `BreadcrumbVariant` + `BreadcrumbItem`; blog index →
 `BlogFeedVariant` + `BlogFeedCard` and `RecentPostsVariant` + `RecentPostItem`. Components like
 `CtaBanner`, `ServiceBands`, `GalleryMarquee`, `RoofingTypesShowcase`, `RoofingTypesList` and
 `Breadcrumbs` are thin wrappers that call ContentRenderer (the `WhoWeServe` pattern); they hold no
@@ -114,8 +116,10 @@ banner/modal UI: `ZestEngine` in `IntHeadScripts` installs the blockers before a
 Zest's `data-consent-category` and read consent from `window.Zest`.
 
 `US_MODE` in `integrations/preferences/consent/core/consentConfig.ts` picks the model:
-`true` (current) = opt-out, no banner; tracking runs, the footer shows "Do Not Sell or Share
-My Personal Information" (→ the privacy policy's opt-out), and GPC/DNT counts as an opt-out.
+`true` (current) = opt-out, no banner; tracking runs, and GPC/DNT counts as an opt-out. The
+opt-out lives on the privacy policy (`#ccpa-rights`: the opt-out and Cookie Settings
+buttons); the footer has only "Your Privacy Choices", by the owner's choice (no "Do Not Sell
+or Share" footer link).
 `false` = opt-in banner for everyone. It's a fixed setting, not geolocation: Greastro's
 `/api/geo` route isn't used here because the site has no server routes.
 

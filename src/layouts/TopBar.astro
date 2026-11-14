@@ -2,11 +2,14 @@
 // src/layouts/TopBar.astro
 /**
  * Top utility bar — sits above the site header.
- * Navy gradient strip: brand message on the left, phone on the right.
- * Service-area states are pulled from the service-areas collection.
+ * Navy gradient strip: brand message on the left, social icons and phone on
+ * the right. Service-area states come from the service-areas collection, the
+ * icons from social-media (the same list as the footer).
  */
 import FlagStarIcon from "@/components/FlagStarIcon.astro";
 import PhoneLink from "@/components/PhoneLink.astro";
+import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro";
+import { query } from "@/utils/query";
 import { getServiceAreaAbbrs } from "@/utils/serviceAreas";
 
 const areaLabel = await getServiceAreaAbbrs(); // "NJ, NY & PA"
@@ -18,7 +21,15 @@ const areaLabel = await getServiceAreaAbbrs(); // "NJ, NY & PA"
       <FlagStarIcon class="top-bar-star" />
       Protecting Commercial Properties Across {areaLabel} — Roofing & Paving Done Right
     </p>
-    <div class="top-bar-phone">
+    <div class="top-bar-actions">
+      <ContentRenderer
+        query={query("social-media")}
+        variant="SocialMediaVariant"
+        size="sm"
+        alignment="right"
+        className="text-bg"
+      />
+      <span class="top-bar-divider" aria-hidden="true"></span>
       <PhoneLink variant="phone" tone="white" size="sm" />
     </div>
   </div>
@@ -65,8 +76,26 @@ const areaLabel = await getServiceAreaAbbrs(); // "NJ, NY & PA"
     opacity: 0.9;
   }
 
-  .top-bar-phone {
+  .top-bar-actions {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .top-bar-divider {
+    width: 1px;
+    height: 20px;
+    background: rgb(255 255 255 / 0.3);
+  }
+
+  /* Tablets: not enough room for the message, icons and phone on one line,
+     so the icons drop first (they're in the footer too). */
+  @media (max-width: 1023px) {
+    .top-bar-actions :global([id^="social-media"]),
+    .top-bar-divider {
+      display: none;
+    }
   }
 
   @media (max-width: 767px) {
@@ -74,8 +103,8 @@ const areaLabel = await getServiceAreaAbbrs(); // "NJ, NY & PA"
     .top-bar-inner {
       padding-inline: 24px;
     }
-    /* On phones, drop the phone link and shrink the message */
-    .top-bar-phone {
+    /* On phones, drop the icons and phone link and shrink the message */
+    .top-bar-actions {
       display: none;
     }
     .top-bar-message {

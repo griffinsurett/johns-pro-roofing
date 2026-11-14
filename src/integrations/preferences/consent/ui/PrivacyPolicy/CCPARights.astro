@@ -14,6 +14,7 @@
  * This component can be embedded in privacy policies or displayed standalone.
  */
 import OptOutButton from "../OptOutButton";
+import Button from "@/components/Button/Button";
 import { find } from "@/utils/query";
 import { formatPhoneNumber } from "@/utils/string";
 
@@ -92,8 +93,11 @@ const phoneValue = phoneEntry?.data?.value ?? phoneEntry?.data?.description ?? p
 
     <div class="mb-4">
       <p class="font-semibold mb-2">Manage Individual Cookie Categories</p>
+      {/* Opens the cookie preferences modal through the same event the
+          footer's "Your Privacy Choices" button sends (script below). */}
       <button
         id="open-cookie-preferences"
+        data-open-cookie-settings
         class="bg-bg border-2 border-primary text-primary px-6 py-3 rounded-lg font-bold hover:bg-primary/10 transition-colors"
         type="button"
       >
@@ -209,19 +213,24 @@ const phoneValue = phoneEntry?.data?.value ?? phoneEntry?.data?.description ?? p
         )
       }
       <li>
-        <strong>Subject Line:</strong> "CCPA Request - [Right to Know/Delete/Correct]"
+        <strong>In your message:</strong> Start with "CCPA Request - [Right to Know/Delete/Correct]"
       </li>
       <li>
         <strong>Include:</strong> Your name, email, and description of your request
       </li>
       <li><strong>Response Time:</strong> We'll respond within 45 days</li>
     </ul>
-    <a
-      href="/contact"
-      class="inline-block bg-primary text-bg px-6 py-3 rounded-lg font-bold hover:bg-primary-700 transition-colors"
+    {/* The site's primary button (forces white text, so the legal page's
+        navy link colour can't hide it); no-underline overrides the legal
+        link underline. Goes straight to the contact page's form. */}
+    <Button
+      variant="primary"
+      href="/contact-us#contact-form"
+      rightIcon="lu:arrow-right"
+      className="!no-underline"
     >
-      Contact Us About Privacy →
-    </a>
+      Contact Us About Privacy
+    </Button>
   </div>
 
   <div class="bg-yellow-50 border-2 border-yellow-600 rounded-lg p-4 mt-4">
@@ -236,3 +245,11 @@ const phoneValue = phoneEntry?.data?.value ?? phoneEntry?.data?.description ?? p
     </p>
   </div>
 </div>
+
+<script>
+  import { requestCookieSettings } from "@/integrations/preferences/consent/core/hooks/useZestConsent";
+
+  document.querySelectorAll("[data-open-cookie-settings]").forEach((button) => {
+    button.addEventListener("click", requestCookieSettings);
+  });
+</script>

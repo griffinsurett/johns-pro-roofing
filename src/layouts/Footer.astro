@@ -15,18 +15,36 @@ import ContentRenderer from "@/components/ContentRenderer/ContentRenderer.astro"
 import { query, related, sortByOrder } from "@/utils/query";
 import PreferencesLayout from "./PreferencesLayout.astro";
 import CookiePreferencesButton from "@/integrations/preferences/consent/ui/CookiePreferencesButton";
-import { US_MODE } from "@/integrations/preferences/consent/core/consentConfig";
 import { getContactLinks } from "@/utils/contactLinks";
+import { getBusinessHours } from "@/utils/businessHours";
 import ReviewButton from "@/components/ReviewButton.astro";
 import { Image } from "astro:assets";
 import footerLogo from "@/assets/logo.png";
+import footerBackground from "@/assets/residential-working.webp";
 
 // Contact info from the contact-us content collection, rendered through
 // ContentRenderer (ContactLinksVariant).
 const contactLinks = await getContactLinks();
+// Hours from the contact-us entry that holds them (the schema's
+// openingHoursSpecification reads the same data).
+const businessHours = await getBusinessHours();
 ---
 
 <footer class="relative bg-brand-gradient text-bg mt-auto pt-16 border-t border-bg/10 overflow-hidden">
+  {/* Background photo (the crew on a roof) under a navy overlay, so the
+      white footer text keeps its contrast. Decorative, so empty alt. */}
+  <Image
+    src={footerBackground}
+    alt=""
+    aria-hidden="true"
+    class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    format="webp"
+    quality={70}
+    loading="lazy"
+  />
+  <div class="absolute inset-0 bg-primary/90 pointer-events-none" aria-hidden="true"></div>
   <div class="w-full max-w-[1600px] mx-auto px-6 lg:px-12 relative z-10">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-left">
       
@@ -51,6 +69,7 @@ const contactLinks = await getContactLinks();
           Your trusted local New Jersey roofing professionals.
         </p>
         <ContentRenderer items={contactLinks} variant="ContactLinksVariant" />
+        <ContentRenderer items={businessHours} variant="BusinessHoursVariant" className="-mt-3" />
         <div class="mt-4">
           <ContentRenderer
             query={query("social-media")}
@@ -111,16 +130,6 @@ const contactLinks = await getContactLinks();
             client:visible
             className="link-base link-md p-0 mt-3 !text-bg/80 hover:!text-bg transition-colors"
           />
-          {/* US mode (opt-out): the required opt-out link, to the privacy
-              policy's opt-out section. */}
-          {US_MODE && (
-            <a
-              href="/privacy-policy#ccpa-rights"
-              class="block mt-3 !text-bg/80 hover:!text-bg transition-colors"
-            >
-              Do Not Sell or Share My Personal Information
-            </a>
-          )}
         </div>
       </div>
 

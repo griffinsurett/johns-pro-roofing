@@ -1,0 +1,17 @@
+---
+// src/components/LoopComponents/BusinessHoursRow.astro
+/**
+ * BusinessHoursRow — one line of business hours ("Every day  7 AM – 10 PM"),
+ * styled for a dark background. Rendered by BusinessHoursVariant.
+ */
+export interface Props {
+  days: string;
+  hours: string;
+}
+
+const { days, hours } = Astro.props as Props;
+---
+
+<li>
+  <span class="font-semibold text-bg">{days}:</span> {hours}
+</li>

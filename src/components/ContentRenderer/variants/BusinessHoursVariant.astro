@@ -1,0 +1,30 @@
+---
+// src/components/ContentRenderer/variants/BusinessHoursVariant.astro
+/**
+ * Business Hours Variant — a clock icon beside the hours rows
+ * (BusinessHoursRow), sized and coloured to sit in the footer's contact list.
+ *
+ *   <ContentRenderer items={await getBusinessHours()} variant="BusinessHoursVariant" />
+ */
+import type { BaseVariantProps } from "../ContentRenderer.types";
+import BusinessHoursRow from "@/components/LoopComponents/BusinessHoursRow.astro";
+import Icon from "@/components/Icon";
+
+interface Props extends BaseVariantProps {}
+
+const { items = [], className = "" } = Astro.props as Props;
+---
+
+{items.length > 0 && (
+  <div class={`flex items-start gap-2.5 text-sm text-bg/80 ${className}`.trim()}>
+    <Icon icon="lu:clock" size="sm" className="text-bg/70 shrink-0 mt-0.5" />
+    <div>
+      <span class="sr-only">Business hours</span>
+      <ul class="flex flex-col gap-1 list-none p-0 m-0">
+        {items.map((item: any) => (
+          <BusinessHoursRow days={item.days} hours={item.hours} />
+        ))}
+      </ul>
+    </div>
+  </div>
+)}
